@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "list-backup",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "List backup",
+  "description": "What a backup holds, straight from its table of contents",
+  "categories": [
+    "Backup and Tools"
+  ],
+  "tags": [
+    "backup",
+    "restore",
+    "pg_restore",
+    "archive",
+    "table of contents"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "list-backup.plumesql.run"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 46,
+  "externals": [],
+  "demo": "media/list-backup.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

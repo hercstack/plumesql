@@ -1,0 +1,40 @@
+{
+  "format": 1,
+  "id": "postgis-essentials",
+  "kind": "pack",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "PostGIS essentials",
+  "description": "Everything PlumeSQL reads PostGIS with: geometry values as EWKT with sketches, a whole column sketched, and PostGIS's own validity checks",
+  "categories": [
+    "Packs",
+    "PostGIS"
+  ],
+  "tags": [
+    "postgis",
+    "geometry",
+    "geography",
+    "spatial",
+    "gis",
+    "starter"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "postgis"
+    ]
+  },
+  "files": [
+    "postgis-essentials.plumesql-pack.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 172,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,40 @@
+{
+  "format": 1,
+  "id": "export-csv",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Export to CSV",
+  "description": "Export a table or view to a CSV file with psql, whatever its size",
+  "categories": [
+    "Backup and Tools"
+  ],
+  "tags": [
+    "export",
+    "csv",
+    "psql",
+    "copy",
+    "data",
+    "spreadsheet",
+    "dump"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "export-csv.plumesql.run"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 184,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/export-csv.webp"
+}

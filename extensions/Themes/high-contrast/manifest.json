@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "high-contrast",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "High Contrast",
+  "description": "Maximum legibility: pure black and pure white grounds, bright outlines around every focused control",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "high contrast",
+    "accessibility"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "high-contrast.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 121,
+  "externals": [],
+  "demo": "media/high-contrast.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

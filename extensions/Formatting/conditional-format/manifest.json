@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "conditional-format",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Conditional format",
+  "description": "Colour scales, data bars, icon sets and highlights on chosen columns, like a spreadsheet's Conditional Formatting",
+  "categories": [
+    "Formatting"
+  ],
+  "tags": [
+    "formatting",
+    "conditional formatting",
+    "colour scales",
+    "data bars",
+    "icon sets",
+    "highlight"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "conditional-format.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 111,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/conditional-format.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "rows-as-sql",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Rows as SQL",
+  "description": "The result's rows as SQL: INSERT, multi-row INSERT, UPDATE by key or upsert, to copy, to save or in a tab",
+  "categories": [
+    "Reshape"
+  ],
+  "tags": [
+    "sql",
+    "insert",
+    "update",
+    "upsert",
+    "export",
+    "copy",
+    "seed data",
+    "migration"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "rows-as-sql.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 183,
+  "externals": [],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/rows-as-sql.webp"
+}

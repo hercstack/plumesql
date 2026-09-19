@@ -1,0 +1,40 @@
+{
+  "format": 1,
+  "id": "validate-geometry",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Validate geometry",
+  "description": "Ask PostGIS whether a geometry value is valid, and why not: the verdict, its type, SRID and point count, from the value's menu",
+  "categories": [
+    "PostGIS"
+  ],
+  "tags": [
+    "postgis",
+    "geometry",
+    "geography",
+    "validity",
+    "st_isvalid",
+    "spatial"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "postgis"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "validate-geometry.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 170,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

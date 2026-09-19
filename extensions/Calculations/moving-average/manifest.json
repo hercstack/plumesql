@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "moving-average",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Moving average",
+  "description": "Adds a column with the moving average of a numeric column over a window of rows, trailing or centered",
+  "categories": [
+    "Calculations"
+  ],
+  "tags": [
+    "calculation",
+    "moving average",
+    "rolling",
+    "smoothing",
+    "timeseries"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "moving-average.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 127,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/moving-average.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

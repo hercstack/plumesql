@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "sample",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Sample",
+  "description": "A repeatable sample of the result's rows: random, every k-th, or the first of each group, in their original order, in the grid",
+  "categories": [
+    "Analysis"
+  ],
+  "tags": [
+    "analysis",
+    "statistics",
+    "sample",
+    "random",
+    "subset"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "sample.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 137,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/sample.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

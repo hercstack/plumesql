@@ -1,0 +1,51 @@
+{
+  "format": 1,
+  "id": "explain-plan",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Explain plan",
+  "description": "The plan of an EXPLAIN as a picture you can read: where the time goes, what was misestimated, what spilled, step by step",
+  "categories": [
+    "Performance"
+  ],
+  "tags": [
+    "performance",
+    "explain",
+    "explain analyze",
+    "query plan",
+    "slow queries",
+    "tuning",
+    "estimates",
+    "buffers"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "explain-plan.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 158,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/explain-plan.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "featured": true
+}

@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "github",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "GitHub",
+  "description": "The colors you already read code in every day: GitHub Light, GitHub Dark and the softer Dark Dimmed",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "github",
+    "primer"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "github.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 118,
+  "externals": [],
+  "demo": "media/github.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

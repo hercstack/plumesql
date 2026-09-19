@@ -1,0 +1,50 @@
+{
+  "format": 1,
+  "id": "hstore",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "hstore",
+  "description": "hstore values read as a clean key => value table with the NULLs marked, decoded as JSON, checked live as you type them",
+  "categories": [
+    "Data Types"
+  ],
+  "tags": [
+    "data types",
+    "hstore",
+    "key value",
+    "json",
+    "inspector"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "hstore"
+    ],
+    "pgVersion": ">=13"
+  },
+  "types": [
+    "hstore"
+  ],
+  "files": [
+    "hstore.plumesql.js",
+    "lib/hstore.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 173,
+  "externals": [],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

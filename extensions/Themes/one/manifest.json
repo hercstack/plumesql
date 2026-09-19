@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "one",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "One Dark and Light",
+  "description": "Atom's beloved pair, the most installed dark theme there is and its bright twin",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "one dark",
+    "atom",
+    "classic"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "one.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 130,
+  "externals": [],
+  "demo": "media/one.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

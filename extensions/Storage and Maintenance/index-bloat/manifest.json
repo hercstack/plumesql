@@ -1,0 +1,40 @@
+{
+  "format": 1,
+  "id": "index-bloat",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Index bloat",
+  "description": "Estimated bloat of every btree index from its statistics: wasted space and its share, the most first",
+  "categories": [
+    "Storage and Maintenance"
+  ],
+  "tags": [
+    "bloat",
+    "indexes",
+    "btree",
+    "reindex",
+    "storage",
+    "maintenance",
+    "pg_stats"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "index-bloat.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 161,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/index-bloat.webp"
+}

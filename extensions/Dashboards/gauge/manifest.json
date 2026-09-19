@@ -1,0 +1,45 @@
+{
+  "format": 1,
+  "id": "gauge",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Gauge",
+  "description": "One number on a dial, with an optional target and green, amber and red bands (ECharts)",
+  "categories": [
+    "Dashboards"
+  ],
+  "tags": [
+    "dashboard",
+    "charts",
+    "gauge",
+    "kpi",
+    "target",
+    "echarts"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "gauge.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 117,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "icon": "icon.svg",
+  "demo": "media/gauge.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

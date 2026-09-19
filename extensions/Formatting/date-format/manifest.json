@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "id": "date-format",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Date format",
+  "description": "Every date and timestamp column reads in the format you pick: ISO, European, US, long, short, weekday, month and year, and more",
+  "categories": [
+    "Formatting"
+  ],
+  "tags": [
+    "formatting",
+    "dates",
+    "timestamps",
+    "time",
+    "locale",
+    "iso"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "date-format.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 153,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/date-format.webp"
+}

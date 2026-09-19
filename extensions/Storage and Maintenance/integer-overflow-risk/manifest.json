@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "integer-overflow-risk",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Integer overflow risk",
+  "description": "Integer keys and sequences by how much of their range is used, with the statement that moves them to bigint",
+  "categories": [
+    "Storage and Maintenance"
+  ],
+  "tags": [
+    "overflow",
+    "integer",
+    "bigint",
+    "sequences",
+    "serial",
+    "identity",
+    "primary keys",
+    "capacity"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "integer-overflow-risk.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 177,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/integer-overflow-risk.webp"
+}

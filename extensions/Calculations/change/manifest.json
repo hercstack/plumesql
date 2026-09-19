@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "change",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Change",
+  "description": "Adds the change of a numeric column against the previous or the first row, as a difference, a percent or both",
+  "categories": [
+    "Calculations"
+  ],
+  "tags": [
+    "calculation",
+    "change",
+    "difference",
+    "growth",
+    "previous row",
+    "timeseries"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "change.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 109,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/change.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "json",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Json",
+  "description": "A json / jsonb column reads compact on one line, the pretty-printed value on hover",
+  "categories": [
+    "Formatting"
+  ],
+  "tags": [
+    "formatting",
+    "json",
+    "jsonb",
+    "pretty print",
+    "documents"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "json.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 45,
+  "externals": [],
+  "demo": "media/json.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

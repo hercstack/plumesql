@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "kpi-cards",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "KPI cards",
+  "description": "Big-number cards for a dashboard, one per numeric column, with the change against a reference row and a sparkline",
+  "categories": [
+    "Dashboards"
+  ],
+  "tags": [
+    "dashboard",
+    "kpi",
+    "cards",
+    "big numbers",
+    "sparkline"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "kpi-cards.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 125,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/kpi-cards.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

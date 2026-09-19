@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "json-to-columns",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "JSON to columns",
+  "description": "A json or jsonb column's keys as columns right beside it in the result grid",
+  "categories": [
+    "Reshape"
+  ],
+  "tags": [
+    "json",
+    "jsonb",
+    "reshape",
+    "flatten",
+    "json keys",
+    "documents"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "json-to-columns.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 179,
+  "externals": [],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/json-to-columns.webp"
+}

@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "cohorts",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Cohorts",
+  "description": "A retention table: users grouped by the period of their first event, and the share still active in each period after, as a heatmap",
+  "categories": [
+    "Analysis"
+  ],
+  "tags": [
+    "analysis",
+    "cohorts",
+    "cohort retention",
+    "churn",
+    "heatmap",
+    "time buckets"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "cohorts.plumesql.js"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 148,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/cohorts.webp"
+}

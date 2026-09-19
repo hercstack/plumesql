@@ -1,0 +1,40 @@
+{
+  "format": 1,
+  "id": "io-stats",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "I/O statistics",
+  "description": "I/O by backend type, object and context from pg_stat_io: reads, writes, hits and the time they took",
+  "categories": [
+    "Performance"
+  ],
+  "tags": [
+    "performance",
+    "io",
+    "pg_stat_io",
+    "reads",
+    "writes",
+    "disk",
+    "track_io_timing"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=16"
+  },
+  "files": [
+    "io-stats.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 162,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/io-stats.webp"
+}

@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "column-statistics",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Column statistics",
+  "description": "What the planner knows about each column of the table this was opened on: nulls, distinct values, order, common values",
+  "categories": [
+    "Performance"
+  ],
+  "tags": [
+    "statistics",
+    "planner",
+    "pg_stats",
+    "columns",
+    "analyze",
+    "query plan"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "column-statistics.plumesql.sql",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 110,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/column-statistics.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

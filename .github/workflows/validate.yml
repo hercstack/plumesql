@@ -1,0 +1,34 @@
+name: validate
+
+# Every pull request and every push to main: the validator
+# (extensions/tools/catalog.mjs) checks each manifest, the ids, the files,
+# the dependencies, the versions against the PUBLISHED index (the `catalog`
+# branch) and the discussion threads. No catalog file is part of a pull
+# request: the index is built by the publish workflow after the merge. The
+# rules are written down in PlumeSQL's docs/MARKETPLACE.md, section 12.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  discussions: read
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Validate the manifests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git fetch origin catalog:refs/remotes/origin/catalog || true
+          node extensions/tools/catalog.mjs --check

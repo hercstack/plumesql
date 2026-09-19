@@ -1,0 +1,40 @@
+{
+  "format": 1,
+  "id": "sparklines",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Sparklines",
+  "description": "A numeric array column reads as a small line chart of its items, with the count, min and max",
+  "categories": [
+    "Formatting"
+  ],
+  "tags": [
+    "formatting",
+    "sparklines",
+    "arrays",
+    "charts",
+    "numbers"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "sparklines.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 139,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/sparklines.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

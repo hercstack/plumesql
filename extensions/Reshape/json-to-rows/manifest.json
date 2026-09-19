@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "json-to-rows",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "JSON to rows",
+  "description": "A json or jsonb column as a table of its own: a column per key, a path to follow, arrays opened into rows",
+  "categories": [
+    "Reshape"
+  ],
+  "tags": [
+    "json",
+    "jsonb",
+    "reshape",
+    "flatten",
+    "json arrays",
+    "unnest",
+    "documents"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "json-to-rows.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 182,
+  "externals": [],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/json-to-rows.webp"
+}

@@ -1,0 +1,54 @@
+{
+  "themes": [
+    {
+      "id": "nord",
+      "name": "Nord",
+      "base": "dark",
+      "colors": {
+        "bg": "#2e3440",
+        "panel": "#272c36",
+        "panel-2": "#3b4252",
+        "border": "#434c5e",
+        "text": "#d8dee9",
+        "muted": "#99a2b3",
+        "accent": "#88c0d0",
+        "accent-dim": "#3f5566",
+        "green": "#a3be8c",
+        "red": "#bf616a",
+        "amber": "#ebcb8b",
+        "violet": "#b48ead",
+        "row-hover": "#353c4a",
+        "grid-hl": "#39465a",
+        "editor-gutter": "#2b303b"
+      },
+      "syntax": {
+        "keyword": "#81a1c1",
+        "string": "#a3be8c",
+        "number": "#b48ead",
+        "comment": "#6d7a96",
+        "operator": "#81a1c1",
+        "type": "#8fbcbb",
+        "func": "#88c0d0",
+        "annotation": "#d08770"
+      },
+      "terminal": {
+        "black": "#3b4252",
+        "red": "#bf616a",
+        "green": "#a3be8c",
+        "yellow": "#ebcb8b",
+        "blue": "#81a1c1",
+        "magenta": "#b48ead",
+        "cyan": "#88c0d0",
+        "white": "#e5e9f0",
+        "brightBlack": "#4c566a",
+        "brightRed": "#bf616a",
+        "brightGreen": "#a3be8c",
+        "brightYellow": "#ebcb8b",
+        "brightBlue": "#81a1c1",
+        "brightMagenta": "#b48ead",
+        "brightCyan": "#8fbcbb",
+        "brightWhite": "#eceff4"
+      }
+    }
+  ]
+}

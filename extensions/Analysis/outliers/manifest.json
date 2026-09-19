@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "outliers",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Outliers",
+  "description": "Flags outliers of the numeric columns you pick, by IQR fences or z-score: a list of the outlying values, or the result with them coloured",
+  "categories": [
+    "Analysis"
+  ],
+  "tags": [
+    "analysis",
+    "statistics",
+    "distribution",
+    "outliers",
+    "anomalies",
+    "iqr",
+    "z-score"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "outliers.plumesql.js"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 164,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/outliers.webp"
+}

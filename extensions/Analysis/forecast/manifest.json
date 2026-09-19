@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "forecast",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Forecast",
+  "description": "Continues a time series a number of steps ahead with a 95% band, by Holt's trend or a straight line, in the grid",
+  "categories": [
+    "Analysis"
+  ],
+  "tags": [
+    "analysis",
+    "statistics",
+    "timeseries",
+    "forecast",
+    "trend",
+    "holt"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "forecast.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 115,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/forecast.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

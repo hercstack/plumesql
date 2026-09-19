@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "id": "fk-without-index",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Foreign keys without an index",
+  "description": "Foreign keys with no index on their referencing columns, largest table first, with the statement to add one",
+  "categories": [
+    "Performance"
+  ],
+  "tags": [
+    "performance",
+    "indexes",
+    "foreign keys",
+    "missing index",
+    "constraints",
+    "create index"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "fk-without-index.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 159,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/fk-without-index.webp"
+}
