@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "rank",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Rank",
+  "description": "Adds a column ranking each row by a numeric column, over the whole result or within each group",
+  "categories": [
+    "Calculations"
+  ],
+  "tags": [
+    "calculation",
+    "rank",
+    "ranking",
+    "leaderboard",
+    "groups"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "rank.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 134,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/rank.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,45 @@
+{
+  "format": 1,
+  "id": "treemap",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Treemap",
+  "description": "Nested rectangles sized by a value over one or more hierarchy levels, with drill-down and a breadcrumb (ECharts)",
+  "categories": [
+    "Dashboards"
+  ],
+  "tags": [
+    "dashboard",
+    "charts",
+    "treemap",
+    "hierarchy",
+    "share",
+    "echarts"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "treemap.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 143,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "icon": "icon.svg",
+  "demo": "media/treemap.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

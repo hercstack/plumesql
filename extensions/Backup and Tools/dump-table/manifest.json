@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "id": "dump-table",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Dump table",
+  "description": "Dump the table this was opened on to a file named after it: definition and rows, either alone, rows as COPY or as INSERT statements",
+  "categories": [
+    "Backup and Tools"
+  ],
+  "tags": [
+    "dump",
+    "pg_dump",
+    "export",
+    "single table",
+    "data",
+    "insert"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "dump-table.plumesql.run"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 34,
+  "externals": [],
+  "demo": "media/dump-table.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "unpivot",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Unpivot",
+  "description": "Turns columns into rows: one row per kept key and melted column, a name and a value, over the whole result, in the grid",
+  "categories": [
+    "Reshape"
+  ],
+  "tags": [
+    "reshape",
+    "unpivot",
+    "melt",
+    "long",
+    "columns to rows"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "unpivot.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 144,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/unpivot.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

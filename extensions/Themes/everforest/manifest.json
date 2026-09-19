@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "id": "everforest",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Everforest",
+  "description": "A green, forest-inspired scheme designed to be warm and soft for the eyes, dark and light",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "everforest",
+    "green",
+    "soft",
+    "warm"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "everforest.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 114,
+  "externals": [],
+  "demo": "media/everforest.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

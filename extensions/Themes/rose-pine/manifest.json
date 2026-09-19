@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "rose-pine",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Rosé Pine",
+  "description": "All natural pine, faux fur and a bit of soho vibes: Rosé Pine, the dimmer Moon and the light Dawn",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "rose pine",
+    "muted",
+    "soft"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "rose-pine.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 136,
+  "externals": [],
+  "demo": "media/rose-pine.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

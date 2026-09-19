@@ -1,0 +1,40 @@
+{
+  "format": 1,
+  "id": "maintenance-progress",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Maintenance progress",
+  "description": "What VACUUM, ANALYZE, CREATE INDEX and CLUSTER are doing right now, with how far along each is, refreshed every three seconds",
+  "categories": [
+    "Storage and Maintenance"
+  ],
+  "tags": [
+    "maintenance",
+    "vacuum",
+    "autovacuum",
+    "analyze",
+    "create index",
+    "progress",
+    "pg_stat_progress_vacuum"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "maintenance-progress.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 163,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/maintenance-progress.webp"
+}

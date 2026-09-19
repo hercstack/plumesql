@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "security-review",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Security review",
+  "description": "A first security review of this server as a checklist: each finding with a severity and what to do",
+  "categories": [
+    "Server and Security"
+  ],
+  "tags": [
+    "security",
+    "checklist",
+    "roles",
+    "privileges",
+    "superuser",
+    "pg_hba",
+    "passwords",
+    "row level security",
+    "audit"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "security-review.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 165,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/security-review.webp"
+}

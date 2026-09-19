@@ -1,0 +1,46 @@
+{
+  "format": 1,
+  "id": "waterfall",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Waterfall",
+  "description": "Steps up and down from a start to a running total, each category a floating bar (ECharts)",
+  "categories": [
+    "Dashboards"
+  ],
+  "tags": [
+    "dashboard",
+    "charts",
+    "waterfall",
+    "finance",
+    "variance",
+    "bridge",
+    "echarts"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "waterfall.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 145,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "icon": "icon.svg",
+  "demo": "media/waterfall.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

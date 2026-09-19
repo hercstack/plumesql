@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "cache-hit-ratio",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Cache hit ratio",
+  "description": "Buffer cache hit ratio of every database, then of this database's tables and indexes, lowest first",
+  "categories": [
+    "Performance"
+  ],
+  "tags": [
+    "performance",
+    "cache",
+    "hit ratio",
+    "shared_buffers",
+    "memory",
+    "pg_statio_user_tables",
+    "pg_stat_database",
+    "tuning"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "cache-hit-ratio.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 146,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/cache-hit-ratio.webp"
+}

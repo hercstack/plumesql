@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "monokai",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Monokai",
+  "description": "The classic of text editors: electric pink, lime and violet on warm charcoal",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "monokai",
+    "classic",
+    "vivid"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "monokai.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 126,
+  "externals": [],
+  "demo": "media/monokai.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

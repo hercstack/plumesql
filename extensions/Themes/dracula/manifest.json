@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "dracula",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Dracula",
+  "description": "The famous dark theme: purple, pink and green on a deep blue-grey, high energy and very readable",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "dracula",
+    "purple",
+    "vivid"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "dracula.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 113,
+  "externals": [],
+  "demo": "media/dracula.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

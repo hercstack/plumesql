@@ -1,0 +1,55 @@
+{
+  "themes": [
+    {
+      "id": "monokai",
+      "name": "Monokai",
+      "base": "dark",
+      "colors": {
+        "bg": "#272822",
+        "panel": "#1e1f1c",
+        "panel-2": "#3e3d32",
+        "border": "#414339",
+        "text": "#f8f8f2",
+        "muted": "#a09f93",
+        "accent": "#66d9ef",
+        "accent-dim": "#49483e",
+        "green": "#a6e22e",
+        "red": "#f92672",
+        "amber": "#e6db74",
+        "violet": "#ae81ff",
+        "row-hover": "#2f302a",
+        "grid-hl": "#3a3b33",
+        "editor-gutter": "#23241f",
+        "grid-null": "#e6db74"
+      },
+      "syntax": {
+        "keyword": "#f92672",
+        "string": "#e6db74",
+        "number": "#ae81ff",
+        "comment": "#88846f",
+        "operator": "#f92672",
+        "type": "#66d9ef",
+        "func": "#a6e22e",
+        "annotation": "#fd971f"
+      },
+      "terminal": {
+        "black": "#333333",
+        "red": "#c4265e",
+        "green": "#86b42b",
+        "yellow": "#b3b42b",
+        "blue": "#6a7ec8",
+        "magenta": "#8c6bc8",
+        "cyan": "#56adbc",
+        "white": "#e3e3dd",
+        "brightBlack": "#666666",
+        "brightRed": "#f92672",
+        "brightGreen": "#a6e22e",
+        "brightYellow": "#e2e22e",
+        "brightBlue": "#819aff",
+        "brightMagenta": "#ae81ff",
+        "brightCyan": "#66d9ef",
+        "brightWhite": "#f8f8f2"
+      }
+    }
+  ]
+}

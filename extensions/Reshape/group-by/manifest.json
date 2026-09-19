@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "group-by",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Group by",
+  "description": "Groups the whole result by one or more columns, with up to three folded measures and a total row, in the grid",
+  "categories": [
+    "Reshape"
+  ],
+  "tags": [
+    "reshape",
+    "group by",
+    "aggregate",
+    "summary",
+    "analysis",
+    "totals"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "group-by.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 119,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/group-by.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

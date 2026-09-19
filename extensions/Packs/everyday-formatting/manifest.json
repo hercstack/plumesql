@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "id": "everyday-formatting",
+  "kind": "pack",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Everyday formatting",
+  "description": "Results that read at a glance: dates, numbers, money, NULLs, booleans, JSON, statuses and highlights",
+  "categories": [
+    "Packs"
+  ],
+  "tags": [
+    "formatting",
+    "dates",
+    "numbers",
+    "money",
+    "nulls",
+    "json",
+    "starter"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "everyday-formatting.plumesql-pack.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 157,
+  "externals": [],
+  "featured": true,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

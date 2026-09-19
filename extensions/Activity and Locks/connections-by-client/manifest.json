@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "connections-by-client",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Connections by client",
+  "description": "Client connections grouped by user, application and address, with their states, against max_connections",
+  "categories": [
+    "Activity and Locks"
+  ],
+  "tags": [
+    "activity",
+    "connections",
+    "sessions",
+    "clients",
+    "max_connections",
+    "pooling",
+    "pg_stat_activity",
+    "monitoring"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "connections-by-client.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 149,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/connections-by-client.webp"
+}

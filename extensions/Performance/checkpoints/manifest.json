@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "checkpoints",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Checkpoints",
+  "description": "Checkpoint and background writer statistics: timed against requested, write and sync time, and who writes the buffers",
+  "categories": [
+    "Performance"
+  ],
+  "tags": [
+    "performance",
+    "checkpoints",
+    "wal",
+    "bgwriter",
+    "pg_stat_bgwriter",
+    "pg_stat_checkpointer",
+    "max_wal_size",
+    "tuning"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "checkpoints.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 147,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/checkpoints.webp"
+}

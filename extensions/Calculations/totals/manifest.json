@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "totals",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Totals and subtotals",
+  "description": "Adds a Total row under the result, and optional subtotal rows after each group of a column, like a spreadsheet's Subtotal",
+  "categories": [
+    "Calculations"
+  ],
+  "tags": [
+    "calculation",
+    "totals",
+    "subtotals",
+    "sum",
+    "groups"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "totals.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 142,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/totals.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

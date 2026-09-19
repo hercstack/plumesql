@@ -1,0 +1,39 @@
+# @description Publish one of your extensions to the marketplace: fork, copy, branch and pull request through the GitHub CLI
+# @color lavender
+# @for my extension
+# @confirm "Publish {name}?", "Runs gh and git in a terminal: forks hercstack/plumesql once, clones the fork into a temporary directory, copies your extension into its category, pushes a branch ext/{name} to your fork and opens the pull request. Nothing is merged; the reviewer takes it from there."
+# @alert-on-success "Pull request opened", "The terminal has its address. The reviewer opens the discussion thread and merges; the extension is published with the next index build."
+# @alert-on-failure "Publishing stopped", "The terminal has why: gh not installed or signed out, a check the validator failed, or a pull request already open for this branch."
+# Attached to every row of My Extensions (@for my extension): opened on one,
+# {name} is its id and {mine}/{name} its directory, nothing to type. One
+# command line, one bash: every step names itself before it runs so the
+# terminal reads as a log. The category comes from the manifest; PUBLISH.md
+# (the app's, not the marketplace's) stays behind and becomes the pull
+# request's body.
+bash -c "set -e; \
+  src='{mine}/{name}'; \
+  [ -f \"$src/manifest.json\" ] || (echo \"There is no extension {name} in My Extensions ($src).\"; exit 1); \
+  command -v gh >/dev/null || (echo 'The GitHub CLI is not installed: https://cli.github.com'; exit 1); \
+  gh auth status >/dev/null 2>&1 || (echo 'Sign in first: gh auth login'; exit 1); \
+  category=$(node -p \"require('$src/manifest.json').categories[0]\"); \
+  version=$(node -p \"require('$src/manifest.json').version\"); \
+  target=\"extensions/$category/{name}\"; \
+  login=$(gh api user --jq .login); \
+  echo \"== fork hercstack/plumesql as $login (once)\"; \
+  gh repo fork hercstack/plumesql --clone=false >/dev/null 2>&1 || true; \
+  work=\"$TMPDIR\"; [ -n \"$work\" ] || work=/tmp; work=\"$work/plumesql-publish-{name}\"; rm -rf \"$work\"; \
+  echo \"== clone the fork into $work\"; \
+  gh repo clone \"$login/plumesql\" \"$work\" -- --depth 1 --quiet; \
+  cd \"$work\"; \
+  git remote add upstream https://github.com/hercstack/plumesql.git 2>/dev/null || true; \
+  git fetch --quiet --depth 1 upstream main; \
+  git checkout --quiet -B 'ext/{name}' upstream/main; \
+  echo \"== copy $src into $target\"; \
+  mkdir -p \"extensions/$category\"; rm -rf \"$target\"; cp -R \"$src\" \"$target\"; rm -f \"$target/PUBLISH.md\"; \
+  echo '== the validator'; \
+  node extensions/tools/catalog.mjs --check --allow-missing-discussion; \
+  echo \"== commit and push ext/{name} to $login/plumesql\"; \
+  git add -A; git commit --quiet -m \"ext: {name} $version\"; \
+  git push --quiet --force -u origin 'ext/{name}'; \
+  echo '== the pull request'; \
+  gh pr create --repo hercstack/plumesql --base main --head \"$login:ext/{name}\" --title \"ext: {name} $version\" --body \"$(cat \"$src/PUBLISH.md\" 2>/dev/null || echo \"See $target/README.md.\")\""

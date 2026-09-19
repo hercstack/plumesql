@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "histogram",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Histogram",
+  "description": "Counts a numeric column in evenly wide bins, with percentages, a running share and a bar per bin, in the grid",
+  "categories": [
+    "Analysis"
+  ],
+  "tags": [
+    "analysis",
+    "statistics",
+    "distribution",
+    "histogram",
+    "bins"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "histogram.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 123,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/histogram.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

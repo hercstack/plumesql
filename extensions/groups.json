@@ -1,0 +1,51 @@
+{
+  "groups": [
+    {
+      "name": "Database administration",
+      "description": "Watch the server, find what is slow or large, keep it maintained, back it up",
+      "categories": [
+        "Activity and Locks",
+        "Performance",
+        "Storage and Maintenance",
+        "Objects",
+        "Server and Security",
+        "Backup and Tools",
+        "Citus",
+        "TimescaleDB",
+        "pg_cron",
+        "pg_partman"
+      ]
+    },
+    {
+      "name": "Data and analysis",
+      "description": "Chart, summarize, reshape and calculate over the rows a query returns",
+      "categories": [
+        "Charts",
+        "Statistical Charts",
+        "Dashboards",
+        "Analysis",
+        "Reshape",
+        "Calculations",
+        "PostGIS",
+        "pgvector",
+        "Data Types"
+      ]
+    },
+    {
+      "name": "For everyone",
+      "description": "How values read and how the app looks, whatever you query",
+      "categories": [
+        "Packs",
+        "Formatting",
+        "Themes"
+      ]
+    },
+    {
+      "name": "For extension authors",
+      "description": "Libraries other extensions build on, and publishing your own",
+      "categories": [
+        "Extension Authoring"
+      ]
+    }
+  ]
+}

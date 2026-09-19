@@ -1,0 +1,46 @@
+{
+  "format": 1,
+  "id": "pareto",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Pareto",
+  "description": "Categories as bars from largest to smallest with a cumulative share line and an 80% mark (ECharts)",
+  "categories": [
+    "Dashboards"
+  ],
+  "tags": [
+    "dashboard",
+    "charts",
+    "pareto",
+    "ranking",
+    "cumulative",
+    "share",
+    "echarts"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "pareto.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 131,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "icon": "icon.svg",
+  "demo": "media/pareto.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

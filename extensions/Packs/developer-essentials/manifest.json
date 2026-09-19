@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "developer-essentials",
+  "kind": "pack",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Developer essentials",
+  "description": "For writing an application against PostgreSQL: find data anywhere, open JSON into columns, turn rows into INSERTs, read plans",
+  "categories": [
+    "Packs"
+  ],
+  "tags": [
+    "developer",
+    "json",
+    "search",
+    "insert",
+    "sql",
+    "starter"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "developer-essentials.plumesql-pack.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 181,
+  "externals": [],
+  "featured": true,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

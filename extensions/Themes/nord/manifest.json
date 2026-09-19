@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "nord",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Nord",
+  "description": "An arctic, north-bluish dark theme: calm frost blues on polar night grey, easy on long sessions",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "nord",
+    "blue",
+    "calm"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "nord.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 129,
+  "externals": [],
+  "demo": "media/nord.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

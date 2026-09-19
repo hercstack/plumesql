@@ -1,0 +1,7 @@
+# @description Run a SQL file with psql on this connection
+# @color green
+# @env PGPASSWORD={password}
+# @file script Pick the SQL file to run
+# @confirm "Run {script}?", "This runs {script} with psql on {db} at {host}, statement by statement, as written."
+psql --host={host} --port={port} --username={user} --dbname={db} --no-password \
+     --set ON_ERROR_STOP=1 --echo-errors --file {script}

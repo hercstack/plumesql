@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "data-quality",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Data quality",
+  "description": "One row per column with its checks: nulls, empty strings, key duplicates, unparsed values, stray spaces, case variants, odd dates",
+  "categories": [
+    "Analysis"
+  ],
+  "tags": [
+    "analysis",
+    "data quality",
+    "nulls",
+    "validation",
+    "columns",
+    "profile"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "data-quality.plumesql.js"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 152,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/data-quality.webp"
+}

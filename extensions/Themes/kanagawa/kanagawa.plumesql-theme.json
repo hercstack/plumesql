@@ -1,0 +1,104 @@
+{
+  "themes": [
+    {
+      "id": "wave",
+      "name": "Kanagawa Wave",
+      "base": "dark",
+      "colors": {
+        "bg": "#1f1f28",
+        "panel": "#16161d",
+        "panel-2": "#2a2a37",
+        "border": "#363646",
+        "text": "#dcd7ba",
+        "muted": "#9a9687",
+        "accent": "#7e9cd8",
+        "accent-dim": "#2d4f67",
+        "green": "#98bb6c",
+        "red": "#e46876",
+        "amber": "#e6c384",
+        "violet": "#957fb8",
+        "row-hover": "#2a2a37",
+        "grid-hl": "#223249",
+        "editor-gutter": "#1b1b23"
+      },
+      "syntax": {
+        "keyword": "#957fb8",
+        "string": "#98bb6c",
+        "number": "#d27e99",
+        "comment": "#727169",
+        "operator": "#c0a36e",
+        "type": "#7aa89f",
+        "func": "#7e9cd8",
+        "annotation": "#ffa066"
+      },
+      "terminal": {
+        "black": "#16161d",
+        "red": "#c34043",
+        "green": "#76946a",
+        "yellow": "#c0a36e",
+        "blue": "#7e9cd8",
+        "magenta": "#957fb8",
+        "cyan": "#6a9589",
+        "white": "#c8c093",
+        "brightBlack": "#727169",
+        "brightRed": "#e82424",
+        "brightGreen": "#98bb6c",
+        "brightYellow": "#e6c384",
+        "brightBlue": "#7fb4ca",
+        "brightMagenta": "#938aa9",
+        "brightCyan": "#7aa89f",
+        "brightWhite": "#dcd7ba"
+      }
+    },
+    {
+      "id": "lotus",
+      "name": "Kanagawa Lotus",
+      "base": "light",
+      "colors": {
+        "bg": "#f2ecbc",
+        "panel": "#e7e0b4",
+        "panel-2": "#dcd5ac",
+        "border": "#cfc79f",
+        "text": "#545464",
+        "muted": "#7d7c73",
+        "accent": "#4d699b",
+        "accent-dim": "#c9cbd1",
+        "green": "#6f894e",
+        "red": "#c84053",
+        "amber": "#b35d00",
+        "violet": "#624c83",
+        "row-hover": "#e9e2b4",
+        "grid-hl": "#e0dcc0",
+        "editor-gutter": "#ede6b6"
+      },
+      "syntax": {
+        "keyword": "#624c83",
+        "string": "#6f894e",
+        "number": "#b35b79",
+        "comment": "#8a8980",
+        "operator": "#836f4a",
+        "type": "#597b75",
+        "func": "#4d699b",
+        "annotation": "#cc6d00"
+      },
+      "terminal": {
+        "black": "#1f1f28",
+        "red": "#c84053",
+        "green": "#6f894e",
+        "yellow": "#77713f",
+        "blue": "#4d699b",
+        "magenta": "#b35b79",
+        "cyan": "#597b75",
+        "white": "#545464",
+        "brightBlack": "#8a8980",
+        "brightRed": "#d7474b",
+        "brightGreen": "#6e915f",
+        "brightYellow": "#836f4a",
+        "brightBlue": "#6693bf",
+        "brightMagenta": "#624c83",
+        "brightCyan": "#5e857a",
+        "brightWhite": "#43436c"
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "plumesql-originals",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "PlumeSQL Originals",
+  "description": "Four themes made for PlumeSQL: warm Paper, neutral Graphite, the elephant blue Harbor and a dark roast Espresso",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "plumesql",
+    "warm",
+    "calm"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "plumesql-originals.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 133,
+  "externals": [],
+  "demo": "media/plumesql-originals.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

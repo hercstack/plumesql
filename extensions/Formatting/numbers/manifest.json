@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "id": "numbers",
+  "kind": "grid",
+  "version": "2.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Numbers",
+  "description": "Every number column reads your way: thousands separators, a fixed number of decimals, negatives in red or in parentheses",
+  "categories": [
+    "Formatting"
+  ],
+  "tags": [
+    "formatting",
+    "numbers",
+    "decimals",
+    "thousands",
+    "rounding",
+    "negatives"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "numbers.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 53,
+  "externals": [],
+  "demo": "media/numbers.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

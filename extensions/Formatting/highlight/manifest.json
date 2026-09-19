@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "highlight",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Highlight",
+  "description": "Colours the cells of the columns you pick that meet a condition: above, below, between, equal to, containing, empty",
+  "categories": [
+    "Formatting"
+  ],
+  "tags": [
+    "formatting",
+    "conditional formatting",
+    "highlight",
+    "thresholds",
+    "colours",
+    "excel"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "highlight.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 122,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/highlight.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

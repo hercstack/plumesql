@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "solarized",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Solarized",
+  "description": "Ethan Schoonover's precision palette in both faces: the same sixteen colors read on a dark and a light ground",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "solarized",
+    "classic",
+    "calm"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "solarized.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 138,
+  "externals": [],
+  "demo": "media/solarized.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

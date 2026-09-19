@@ -1,0 +1,55 @@
+{
+  "format": 1,
+  "id": "pgvector",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "pgvector",
+  "description": "vector, halfvec and sparsevec values read as dimensions, range and norm with a sparkline: on hover, in the peek and the value tab",
+  "categories": [
+    "pgvector"
+  ],
+  "tags": [
+    "pgvector",
+    "vector",
+    "halfvec",
+    "sparsevec",
+    "embeddings",
+    "ai",
+    "data types",
+    "inspector"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "vector"
+    ],
+    "pgVersion": ">=13"
+  },
+  "types": [
+    "vector",
+    "halfvec",
+    "sparsevec"
+  ],
+  "files": [
+    "pgvector.plumesql.js",
+    "lib/vec.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 169,
+  "externals": [],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "id": "dba-essentials",
+  "kind": "pack",
+  "version": "1.1.0",
+  "plumesql": ">=0.22.0",
+  "name": "DBA essentials",
+  "description": "The first extensions a database administrator reaches for: activity, locks, slow queries and plans, sizes, bloat, vacuum, indexes, settings",
+  "categories": [
+    "Packs"
+  ],
+  "tags": [
+    "dba",
+    "monitoring",
+    "activity",
+    "locks",
+    "performance",
+    "maintenance",
+    "starter"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "dba-essentials.plumesql-pack.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 154,
+  "externals": [],
+  "featured": true,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,45 @@
+{
+  "format": 1,
+  "id": "health-check",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Health check",
+  "description": "A health check of this database as a checklist: each finding with a severity and what to do",
+  "categories": [
+    "Server and Security"
+  ],
+  "tags": [
+    "health",
+    "checklist",
+    "dba",
+    "wraparound",
+    "overflow",
+    "integer",
+    "invalid indexes",
+    "missing index",
+    "vacuum",
+    "bloat",
+    "replication",
+    "monitoring"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "health-check.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 176,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/health-check.webp"
+}

@@ -1,0 +1,40 @@
+{
+  "format": 1,
+  "id": "query-to-csv",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Query to CSV",
+  "description": "Run a query straight into a CSV file with psql, never into the grid: for extracts of any size",
+  "categories": [
+    "Backup and Tools"
+  ],
+  "tags": [
+    "export",
+    "csv",
+    "psql",
+    "copy",
+    "query",
+    "extract",
+    "spreadsheet"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "query-to-csv.plumesql.run"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 185,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/query-to-csv.webp"
+}

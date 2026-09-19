@@ -1,0 +1,192 @@
+{
+  "themes": [
+    {
+      "id": "latte",
+      "name": "Catppuccin Latte",
+      "base": "light",
+      "colors": {
+        "bg": "#eff1f5",
+        "panel": "#e6e9ef",
+        "panel-2": "#dce0e8",
+        "border": "#ccd0da",
+        "text": "#4c4f69",
+        "muted": "#6c6f85",
+        "accent": "#1e66f5",
+        "green": "#40a02b",
+        "red": "#d20f39",
+        "amber": "#e0600a",
+        "violet": "#8839ef",
+        "editor-gutter": "#e9ecf1"
+      },
+      "syntax": {
+        "keyword": "#8839ef",
+        "string": "#40a02b",
+        "number": "#e0600a",
+        "comment": "#8c8fa1",
+        "operator": "#0480b5",
+        "type": "#c67b12",
+        "func": "#1e66f5",
+        "annotation": "#d0529f"
+      },
+      "terminal": {
+        "black": "#5c5f77",
+        "red": "#d20f39",
+        "green": "#40a02b",
+        "yellow": "#c67b12",
+        "blue": "#1e66f5",
+        "magenta": "#d0529f",
+        "cyan": "#179299",
+        "white": "#acb0be",
+        "brightBlack": "#6c6f85",
+        "brightRed": "#d20f39",
+        "brightGreen": "#40a02b",
+        "brightYellow": "#c67b12",
+        "brightBlue": "#1e66f5",
+        "brightMagenta": "#d0529f",
+        "brightCyan": "#179299",
+        "brightWhite": "#ccd0da"
+      }
+    },
+    {
+      "id": "frappe",
+      "name": "Catppuccin Frappé",
+      "base": "dark",
+      "colors": {
+        "bg": "#303446",
+        "panel": "#292c3c",
+        "panel-2": "#414559",
+        "border": "#454a5f",
+        "text": "#c6d0f5",
+        "muted": "#949cbb",
+        "accent": "#8caaee",
+        "green": "#a6d189",
+        "red": "#e78284",
+        "amber": "#e5c890",
+        "violet": "#ca9ee6",
+        "editor-gutter": "#2c3041"
+      },
+      "syntax": {
+        "keyword": "#ca9ee6",
+        "string": "#a6d189",
+        "number": "#ef9f76",
+        "comment": "#949cbb",
+        "operator": "#99d1db",
+        "type": "#e5c890",
+        "func": "#8caaee",
+        "annotation": "#f4b8e4"
+      },
+      "terminal": {
+        "black": "#51576d",
+        "red": "#e78284",
+        "green": "#a6d189",
+        "yellow": "#e5c890",
+        "blue": "#8caaee",
+        "magenta": "#f4b8e4",
+        "cyan": "#81c8be",
+        "white": "#b5bfe2",
+        "brightBlack": "#626880",
+        "brightRed": "#e78284",
+        "brightGreen": "#a6d189",
+        "brightYellow": "#e5c890",
+        "brightBlue": "#8caaee",
+        "brightMagenta": "#f4b8e4",
+        "brightCyan": "#81c8be",
+        "brightWhite": "#a5adce"
+      }
+    },
+    {
+      "id": "macchiato",
+      "name": "Catppuccin Macchiato",
+      "base": "dark",
+      "colors": {
+        "bg": "#24273a",
+        "panel": "#1e2030",
+        "panel-2": "#363a4f",
+        "border": "#3a3e55",
+        "text": "#cad3f5",
+        "muted": "#939ab7",
+        "accent": "#8aadf4",
+        "green": "#a6da95",
+        "red": "#ed8796",
+        "amber": "#eed49f",
+        "violet": "#c6a0f6",
+        "editor-gutter": "#212435"
+      },
+      "syntax": {
+        "keyword": "#c6a0f6",
+        "string": "#a6da95",
+        "number": "#f5a97f",
+        "comment": "#939ab7",
+        "operator": "#91d7e3",
+        "type": "#eed49f",
+        "func": "#8aadf4",
+        "annotation": "#f5bde6"
+      },
+      "terminal": {
+        "black": "#494d64",
+        "red": "#ed8796",
+        "green": "#a6da95",
+        "yellow": "#eed49f",
+        "blue": "#8aadf4",
+        "magenta": "#f5bde6",
+        "cyan": "#8bd5ca",
+        "white": "#b8c0e0",
+        "brightBlack": "#5b6078",
+        "brightRed": "#ed8796",
+        "brightGreen": "#a6da95",
+        "brightYellow": "#eed49f",
+        "brightBlue": "#8aadf4",
+        "brightMagenta": "#f5bde6",
+        "brightCyan": "#8bd5ca",
+        "brightWhite": "#a5adcb"
+      }
+    },
+    {
+      "id": "mocha",
+      "name": "Catppuccin Mocha",
+      "base": "dark",
+      "colors": {
+        "bg": "#1e1e2e",
+        "panel": "#181825",
+        "panel-2": "#313244",
+        "border": "#363849",
+        "text": "#cdd6f4",
+        "muted": "#9399b2",
+        "accent": "#89b4fa",
+        "green": "#a6e3a1",
+        "red": "#f38ba8",
+        "amber": "#f9e2af",
+        "violet": "#cba6f7",
+        "editor-gutter": "#1b1b29"
+      },
+      "syntax": {
+        "keyword": "#cba6f7",
+        "string": "#a6e3a1",
+        "number": "#fab387",
+        "comment": "#9399b2",
+        "operator": "#89dceb",
+        "type": "#f9e2af",
+        "func": "#89b4fa",
+        "annotation": "#f5c2e7"
+      },
+      "terminal": {
+        "black": "#45475a",
+        "red": "#f38ba8",
+        "green": "#a6e3a1",
+        "yellow": "#f9e2af",
+        "blue": "#89b4fa",
+        "magenta": "#f5c2e7",
+        "cyan": "#94e2d5",
+        "white": "#bac2de",
+        "brightBlack": "#585b70",
+        "brightRed": "#f38ba8",
+        "brightGreen": "#a6e3a1",
+        "brightYellow": "#f9e2af",
+        "brightBlue": "#89b4fa",
+        "brightMagenta": "#f5c2e7",
+        "brightCyan": "#94e2d5",
+        "brightWhite": "#a6adc8"
+      }
+    }
+  ]
+}

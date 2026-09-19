@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "correlation",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Correlation",
+  "description": "Pearson or Spearman correlation between numeric columns, as a coloured matrix or a ranked list of pairs, in the grid",
+  "categories": [
+    "Analysis"
+  ],
+  "tags": [
+    "analysis",
+    "statistics",
+    "correlation",
+    "pearson",
+    "spearman",
+    "matrix"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "correlation.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 112,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/correlation.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

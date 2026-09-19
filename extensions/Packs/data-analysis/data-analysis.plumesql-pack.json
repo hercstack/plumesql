@@ -1,0 +1,15 @@
+{
+  "members": [
+    "profile",
+    "data-quality",
+    "frequencies",
+    "histogram",
+    "correlation",
+    "outliers",
+    "group-by",
+    "pivot",
+    "percent-of-total",
+    "plot-chart",
+    "kpi-cards"
+  ]
+}

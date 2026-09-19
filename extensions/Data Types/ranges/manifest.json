@@ -1,0 +1,58 @@
+{
+  "format": 1,
+  "id": "ranges",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Ranges",
+  "description": "Range and multirange values read as bounds, width and length with a bar placing them, and a whole column drawn as a timeline",
+  "categories": [
+    "Data Types"
+  ],
+  "tags": [
+    "data types",
+    "ranges",
+    "multirange",
+    "daterange",
+    "tstzrange",
+    "periods",
+    "timeline",
+    "inspector"
+  ],
+  "types": [
+    "int4range",
+    "int8range",
+    "numrange",
+    "daterange",
+    "tsrange",
+    "tstzrange",
+    "int4multirange",
+    "int8multirange",
+    "nummultirange",
+    "datemultirange",
+    "tsmultirange",
+    "tstzmultirange"
+  ],
+  "files": [
+    "ranges.plumesql.js",
+    "lib/range.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 175,
+  "externals": [],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

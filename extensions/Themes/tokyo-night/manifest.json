@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "tokyo-night",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Tokyo Night",
+  "description": "Downtown Tokyo at night, in three versions: Night, the softer Storm and the bright Day",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "tokyo night",
+    "neon",
+    "blue"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "tokyo-night.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 141,
+  "externals": [],
+  "demo": "media/tokyo-night.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}
