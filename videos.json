@@ -1,0 +1,414 @@
+{
+  "format": 1,
+  "channel": "https://www.youtube.com/@plumesql",
+  "playlists": [
+    {
+      "id": "A",
+      "title": "Connections and objects",
+      "short": "Connections",
+      "youtube": "PLaGGK16T-VQw",
+      "videos": [
+        {
+          "n": 1,
+          "slug": "discovered-connections",
+          "title": "Connections found in your project files",
+          "short": "Connections found in .env, docker-compose and more, nothing to type",
+          "summary": "Open a project and PlumeSQL finds its PostgreSQL connections in the files it already has: .env, appsettings.json, docker-compose.yml, Django settings, Prisma, Rails, Spring and more. Nothing to type: a click shows the objects, the source file is one click away, an edit to the file updates the connection live, and passwords stay in your project's files.",
+          "seconds": 66,
+          "youtube": "9WeK3BtCwKM"
+        },
+        {
+          "n": 2,
+          "slug": "connections",
+          "title": "Connections, groups and the production guard",
+          "short": "Vault and discovered connections, groups and a guard on production",
+          "summary": "The Connections tab lists every server the workspace can reach: connections discovered from project files, and Vault connections kept encrypted with the key in the OS keychain. Groups (Production, Staging, Development, Local) bring a color and their own rules: on Production, reading runs as ever but a statement that changes data asks first.",
+          "seconds": 72,
+          "youtube": "e13r29mPgkE"
+        },
+        {
+          "n": 3,
+          "slug": "object-browser",
+          "title": "The object browser",
+          "short": "Browse objects with row counts, open rows and follow foreign keys",
+          "summary": "A click on a connection shows its objects; every table carries its row count and size. A click on a table browses its rows in a preview tab, a double click keeps it, and foreign keys are links: one click opens the related row while the tree follows. A function opens its DDL. The row menu offers rows or DDL and sets what a click and a double click do. Go to Object finds anything by name, find narrows the tree, and the Object filter chooses the schemas and object types to show.",
+          "seconds": 78,
+          "youtube": "2Q6wbm18a8M"
+        },
+        {
+          "n": 4,
+          "slug": "object-stats",
+          "title": "Statistics and dependencies in the object tree",
+          "short": "Statistics, sizes, vacuum times and dependencies on every object",
+          "summary": "Every object carries its statistics: row estimates, size, dead rows, last vacuum and analyze, routine call counts, and a table that dominates its database is marked. Dependencies come from pg_depend, both what an object depends on and what uses it. Edit Comment writes COMMENT ON for a table and its columns in one form, and the tree follows the object under the editor's cursor.",
+          "seconds": 72,
+          "youtube": "AwNzT3y5xtI"
+        },
+        {
+          "n": 5,
+          "slug": "shared-session",
+          "title": "The editor and the object tree share one session",
+          "short": "The object tree reads through your editor's own session",
+          "summary": "Open a transaction in the editor, create a table and a temporary one inside it: the Objects tree reads through the same session, so it shows both, including the temp table no other session can see. Roll back and they are gone. What you see in the tree is what your tab sees.",
+          "seconds": 50,
+          "youtube": "cGAvY0cwmiw"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "title": "The SQL editor",
+      "short": "SQL editor",
+      "youtube": "PLSE-xanBhbd8",
+      "videos": [
+        {
+          "n": 6,
+          "slug": "autocomplete",
+          "title": "SQL completion that reads your CTEs and subqueries",
+          "short": "Completion that knows your CTEs, subqueries and their columns",
+          "summary": "PlumeSQL's SQL editor completes what your statement actually defines, not just the tables in the database. A CTE is offered as a table in FROM and its columns follow its alias; a subquery's alias knows the columns the subquery selects. The Outline beside the editor lists every statement and the objects it touches: a click finds an object in the script, a double click opens its definition. Run executes the statement under the cursor: the first press selects it, the second runs it.",
+          "seconds": 46,
+          "youtube": "XkHjN49-Y-M"
+        },
+        {
+          "n": 7,
+          "slug": "editor",
+          "title": "A SQL editor that knows your database",
+          "short": "Format, hover DDL, peek definitions and live checks as you type",
+          "summary": "Beyond completion: Format Document turns a one-liner into readable SQL, hovering a table shows its DDL and statistics, Peek Definition (Alt+F12) shows a table's definition inline and F12 opens it. A statement with $1 asks for its value when you run it. The live parser checks each statement as you type and shows the server's own error and hint. psql's \\d works right in the editor.",
+          "seconds": 74,
+          "youtube": "3vVcKUZwPu4"
+        },
+        {
+          "n": 8,
+          "slug": "editor-refactors",
+          "title": "Refactor SQL with the lightbulb",
+          "short": "Lightbulb refactors: expand *, add GROUP BY, extract a CTE",
+          "summary": "Lightbulb refactors (Cmd+.) rewrite SQL for you: expand * into its columns, add the GROUP BY a query needs, add an INSERT's column list, qualify columns, extract a subquery into a CTE. A forgotten semicolon is flagged and fixed in one click, inlay hints show column types, JSON, array and range literals are checked to the character, an operator explains itself on hover, and keywords link the reference for your server's version.",
+          "seconds": 94,
+          "youtube": "DBB--K0hmD4"
+        },
+        {
+          "n": 9,
+          "slug": "plpgsql",
+          "title": "PL/pgSQL tooling: function bodies checked as you type",
+          "short": "PL/pgSQL bodies checked by the server as you type",
+          "summary": "PlumeSQL reads inside your functions. A PL/pgSQL body is analyzed as you type and its statements are checked by the server without creating anything, so a missing table shows before the function ever runs. plpgsql_check style warnings (unused variables, unreachable code, a missing RETURN) come without the extension, completion knows RAISE, EXCEPTION WHEN and GET DIAGNOSTICS, variables navigate and rename like symbols, and the Outline reads inside routines.",
+          "seconds": 91,
+          "youtube": "sUFqhMESh3Y"
+        },
+        {
+          "n": 10,
+          "slug": "psql",
+          "title": "psql in the editor, the console and the terminal",
+          "short": "psql meta commands in the editor, the console and a terminal",
+          "summary": "psql's meta commands work in the SQL editor: \\d, \\dt, \\df, \\sf, \\conninfo and \\? answer right under the line. The Log's console line speaks psql too, with completion that adds the backslash for you. And the psql extension opens a real psql in PlumeSQL's terminal on the tab's connection.",
+          "seconds": 114,
+          "youtube": "AeF7p36xZkg"
+        },
+        {
+          "n": 11,
+          "slug": "scripting",
+          "title": "Scripts from the object tree and statement templates",
+          "short": "Statements written from the object tree, and statement templates",
+          "summary": "A table's row menu writes its statements: a select with every column and a join for each foreign key, an update keyed by the primary key, inserts and more, opened in a temporary script or copied. Statement templates come with completion at a statement's start and Tab walks their placeholders; Format makes any statement readable.",
+          "seconds": 67,
+          "youtube": "OQPQrSkHNWw"
+        },
+        {
+          "n": 12,
+          "slug": "explain",
+          "title": "EXPLAIN and the plan visualizer",
+          "short": "Explain and Explain Analyze, and the plan drawn as a picture",
+          "summary": "Every statement has a lens with Explain beside Run. Explain Analyze runs the statement and times every step, and on a write it rolls back so no row changes. With the free Explain plan extension the plan opens as a picture: where the time goes, step by step, each with its time, rows and loops.",
+          "seconds": 46,
+          "youtube": "ukZQH5uEfOc"
+        },
+        {
+          "n": 13,
+          "slug": "safety",
+          "title": "Safety nets for production data",
+          "short": "Statement marks, commit previews and read only scripts",
+          "summary": "Statement marks show what a statement will do before it runs, red for an UPDATE or DELETE without WHERE. COMMIT can ask first and show what the transaction changed. A script can declare itself read only with @readonly, and then PostgreSQL itself refuses any write; @confirm-writes asks before each one.",
+          "seconds": 93,
+          "youtube": "NSSrcrC7glI"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "title": "Data and the grid",
+      "short": "Data & grid",
+      "youtube": "PLT3-TpTaniTc",
+      "videos": [
+        {
+          "n": 14,
+          "slug": "data-navigation",
+          "title": "Browse data and follow foreign keys",
+          "short": "Browse any table and click through foreign keys, Back and Forward",
+          "summary": "Browse any table from the object tree or by name from the palette. Foreign key values are links: one click steps to the referenced row while the object tree lights its table, and Back and Forward walk the trail. Big tables show their first rows and say so; Show All Rows loads every row, stored whole.",
+          "seconds": 57,
+          "youtube": "r0xn-w0kcsk"
+        },
+        {
+          "n": 15,
+          "slug": "grid-editing",
+          "title": "Edit rows in the grid",
+          "short": "Edit rows in place: enums, jsonb, arrays and foreign key pickers",
+          "summary": "Rows are editable where you read them. F2 opens the row editor: an enum picks from its labels, a jsonb value opens in a JSON editor, an array edits one element per line, and a foreign key is picked from the table it references. Update patches the grid in place without a re-run, Alt+N inserts, Delete asks first, and every change is logged with an Undo.",
+          "seconds": 62,
+          "youtube": "0Rk0QfMfow8"
+        },
+        {
+          "n": 16,
+          "slug": "grid-values",
+          "title": "Edit any table, read any value",
+          "short": "Edit tables without a primary key, read long values in full",
+          "summary": "Rows stay editable without a primary key: PlumeSQL uses a unique index, or finds the row by its contents and refuses when two rows match. A long value opens in a tab of its own, and Space peeks at any cell.",
+          "seconds": 68,
+          "youtube": "TS0-z8Ujjw8"
+        },
+        {
+          "n": 17,
+          "slug": "grid-advanced",
+          "title": "A grid for millions of rows",
+          "short": "Millions of rows, frozen columns and server side filters",
+          "summary": "Two million rows, stored whole with no row cap: scroll smoothly with the rows read ahead of you, or jump anywhere and they are there at once. Freeze columns and rows while the rest scroll under them. Column filters run on the server over every row. Copy Format sets the shape of a copy: tab separated, CSV, JSON, SQL or a Markdown table.",
+          "seconds": 70,
+          "youtube": "6KUaK5CGuvU"
+        },
+        {
+          "n": 18,
+          "slug": "results",
+          "title": "Results, messages, copy formats and comparisons",
+          "short": "Grids per statement, verbatim messages, copy formats, comparisons",
+          "summary": "Run a whole script: every statement that returns rows gets its own grid, and an error lands in Messages verbatim. Show the grids and the messages side by side, open any result as a document tab of its own, and set the shape of every copy with Copy Format. Then compare two results side by side, the best sellers of two stores, scrolling together row against row, and let one leave the comparison again.",
+          "seconds": 78,
+          "youtube": "OsoM1wRzJzQ"
+        },
+        {
+          "n": 19,
+          "slug": "console",
+          "title": "A JavaScript console for your results",
+          "short": "A JavaScript console over the rows and the grid on screen",
+          "summary": "The Log ends in a console line: JavaScript against what is on screen. results is the data (a row by index, cells by column name, rows far past the loaded window fetched from the server), results.grid is the grid (server side filters over every row, hide and show columns), and reveal() scrolls to a row. Every global has a help topic, with completion.",
+          "seconds": 70,
+          "youtube": "vXFPrPOHahY"
+        }
+      ]
+    },
+    {
+      "id": "D",
+      "title": "Annotations and extensions",
+      "short": "Extensions",
+      "youtube": "PLOpBX3NpZSy0",
+      "videos": [
+        {
+          "n": 20,
+          "slug": "annotations",
+          "title": "Annotations: comments that configure a script",
+          "short": "Comments that set a script's connection, inputs and rules",
+          "summary": "PlumeSQL reads special comments, annotations, in any SQL script. A line like -- @connection, -- @readonly, -- @extension or -- @inputs tells PlumeSQL how to treat the file or the statement below it: which database it runs on, whether writes are allowed, which view opens beside its result, what its parameters are. The editor completes annotations as you type, explains each on hover and lists them in the Outline. The next videos build on them: parameters, query extensions and command extensions.",
+          "seconds": 64,
+          "youtube": "YdzBM-p4kLs"
+        },
+        {
+          "n": 21,
+          "slug": "parameters",
+          "title": "Query parameters and the @inputs annotation",
+          "short": "Parameters ask for values in a typed form, or @inputs answers",
+          "summary": "A statement with parameters ($1, $name, :name or {name}) asks for their values when you run it, in a form whose fields the server types. An @inputs line in the file answers them so Run asks nothing, @ask opens the form anyway, the same parameters become a query extension's form, and @inputs also answers a grid extension's questions, such as which column a chart draws.",
+          "seconds": 96,
+          "youtube": "p2z16Vmc_Io"
+        },
+        {
+          "n": 22,
+          "slug": "query-extensions",
+          "title": "Query extensions: SQL files with annotations",
+          "short": "SQL files with forms, buttons and charts, from annotations",
+          "summary": "A query extension is a SQL file whose comments are annotations. The editor completes them, explains them on hover and lists them in the Outline. @var turns parameters into a form with typed fields, @button and @on make a cell a button with @confirm asking first, @open drills into a row with a way back, and @extension attaches a chart as a tab of its own.",
+          "seconds": 66,
+          "youtube": "f_ZE0SI1myU"
+        },
+        {
+          "n": 23,
+          "slug": "command-extensions",
+          "title": "Command extensions: run programs with your connection",
+          "short": "Run programs with your connection; the password stays hidden",
+          "summary": "A command extension is one program line under its annotations. Placeholders fill in the connection's parameters, the password goes only into the program's environment, and hovering the program shows exactly what will run. Run it: a terminal watches it, and @alert-on-success reports the outcome.",
+          "seconds": 38,
+          "youtube": "zUZJft00fg4"
+        },
+        {
+          "n": 24,
+          "slug": "marketplace",
+          "title": "The Extensions Marketplace",
+          "short": "Browse, install and scope extensions from the Marketplace",
+          "summary": "The Extensions side tab browses the Marketplace by kind and category. Every extension has a page with what it adds, a demo and its README; one click installs it, and you choose where it applies. A chart extension then shows as a tab beside the grid, asking what to draw with the likely column already picked. Copy to My Extensions makes any extension yours to edit.",
+          "seconds": 61,
+          "youtube": "opp9KpZGnyk"
+        },
+        {
+          "n": 25,
+          "slug": "write-extension",
+          "title": "Write your own grid extension",
+          "short": "Write a grid extension, type checked, redrawn on every save",
+          "summary": "New Extension starts from a template. The JavaScript editor is type checked against the extension API, with completion and hover, libraries import from a CDN, and every save redraws the view over your result.",
+          "seconds": 66,
+          "youtube": "ddPjmNlejbY"
+        },
+        {
+          "n": 26,
+          "slug": "ext-feedback",
+          "title": "Extension reactions and comments from GitHub",
+          "short": "Reactions and comments from GitHub on every extension's page",
+          "summary": "Every extension's page carries its GitHub discussion: reactions like on GitHub, comments with avatars and replies, editing and deleting your own, and download counts. Sign in with GitHub once and react or comment right from PlumeSQL.",
+          "seconds": 81,
+          "youtube": "siY1DpEXbg8"
+        },
+        {
+          "n": 27,
+          "slug": "ext-charts",
+          "title": "Charts over your query results",
+          "short": "ECharts, SandDance and Vega-Lite charts beside your grid",
+          "summary": "Chart extensions draw a query's result as a tab beside its grid: ECharts with zoom and tooltips, SandDance in 3D, Vega-Lite and more, each installed from the Marketplace with one click.",
+          "seconds": 62,
+          "youtube": "EnEd-aN30nU"
+        },
+        {
+          "n": 28,
+          "slug": "ext-dashboards",
+          "title": "Dashboards from SQL",
+          "short": "KPI cards, gauges, treemaps and funnels from one SQL query",
+          "summary": "Dashboard extensions turn a query into KPI cards with their change and a sparkline, a gauge with bands and a target, a treemap, a funnel, a waterfall and a Pareto chart. Each is a tab beside the grid, from one SQL query.",
+          "seconds": 78,
+          "youtube": "wbDtOfTpHWM"
+        },
+        {
+          "n": 29,
+          "slug": "ext-analysis",
+          "title": "Data analysis extensions",
+          "short": "Profile, outliers, correlations, forecasts and pivots",
+          "summary": "Analysis extensions read a result for you: Profile, Data quality and Histogram of every column, Outliers and a Correlation matrix, a Forecast with its confidence band, and Pivot and Group by to reshape rows. Each opens as a tab beside the grid.",
+          "seconds": 90,
+          "youtube": "bI1RUIwaJYo"
+        },
+        {
+          "n": 30,
+          "slug": "ext-formatting",
+          "title": "Formatting and calculations in the grid",
+          "short": "Conditional formats, sparklines and calculated columns",
+          "summary": "Grid extensions change how cells read without changing the query: conditional formats, sparklines, currencies, relative times and trends, and calculated columns such as running totals, percent of total, moving averages and ranks.",
+          "seconds": 94,
+          "youtube": "oTkqQMvsl58"
+        },
+        {
+          "n": 31,
+          "slug": "ext-dba",
+          "title": "DBA tools as extensions",
+          "short": "Activity, locks, bloat, unused indexes, one click each",
+          "summary": "Query extensions for the DBA: current activity, blocking locks, long running queries, table sizes and bloat, unused indexes, the cache hit ratio, server settings and a security review, each one click away with buttons on its rows.",
+          "seconds": 89,
+          "youtube": "erkLWykPNwQ"
+        },
+        {
+          "n": 32,
+          "slug": "ext-tools",
+          "title": "Backup, restore and more with command extensions",
+          "short": "Dump, back up and restore with PostgreSQL's own tools",
+          "summary": "Command extensions run PostgreSQL's own tools with the connection's parameters: dump a table or a schema, back up a database, list a backup, restore it and run a SQL file, each in PlumeSQL's terminal.",
+          "seconds": 78,
+          "youtube": "cvYxls_lxfA"
+        }
+      ]
+    },
+    {
+      "id": "E",
+      "title": "PostgreSQL extensions",
+      "short": "PostgreSQL extensions",
+      "youtube": "PLHw_hYKYYgq4",
+      "videos": [
+        {
+          "n": 33,
+          "slug": "postgis",
+          "title": "PostGIS extensions: geometries in the grid",
+          "short": "Geometries sketched and explained, validity checked, via extensions",
+          "summary": "PostGIS support is a set of Marketplace extensions. When PlumeSQL learns a database has PostGIS, the Log suggests the PostGIS essentials pack once, as a corner notification and a Log entry with Show and Install on it. Until then geometry values arrive as EWKB hex; Install on the entry adds PostGIS (a grid extension) at once and Validate geometry and Invalid geometries (query extensions) with your consent. Then a hover card sketches a shape with its EWKT, the peek and the value tab show its kind, SRID, points and bounding box, Validate geometry asks PostGIS why a polygon is invalid, Invalid geometries checks a whole column, Sketch Geometry Column draws the column as one picture, and the row editor sketches the WKT you type.",
+          "seconds": 103,
+          "youtube": "s_mPcSEKlcE"
+        },
+        {
+          "n": 34,
+          "slug": "pgvector",
+          "title": "pgvector extension: embeddings in the grid",
+          "short": "Vectors with dimensions, norms and a sparkline, not number walls",
+          "summary": "pgvector support is the pgvector extension from the Marketplace, recommended for any database with the vector extension. Installed, it reads vector, halfvec and sparsevec values as vectors, not walls of numbers: dimensions, range, L2 norm and a sparkline of the components on hover, in the peek and in the value tab, with a sparse vector's entries drawn at their positions, all from what the grid already holds.",
+          "seconds": 75,
+          "youtube": "MdMM6gYJQKE"
+        },
+        {
+          "n": 35,
+          "slug": "timescaledb",
+          "title": "TimescaleDB support",
+          "short": "Hypertables, continuous aggregates and their jobs",
+          "summary": "Hypertables, continuous aggregates and their jobs in the object tree and in extensions made for them: chunks with their time ranges, compression, the defining query of an aggregate and every job's run history.",
+          "seconds": 81,
+          "youtube": "OL5aT1EAW4U"
+        },
+        {
+          "n": 36,
+          "slug": "citus",
+          "title": "Citus support",
+          "short": "Distributed and reference tables, shards and nodes",
+          "summary": "Distributed and reference tables in the object tree with their DDL, and Citus extensions from the Marketplace for the cluster's shards and nodes.",
+          "seconds": 80,
+          "youtube": "_7ZuiA1u0NM"
+        }
+      ]
+    },
+    {
+      "id": "F",
+      "title": "Workspace",
+      "short": "Workspace",
+      "youtube": "PLaIRU3PzWLLA",
+      "videos": [
+        {
+          "n": 37,
+          "slug": "explorer-search",
+          "title": "The Explorer and search",
+          "short": "Your scripts and project files side by side, with search",
+          "summary": "The Explorer holds your scripts, the workspace's scripts and the project's files side by side, with the files you open most on top. Search in Files finds text across all of them, and Go to Tab or File opens anything by name.",
+          "seconds": 58,
+          "youtube": "0qtWnPHg6ys"
+        },
+        {
+          "n": 38,
+          "slug": "keyboard",
+          "title": "Keyboard first",
+          "short": "The command palette, VS Code shortcuts and F6 between panes",
+          "summary": "Every command is in the command palette on the VS Code shortcut, every combo is in one Keyboard Shortcuts sheet, and F6 cycles through the panes. Go to Tab or File, Go Back and Go Forward, and trees you work with the arrow keys: PlumeSQL is made to be driven from the keyboard.",
+          "seconds": 79,
+          "youtube": "_7vnb2v45bc"
+        },
+        {
+          "n": 39,
+          "slug": "themes",
+          "title": "Themes",
+          "short": "Follow the system, preview themes live, get more in the Marketplace",
+          "summary": "PlumeSQL follows the system appearance by default and switches with it, live. Select Color Theme previews every theme as the highlight moves over it. More themes come from the Marketplace: a theme extension's page previews each of its themes on the whole window, and Use installs the extension and switches to the theme in one click. Your queries and results are painted in the new colors.",
+          "seconds": 83,
+          "youtube": "txVT0fM1ZCQ"
+        },
+        {
+          "n": 40,
+          "slug": "vscode-import",
+          "title": "Import your VS Code setup",
+          "short": "Settings, keys, themes and connections from VS Code, Cursor and more",
+          "summary": "Coming from VS Code? PlumeSQL imports your settings, keybindings, color theme and file icon theme, and the PostgreSQL connections of the SQLTools and Microsoft PostgreSQL extensions. Cursor, Windsurf and VSCodium are read too.",
+          "seconds": 65,
+          "youtube": "ZYIdmbvl5Cg"
+        }
+      ]
+    }
+  ]
+}

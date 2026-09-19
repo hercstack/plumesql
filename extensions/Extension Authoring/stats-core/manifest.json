@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "stats-core",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Stats core",
+  "description": "Shared helpers the analysis extensions import: paging, folds, quantiles, correlation, bins, time buckets, forecasting",
+  "categories": [
+    "Extension Authoring"
+  ],
+  "tags": [
+    "extension authoring",
+    "library",
+    "statistics",
+    "analysis"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "stats-core.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 140,
+  "externals": [],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

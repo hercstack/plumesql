@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "resample",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Resample",
+  "description": "Folds rows into regular time buckets, a minute to a year, with the gaps filled, over the whole result, in the grid",
+  "categories": [
+    "Analysis"
+  ],
+  "tags": [
+    "analysis",
+    "statistics",
+    "timeseries",
+    "time buckets",
+    "resample",
+    "aggregate"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "resample.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 135,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/resample.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,40 @@
+{
+  "format": 1,
+  "id": "duplicates",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Duplicates",
+  "description": "Finds rows repeated on the key columns you pick, or on every column: each repeated key with its count and row numbers, or the result marked",
+  "categories": [
+    "Analysis"
+  ],
+  "tags": [
+    "analysis",
+    "data quality",
+    "duplicates",
+    "dedupe",
+    "duplicate keys"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "duplicates.plumesql.js"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 156,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/duplicates.webp"
+}

@@ -1,0 +1,14 @@
+{
+  "members": [
+    "search-data",
+    "json-to-columns",
+    "json-to-rows",
+    "rows-as-sql",
+    "explain-plan",
+    "profile",
+    "json",
+    "nulls",
+    "short-uuid",
+    "time-ago"
+  ]
+}

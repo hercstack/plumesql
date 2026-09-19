@@ -1,0 +1,14 @@
+# @description Export a table or view to a CSV file with psql, whatever its size
+# @for table, view, materialized view, foreign table
+# @var file "Write to", "{name}-{date}.csv"
+# @env PGPASSWORD={password}
+# @confirm "Export {object}?", "Write {file} as CSV with a header line, from {db} on {host}?"
+# @alert-on-success "Export finished", "{object} is in {file}."
+# @alert-on-failure "Export failed", "The terminal has why; {file} is missing or incomplete."
+# \copy streams the rows through psql to its query output, which --output
+# sends to the file: the path is an argument of its own, never part of the
+# \copy text, so no character in it needs quoting. --quiet keeps psql's
+# "COPY n" line out of the file.
+psql --host={host} --port={port} --username={user} --dbname={db} --no-password \
+     --quiet --set ON_ERROR_STOP=1 --output={file} \
+     "--command=\copy (select * from {object}) to stdout with (format csv, header)"

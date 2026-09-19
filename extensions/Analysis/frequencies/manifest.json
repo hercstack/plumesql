@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "frequencies",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Frequencies",
+  "description": "The most frequent values of a column with count, percent and cumulative percent, the rest in an Other line, in the grid",
+  "categories": [
+    "Analysis"
+  ],
+  "tags": [
+    "analysis",
+    "statistics",
+    "distribution",
+    "frequency",
+    "top values",
+    "counts"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "frequencies.plumesql.js"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 160,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/frequencies.webp"
+}

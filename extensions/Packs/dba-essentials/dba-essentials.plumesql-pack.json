@@ -1,0 +1,23 @@
+{
+  "members": [
+    "health-check",
+    "current-activity",
+    "blocking-locks",
+    "long-running",
+    "idle-in-transaction",
+    "wait-events",
+    "top-queries",
+    "explain-plan",
+    "cache-hit-ratio",
+    "unused-indexes",
+    "duplicate-indexes",
+    "fk-without-index",
+    "table-sizes",
+    "table-bloat",
+    "vacuum-candidates",
+    "transaction-age",
+    "integer-overflow-risk",
+    "replication-status",
+    "non-default-settings"
+  ]
+}

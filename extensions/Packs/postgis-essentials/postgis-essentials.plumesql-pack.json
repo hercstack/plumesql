@@ -1,0 +1,7 @@
+{
+  "members": [
+    "postgis",
+    "validate-geometry",
+    "invalid-geometries"
+  ]
+}

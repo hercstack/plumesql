@@ -1,0 +1,55 @@
+{
+  "format": 1,
+  "id": "postgis",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "PostGIS",
+  "description": "Geometry and geography values read as EWKT with a sketch of the shape wherever you meet them, and a whole column sketched at once",
+  "categories": [
+    "PostGIS"
+  ],
+  "tags": [
+    "postgis",
+    "geometry",
+    "geography",
+    "ewkt",
+    "ewkb",
+    "spatial",
+    "gis",
+    "inspector",
+    "sketch"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "postgis"
+    ],
+    "pgVersion": ">=13"
+  },
+  "types": [
+    "geometry",
+    "geography"
+  ],
+  "files": [
+    "postgis.plumesql.js",
+    "lib/wkb.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 168,
+  "externals": [],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

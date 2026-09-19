@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "ayu",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Ayu",
+  "description": "A simple, bright and elegant theme in three shades: Light, the dusky Mirage and the deep Dark",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "ayu",
+    "orange",
+    "bright"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "ayu.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 107,
+  "externals": [],
+  "demo": "media/ayu.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

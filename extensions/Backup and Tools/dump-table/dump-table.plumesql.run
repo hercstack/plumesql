@@ -1,0 +1,13 @@
+# @description Dump the table this was opened on to a file named after it: definition and rows, either alone, rows as COPY or as INSERT statements
+# @for table
+# @var dump={name}-{date}.sql
+# @var content "What to dump", "--format=plain"
+# @pick content select v.flag as content, v.means from (values ('--format=plain', 'definition and rows'), ('--schema-only', 'definition only'), ('--data-only', 'rows only')) as v(flag, means)
+# @var rows "Rows as", "--format=plain"
+# @pick rows select v.flag as rows, v.means from (values ('--format=plain', 'COPY, the fastest to restore'), ('--column-inserts', 'INSERT statements with column names, one per row')) as v(flag, means)
+# @env PGPASSWORD={password}
+# @confirm "Dump {object}?", "Write {dump} from {db} on {host}?"
+# @open-on-success {dump}
+# Each choice is one pg_dump flag, so the picks reach the command as single
+# arguments; --format=plain is the default format, standing in for "no flag".
+pg_dump --host={host} --port={port} --username={user} --dbname={db} --table={object} {content} {rows} --file={dump}

@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "kanagawa",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Kanagawa",
+  "description": "Inspired by the colors of Katsushika Hokusai's famous painting: Wave by night, Lotus by day",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "kanagawa",
+    "muted"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "kanagawa.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 124,
+  "externals": [],
+  "demo": "media/kanagawa.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

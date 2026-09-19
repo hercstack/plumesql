@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "catppuccin",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Catppuccin",
+  "description": "The soothing pastel family in all four flavors: Latte by day, Frappé, Macchiato and Mocha into the night",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "catppuccin",
+    "pastel",
+    "soft"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "catppuccin.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 108,
+  "externals": [],
+  "demo": "media/catppuccin.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

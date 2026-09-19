@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "id": "duplicate-indexes",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Duplicate indexes",
+  "description": "Indexes another index on the same table already covers, with sizes and the statement to drop each",
+  "categories": [
+    "Performance"
+  ],
+  "tags": [
+    "performance",
+    "indexes",
+    "duplicate indexes",
+    "redundant",
+    "cleanup",
+    "drop index"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "duplicate-indexes.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 155,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/duplicate-indexes.webp"
+}

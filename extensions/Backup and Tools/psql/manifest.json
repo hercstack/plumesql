@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "psql",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Psql",
+  "description": "An interactive psql on this connection",
+  "categories": [
+    "Backup and Tools"
+  ],
+  "tags": [
+    "psql",
+    "terminal",
+    "shell",
+    "command line"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "psql.plumesql.run"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 71,
+  "externals": [],
+  "featured": true,
+  "demo": "media/psql.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

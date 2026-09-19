@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "id": "dump-objects",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Dump objects",
+  "description": "Every object of this database into a directory tree, as pg_dump writes it",
+  "categories": [
+    "Backup and Tools"
+  ],
+  "tags": [
+    "dump",
+    "ddl",
+    "pg_dump",
+    "export",
+    "schema",
+    "files"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "dump-objects.plumesql.run"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 32,
+  "externals": [],
+  "demo": "media/dump-objects.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

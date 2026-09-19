@@ -1,0 +1,50 @@
+{
+  "format": 1,
+  "id": "network-addresses",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Network addresses",
+  "description": "inet, cidr, macaddr and macaddr8 values read as network, broadcast, netmask, host count and the kind of range, wherever you meet them",
+  "categories": [
+    "Data Types"
+  ],
+  "tags": [
+    "data types",
+    "inet",
+    "cidr",
+    "macaddr",
+    "ip address",
+    "subnet",
+    "network",
+    "inspector"
+  ],
+  "types": [
+    "inet",
+    "cidr",
+    "macaddr",
+    "macaddr8"
+  ],
+  "files": [
+    "network-addresses.plumesql.js",
+    "lib/net.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 174,
+  "externals": [],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

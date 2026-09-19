@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "percent-of-total",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Percent of total",
+  "description": "Adds a column with each row's share of the total, of its group, or as a running percent, with a small bar",
+  "categories": [
+    "Calculations"
+  ],
+  "tags": [
+    "calculation",
+    "percent",
+    "share",
+    "totals",
+    "groups"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "percent-of-total.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 132,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/percent-of-total.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

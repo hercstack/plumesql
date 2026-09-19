@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "night-owl",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Night Owl",
+  "description": "Fine tuned for those of us who like to code late into the night, and its Light Owl for the morning after",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "night owl",
+    "accessibility",
+    "blue"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "night-owl.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 128,
+  "externals": [],
+  "demo": "media/night-owl.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

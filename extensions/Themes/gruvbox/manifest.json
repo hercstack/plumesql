@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "gruvbox",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Gruvbox",
+  "description": "Retro groove colors, warm and earthy with low blue: the dark and the light face of the classic",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "gruvbox",
+    "retro",
+    "warm"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "gruvbox.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 120,
+  "externals": [],
+  "demo": "media/gruvbox.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

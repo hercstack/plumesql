@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "invalid-geometries",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Invalid geometries",
+  "description": "The rows of a geometry column's table that PostGIS finds invalid, with the reason for each, from the column's menu",
+  "categories": [
+    "PostGIS"
+  ],
+  "tags": [
+    "postgis",
+    "geometry",
+    "geography",
+    "validity",
+    "data quality",
+    "st_isvalid",
+    "spatial"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "postgis"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "invalid-geometries.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 171,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

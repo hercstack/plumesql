@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "currency",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Currency",
+  "description": "Amount columns read as money: the currency, the way of writing it and the columns are yours to pick, negatives in parentheses if you like",
+  "categories": [
+    "Formatting"
+  ],
+  "tags": [
+    "formatting",
+    "money",
+    "currency",
+    "amounts",
+    "euro",
+    "dollar",
+    "accounting",
+    "numbers"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "currency.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 150,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/currency.webp"
+}

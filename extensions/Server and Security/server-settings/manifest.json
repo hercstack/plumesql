@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "id": "server-settings",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Server settings",
+  "description": "Every server configuration parameter, its value and what changing it takes; set one through ALTER SYSTEM and reload",
+  "categories": [
+    "Server and Security"
+  ],
+  "tags": [
+    "settings",
+    "configuration",
+    "alter system",
+    "tuning",
+    "reload",
+    "server"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "server-settings.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 86,
+  "externals": [],
+  "demo": "media/server-settings.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

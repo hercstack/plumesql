@@ -1,0 +1,13 @@
+# @description Back up this database into the workspace, custom format
+# @color green
+# @toolbar end <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg> Backup
+# @env PGPASSWORD={password}
+# @var dump={db}-{timestamp}.dump
+# @confirm "Back up {db}?", "This writes {dump}, a custom-format pg_dump archive for pg_restore, into the workspace."
+# @alert-on-success "Backup finished", "The dump is in {dump}, in the workspace."
+# @alert-on-failure "Backup failed", "The terminal has why; {dump} is missing or incomplete."
+# Custom format restores with pg_restore, which can pick what to restore;
+# the name is declared once (@var dump) so the question, the report and the
+# command cannot disagree.
+pg_dump --host={host} --port={port} --username={user} --dbname={db} --no-password \
+        --format=custom --file={dump}

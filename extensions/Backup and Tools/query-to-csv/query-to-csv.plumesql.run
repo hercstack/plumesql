@@ -1,0 +1,14 @@
+# @description Run a query straight into a CSV file with psql, never into the grid
+# @for statement
+# @var file "Write to", "query-{timestamp}.csv"
+# @env PGPASSWORD={password}
+# @confirm "Run into a CSV file?", "Run this statement on {db} at {host} and write its rows to {file}. It runs again here, outside the editor: a statement that changes data (an INSERT, UPDATE or DELETE with RETURNING) changes it."
+# @alert-on-success "Export finished", "The rows are in {file}."
+# @alert-on-failure "Export failed", "The terminal has why; {file} is missing or incomplete."
+# COPY (...) TO STDOUT streams the rows from the server to psql's query
+# output, which --output sends to the file: the statement may span lines
+# (unlike \copy, which reads one line), and the path is an argument of its
+# own, never part of the SQL. --quiet keeps psql's "COPY n" out of the file.
+psql --host={host} --port={port} --username={user} --dbname={db} --no-password \
+     --quiet --set ON_ERROR_STOP=1 --output={file} \
+     "--command=COPY ({statement}) TO STDOUT WITH (FORMAT csv, HEADER)"

@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "search-data",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Search data",
+  "description": "Where a value appears in the data: every text column of every table that holds it, with a count and a sample",
+  "categories": [
+    "Objects"
+  ],
+  "tags": [
+    "search",
+    "find",
+    "where is",
+    "text",
+    "json",
+    "values"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "search-data.plumesql.sql",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 178,
+  "externals": [],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT",
+  "demo": "media/search-data.webp"
+}
