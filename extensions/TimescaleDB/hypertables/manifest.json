@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "hypertables",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Hypertables",
+  "description": "Hypertables with their chunks, sizes and compression, from TimescaleDB",
+  "categories": [
+    "TimescaleDB"
+  ],
+  "tags": [
+    "timescaledb"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "timescaledb"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "hypertables.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 43,
+  "externals": [],
+  "demo": "media/hypertables.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

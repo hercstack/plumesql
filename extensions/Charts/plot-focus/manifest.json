@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "plot-focus",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Plot focus",
+  "description": "Brush a window on the overview and the detail below zooms to it, with a hover read-out on both (Observable Plot, CDN)",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "chart"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "plot-focus.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 63,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/plot-focus.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

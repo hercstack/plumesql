@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "routine-calls",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Routine calls",
+  "description": "Calls and time of the routine this was opened on, every overload of its name",
+  "categories": [
+    "Objects"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "routine-calls.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 77,
+  "externals": [],
+  "demo": "media/routine-calls.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

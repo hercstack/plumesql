@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "echarts",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Echarts",
+  "description": "Line / area / bar / scatter / pie with zoom and a range slider, built for a LOT of rows (ECharts, CDN)",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "chart"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "echarts.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 36,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "icon": "icon.svg",
+  "demo": "media/echarts.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

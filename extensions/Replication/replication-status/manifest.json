@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "replication-status",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Replication status",
+  "description": "Every standby this server streams to and every replication slot it holds, with lag and retained WAL",
+  "categories": [
+    "Replication"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "replication-status.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 74,
+  "externals": [],
+  "demo": "media/replication-status.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

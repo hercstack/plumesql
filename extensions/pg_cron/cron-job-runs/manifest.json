@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "cron-job-runs",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Cron job runs",
+  "description": "Recent runs of every pg_cron job, newest first: which job, how it ended and what it said",
+  "categories": [
+    "pg_cron"
+  ],
+  "tags": [
+    "pg_cron"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "pg_cron"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "cron-job-runs.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 17,
+  "externals": [],
+  "demo": "media/cron-job-runs.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

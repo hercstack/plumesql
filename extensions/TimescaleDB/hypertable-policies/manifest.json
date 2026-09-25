@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "hypertable-policies",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Hypertable policies",
+  "description": "Policies and other background jobs on the hypertable or continuous aggregate this was opened on, with their run record, from TimescaleDB",
+  "categories": [
+    "TimescaleDB"
+  ],
+  "tags": [
+    "timescaledb"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "timescaledb"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "hypertable-policies.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 40,
+  "externals": [],
+  "demo": "media/hypertable-policies.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

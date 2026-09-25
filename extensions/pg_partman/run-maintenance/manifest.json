@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "run-maintenance",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Run maintenance",
+  "description": "Run pg_partman's maintenance now: create the partitions that are due and apply retention, on every set it maintains",
+  "categories": [
+    "pg_partman"
+  ],
+  "tags": [
+    "pg_partman"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "pg_partman"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "run-maintenance.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 79,
+  "externals": [],
+  "demo": "media/run-maintenance.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

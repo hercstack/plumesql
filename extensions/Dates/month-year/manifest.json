@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "month-year",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Month and year",
+  "description": "Every date and timestamp column reads as its month and year, Sep 2026, the day on hover",
+  "categories": [
+    "Dates"
+  ],
+  "tags": [
+    "formatter",
+    "date"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "month-year.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 49,
+  "externals": [],
+  "demo": "media/month-year.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

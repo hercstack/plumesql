@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "hypertable-chunks",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Hypertable chunks",
+  "description": "Chunks of the hypertable this was opened on: their time range, size and compression state, from TimescaleDB",
+  "categories": [
+    "TimescaleDB"
+  ],
+  "tags": [
+    "timescaledb"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "timescaledb"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "hypertable-chunks.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 38,
+  "externals": [],
+  "demo": "media/hypertable-chunks.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

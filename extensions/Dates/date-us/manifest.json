@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "date-us",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "US dates",
+  "description": "Every date and timestamp column reads the US way, 9/23/2026, 11:15 AM, the server value on hover",
+  "categories": [
+    "Dates"
+  ],
+  "tags": [
+    "formatter",
+    "date"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "date-us.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 29,
+  "externals": [],
+  "demo": "media/date-us.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,6 @@
+# @description Write this database's DDL, without a row of data, and open it
+# @env PGPASSWORD={password}
+# @var file={db}-ddl-{timestamp}.sql
+# @open-on-success {file}
+pg_dump --host={host} --port={port} --username={user} --dbname={db} --no-password \
+        --schema-only --file={file}

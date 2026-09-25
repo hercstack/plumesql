@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "plot-boxplot",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Plot boxplot",
+  "description": "Quartiles, median and outliers of a value per group (Observable Plot, CDN)",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "chart"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "plot-boxplot.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 58,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/plot-boxplot.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

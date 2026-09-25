@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "transpose",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Transpose",
+  "description": "Columns become rows and rows become columns, one column per row of the result, in the grid",
+  "categories": [
+    "Tables"
+  ],
+  "tags": [
+    "transpose",
+    "expanded",
+    "wide"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "transpose.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 99,
+  "externals": [],
+  "demo": "media/transpose.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "time-ago",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Time ago",
+  "description": "A timestamp column named *_at reads as relative time, exact value on hover",
+  "categories": [
+    "Dates"
+  ],
+  "tags": [
+    "formatter",
+    "date"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "time-ago.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 95,
+  "externals": [],
+  "demo": "media/time-ago.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

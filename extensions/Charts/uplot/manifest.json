@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "uplot",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Uplot",
+  "description": "A line chart built for speed: a million points in milliseconds, drag to zoom, a live legend (μPlot, CDN)",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "chart"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "uplot.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 102,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/uplot@1/dist/uPlot.iife.min.js"
+  ],
+  "icon": "icon.svg",
+  "demo": "media/uplot.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

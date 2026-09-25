@@ -1,0 +1,4 @@
+.DS_Store
+# The index is generated (tools/catalog.mjs --write) and published by CI to the catalog branch; never on main.
+extensions/catalog.json
+extensions/locks/

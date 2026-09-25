@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "database-sizes",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Database sizes",
+  "description": "Every database on this server by size, with its backends now",
+  "categories": [
+    "Storage"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "database-sizes.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 22,
+  "externals": [],
+  "demo": "media/database-sizes.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

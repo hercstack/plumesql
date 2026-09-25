@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "table-details",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Table details",
+  "description": "Size, rows and maintenance state of the table this was opened on",
+  "categories": [
+    "Objects"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "table-details.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 91,
+  "externals": [],
+  "demo": "media/table-details.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

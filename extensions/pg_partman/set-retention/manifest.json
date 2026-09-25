@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "set-retention",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Set retention",
+  "description": "Set the retention of a pg_partman partition set: how old a partition may get, and whether it is dropped or only detached, asked in a form",
+  "categories": [
+    "pg_partman"
+  ],
+  "tags": [
+    "pg_partman"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "pg_partman"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "set-retention.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 87,
+  "externals": [],
+  "demo": "media/set-retention.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

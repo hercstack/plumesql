@@ -1,0 +1,34 @@
+{
+  "format": 1,
+  "id": "current-activity",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Current activity",
+  "description": "What every backend on this database is doing",
+  "categories": [
+    "Activity"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "current-activity.plumesql.sql"
+  ],
+  "dependencies": [
+    "activity-chart"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 21,
+  "externals": [],
+  "demo": "media/current-activity.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

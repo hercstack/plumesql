@@ -1,0 +1,34 @@
+{
+  "format": 1,
+  "id": "booleans",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Booleans",
+  "description": "Every boolean column reads a green Yes or a red No",
+  "categories": [
+    "Formatting"
+  ],
+  "tags": [
+    "formatter"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "booleans.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 11,
+  "externals": [],
+  "demo": "media/booleans.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

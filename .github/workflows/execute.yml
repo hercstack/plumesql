@@ -1,0 +1,119 @@
+name: execute
+
+# Every query extension executes on every PostgreSQL release PlumeSQL supports
+# (extensions/tools/execute.mjs), the marketplace's live test. One job with
+# service containers: PostgreSQL 13 to 18, plus a TimescaleDB and a Citus
+# server on one major each, so the extensions in those folders are really
+# executed where the extension is installed and skipped, by name, where it
+# is not. Runs on every pull request and every push to main.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    services:
+      pg13:
+        image: postgres:13-alpine
+        env:
+          POSTGRES_PASSWORD: plume
+        ports:
+          - 15413:5432
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+      pg14:
+        image: postgres:14-alpine
+        env:
+          POSTGRES_PASSWORD: plume
+        ports:
+          - 15414:5432
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+      pg15:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_PASSWORD: plume
+        ports:
+          - 15415:5432
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+      pg16:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_PASSWORD: plume
+        ports:
+          - 15416:5432
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+      pg17:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_PASSWORD: plume
+        ports:
+          - 15417:5432
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+      pg18:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_PASSWORD: plume
+        ports:
+          - 15418:5432
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+      ts17:
+        image: timescale/timescaledb:latest-pg17
+        env:
+          POSTGRES_PASSWORD: plume
+        ports:
+          - 15517:5432
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+      citus17:
+        image: citusdata/citus:14-pg17
+        env:
+          POSTGRES_PASSWORD: plume
+        ports:
+          - 15617:5432
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Execute every query extension
+        run: >-
+          node extensions/tools/execute.mjs --pg
+          127.0.0.1:15413:postgres:postgres:plume,127.0.0.1:15414:postgres:postgres:plume,127.0.0.1:15415:postgres:postgres:plume,127.0.0.1:15416:postgres:postgres:plume,127.0.0.1:15417:postgres:postgres:plume,127.0.0.1:15418:postgres:postgres:plume,127.0.0.1:15517:postgres:postgres:plume,127.0.0.1:15617:postgres:postgres:plume

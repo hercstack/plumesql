@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "table-sizes",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Table sizes",
+  "description": "Tables by size, and the indexes of any one of them",
+  "categories": [
+    "Storage"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "table-sizes.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 94,
+  "externals": [],
+  "demo": "media/table-sizes.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

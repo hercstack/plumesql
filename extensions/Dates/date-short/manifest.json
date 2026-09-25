@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "date-short",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Short dates",
+  "description": "Every date and timestamp column reads as a short date, Sep 23, 2026, 11:15 AM, the server value on hover",
+  "categories": [
+    "Dates"
+  ],
+  "tags": [
+    "formatter",
+    "date"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "date-short.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 28,
+  "externals": [],
+  "demo": "media/date-short.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

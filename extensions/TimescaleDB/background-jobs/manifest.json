@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "background-jobs",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Background jobs",
+  "description": "Background jobs (policies, refreshes) with their run record, from TimescaleDB",
+  "categories": [
+    "TimescaleDB"
+  ],
+  "tags": [
+    "timescaledb"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "timescaledb"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "background-jobs.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 6,
+  "externals": [],
+  "demo": "media/background-jobs.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

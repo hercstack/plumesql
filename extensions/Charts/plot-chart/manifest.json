@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "plot-chart",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Plot chart",
+  "description": "Line / area / dot / bar over one or more Y columns, with a hover read-out and value badges (Observable Plot, CDN)",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "chart"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "plot-chart.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 60,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/plot-chart.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

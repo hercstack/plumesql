@@ -1,0 +1,34 @@
+{
+  "format": 1,
+  "id": "backup-globals",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Backup globals",
+  "description": "Write the server's roles and tablespaces, and open the file",
+  "categories": [
+    "Backup and Restore"
+  ],
+  "tags": [
+    "pg_dumpall"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "backup-globals.plumesql.run"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 8,
+  "externals": [],
+  "demo": "media/backup-globals.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,7 @@
+# @description Dump the table this was opened on, definition and rows, to a file named after it
+# @for table
+# @var dump={name}-{date}.sql
+# @env PGPASSWORD={password}
+# @confirm "Dump {object}?", "Write {dump} from {db} on {host}?"
+# @open-on-success {dump}
+pg_dump --host={host} --port={port} --username={user} --dbname={db} --table={object} --file={dump}

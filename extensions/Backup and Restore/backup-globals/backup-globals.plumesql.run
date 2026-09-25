@@ -1,0 +1,7 @@
+# @description Write the server's roles and tablespaces, and open the file
+# @color green
+# @env PGPASSWORD={password}
+# @var file=globals-{timestamp}.sql
+# @open-on-success {file}
+pg_dumpall --host={host} --port={port} --username={user} --dbname={db} --no-password \
+           --globals-only --file={file}

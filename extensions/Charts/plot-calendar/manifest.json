@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "plot-calendar",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Plot calendar",
+  "description": "One coloured cell per day, weeks across and weekdays down, a row per year (Observable Plot, CDN)",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "chart"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "plot-calendar.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 59,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/plot-calendar.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

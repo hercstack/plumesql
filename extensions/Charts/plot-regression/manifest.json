@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "plot-regression",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Plot regression",
+  "description": "A scatter with a fitted trend line and a confidence band, fitted on every row (Observable Plot, CDN)",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "chart"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "plot-regression.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 67,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/plot-regression.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

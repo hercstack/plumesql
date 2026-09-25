@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "cron-unschedule-job",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Cron unschedule job",
+  "description": "Remove a pg_cron job by name, asked in a form",
+  "categories": [
+    "pg_cron"
+  ],
+  "tags": [
+    "pg_cron"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "pg_cron"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "cron-unschedule-job.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 20,
+  "externals": [],
+  "demo": "media/cron-unschedule-job.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,40 @@
+{
+  "format": 1,
+  "id": "vega-lite",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Vega lite",
+  "description": "Bar / line / area / point / tick with Vega-Lite, which groups and aggregates for you",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "chart"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "vega-lite.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 104,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/vega@5/build/vega.min.js",
+    "https://cdn.jsdelivr.net/npm/vega-lite@5/build/vega-lite.min.js",
+    "https://cdn.jsdelivr.net/npm/vega-embed@6/build/vega-embed.min.js"
+  ],
+  "icon": "icon.svg",
+  "demo": "media/vega-lite.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

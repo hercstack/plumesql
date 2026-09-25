@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "add-retention-policy",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Add retention policy",
+  "description": "Add a retention policy to the hypertable this was opened on: chunks older than an age get DROPPED by a background job (TimescaleDB)",
+  "categories": [
+    "TimescaleDB"
+  ],
+  "tags": [
+    "timescaledb"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "timescaledb"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "add-retention-policy.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 3,
+  "externals": [],
+  "demo": "media/add-retention-policy.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

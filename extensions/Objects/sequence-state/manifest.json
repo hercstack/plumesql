@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "sequence-state",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Sequence state",
+  "description": "Where the sequence this was opened on stands, and how much of its range is left",
+  "categories": [
+    "Objects"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "sequence-state.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 84,
+  "externals": [],
+  "demo": "media/sequence-state.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

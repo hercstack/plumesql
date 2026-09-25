@@ -1,0 +1,45 @@
+{
+  "format": 1,
+  "id": "sanddance",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "SandDance",
+  "description": "A 2D and 3D explorer for very large results: scatter, bars, stacks, treemap, density, small multiples",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "charts",
+    "chart",
+    "3d",
+    "scatter",
+    "sanddance",
+    "webgl",
+    "result-view"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "sanddance.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 82,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/vega@6/build/vega.min.js",
+    "https://cdn.jsdelivr.net/npm/@msrvida/sanddance@4/dist/umd/sanddance.js"
+  ],
+  "icon": "icon.svg",
+  "demo": "media/sanddance.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

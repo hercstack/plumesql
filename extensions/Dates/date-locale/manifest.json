@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "date-locale",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Local dates",
+  "description": "Every date and timestamp column reads in the viewer's own locale and clock, the server value on hover",
+  "categories": [
+    "Dates"
+  ],
+  "tags": [
+    "formatter",
+    "date"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "date-locale.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 25,
+  "externals": [],
+  "demo": "media/date-locale.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

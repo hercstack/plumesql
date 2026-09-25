@@ -1,0 +1,9 @@
+# @description Restore a backup into this database, custom format
+# @color red
+# @env PGPASSWORD={password}
+# @file dump Pick the backup to restore
+# @confirm "Restore into {db}?", "This restores {dump} into {db} on {host}. Objects it recreates are dropped first (--clean --if-exists)."
+# @alert-on-success "Restore finished", "{dump} is restored into {db}."
+# @alert-on-failure "Restore failed", "The terminal has why: pg_restore names each object it could not restore and ends with the count, and {db} holds what did restore."
+pg_restore --host={host} --port={port} --username={user} --dbname={db} --no-password \
+           --clean --if-exists --no-owner {dump}

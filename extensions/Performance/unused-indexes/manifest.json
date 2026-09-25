@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "unused-indexes",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Unused indexes",
+  "description": "Indexes nothing has read since the statistics were reset",
+  "categories": [
+    "Performance"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "unused-indexes.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 101,
+  "externals": [],
+  "demo": "media/unused-indexes.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

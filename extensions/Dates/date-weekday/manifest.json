@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "date-weekday",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Dates with the weekday",
+  "description": "Every date and timestamp column reads with its weekday, Tuesday, September 23, 2026, the server value on hover",
+  "categories": [
+    "Dates"
+  ],
+  "tags": [
+    "formatter",
+    "date"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "date-weekday.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 30,
+  "externals": [],
+  "demo": "media/date-weekday.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

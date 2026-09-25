@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "id": "publish-with-gh",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Publish with gh",
+  "description": "Publish one of your extensions to the marketplace: fork, copy, branch and pull request through the GitHub CLI",
+  "categories": [
+    "Marketplace"
+  ],
+  "tags": [
+    "publish",
+    "github",
+    "gh",
+    "pull request",
+    "marketplace",
+    "command"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "publish-with-gh.plumesql.run"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 72,
+  "recommend": [
+    "my-extensions"
+  ],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

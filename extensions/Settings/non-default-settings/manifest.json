@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "non-default-settings",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Non default settings",
+  "description": "Server settings this installation changed from the shipped default",
+  "categories": [
+    "Settings"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "non-default-settings.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 51,
+  "externals": [],
+  "demo": "media/non-default-settings.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

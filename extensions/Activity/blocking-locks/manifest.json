@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "blocking-locks",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Blocking locks",
+  "description": "Backends waiting on a lock, and the backend holding it, refreshed every five seconds",
+  "categories": [
+    "Activity"
+  ],
+  "tags": [
+    "activity",
+    "locks",
+    "blocking",
+    "pg_stat_activity",
+    "pg_blocking_pids"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "blocking-locks.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 10,
+  "demo": "media/blocking-locks.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

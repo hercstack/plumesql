@@ -1,0 +1,12 @@
+# @description Every object of this database into a directory tree, as pg_dump writes it
+# @env PGHOST={host}
+# @env PGPORT={port}
+# @env PGDATABASE={db}
+# @env PGUSER={user}
+# @env PGPASSWORD={password}
+# @dir out Pick where the object tree goes
+# @var tree={out}/{db}-objects
+# @confirm "Dump {db} into a tree?", "This writes every object of {db} into {tree}, one file per object, overwriting what an earlier run wrote there."
+# @alert-on-success "Object tree finished", "The tree is in {tree}."
+# @alert-on-failure "Object tree failed", "The terminal has why; {tree} is missing or incomplete."
+plumesql dump-tree --out={tree}

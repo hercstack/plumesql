@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "chartjs",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Chartjs",
+  "description": "Bar / line / pie / doughnut / radar with Chart.js, pulled from a CDN",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "chart"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "chartjs.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 13,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/chart.js@4.4.1/auto/+esm"
+  ],
+  "icon": "icon.svg",
+  "demo": "media/chartjs.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

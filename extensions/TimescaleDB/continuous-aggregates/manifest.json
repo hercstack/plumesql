@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "continuous-aggregates",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Continuous aggregates",
+  "description": "Continuous aggregates and the hypertables they roll up, from TimescaleDB",
+  "categories": [
+    "TimescaleDB"
+  ],
+  "tags": [
+    "timescaledb"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "timescaledb"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "continuous-aggregates.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 16,
+  "externals": [],
+  "demo": "media/continuous-aggregates.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

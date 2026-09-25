@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "duration",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Duration",
+  "description": "A numeric column named *_ms / *_time / duration / elapsed / latency reads as 1.2 s, 4m 12s, 2h 05m",
+  "categories": [
+    "Formatting"
+  ],
+  "tags": [
+    "pg_stat_statements",
+    "formatter"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "pg_stat_statements"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "duration.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 35,
+  "externals": [],
+  "demo": "media/duration.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

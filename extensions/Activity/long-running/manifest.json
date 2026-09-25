@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "long-running",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Long running",
+  "description": "Backends whose statement has run longer than you say",
+  "categories": [
+    "Activity"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "long-running.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 48,
+  "externals": [],
+  "demo": "media/long-running.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

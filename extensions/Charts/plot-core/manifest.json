@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "plot-core",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Plot core",
+  "description": "Shared helpers the Observable Plot chart extensions import: paging, thinning, palettes, axes",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "observable-plot",
+    "library"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "plot-core.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 61,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm"
+  ],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

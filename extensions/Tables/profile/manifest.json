@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "profile",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Profile",
+  "description": "Every column's nulls, distinct count, range, mean and distribution, over the whole result, in the grid",
+  "categories": [
+    "Tables"
+  ],
+  "tags": [
+    "chart"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "profile.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 70,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/profile.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

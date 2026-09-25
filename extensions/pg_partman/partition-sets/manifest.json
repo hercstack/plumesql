@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "partition-sets",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Partition sets",
+  "description": "Partition sets pg_partman maintains: each parent's control column, interval, premake and retention, and the partitions under it",
+  "categories": [
+    "pg_partman"
+  ],
+  "tags": [
+    "pg_partman"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "pg_partman"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "partition-sets.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 54,
+  "externals": [],
+  "demo": "media/partition-sets.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

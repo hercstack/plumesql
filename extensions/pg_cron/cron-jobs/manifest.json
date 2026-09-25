@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "cron-jobs",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Cron jobs",
+  "description": "Jobs pg_cron has scheduled: their schedule, command, database and whether they are active, and each one's recent runs",
+  "categories": [
+    "pg_cron"
+  ],
+  "tags": [
+    "pg_cron"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "pg_cron"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "cron-jobs.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 18,
+  "externals": [],
+  "demo": "media/cron-jobs.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

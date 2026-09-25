@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "compress-chunks",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Compress chunks",
+  "description": "Compress every chunk of the hypertable this was opened on that is not compressed yet (TimescaleDB)",
+  "categories": [
+    "TimescaleDB"
+  ],
+  "tags": [
+    "timescaledb"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "timescaledb"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "compress-chunks.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 15,
+  "externals": [],
+  "demo": "media/compress-chunks.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

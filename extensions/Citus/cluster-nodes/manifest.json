@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "cluster-nodes",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Cluster nodes",
+  "description": "Nodes of the Citus cluster: the coordinator and every worker, their group, role, whether active and whether they hold shards",
+  "categories": [
+    "Citus"
+  ],
+  "tags": [
+    "citus"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "citus"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "cluster-nodes.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 14,
+  "externals": [],
+  "demo": "media/cluster-nodes.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

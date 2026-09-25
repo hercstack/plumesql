@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "distributed-tables",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Distributed tables",
+  "description": "Tables Citus manages: distributed by which column into how many shards, reference and local ones, with their sizes and co-location",
+  "categories": [
+    "Citus"
+  ],
+  "tags": [
+    "citus"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "citus"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "distributed-tables.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 31,
+  "externals": [],
+  "demo": "media/distributed-tables.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

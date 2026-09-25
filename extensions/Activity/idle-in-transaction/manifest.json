@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "idle-in-transaction",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Idle in transaction",
+  "description": "Backends sitting idle inside an open transaction, oldest first; they hold locks and block vacuum until they finish",
+  "categories": [
+    "Activity"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "idle-in-transaction.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 44,
+  "externals": [],
+  "demo": "media/idle-in-transaction.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

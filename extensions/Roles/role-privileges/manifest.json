@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "role-privileges",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Role privileges",
+  "description": "Every role with what it may do, its members and everything granted to it; grants and memberships are managed where they show",
+  "categories": [
+    "Roles"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "role-privileges.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 76,
+  "externals": [],
+  "demo": "media/role-privileges.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

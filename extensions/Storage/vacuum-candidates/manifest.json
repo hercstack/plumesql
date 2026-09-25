@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "vacuum-candidates",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Vacuum candidates",
+  "description": "Tables carrying the most dead rows, and when they were last cleaned",
+  "categories": [
+    "Storage"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "vacuum-candidates.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 103,
+  "externals": [],
+  "demo": "media/vacuum-candidates.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

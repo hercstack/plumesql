@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "system-catalogs",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "System catalogs",
+  "description": "Every system catalog, view and statistics view PostgreSQL documents, in one list; the name browses its rows",
+  "categories": [
+    "Reference"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "system-catalogs.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 90,
+  "externals": [],
+  "demo": "media/system-catalogs.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

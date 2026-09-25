@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "rebalance-plan",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Rebalance plan",
+  "description": "Shard moves the Citus rebalancer would make now, without making them: which shard from which node to which, and its size",
+  "categories": [
+    "Citus"
+  ],
+  "tags": [
+    "citus"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "citus"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "rebalance-plan.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 73,
+  "externals": [],
+  "demo": "media/rebalance-plan.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

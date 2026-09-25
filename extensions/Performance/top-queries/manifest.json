@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "top-queries",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Top queries",
+  "description": "The heaviest statements on this server, from pg_stat_statements",
+  "categories": [
+    "Performance"
+  ],
+  "tags": [
+    "pg_stat_statements"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "pg_stat_statements"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "top-queries.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 97,
+  "externals": [],
+  "demo": "media/top-queries.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "transaction-age",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Transaction age",
+  "description": "How far each database is from transaction ID wraparound, and the tables aging this one",
+  "categories": [
+    "Storage"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "transaction-age.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 98,
+  "externals": [],
+  "demo": "media/transaction-age.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

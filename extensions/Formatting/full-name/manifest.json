@@ -1,0 +1,34 @@
+{
+  "format": 1,
+  "id": "full-name",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Full name",
+  "description": "Adds a \"name\" column joining first_name and last_name, only when both exist",
+  "categories": [
+    "Formatting"
+  ],
+  "tags": [
+    "formatter"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "full-name.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 37,
+  "externals": [],
+  "demo": "media/full-name.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

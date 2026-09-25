@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "table-shards",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Table shards",
+  "description": "Shards of the table this was opened on: the shard table each one is, the node it lives on and its size, from Citus",
+  "categories": [
+    "Citus"
+  ],
+  "tags": [
+    "citus"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "citus"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "table-shards.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 93,
+  "externals": [],
+  "demo": "media/table-shards.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "sequential-scans",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Sequential scans",
+  "description": "Tables read most by sequential scan: where an index might be missing, by rows read",
+  "categories": [
+    "Performance"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "sequential-scans.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 85,
+  "externals": [],
+  "demo": "media/sequential-scans.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "plot-beeswarm",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Plot beeswarm",
+  "description": "One dodged dot per row, the distribution of a value, a sample of a LOT of rows (Observable Plot, CDN)",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "chart"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "plot-beeswarm.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 57,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/plot-beeswarm.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

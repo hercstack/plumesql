@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "activity-chart",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Activity chart",
+  "description": "The backends of a current activity result as a rolling graph: total, active, idle, in transaction and waiting, one sample per refresh",
+  "categories": [
+    "Activity"
+  ],
+  "tags": [
+    "chart"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "activity-chart.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 1,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/activity-chart.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

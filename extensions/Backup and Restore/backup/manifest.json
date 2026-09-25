@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "backup",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Backup",
+  "description": "Back up the connected database into the workspace as a custom-format pg_dump archive",
+  "categories": [
+    "Backup and Restore"
+  ],
+  "tags": [
+    "backup",
+    "pg_dump",
+    "archive",
+    "command"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "backup.plumesql.run"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 7,
+  "demo": "media/backup.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

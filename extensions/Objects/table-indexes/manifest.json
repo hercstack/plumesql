@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "table-indexes",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Table indexes",
+  "description": "Indexes of the table this was opened on: definition, size, how often each is read, and the ones never read",
+  "categories": [
+    "Objects"
+  ],
+  "tags": [],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "table-indexes.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 92,
+  "externals": [],
+  "demo": "media/table-indexes.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

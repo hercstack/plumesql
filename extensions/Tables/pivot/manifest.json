@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "pivot",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Pivot",
+  "description": "Rows by columns with a folded value and totals, over the whole result, in the grid",
+  "categories": [
+    "Tables"
+  ],
+  "tags": [
+    "chart"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "pivot.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 56,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/pivot.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}
