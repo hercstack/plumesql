@@ -26,7 +26,7 @@
 // bend the other.
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, rmSync, statSync } from 'node:fs'
 import { createHash } from 'node:crypto'
-import { join, relative, dirname } from 'node:path'
+import { join, relative, dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { execSync } from 'node:child_process'
 
@@ -40,7 +40,9 @@ const opt = (n) => {
 }
 const write = flag('--write')
 const allowMissingDiscussion = flag('--allow-missing-discussion')
-const OUT = opt('--out') ? join(process.cwd(), opt('--out')) : ROOT
+// resolve, not join: an absolute --out (the workflow's /tmp/index) must not
+// land under the working directory, which left the catalog branch empty.
+const OUT = opt('--out') ? resolve(process.cwd(), opt('--out')) : ROOT
 
 // ----- the vocabulary ---------------------------------------------------------
 
