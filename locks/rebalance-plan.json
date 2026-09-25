@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "rebalance-plan",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Citus/rebalance-plan",
+  "files": [
+    {
+      "path": "rebalance-plan.plumesql.sql",
+      "sha256": "0ea0484108e83af0faadeb90dd02e84dcba0c49725f3c3b5c08768ea160e47d9",
+      "bytes": 463
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/rebalance-plan.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 73,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

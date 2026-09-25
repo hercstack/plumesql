@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "continuous-aggregates",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "TimescaleDB/continuous-aggregates",
+  "files": [
+    {
+      "path": "continuous-aggregates.plumesql.sql",
+      "sha256": "62c86e94bd3e602c0f2172bf3218e686131a770d8081fb8f49d6854198050819",
+      "bytes": 621
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/continuous-aggregates.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 16,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

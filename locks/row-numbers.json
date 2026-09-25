@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "row-numbers",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Formatting/row-numbers",
+  "files": [
+    {
+      "path": "row-numbers.plumesql.js",
+      "sha256": "c93afe9bfadea46a1f40f1acba04ef83e3a243f9785995baffa4e3296a784fed",
+      "bytes": 237
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/row-numbers.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 78,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

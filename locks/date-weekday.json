@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "date-weekday",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Dates/date-weekday",
+  "files": [
+    {
+      "path": "date-weekday.plumesql.js",
+      "sha256": "61dbd3d47ceb717a67aa36d8b46949162270a9545f498ad12f76d4e450af6bf4",
+      "bytes": 1474
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/date-weekday.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 30,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

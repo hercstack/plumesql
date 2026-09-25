@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "long-running",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Activity/long-running",
+  "files": [
+    {
+      "path": "long-running.plumesql.sql",
+      "sha256": "d60b3c15b4d177d8115348e357a9c1737a09fd0e32fa8b24ac1a8a0b0cf87fae",
+      "bytes": 1299
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/long-running.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 48,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

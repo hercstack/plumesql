@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "local-time",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Dates/local-time",
+  "files": [
+    {
+      "path": "local-time.plumesql.js",
+      "sha256": "c231b7cf97345de70bcc957eb32a9fa6056e0f335cab107c2f167a808e9f4f5e",
+      "bytes": 547
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/local-time.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 47,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "distributed-tables",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Citus/distributed-tables",
+  "files": [
+    {
+      "path": "distributed-tables.plumesql.sql",
+      "sha256": "a8eca847df2e77c5da10e66bc44676e74edd8788b879b8c90db426bb33ba5c54",
+      "bytes": 792
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/distributed-tables.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 31,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "plot-streamgraph",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Charts/plot-streamgraph",
+  "files": [
+    {
+      "path": "plot-streamgraph.plumesql.js",
+      "sha256": "5b595e93ec01c8461ae9b48c2423fcfd77eceee6c395a1379f06203f82b40e1f",
+      "bytes": 3663
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "709a5e03392dddb9736b8f903bfa6adb9f942a0b81ce22d43f67254f04419562",
+      "bytes": 381
+    }
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "externals": [],
+  "demo": "media/plot-streamgraph.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 69,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

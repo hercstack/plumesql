@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "sequence-state",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Objects/sequence-state",
+  "files": [
+    {
+      "path": "sequence-state.plumesql.sql",
+      "sha256": "bad3b5c1124e01a9d159820f0d341cd0b61803b0cef3b4a653b7504e9bf08c80",
+      "bytes": 559
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/sequence-state.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 84,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

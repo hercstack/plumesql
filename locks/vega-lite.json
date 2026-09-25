@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "vega-lite",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Charts/vega-lite",
+  "files": [
+    {
+      "path": "vega-lite.plumesql.js",
+      "sha256": "3da23daba359a15e1bc50e50b8985458ae00ae759c6e1e38802ee372bd028e72",
+      "bytes": 5784
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "80d5fdf655327419cd72dfe21fd69d7a8c040d2b201ab7dcf58dca88df724364",
+      "bytes": 457
+    }
+  ],
+  "dependencies": [],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/vega@5/build/vega.min.js",
+    "https://cdn.jsdelivr.net/npm/vega-lite@5/build/vega-lite.min.js",
+    "https://cdn.jsdelivr.net/npm/vega-embed@6/build/vega-embed.min.js"
+  ],
+  "demo": "media/vega-lite.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 104,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

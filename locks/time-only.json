@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "time-only",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Dates/time-only",
+  "files": [
+    {
+      "path": "time-only.plumesql.js",
+      "sha256": "5d1c60c4f91cc453d86bdeb70ab6e508e43866cc842754e92cf7a588309f57cf",
+      "bytes": 1288
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/time-only.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 96,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

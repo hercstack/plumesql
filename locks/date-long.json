@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "date-long",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Dates/date-long",
+  "files": [
+    {
+      "path": "date-long.plumesql.js",
+      "sha256": "013e9e970392862ce03cbddeea812aebcf7befe56d257b86fed3ed006cbd1847",
+      "bytes": 1456
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/date-long.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 26,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

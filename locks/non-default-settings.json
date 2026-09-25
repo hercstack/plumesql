@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "non-default-settings",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Settings/non-default-settings",
+  "files": [
+    {
+      "path": "non-default-settings.plumesql.sql",
+      "sha256": "808ae5ce0e07e79bb83ede77f2c4af71aef6a8ae9162318ad4ba029a03ffdf4a",
+      "bytes": 1018
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/non-default-settings.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 51,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "psql",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "PSQL/psql",
+  "files": [
+    {
+      "path": "psql.plumesql.run",
+      "sha256": "fd324645e1b88c4909b9fb07e00216e62353fb865c5342ea5044cfd28ae697bf",
+      "bytes": 386
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/psql.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 71,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "background-jobs",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "TimescaleDB/background-jobs",
+  "files": [
+    {
+      "path": "background-jobs.plumesql.sql",
+      "sha256": "659126d4ed3aad73ffe1de7cded54ae4851b3f5d6e2a9d9c4e4af9b33f9a28d1",
+      "bytes": 911
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/background-jobs.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 6,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

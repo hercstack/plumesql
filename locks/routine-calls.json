@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "routine-calls",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Objects/routine-calls",
+  "files": [
+    {
+      "path": "routine-calls.plumesql.sql",
+      "sha256": "4de30081f2c73b5ac1b884b788cef764e90b1a3d1a897f9285fa091f0b203db8",
+      "bytes": 784
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/routine-calls.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 77,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

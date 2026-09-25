@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "transpose",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Tables/transpose",
+  "files": [
+    {
+      "path": "transpose.plumesql.js",
+      "sha256": "15c22ad81fdc8c34f9e2c5ab86ccd69f2bf72f565ec5c35b64752503cbc892a8",
+      "bytes": 2487
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/transpose.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 99,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

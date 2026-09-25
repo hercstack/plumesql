@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "plot-ranked",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Charts/plot-ranked",
+  "files": [
+    {
+      "path": "plot-ranked.plumesql.js",
+      "sha256": "24b748d31abea28a8c8878967c6e19f7c9094334d3ab2481381729b322c23177",
+      "bytes": 4123
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "cdfad05bfa9acb3dffcde34a9a2c893295f7505e68d49d20b197fe88f91699c6",
+      "bytes": 423
+    }
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "externals": [],
+  "demo": "media/plot-ranked.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 66,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "date-european",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Dates/date-european",
+  "files": [
+    {
+      "path": "date-european.plumesql.js",
+      "sha256": "ec58b18c0184a4151fe76585b1109fba5f07bd63de241f531a67ab0fd01fa610",
+      "bytes": 1452
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/date-european.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 23,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

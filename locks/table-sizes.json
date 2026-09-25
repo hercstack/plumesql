@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "table-sizes",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Storage/table-sizes",
+  "files": [
+    {
+      "path": "table-sizes.plumesql.sql",
+      "sha256": "83d856a1d646327480115e9fe36553297b419628ff3c1b815993a61bfd467a06",
+      "bytes": 1435
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/table-sizes.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 94,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

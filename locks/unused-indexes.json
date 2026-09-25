@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "unused-indexes",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Performance/unused-indexes",
+  "files": [
+    {
+      "path": "unused-indexes.plumesql.sql",
+      "sha256": "85a92c2c712ad2130c6b1dffe027d637382e295c6dc104aac7a31e3a03f63f3d",
+      "bytes": 1215
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/unused-indexes.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 101,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

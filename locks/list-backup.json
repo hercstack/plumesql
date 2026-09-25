@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "list-backup",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Backup and Restore/list-backup",
+  "files": [
+    {
+      "path": "list-backup.plumesql.run",
+      "sha256": "4ca5e6bfc937c76eed6fd21a20055f22ffb533dc8c624ee4893c21e6b411a29a",
+      "bytes": 134
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/list-backup.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 46,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "date-iso",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Dates/date-iso",
+  "files": [
+    {
+      "path": "date-iso.plumesql.js",
+      "sha256": "94d92b2746b198c38c077cff5a1f51d10e8685e7efa1ebc5f0f6fb6825abc3fc",
+      "bytes": 1480
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/date-iso.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 24,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

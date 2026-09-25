@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "sequential-scans",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Performance/sequential-scans",
+  "files": [
+    {
+      "path": "sequential-scans.plumesql.sql",
+      "sha256": "3cabeaf7dc9805f19e97539079ec17d1939ca0b721177b1158ba74804793c587",
+      "bytes": 814
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/sequential-scans.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 85,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

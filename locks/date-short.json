@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "date-short",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Dates/date-short",
+  "files": [
+    {
+      "path": "date-short.plumesql.js",
+      "sha256": "ac16bbcae51307a95f60565da9873e1ca5282c51e4f60e319237cfd6454c18b1",
+      "bytes": 1452
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/date-short.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 28,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

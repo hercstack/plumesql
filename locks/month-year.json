@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "month-year",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Dates/month-year",
+  "files": [
+    {
+      "path": "month-year.plumesql.js",
+      "sha256": "860273144d9a7183cf9ab2a6a11de572bc45f1fb082640437c016a7d2173c44a",
+      "bytes": 1383
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/month-year.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 49,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

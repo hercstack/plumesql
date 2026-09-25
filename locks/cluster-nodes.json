@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "cluster-nodes",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Citus/cluster-nodes",
+  "files": [
+    {
+      "path": "cluster-nodes.plumesql.sql",
+      "sha256": "43b44c3e36fa40b8a75c026b006099e232eea36c9d701a84b1880c7954c37c0e",
+      "bytes": 540
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/cluster-nodes.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 14,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

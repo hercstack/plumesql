@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "json",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Formatting/json",
+  "files": [
+    {
+      "path": "json.plumesql.js",
+      "sha256": "0ebfd55fcb86178fc22f3051b6085a03e00da80e842f7e4b13236c265203ee78",
+      "bytes": 653
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/json.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 45,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

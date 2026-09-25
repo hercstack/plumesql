@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "top-queries",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Performance/top-queries",
+  "files": [
+    {
+      "path": "top-queries.plumesql.sql",
+      "sha256": "772ad7c1c3abb8d62162ab782f6c7b72ff9b463610979b05241062891352ab23",
+      "bytes": 626
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/top-queries.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 97,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

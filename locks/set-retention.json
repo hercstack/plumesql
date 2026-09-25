@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "set-retention",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "pg_partman/set-retention",
+  "files": [
+    {
+      "path": "set-retention.plumesql.sql",
+      "sha256": "91305d562e16e3aaf0333858d40ea3e3d6e1560aa320444d8034d0dee22b95cc",
+      "bytes": 957
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/set-retention.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 87,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "cron-unschedule-job",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "pg_cron/cron-unschedule-job",
+  "files": [
+    {
+      "path": "cron-unschedule-job.plumesql.sql",
+      "sha256": "8aad1833f7d8866214fcff1746c7c22e75729f0902b04d87aa9e6a473c090336",
+      "bytes": 312
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/cron-unschedule-job.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 20,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

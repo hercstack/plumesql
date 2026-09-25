@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "table-indexes",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Objects/table-indexes",
+  "files": [
+    {
+      "path": "table-indexes.plumesql.sql",
+      "sha256": "e10259ff3e1162996742d5f5106150618b59a9f455cdb79f997cbc379b338e36",
+      "bytes": 1509
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/table-indexes.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 92,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

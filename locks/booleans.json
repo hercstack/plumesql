@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "booleans",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Formatting/booleans",
+  "files": [
+    {
+      "path": "booleans.plumesql.js",
+      "sha256": "dd3620fa053a81130c3b8451c8ad1ea44fe0c8b946935d98ddb644d4a8daca30",
+      "bytes": 363
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/booleans.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 11,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

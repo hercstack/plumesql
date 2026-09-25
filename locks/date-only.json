@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "date-only",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Dates/date-only",
+  "files": [
+    {
+      "path": "date-only.plumesql.js",
+      "sha256": "2ae6aeb382903b129ae1c255c1ac535375c5f36056f6cd73dc4aadb3c27d0c17",
+      "bytes": 287
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/date-only.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 27,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

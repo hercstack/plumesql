@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "short-uuid",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Formatting/short-uuid",
+  "files": [
+    {
+      "path": "short-uuid.plumesql.js",
+      "sha256": "d07c3cbfb420111397ce5ba4805ab59631f255ca452441b151c662cc34bffa81",
+      "bytes": 423
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/short-uuid.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 88,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

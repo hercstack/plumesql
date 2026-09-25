@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "dump-objects",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Schema Management/dump-objects",
+  "files": [
+    {
+      "path": "dump-objects.plumesql.run",
+      "sha256": "f2d21a85aefc7a43fa2ee2a714a0044ed2766bb0ac5a45df3d7ba9a10ccc1759",
+      "bytes": 629
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/dump-objects.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 32,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

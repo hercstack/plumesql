@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "partition-sets",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "pg_partman/partition-sets",
+  "files": [
+    {
+      "path": "partition-sets.plumesql.sql",
+      "sha256": "0092347b66c57f2cea9896b94cf265829fc967b053bbe9a8d1bf18557b363436",
+      "bytes": 1034
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/partition-sets.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 54,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

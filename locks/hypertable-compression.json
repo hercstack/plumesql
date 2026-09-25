@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "hypertable-compression",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "TimescaleDB/hypertable-compression",
+  "files": [
+    {
+      "path": "hypertable-compression.plumesql.sql",
+      "sha256": "e10b4bcac8f68f0b61e019fa3970463a5c86d3bd1a719a1df4144c1c0e5a8b7a",
+      "bytes": 977
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/hypertable-compression.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 39,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

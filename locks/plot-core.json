@@ -1,0 +1,34 @@
+{
+  "format": 1,
+  "id": "plot-core",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Charts/plot-core",
+  "files": [
+    {
+      "path": "plot-core.plumesql.js",
+      "sha256": "4ed902cebebdf38a73c905e18dc294575ad189e81a36e3aad047e1c41d0301ce",
+      "bytes": 15014
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "3a8ebd694e2a24c43ffa688e71c098f81f33fa1561c503a4d73b9a7bda663ee8",
+      "bytes": 435
+    }
+  ],
+  "dependencies": [],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 61,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

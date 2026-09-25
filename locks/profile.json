@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "profile",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Tables/profile",
+  "files": [
+    {
+      "path": "profile.plumesql.js",
+      "sha256": "44ac69cd1e2608cf104277d4ce45cf13103d9598b9a677c20372141517623769",
+      "bytes": 6399
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "a296433a1e252462749cba8a9c13c9409b688456589308aff40965deb4fa851b",
+      "bytes": 548
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/profile.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 70,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

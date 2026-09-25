@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "negatives",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Formatting/negatives",
+  "files": [
+    {
+      "path": "negatives.plumesql.js",
+      "sha256": "ccd9cb370a824fb187c7929fff161cba86acb44bc96a72e0e222289b9d1b3b8c",
+      "bytes": 458
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/negatives.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 50,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "date-locale",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Dates/date-locale",
+  "files": [
+    {
+      "path": "date-locale.plumesql.js",
+      "sha256": "01130c36aa640e0059c0c4a88ef14029122cd4c5906976eec9a46815dd1bcd5f",
+      "bytes": 1456
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/date-locale.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 25,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

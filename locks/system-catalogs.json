@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "system-catalogs",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "Reference/system-catalogs",
+  "files": [
+    {
+      "path": "system-catalogs.plumesql.sql",
+      "sha256": "b318b834dfb87b7017a5f2f4cf8a090005cfb0a45686fa673c0c3ab7ddab3e12",
+      "bytes": 12356
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/system-catalogs.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 90,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

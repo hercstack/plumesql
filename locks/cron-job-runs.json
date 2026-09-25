@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "cron-job-runs",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ff6e36f6c8f300559a98d0ad20aa285856c0ff15",
+  "path": "pg_cron/cron-job-runs",
+  "files": [
+    {
+      "path": "cron-job-runs.plumesql.sql",
+      "sha256": "4a838c2bd83176b94aa72175f8a13fadb407e9b7fb958f92490fc09dc227a2c1",
+      "bytes": 464
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/cron-job-runs.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 17,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}
