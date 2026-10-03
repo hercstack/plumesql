@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "echarts",
+  "kind": "grid",
+  "version": "1.1.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Charts/echarts",
+  "files": [
+    {
+      "path": "echarts.plumesql.js",
+      "sha256": "708f8abda536ed8cae5311c88b5b31739b983eac1e8f6548a2ffbc89add24a91",
+      "bytes": 8944
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "322a69a79f2f2df062510ac96c75cff72750ec04b5aa15a4533c165a61989ba0",
+      "bytes": 516
+    }
+  ],
+  "dependencies": [],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "demo": "media/echarts.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 36,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

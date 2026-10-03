@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "arrays",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Formatting/arrays",
+  "files": [
+    {
+      "path": "arrays.plumesql.js",
+      "sha256": "6dad8c59d3df2536ff0200dc547a661c4c2bb76373b7a4de52364f1f4de9e4b7",
+      "bytes": 1156
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/arrays.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 5,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

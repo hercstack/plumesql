@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "plot-chart",
+  "kind": "grid",
+  "version": "1.1.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Charts/plot-chart",
+  "files": [
+    {
+      "path": "plot-chart.plumesql.js",
+      "sha256": "70b1d2e3fabffd51bfa8710087ec506333ad0c386c8ba9e55ef91dd3c258ed7a",
+      "bytes": 5927
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "8def7ec42ca7b6a0b98957a1cc764aa569b31f31735a771490b48e1e3bc340dd",
+      "bytes": 470
+    }
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "externals": [],
+  "demo": "media/plot-chart.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 60,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

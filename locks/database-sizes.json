@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "database-sizes",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Storage and Maintenance/database-sizes",
+  "files": [
+    {
+      "path": "database-sizes.plumesql.sql",
+      "sha256": "28eb200826830028180fe4651428abc1a1c0e676e82d34e475dbb6ee9d32dd58",
+      "bytes": 997
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/database-sizes.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 22,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

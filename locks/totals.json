@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "totals",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Calculations/totals",
+  "files": [
+    {
+      "path": "totals.plumesql.js",
+      "sha256": "c7d91a97edf4890e30f87e9f91a8ef91e36a4646991ec5041b03af98d958581d",
+      "bytes": 4088
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "6a792456b4edc724d8bf73c6bf7716f6b54ef515bf9c5aaaa53da1e49d4a012d",
+      "bytes": 421
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/totals.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 142,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

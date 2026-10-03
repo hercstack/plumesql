@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "plot-ridgeline",
+  "kind": "grid",
+  "version": "1.1.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Statistical Charts/plot-ridgeline",
+  "files": [
+    {
+      "path": "plot-ridgeline.plumesql.js",
+      "sha256": "6c798f7255ef65b6dd94acb18483d511bde6fc7191db18d23924562d828e4fcf",
+      "bytes": 3224
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "6af8ee9dc7e920cf7751a1cbe138765a28b2c54f613eb94a92f8827c76192d05",
+      "bytes": 415
+    }
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "externals": [],
+  "demo": "media/plot-ridgeline.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 68,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

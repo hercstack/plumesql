@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "date-format",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Formatting/date-format",
+  "files": [
+    {
+      "path": "date-format.plumesql.js",
+      "sha256": "421efa88a6876a8321606ab88130eb572e41ecb87fe5e1a408cd7aec5343890d",
+      "bytes": 3421
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/date-format.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 153,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

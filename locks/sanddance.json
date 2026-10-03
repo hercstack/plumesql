@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "sanddance",
+  "kind": "grid",
+  "version": "1.1.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Charts/sanddance",
+  "files": [
+    {
+      "path": "sanddance.plumesql.js",
+      "sha256": "53a8927633ead35a882fd66c9f8bd4d652b11099d9629fb4514d77b326bcf3c6",
+      "bytes": 9292
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "5392932d6f1dd6ea4063d960706b3768b19fd23a02ca3f43cac512ddd51b2cda",
+      "bytes": 629
+    }
+  ],
+  "dependencies": [],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/vega@6/build/vega.min.js",
+    "https://cdn.jsdelivr.net/npm/@msrvida/sanddance@4/dist/umd/sanddance.js"
+  ],
+  "demo": "media/sanddance.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 82,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

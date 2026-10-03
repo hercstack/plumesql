@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "moving-average",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Calculations/moving-average",
+  "files": [
+    {
+      "path": "moving-average.plumesql.js",
+      "sha256": "327cdad0302ea59ce457a0f18cffd50517be5b1ea238e05cd25d75e021657f07",
+      "bytes": 2848
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "4cbded0485b0e37e206e5e387f61cbebfdba7672b6db5d5e0573eba99df1b56d",
+      "bytes": 455
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/moving-average.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 127,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

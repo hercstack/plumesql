@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "hstore",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Data Types/hstore",
+  "files": [
+    {
+      "path": "hstore.plumesql.js",
+      "sha256": "a1db1df03f097c263340da26a9780c069aa1137f858016c2d33b867933cd8f81",
+      "bytes": 3038
+    },
+    {
+      "path": "lib/hstore.js",
+      "sha256": "d27de6d07be9f1f1760390b8972ec4bdcef2f4d0433999104d27453b5e487aaa",
+      "bytes": 6336
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "b104b86400a2b5047a6831b493fa57c03c4f4411b29803d3b58741a8e8491d3a",
+      "bytes": 815
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 173,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

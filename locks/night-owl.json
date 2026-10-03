@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "night-owl",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Themes/night-owl",
+  "files": [
+    {
+      "path": "night-owl.plumesql-theme.json",
+      "sha256": "735c88025f4e62fc8689280d7978f2252f78258e674c65b1a075793fc0e19c44",
+      "bytes": 2690
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/night-owl.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 128,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

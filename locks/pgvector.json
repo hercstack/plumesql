@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "pgvector",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "pgvector/pgvector",
+  "files": [
+    {
+      "path": "pgvector.plumesql.js",
+      "sha256": "433c3740b2bc75b78b3b87710a4461f1b0d506163eabcc6a2246a37492255864",
+      "bytes": 2511
+    },
+    {
+      "path": "lib/vec.js",
+      "sha256": "589de2c5afdf984d4f574a2355b163f8dd6c0100fb8771d28b916c8c11add15e",
+      "bytes": 5750
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "e1b0294610a5d4d7a409d5aa9abb209fdaf3a886ea7f135754093a39e2b620a5",
+      "bytes": 416
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 169,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

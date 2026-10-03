@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "plot-calendar",
+  "kind": "grid",
+  "version": "1.1.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Statistical Charts/plot-calendar",
+  "files": [
+    {
+      "path": "plot-calendar.plumesql.js",
+      "sha256": "79be7fe905390ec4de76d38c27909fe554ca85352ca09d422ccd79210c07cbc1",
+      "bytes": 4054
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "2fc01f9a8c8d25daadcada040934bec4dfda67e3c91b529f8d44e1a582991a39",
+      "bytes": 3597
+    }
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "externals": [],
+  "demo": "media/plot-calendar.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 59,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "json-to-columns",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Reshape/json-to-columns",
+  "files": [
+    {
+      "path": "json-to-columns.plumesql.js",
+      "sha256": "5324b340e4fb116a10b67bdd6efcd2b3a8414981317c6106dab18baa8dbf8ee1",
+      "bytes": 2097
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "dc308cf3b5ec8e5419a4ee80fa3314977c90a551d3b03012936a8d7eaf6a1d7a",
+      "bytes": 581
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/json-to-columns.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 179,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

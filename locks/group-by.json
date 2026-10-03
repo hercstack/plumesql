@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "group-by",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Reshape/group-by",
+  "files": [
+    {
+      "path": "group-by.plumesql.js",
+      "sha256": "c68c76346bf10dc619537bbe7ab7b73c11ebd6701a9b52ffe68d2c68a1da0d4f",
+      "bytes": 5092
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "2056b03bd49caab2075f5fb839dfd4ef9c261ef32c4da92754ae417203167a5f",
+      "bytes": 519
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/group-by.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 119,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

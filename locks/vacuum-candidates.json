@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "vacuum-candidates",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Storage and Maintenance/vacuum-candidates",
+  "files": [
+    {
+      "path": "vacuum-candidates.plumesql.sql",
+      "sha256": "1d98e2abac3b4b73c373198915e1d46265cd75c8d69f63a008a43d0452cf299a",
+      "bytes": 1999
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/vacuum-candidates.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 103,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

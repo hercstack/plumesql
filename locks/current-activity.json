@@ -1,0 +1,30 @@
+{
+  "format": 1,
+  "id": "current-activity",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Activity and Locks/current-activity",
+  "files": [
+    {
+      "path": "current-activity.plumesql.sql",
+      "sha256": "8c046cfdff445fa7686ecc6291316449f468ac030517723f28fba8f864600f62",
+      "bytes": 1411
+    }
+  ],
+  "dependencies": [
+    "activity-chart"
+  ],
+  "externals": [],
+  "demo": "media/current-activity.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 21,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

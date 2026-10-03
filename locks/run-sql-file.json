@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "run-sql-file",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Backup and Tools/run-sql-file",
+  "files": [
+    {
+      "path": "run-sql-file.plumesql.run",
+      "sha256": "50971a4b8d6280e66d1407c321636cd310c5d20abdf3054b0e26e1f8378aab9b",
+      "bytes": 395
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/run-sql-file.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 80,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

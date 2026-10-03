@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "invalid-geometries",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "PostGIS/invalid-geometries",
+  "files": [
+    {
+      "path": "invalid-geometries.plumesql.sql",
+      "sha256": "117aae387b18dce38a9dc8304e68fd6ea625eb52ed565e1354f9b1aebb60920f",
+      "bytes": 738
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 171,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

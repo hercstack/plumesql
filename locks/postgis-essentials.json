@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "postgis-essentials",
+  "kind": "pack",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Packs/postgis-essentials",
+  "files": [
+    {
+      "path": "postgis-essentials.plumesql-pack.json",
+      "sha256": "fa219902b13ce31a121afeab838985cb26de5d157e90b37a4f27ee85b63c7e23",
+      "bytes": 88
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 172,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

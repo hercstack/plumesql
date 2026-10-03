@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "plot-horizon",
+  "kind": "grid",
+  "version": "1.1.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Statistical Charts/plot-horizon",
+  "files": [
+    {
+      "path": "plot-horizon.plumesql.js",
+      "sha256": "2d70e7fc4118183c031f10cb39b0e895f9be1abc030c5019a4b0d9435c39b5b6",
+      "bytes": 3980
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "a6432d21530cd971b921bb9f0ef9e420b69046ab7823b67b9caf359c4e8ab8a4",
+      "bytes": 503
+    }
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "externals": [],
+  "demo": "media/plot-horizon.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 65,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

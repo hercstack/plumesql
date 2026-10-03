@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "integer-overflow-risk",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Storage and Maintenance/integer-overflow-risk",
+  "files": [
+    {
+      "path": "integer-overflow-risk.plumesql.sql",
+      "sha256": "e1874be05d556b61872e14f1474d6652d2be7d28a462b9cf87b5e78b50163a8f",
+      "bytes": 5148
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/integer-overflow-risk.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 177,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

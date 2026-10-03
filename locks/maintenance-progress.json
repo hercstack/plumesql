@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "maintenance-progress",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Storage and Maintenance/maintenance-progress",
+  "files": [
+    {
+      "path": "maintenance-progress.plumesql.sql",
+      "sha256": "c82d1785be8eb0633241695492292b85d2ce87c14523442e09bbbe89e742b7dc",
+      "bytes": 4216
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/maintenance-progress.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 163,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

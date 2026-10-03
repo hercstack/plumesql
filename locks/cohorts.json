@@ -1,0 +1,30 @@
+{
+  "format": 1,
+  "id": "cohorts",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Analysis/cohorts",
+  "files": [
+    {
+      "path": "cohorts.plumesql.js",
+      "sha256": "1927a7fe0127770923d0e1a90a7140767778a89da9598f0e44755c4b3cca79bd",
+      "bytes": 6146
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/cohorts.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 148,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

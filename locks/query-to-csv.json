@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "query-to-csv",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Backup and Tools/query-to-csv",
+  "files": [
+    {
+      "path": "query-to-csv.plumesql.run",
+      "sha256": "bc68fe3d90b72b59c243d3187c73b064db9125c7012b4a7bb659e9d193b11493",
+      "bytes": 1070
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/query-to-csv.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 185,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

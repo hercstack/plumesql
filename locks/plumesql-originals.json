@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "plumesql-originals",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Themes/plumesql-originals",
+  "files": [
+    {
+      "path": "plumesql-originals.plumesql-theme.json",
+      "sha256": "e5c166edc694fd89a48dde300b43894a03720fc255cc115b56f67f02f4a4444c",
+      "bytes": 3284
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/plumesql-originals.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 133,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

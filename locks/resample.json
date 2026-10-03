@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "resample",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Analysis/resample",
+  "files": [
+    {
+      "path": "resample.plumesql.js",
+      "sha256": "cf00e66590dc0e43efe4d90019a5fbf58d35ff9c86405ae7269fe0cb61f0004c",
+      "bytes": 5376
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "fb498e99255cd2e4ee9e0687503f90528b49dec96f7e2cece6bfb0bce197ff2b",
+      "bytes": 354
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/resample.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 135,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

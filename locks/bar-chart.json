@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "bar-chart",
+  "kind": "grid",
+  "version": "1.1.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Charts/bar-chart",
+  "files": [
+    {
+      "path": "bar-chart.plumesql.js",
+      "sha256": "ec8bf12ad8fcc4f99403b7c227809db5ea3b5cf79b6cf229e4c7c0de2265e5a9",
+      "bytes": 4258
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "0ae7b7a9957a16fac59add228ad704bfa5ba2c3f1e2fa1c1c0c565ad43520aff",
+      "bytes": 394
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/bar-chart.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 9,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "rank",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Calculations/rank",
+  "files": [
+    {
+      "path": "rank.plumesql.js",
+      "sha256": "706fb6a147d9de6659bb484c3517e2582576f671d6ca84000cffa78da8d15723",
+      "bytes": 3376
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "a35dcba93bbebc929d3c4b45b70286accc253a64500846acc678886885a3b3c8",
+      "bytes": 357
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/rank.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 134,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

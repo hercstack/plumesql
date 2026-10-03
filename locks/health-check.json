@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "health-check",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Server and Security/health-check",
+  "files": [
+    {
+      "path": "health-check.plumesql.sql",
+      "sha256": "93b65670a68f000f3e3918019de2a0c45f9b0b8dc731b27ad28f2151fe055c17",
+      "bytes": 12869
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/health-check.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 176,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

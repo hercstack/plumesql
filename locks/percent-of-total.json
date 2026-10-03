@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "percent-of-total",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Calculations/percent-of-total",
+  "files": [
+    {
+      "path": "percent-of-total.plumesql.js",
+      "sha256": "f850749d375a21925b586b6047dd9865995445f69566918fd2db9f2b80c00e2d",
+      "bytes": 3832
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "445bb0e1f76b98dec885a05baede4f71a6de30c69f593cadbea193fbc8400f68",
+      "bytes": 320
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/percent-of-total.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 132,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

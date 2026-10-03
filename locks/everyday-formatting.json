@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "everyday-formatting",
+  "kind": "pack",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Packs/everyday-formatting",
+  "files": [
+    {
+      "path": "everyday-formatting.plumesql-pack.json",
+      "sha256": "1d99354efd3de3dcd649b796c955212ed926f3b888ae0b41ea315e16ce588109",
+      "bytes": 160
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 157,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

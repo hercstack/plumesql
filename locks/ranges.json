@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "ranges",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Data Types/ranges",
+  "files": [
+    {
+      "path": "ranges.plumesql.js",
+      "sha256": "c9ae438224d1830f94da86c45f786fb6e80f6ae7a5741d5b088ab5a7aa9cb5d0",
+      "bytes": 15416
+    },
+    {
+      "path": "lib/range.js",
+      "sha256": "aa1d87d377f749c569b24826c207e5372d81b6a248a5de3c9e5c512faf98a11b",
+      "bytes": 22227
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "48de82275c4882ca9591e52ac2bcc9c595b0493059d9edd99d2583baf1dca0bf",
+      "bytes": 584
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 175,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

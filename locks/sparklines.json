@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "sparklines",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Formatting/sparklines",
+  "files": [
+    {
+      "path": "sparklines.plumesql.js",
+      "sha256": "5a7608dc66d0ded1a0aa92889111e532e2df85879a088dae063af7b3c442a922",
+      "bytes": 2999
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "bdeee78d3de25949fbcf59ee7964967d8095a8b2dd64942a0e4f350018ffe009",
+      "bytes": 430
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/sparklines.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 139,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

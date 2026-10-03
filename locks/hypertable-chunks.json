@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "hypertable-chunks",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "TimescaleDB/hypertable-chunks",
+  "files": [
+    {
+      "path": "hypertable-chunks.plumesql.sql",
+      "sha256": "7cfa6c788e57dcb7f50f425fc0a684719d9498a20cef72cc1ac8dca07936ac50",
+      "bytes": 611
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/hypertable-chunks.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 38,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

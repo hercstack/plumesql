@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "rose-pine",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Themes/rose-pine",
+  "files": [
+    {
+      "path": "rose-pine.plumesql-theme.json",
+      "sha256": "f1d8c6af15fefcdfb251c92a13e7031c242b4cdfedf973cc2a937604a4e46589",
+      "bytes": 3836
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/rose-pine.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 136,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

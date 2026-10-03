@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "correlation",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Analysis/correlation",
+  "files": [
+    {
+      "path": "correlation.plumesql.js",
+      "sha256": "22e03a8ca8f03c2d8b8d9b4cfdedd6defb3a2a53278a43e7f0ec221b3a02c3ad",
+      "bytes": 4919
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "23b007be07561a75dca7293e1d553b5bffab2b1f9c0ffbf635e3e9ad4aa94d76",
+      "bytes": 709
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/correlation.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 112,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "currency",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Formatting/currency",
+  "files": [
+    {
+      "path": "currency.plumesql.js",
+      "sha256": "71828396ffa8da8f6a14069b0fdf786662793156e55abffe9fcc9db428acadfa",
+      "bytes": 3155
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/currency.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 150,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

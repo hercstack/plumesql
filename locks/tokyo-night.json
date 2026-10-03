@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "tokyo-night",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Themes/tokyo-night",
+  "files": [
+    {
+      "path": "tokyo-night.plumesql-theme.json",
+      "sha256": "3687b142bba527dbc9e8668684d6d856e971c983b7e53546e25f0903efd6a6a3",
+      "bytes": 4026
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/tokyo-night.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 141,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "data-analysis",
+  "kind": "pack",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "4eb8d1e125b260b8e3f1db4678e9929b2c591c81",
+  "path": "Packs/data-analysis",
+  "files": [
+    {
+      "path": "data-analysis.plumesql-pack.json",
+      "sha256": "d6aeec8673a29d9ce5708a448cc231863a4cf2d26744f83800f112acb670f2bd",
+      "bytes": 216
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 151,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}
