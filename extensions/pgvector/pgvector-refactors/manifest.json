@@ -1,0 +1,45 @@
+{
+  "format": 1,
+  "id": "pgvector-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.23.0",
+  "name": "pgvector refactors",
+  "description": "The nearest neighbour query a lightbulb away in the editor, in the three distances pgvector indexes",
+  "categories": [
+    "pgvector"
+  ],
+  "tags": [
+    "pgvector",
+    "vector",
+    "embeddings",
+    "similarity search",
+    "nearest neighbours",
+    "refactor"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "vector"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "pgvector-refactors.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 186,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

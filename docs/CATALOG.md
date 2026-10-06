@@ -51,7 +51,7 @@ One JSON object per extension, UTF-8, no comments. Fields:
 |---|---|---|
 | `format` | yes | The manifest format version, the integer `1`. A reader refuses a manifest whose `format` it does not know. |
 | `id` | yes | The extension id (4.1). MUST equal the directory name. |
-| `kind` | yes | `query`, `command`, `grid`, `theme` or `pack`. MUST match the main file's double extension (`.plumesql.sql`, `.plumesql.run`, `.plumesql.js`, `.plumesql-theme.json`, `.plumesql-pack.json`). |
+| `kind` | yes | `query`, `command`, `grid`, `refactor`, `theme` or `pack`. MUST match the main file's double extension (`.plumesql.sql`, `.plumesql.run`, `.plumesql.js`, `.plumesql-theme.json`, `.plumesql-pack.json`); a `.plumesql.js` module is a `grid` or a `refactor` extension, the manifest saying which. A refactor extension's module declares refactors and nothing else, a grid extension's declares none (docs/GRIDJSSPEC.md, Refactors): the app reads only what the kind allows, and the deep check refuses the rest. |
 | `version` | yes | Semantic version `MAJOR.MINOR.PATCH` of this extension. Bumped on every change to any file in the directory except `README.md` and `media/` (the validator enforces the bump against the previous catalog). |
 | `plumesql` | yes | The minimum PlumeSQL version this extension needs, `">=X.Y.Z"`: the first release that has every feature the extension uses. A release of the app that does not meet it leaves the extension out of Recommended and Available (a search still finds it), refuses to install it, and does not offer an update to a version that needs more; a development build, running ahead of its last release, meets every requirement. |
 | `name` | yes | The display name, at most 40 characters. Title case, no trailing period. |
@@ -67,12 +67,12 @@ One JSON object per extension, UTF-8, no comments. Fields:
 | `license` | yes | An SPDX identifier. The repository's own license applies to what is contributed; the field makes it explicit per extension. |
 | `featured` | no | `true` for the curated few the panel shows first under Recommended when nothing else recommends them. Maintainers set it. |
 | `recommend` | no | App-side signals that put the extension under Recommended (4.3), a list of known words: `my-extensions` (the user has extensions of their own). The validator refuses an unknown word. |
-| `types` | no | A grid extension alone: the PostgreSQL data types whose values it reads (its inspectors), bare lowercase names as `format_type` spells them without a schema or a modifier (`geometry`, `vector`, `double precision`), 1 to 12, each once. A result column declared one of them offers the extension while it is not installed (4.3). |
+| `types` | no | A grid extension alone: the PostgreSQL data types whose values it reads (its inspectors), bare lowercase names as `format_type` spells them without a schema or a modifier (`geometry`, `vector`, `double precision`), 1 to 12, each once. A result column declared one of them offers the extension while it is not installed, and a query returning one suggests it in the editor's lightbulb (4.3). |
 | `forkedFrom` | no | The id the extension was copied from in the app, informational; the validator accepts an id. |
 | `externals` | when the code loads any | Every external library the extension loads at run time, as https URLs: a grid view's `scripts: [...]`, an `import` from a CDN. The validator checks the list against the code both ways (rule 8b of section 12), so a manifest never hides what the code fetches. The app shows them under Dependencies with their hosts, says which hosts the allowlist (`extensions.remoteScriptHosts`) has, and offers to allow the rest. |
 | `icon` | no | The extension's logo: the path of a PNG or SVG (JPEG, WebP and GIF are accepted too) inside the directory, square, at most 64 KB, and listed in `files`, so it is hashed, installed and served like every other file. The panel's row and the detail view's header show it; without one they draw the default icon, the kind's glyph in the kind's colour (the same glyph a logo wears as its corner mark). A logo is a branded mark in colour and separate from the `@toolbar` line's icon, which is a single-colour glyph on the button that follows its colour. |
 | `demo` | no | A recording of the extension in USE (never its install): the path of a GIF, WebP, PNG or JPEG directly under `media/`, at most 4 MB. It rides the lock and the README cache, never the install, and the detail view shows it as the second face of its "What it adds" section behind a Map / Demo switch, loading it only when picked; the README's own copy of the same picture is not drawn there twice. |
-| `scope` | no | A grid extension's STARTING scope: `{ "for": [...], "query": [...] }`, where it applies right after its first install on a machine (7.7). `for` takes the breadth words `global` and `workspace` alone (a marketplace extension knows no script of the user's), `query` a table or a `/regex/` as 7.7 describes; at least one target. For an extension that exists for one kind of result and is useless until attached (the Explain plan view on an EXPLAIN). Any other kind refuses it (rule 8g). |
+| `scope` | no | A grid or a refactor extension's STARTING scope: `{ "for": [...], "query": [...] }`, where it applies right after its first install on a machine (7.7). `for` takes the breadth words `global` and `workspace` alone (a marketplace extension knows no script of the user's), `query` a table or a `/regex/` as 7.7 describes; at least one target. For an extension that exists for one kind of result and is useless until attached (the Explain plan view on an EXPLAIN). Any other kind refuses it (rule 8g). |
 
 Unknown fields are refused by the validator and ignored by the app (a
 newer manifest read by an older app still installs; the validator keeps
@@ -162,6 +162,18 @@ extension that reads it and is not installed, "Read <type> values:
 <name>…", which opens that extension's page. Nothing opens by itself and
 nothing is written to the Log; an installed extension is never offered,
 and a catalog that was not read yet offers nothing.
+
+The SQL editor's lightbulb reads `types` too, on the query rather than
+on a result: a SELECT whose result has a column of one of them (its last
+run's columns, or before a run the plain columns and stars the statement
+selects) offers "Use the <name> extension on this query", which writes
+`-- @extension <id>` above the statement. It offers the catalog's grid
+extensions that read the type and a user's own (My Extensions) that
+declare it, installed or not; an installed one already applying to the
+statement is not offered, and one that is not installed reads "(from the
+Marketplace)", its `-- @extension` line then flagged not installed with
+a quick fix that installs it. The offer is one of the editor's refactors
+(`suggest-extension`), turned off with them.
 
 ### 4.4 Dependencies
 
@@ -374,7 +386,7 @@ when:
    JSON, an unknown field or token, a color that is not a hex literal,
    a required color or field missing, a repeated theme id); a theme
    whose text reads under 4.5:1 on its background is a warning;
-8g. `scope` is present on an extension that is not a grid extension, has
+8g. `scope` is present on an extension that is not a grid or a refactor extension, has
    a key besides `for` and `query`, a value that is not a list of
    strings, no target at all, or a `for` target other than `global` and
    `workspace`;

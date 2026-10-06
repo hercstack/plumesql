@@ -12,7 +12,8 @@ that branch and the files from the commit the lock names, verifies every
 hash, and keeps what it installed in its own store. Nothing here is
 compiled or bundled: an extension is the text file PlumeSQL reads.
 
-Five kinds of extension exist, named by their double extension:
+Six kinds of extension exist, named by their double extension (and, for
+a JavaScript module, by its manifest's `kind`):
 
 - a **query extension**, `<id>.plumesql.sql`: a saved query with its
   annotations, answered by a live grid (and its buttons, timers, views);
@@ -20,6 +21,9 @@ Five kinds of extension exist, named by their double extension:
   its annotations, answered by a terminal;
 - a **grid extension**, `<id>.plumesql.js`: a JavaScript module that
   formats result columns, adds computed columns or draws a result view;
+- a **refactor extension**, `<id>.plumesql.js` with `"kind": "refactor"`:
+  a JavaScript module whose refactors the SQL editor's lightbulb offers on
+  a statement, and nothing else (a grid extension declares no refactors);
 - a **theme extension**, `<id>.plumesql-theme.json`: one or more color
   themes, hex colors for the app's design tokens and nothing else;
 - a **pack**, `<id>.plumesql-pack.json`: a list of other extensions to
@@ -135,7 +139,7 @@ The checklist, every item of which the validator or the reviewer checks:
 |---|---|---|
 | `format` | yes | Always `1` for now. |
 | `id` | yes | The directory name. |
-| `kind` | yes | `query`, `command` or `grid`, matching the main file. |
+| `kind` | yes | `query`, `command`, `grid`, `refactor`, `theme` or `pack`, matching the main file (a `.plumesql.js` is `grid` or `refactor`). |
 | `version` | yes | Semantic version of this extension; bump it on every change to any file except README and media. |
 | `plumesql` | yes | The minimum PlumeSQL version, `">=X.Y.Z"`. |
 | `name` | yes | Display name, at most 40 characters, no trailing period. |

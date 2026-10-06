@@ -71,6 +71,82 @@ export interface GridExtensionFile {
   // built-in tab and comma separated, JSON and Markdown. See GridFormat
   // below and docs/GRIDJSSPEC.md, Formats.
   formats?: GridFormat[]
+  // REFACTORS: rewrites the SQL editor offers on a statement, beside its
+  // own (the lightbulb, Ctrl+. or Cmd+.). A module with refactors declares
+  // nothing else: the editor's rewrites and a result's dressing are
+  // attached apart. See GridRefactor below and docs/GRIDJSSPEC.md,
+  // Refactors.
+  refactors?: GridRefactor[]
+}
+
+// spec: a refactor. `id` names it within its extension (lowercase letters,
+// digits and hyphens). `refactor` reads ONE statement of the SQL editor
+// and answers the rewrites it offers there, or nothing, in the sandboxed
+// worker (no DOM, no network, bounded by extensions.runTimeoutMs). It is
+// asked whenever the editor asks its own refactors (the caret settling on
+// a statement, Ctrl+. or Cmd+.), so it must be quick and must answer from
+// what it is given. A throw or a timeout offers nothing, logged once per
+// module version.
+export interface GridRefactor {
+  id: string
+  refactor: (
+    statement: RefactorStatement,
+    ctx: RefactorContext
+  ) => RefactorOffer[] | RefactorOffer | null | undefined | Promise<RefactorOffer[] | RefactorOffer | null | undefined>
+}
+
+// spec: the statement a refactor reads. `text` runs from its first code
+// token to its end, the ';' included; every offset (caret, an edit's from
+// and to) is an index into it. `keyword` is its leading keyword in lower
+// case ('select', 'with', 'insert', ...). `tables` are the relations it
+// reads or writes at its own level (its FROM and JOINs, an UPDATE's or a
+// DELETE's target, an INSERT's table), resolved in the connection's
+// dictionary; a name the dictionary does not know is left out.
+export interface RefactorStatement {
+  text: string
+  caret: number
+  keyword: string
+  tables: RefactorTable[]
+}
+
+// spec: one relation of the statement. `ref` is how the statement names it
+// (as written, maybe qualified), `alias` its alias when it has one;
+// `schema` and `name` are the catalog's exact names.
+export interface RefactorTable {
+  ref: string
+  alias?: string
+  schema: string
+  name: string
+  columns: RefactorColumn[]
+  // TimescaleDB's hypertable facts, when the table is one.
+  timescale?: { timeColumn?: string }
+}
+
+// spec: one column. `type` is the declared type as PostgreSQL prints it
+// ('integer', 'vector(3)', 'geometry(Point,4326)'); `pk` its place in the
+// primary key (1 for the first column), absent when it is in none; `ref`
+// the column a foreign key makes it reference.
+export interface RefactorColumn {
+  name: string
+  type: string
+  pk?: number
+  ref?: { schema: string; table: string; column: string }
+}
+
+// spec: the context of one refactor call.
+export interface RefactorContext {
+  // The connected server's major version (17, 18), when PlumeSQL knows it.
+  serverVersion?: number
+  log: (...args: unknown[]) => void
+}
+
+// spec: one rewrite offered. `title` is what the lightbulb's list says;
+// `edits` replace text[from, to) with `text`, all of them at once as ONE
+// undo step. Edits must not overlap and must stay inside the statement;
+// an offer that breaks either is dropped.
+export interface RefactorOffer {
+  title: string
+  edits: { from: number; to: number; text: string }[]
 }
 
 // spec: a copy and save format. `id` names it within its extension
@@ -319,9 +395,9 @@ as guessed.
 ### 1. The default export
 
 The default export is one of: an array of `GridRule`; an object with a `rules`
-array (`{ version?, inputs?, rules, views?, inspectors?, formats? }`, section 10 for `inputs`, section 11 for `inspectors`, section 13 for `formats`); or a single `GridRule` on its own (an object that
+array (`{ version?, inputs?, rules, views?, inspectors?, formats?, refactors? }`, section 10 for `inputs`, section 11 for `inspectors`, section 13 for `formats`, section 14 for `refactors`); or a single `GridRule` on its own (an object that
 carries an `fn`), a convenience so a one-rule file needs no array. An object
-that carries only `views`, only `inspectors` or only `formats` is valid too. A file may
+that carries only `views`, only `inspectors`, only `formats` or only `refactors` is valid too. A file may
 hold as many rules as it likes, formatters and computed columns mixed. A default
 export that is none of these (a bare object with neither `rules` nor `fn`, a
 number, nothing) yields no rules. An empty array or `{ rules: [] }` is valid and
@@ -864,3 +940,74 @@ cannot load or runs longer than the host's limit (at least ten seconds, more
 when the host's extension time limit is larger) fails the copy or the save
 as a whole: nothing reaches the clipboard or the file, and the reason goes
 to the host's Log.
+
+### 14. Refactors
+
+A module MAY declare `refactors`: rewrites the SQL editor offers on a
+statement beside its own (the lightbulb, Ctrl+. or Cmd+.). A refactor is an
+object with an `id` (lowercase letters, digits and hyphens, unique within the
+module; a repeated id keeps the first) and a `refactor(statement, ctx)`
+function. An entry without either is dropped and the editor's check of the
+file says why. The host keys a refactor `<extension id>/<id>`.
+
+**Alone in its module.** A module that declares refactors MUST declare
+nothing else: no rules, views, inspectors or formats (empty lists are
+nothing). In the Marketplace such a module is a REFACTOR extension
+(`"kind": "refactor"` in its manifest, the same `.plumesql.js` file), and
+a grid extension's module declares no refactors (the Marketplace's kinds). The editor's rewrites and a result's dressing are wanted in
+different places (a refactor everywhere, a sketch only where a script asks
+for it), and the scope belongs to the whole extension, so they live in
+extensions of their own. A module that mixes them keeps its rules, views,
+inspectors and formats and its refactors are not read; the editor's check of
+the file says so.
+
+**Where.** A refactor is scoped like a rule (section 9), read against the
+EDITOR: `@for` against the script the statement is in, `@query` against the
+statement's text and, for a table target, the statement's one table. A
+`-- @extension` naming the extension in the script's header or above the
+statement applies it there whatever its scope, as it does a rule to a result;
+unscoped, it applies nowhere. Within its scope a refactor decides for itself
+whether it has anything to offer, from what it is given, and answers nothing
+otherwise. Turning extensions off (`extensions.enabled`) turns them off.
+
+**The call.** The host calls `refactor(statement, ctx)` whenever it asks its
+own refactors for a statement: when the caret settles in one, and on Ctrl+. or
+Cmd+.. It runs in the same sandbox as an inspector (no DOM, no network, no host
+interface), with the module's closure, bounded by `extensions.runTimeoutMs`,
+and MAY return a promise. Being asked on every caret move, a refactor MUST be
+quick and MUST answer from what it is given; it cannot ask the server.
+
+`statement` carries:
+
+- `text`: the statement from its first code token to its end, the `;`
+  included. Every offset (`caret`, an edit's `from` and `to`) indexes it.
+- `caret`: where the caret stands in `text`. A host offers the same
+  refactors wherever the caret stands in one statement, so a refactor SHOULD
+  read the caret only to choose among several candidates of one kind (two
+  `*`, two subqueries), and offer a single candidate from anywhere.
+- `keyword`: the leading keyword in lower case (`select`, `with`, `insert`,
+  `update`, `delete`, ...).
+- `tables`: the relations the statement reads or writes at its own level (its
+  FROM and JOINs, an UPDATE's or a DELETE's target, an INSERT's table),
+  resolved in the connection's dictionary; one the dictionary does not know
+  is left out, a subquery's own tables are not listed. Each carries `ref`
+  (how the statement names it), `alias`, the exact `schema` and `name`, its
+  `columns` (`name`, the declared `type` as PostgreSQL prints it, `pk` its
+  place in the primary key, `ref` the column a foreign key makes it
+  reference), and `timescale.timeColumn` when it is a TimescaleDB hypertable.
+
+`ctx` carries `serverVersion` (the connected server's major version, when
+known) and `log` (a line to PlumeSQL's Log, as for a formula).
+
+**The answer.** A refactor answers an offer (`{ title, edits }`), an array of
+them, or `null` / `undefined` for nothing. `title` is what the lightbulb's
+list says (trimmed, at most 120 characters). `edits` replace
+`text[from, to)` with `text`, all at once, as ONE undo step; offsets are
+integers inside the statement and edits MUST NOT overlap. An offer that
+breaks any of this is dropped whole, and at most 20 offers of one call are
+read. The host lists the offers after its own refactors, every extension's in
+the order the extensions load.
+
+**Failure.** A refactor that throws, rejects or runs out of time offers
+nothing, and the host logs the failure once per module version, with the
+module one click away. Its `ctx.log` lines go to the Log as a formula's do.

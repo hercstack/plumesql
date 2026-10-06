@@ -1,11 +1,11 @@
 {
   "format": 1,
-  "id": "postgis",
-  "kind": "grid",
-  "version": "1.1.0",
-  "plumesql": ">=0.22.0",
-  "name": "PostGIS",
-  "description": "Geometry and geography as EWKT in the grid, with a sketch of the shape wherever you meet them, and a whole column sketched at once",
+  "id": "postgis-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.23.0",
+  "name": "PostGIS refactors",
+  "description": "Geometry and geography columns as readable WKT or GeoJSON, a lightbulb away in the editor",
   "categories": [
     "PostGIS"
   ],
@@ -13,12 +13,11 @@
     "postgis",
     "geometry",
     "geography",
-    "ewkt",
-    "ewkb",
+    "wkt",
+    "geojson",
     "spatial",
     "gis",
-    "inspector",
-    "sketch"
+    "refactor"
   ],
   "requires": {
     "pgExtensions": [
@@ -26,14 +25,8 @@
     ],
     "pgVersion": ">=13"
   },
-  "types": [
-    "geometry",
-    "geography"
-  ],
   "files": [
-    "postgis.plumesql.js",
-    "lib/wkb.js",
-    "icon.svg"
+    "postgis-refactors.plumesql.js"
   ],
   "dependencies": [],
   "permissions": {
@@ -44,9 +37,8 @@
       "global"
     ]
   },
-  "discussion": 168,
+  "discussion": 187,
   "externals": [],
-  "icon": "icon.svg",
   "author": {
     "name": "PlumeSQL",
     "url": "https://plume.hercstack.com"

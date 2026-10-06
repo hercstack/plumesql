@@ -16,8 +16,10 @@ import { parseEWKB, parseEWKT, toEWKT, geometrySvg, geometryExtent, drawGeometri
 //   field  the row editor: a live sketch of the stored hex, or of the EWKT
 //          being typed
 //
-// and a VIEW, Geometry Sketch, that draws every geometry of a column
-// together (below, "The column sketch").
+// a VIEW, Geometry Sketch, that draws every geometry of a column together
+// (below, "The column sketch"), and a FORMATTER: the grid's cell shows the
+// value as EWKT instead of the hex, the column staying geometry (its value,
+// its type, every reading above unchanged).
 //
 // The inspectors match the column's DECLARED type (geometry, geography,
 // with or without a typmod or a schema): a text column holding hex is text.
@@ -255,8 +257,24 @@ function emptyText(r) {
   return 'Nothing in the column decodes as a geometry.'
 }
 
+/**
+ * The grid's cell as EWKT: the whole value, never shortened, since a copy
+ * takes the cell as the grid shows it. A value that is not EWKB hex (a
+ * geometry sent as text by some driver) shows as it came.
+ * @param {unknown} value
+ */
+function cellAsEWKT(value) {
+  if (typeof value !== 'string') return value
+  const g = parseEWKB(value)
+  return g ? toEWKT(g) : value
+}
+
 /** @type {PlumeSQLExtension} */
 export default {
+  rules: [
+    { match: { type: 'geometry' }, fn: cellAsEWKT },
+    { match: { type: 'geography' }, fn: cellAsEWKT }
+  ],
   inspectors: [
     { match: { type: 'geometry' }, label: 'geometry', inspect: inspectGeometry },
     { match: { type: 'geography' }, label: 'geometry', inspect: inspectGeometry }

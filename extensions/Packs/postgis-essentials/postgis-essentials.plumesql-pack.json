@@ -1,6 +1,7 @@
 {
   "members": [
     "postgis",
+    "postgis-refactors",
     "validate-geometry",
     "invalid-geometries"
   ]

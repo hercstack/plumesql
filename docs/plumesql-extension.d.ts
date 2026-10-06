@@ -480,10 +480,78 @@ interface PlumeSQLFormat {
   format(data: FormatData, ctx: FormatContext): string | Promise<string>;
 }
 
+/** One column of a statement's table, as the connection's dictionary has it. */
+interface RefactorColumn {
+  name: string;
+  /** The declared type as PostgreSQL prints it ('integer', 'vector(3)'). */
+  type: string;
+  /** Its place in the primary key, 1 for the first column; absent when in none. */
+  pk?: number;
+  /** The column a foreign key makes this one reference. */
+  ref?: { schema: string; table: string; column: string };
+}
+
+/** One relation of the statement, resolved in the dictionary. */
+interface RefactorTable {
+  /** How the statement names it, as written (maybe qualified). */
+  ref: string;
+  /** Its alias in the statement, when it has one. */
+  alias?: string;
+  schema: string;
+  name: string;
+  columns: RefactorColumn[];
+  /** TimescaleDB's hypertable facts, when the table is one. */
+  timescale?: { timeColumn?: string };
+}
+
+/** The statement a refactor reads. Every offset indexes text. */
+interface RefactorStatement {
+  /** From its first code token to its end, the ';' included. */
+  text: string;
+  /** Where the caret stands in text. Offer the same rewrites wherever the
+   * caret stands; read it only to choose among several of one kind. */
+  caret: number;
+  /** Its leading keyword in lower case: 'select', 'with', 'insert', ... */
+  keyword: string;
+  /** The relations it reads or writes at its own level (FROM and JOINs, an
+   * UPDATE's or a DELETE's target, an INSERT's table). */
+  tables: RefactorTable[];
+}
+
+/** The context of one refactor call. */
+interface RefactorContext {
+  /** The connected server's major version (17, 18), when known. */
+  serverVersion?: number;
+  /** Write a line to PlumeSQL's Log. */
+  log(...args: unknown[]): void;
+}
+
+/** One rewrite offered: what the lightbulb says, and the edits, applied at
+ * once as one undo step. Edits replace text[from, to) and must not overlap. */
+interface RefactorOffer {
+  title: string;
+  edits: { from: number; to: number; text: string }[];
+}
+
+/** A REFACTOR: a rewrite the SQL editor offers on a statement, beside its own
+ * (the lightbulb, Ctrl+. or Cmd+.). Asked in the editors the extension is
+ * attached to, on every caret move: answer quickly, from what you are given,
+ * and nothing when the statement is not yours. A module with refactors
+ * declares nothing else (no rules, views, inspectors or formats). Runs in a sandboxed Worker (no
+ * DOM, no network), bounded by a timeout; a throw offers nothing and the Log
+ * says why once. */
+interface PlumeSQLRefactor {
+  /** Its name within the extension: lowercase letters, digits and hyphens. */
+  id: string;
+  refactor(statement: RefactorStatement, ctx: RefactorContext): RefactorOffer[] | RefactorOffer | null | undefined | Promise<RefactorOffer[] | RefactorOffer | null | undefined>;
+}
+
 /** A PlumeSQL grid extension's default export: an array of rules, or an object with
- * rules, views, inspectors and / or formats. The object's inputs belong to its rules: the host asks
+ * rules, views, inspectors, formats and / or refactors. The object's inputs belong to its rules: the host asks
  * for them once per result (a script's -- @inputs line answers them), a match
  * may name one (match: { input: 'column' }), and every formula reads the
  * answers as ctx.inputs. A view declares inputs of its own. Annotate the export
  * with a JSDoc @type PlumeSQLExtension to type the formula and render callbacks. */
-type PlumeSQLExtension = GridRule[] | { inputs?: ViewInput[]; rules?: GridRule[]; views?: PlumeSQLView[]; inspectors?: PlumeSQLInspector[]; formats?: PlumeSQLFormat[] };
+type PlumeSQLExtension =
+  | GridRule[]
+  | { inputs?: ViewInput[]; rules?: GridRule[]; views?: PlumeSQLView[]; inspectors?: PlumeSQLInspector[]; formats?: PlumeSQLFormat[]; refactors?: PlumeSQLRefactor[] };

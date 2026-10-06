@@ -1,0 +1,44 @@
+{
+  "format": 1,
+  "id": "timescaledb-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.23.0",
+  "name": "TimescaleDB refactors",
+  "description": "A hypertable's rows counted by the hour or by the day, a lightbulb away in the editor",
+  "categories": [
+    "TimescaleDB"
+  ],
+  "tags": [
+    "timescaledb",
+    "hypertables",
+    "time_bucket",
+    "timeseries",
+    "refactor"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "timescaledb"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "timescaledb-refactors.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 188,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

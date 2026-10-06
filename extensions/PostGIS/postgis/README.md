@@ -15,6 +15,10 @@ Every geometry kind reads: points, lines, polygons with their holes, the multis 
 
 A sketch is a shape, not a map: the coordinates are drawn as they are, one scale for both axes, latitude up, with no basemap and no projection. A very large geometry is drawn coarser in the small sketches.
 
+## Readable cells
+
+The grid shows a geometry or geography cell as EWKT (`SRID=4326;POINT(15.9819 45.815)`) instead of the hex PostGIS sends. Only the face changes: the column is still a geometry, so the hover card, the peek, the value tab and the sketches read it as before, and the value tab's Decode geometry toggle still shows the hex as stored. Copy takes the cell as the grid shows it, the whole EWKT, which PostGIS reads back as a geometry (`'SRID=4326;POINT(15.9819 45.815)'::geometry`).
+
 ## Where it applies
 
 Every column whose declared type is `geometry` or `geography` (with a type modifier such as `geometry(Point,4326)`, and schema qualified when PostGIS lives off the `search_path`), in every result, from the install on (a global scope you can change on its page). A text column holding hex is text and stays that way. The Geometry Sketch tab shows only on a result that has such a column.

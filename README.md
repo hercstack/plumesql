@@ -28,6 +28,11 @@ Free · No account · macOS, Windows, Linux
 - **Completion that understands your query.** PostgreSQL's own parser
   reads the statement, so completion works inside nested subqueries,
   CTEs and the aliases you just typed.
+- **Refactors a click away.** The lightbulb beside each statement
+  rewrites it for you: join a related table along its foreign key, fix
+  an ambiguous column, preview the rows a DELETE would touch, turn an
+  INSERT into an upsert, query JSON with containment. Extensions add
+  their own, for PostGIS, pgvector and TimescaleDB.
 - **PL/pgSQL checked as you type.** Function bodies are checked against
   your real server, without creating anything.
 - **Your session, honestly.** A temp table or a table created in an
@@ -100,6 +105,7 @@ JavaScript view over a result. Start with
 ## See it in action
 
 - [PlumeSQL in 90 seconds](https://www.youtube.com/watch?v=HlLU1z-JeoY)
+- [Refactorings: the lightbulb rewrites SQL for you](https://www.youtube.com/watch?v=-sZ1rtXzpt8)
 - [Query extensions: SQL files with annotations](https://www.youtube.com/watch?v=f_ZE0SI1myU)
 - [DBA tools as extensions](https://www.youtube.com/watch?v=erkLWykPNwQ)
 - [A grid for millions of rows](https://www.youtube.com/watch?v=6KUaK5CGuvU)

@@ -2,10 +2,10 @@
   "format": 1,
   "id": "postgis-essentials",
   "kind": "pack",
-  "version": "1.0.0",
-  "plumesql": ">=0.22.0",
+  "version": "1.1.0",
+  "plumesql": ">=0.23.0",
   "name": "PostGIS essentials",
-  "description": "Everything PlumeSQL reads PostGIS with: geometry values as EWKT with sketches, a whole column sketched, and PostGIS's own validity checks",
+  "description": "Everything PlumeSQL reads PostGIS with: geometry as EWKT with sketches, readable geometry in the editor, and validity checks",
   "categories": [
     "Packs",
     "PostGIS"

@@ -205,9 +205,12 @@ function collect(category, id) {
   const present = walkFiles(dir).filter((f) => f !== 'manifest.json' && f !== 'README.md' && !f.startsWith('media/'))
   const mainExt = Object.keys(KINDS).find((ext) => present.includes(id + ext))
   if (!mainExt) fail(where, `no main file ${id}.plumesql.sql, ${id}.plumesql.run, ${id}.plumesql.js or ${id}.plumesql-theme.json`)
-  const kind = mainExt ? KINDS[mainExt] : undefined
+  // A .plumesql.js module is a grid extension, or a refactor extension when
+  // its manifest says so: the same kind of file, the kind the manifest's.
+  const fileKind = mainExt ? KINDS[mainExt] : undefined
+  const kind = fileKind === 'grid' && m.kind === 'refactor' ? 'refactor' : fileKind
   if (kind && m.kind !== kind) fail(where, `kind "${m.kind}" does not match the main file (${kind})`)
-  if (!['query', 'command', 'grid', 'theme', 'pack'].includes(m.kind)) fail(where, `kind must be query, command, grid, theme or pack`)
+  if (!['query', 'command', 'grid', 'refactor', 'theme', 'pack'].includes(m.kind)) fail(where, `kind must be query, command, grid, refactor, theme or pack`)
   // rule 3b: a pack is its member list alone, and no code (it names what it
   // installs; each member installs the way its own kind does)
   if (kind === 'pack' && present.length !== 1) fail(where, 'a pack is its pack file alone')
@@ -276,7 +279,7 @@ function collect(category, id) {
   if (m.scope !== undefined) {
     const sc = m.scope
     const keys = sc && typeof sc === 'object' && !Array.isArray(sc) ? Object.keys(sc) : null
-    if (m.kind !== 'grid') fail(where, 'scope is for a grid extension alone: the others run on a gesture and attach to no result')
+    if (m.kind !== 'grid' && m.kind !== 'refactor') fail(where, 'scope is for a grid or a refactor extension alone: the others run on a gesture and attach to nothing')
     else if (!keys || keys.some((k) => k !== 'for' && k !== 'query')) fail(where, 'scope is { "for": [...], "query": [...] } and nothing else')
     else {
       const list = (v) => v === undefined || (Array.isArray(v) && v.every((x) => typeof x === 'string' && x.trim()))
@@ -373,7 +376,7 @@ function collect(category, id) {
   if (mainExt && kind === 'theme') checkTheme(join(dir, id + mainExt), where)
   else if (mainExt && kind === 'pack') members = readPack(join(dir, id + mainExt), where)
   else if (mainExt) checkHeaders(join(dir, id + mainExt), kind, where)
-  if (kind === 'grid') {
+  if (kind === 'grid' || kind === 'refactor') {
     for (const f of present.filter((f) => f.endsWith('.js') && f !== id + mainExt)) checkHeaders(join(dir, f), 'helper', where + '/' + f)
   }
 
@@ -490,9 +493,9 @@ function checkHeaders(file, kind, where) {
       if (l.trim() === '') continue
       if (!/^\s*\/\//.test(l)) break
       const m = /^\s*\/\/\s*@([A-Za-z][\w-]*)/.exec(l)
-      if (m && kind === 'grid' && !GRID_MARKERS.has(m[1])) fail(where, `line ${i + 1}: unknown marker // @${m[1]}`)
+      if (m && (kind === 'grid' || kind === 'refactor') && !GRID_MARKERS.has(m[1])) fail(where, `line ${i + 1}: unknown marker // @${m[1]}`)
     }
-    if (kind === 'grid' && !/^\s*\/\/\s*@description\b/m.test(text)) fail(where, 'a grid extension carries a // @description marker')
+    if ((kind === 'grid' || kind === 'refactor') && !/^\s*\/\/\s*@description\b/m.test(text)) fail(where, `a ${kind} extension carries a // @description marker`)
   }
 }
 

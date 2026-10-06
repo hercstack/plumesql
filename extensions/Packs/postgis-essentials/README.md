@@ -1,10 +1,11 @@
 # PostGIS essentials
 
-Everything PlumeSQL reads PostGIS with: geometry and geography values as EWKT with a sketch of the shape, a whole column sketched at once, and PostGIS's own validity checks on a value and on a column.
+Everything PlumeSQL reads PostGIS with: geometry and geography values as EWKT with a sketch of the shape, a whole column sketched at once, readable geometry a lightbulb away in the editor, and PostGIS's own validity checks on a value and on a column.
 
 ## What it installs
 
 - `postgis`: geometry and geography values read on hover, in the peek, the value tab and the row editor, and the Sketch Geometry Column view
+- `postgis-refactors`: geometry and geography columns as readable WKT or GeoJSON, from the editor's lightbulb
 - `validate-geometry`: is this one geometry valid, and why not
 - `invalid-geometries`: every invalid geometry of a column's table
 
