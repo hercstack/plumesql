@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "plot-boxplot",
+  "kind": "grid",
+  "version": "1.1.0",
+  "plumesql": ">=0.21.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Statistical Charts/plot-boxplot",
+  "files": [
+    {
+      "path": "plot-boxplot.plumesql.js",
+      "sha256": "39d6e76faafc7da475d2bf883ed9d4486fa168019b33f9b6662c03f7fd79f512",
+      "bytes": 3109
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "8b272e521942861c18841d4f15c7704efe0296231d96ae835fcade03894ad941",
+      "bytes": 497
+    }
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "externals": [],
+  "demo": "media/plot-boxplot.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 58,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

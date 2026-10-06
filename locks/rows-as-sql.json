@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "rows-as-sql",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Reshape/rows-as-sql",
+  "files": [
+    {
+      "path": "rows-as-sql.plumesql.js",
+      "sha256": "76cf79c9075caf891742b6fbf0b32ab9bc834bf7ce405b9a637428451cf22268",
+      "bytes": 11174
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "5b87635094e2b0dc10d3e87e8cd95bc67674aa890a21573400438063719e4d47",
+      "bytes": 522
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/rows-as-sql.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 183,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

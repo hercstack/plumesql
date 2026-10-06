@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "pivot",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Reshape/pivot",
+  "files": [
+    {
+      "path": "pivot.plumesql.js",
+      "sha256": "853076f71bede998b48c94a52765399b2f1d6edd900e3c6c95eae9272c29e033",
+      "bytes": 6063
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "f2544a33f700780bb30ebe07d9534861fc4eaf51003592868c1802c9c8213d4f",
+      "bytes": 810
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/pivot.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 56,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

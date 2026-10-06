@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "uplot",
+  "kind": "grid",
+  "version": "1.1.0",
+  "plumesql": ">=0.21.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Charts/uplot",
+  "files": [
+    {
+      "path": "uplot.plumesql.js",
+      "sha256": "84180b05602dece64da0531154f34d268efbd577e24f156258366ac7c0469fdf",
+      "bytes": 7616
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "caa35e3af5bddf59f6f7b42cbb778c1734a87313f89dfbd51bbbbef494ba242a",
+      "bytes": 409
+    }
+  ],
+  "dependencies": [],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/uplot@1/dist/uPlot.iife.min.js"
+  ],
+  "demo": "media/uplot.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 102,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

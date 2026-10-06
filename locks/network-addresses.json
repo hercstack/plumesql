@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "network-addresses",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Data Types/network-addresses",
+  "files": [
+    {
+      "path": "network-addresses.plumesql.js",
+      "sha256": "7b87d3fc60703af00bae99e969cdd49b6f96c5c85babb0c13340284bcdafece8",
+      "bytes": 6285
+    },
+    {
+      "path": "lib/net.js",
+      "sha256": "2417efe861ba6b07bdd9aee23e832ccc9ce37dce8803a4eca6ebde68bb2e2c59",
+      "bytes": 13555
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "c5faa6cc0602f51ee2d5e019af944e474c581d3120b84c4b29401482c6160d9f",
+      "bytes": 738
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 174,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

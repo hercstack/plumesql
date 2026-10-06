@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "everforest",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Themes/everforest",
+  "files": [
+    {
+      "path": "everforest.plumesql-theme.json",
+      "sha256": "ee1160e1683c120601b71150c9fad5859b45a69a3c8d7ff5be379e9246f2a36a",
+      "bytes": 2694
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/everforest.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 114,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

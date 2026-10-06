@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "transaction-age",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Storage and Maintenance/transaction-age",
+  "files": [
+    {
+      "path": "transaction-age.plumesql.sql",
+      "sha256": "3813155841e6706fe14fbb7009053ceb0d31d947556b330d92c10f067ca66b2a",
+      "bytes": 1299
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/transaction-age.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 98,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

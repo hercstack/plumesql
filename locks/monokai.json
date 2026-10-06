@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "monokai",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Themes/monokai",
+  "files": [
+    {
+      "path": "monokai.plumesql-theme.json",
+      "sha256": "e0c9716115ae49ef82e19b96fee8aea9dbcadb784a8dcdae3a7cb00f1c468d60",
+      "bytes": 1383
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/monokai.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 126,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

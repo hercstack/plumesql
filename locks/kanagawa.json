@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "kanagawa",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Themes/kanagawa",
+  "files": [
+    {
+      "path": "kanagawa.plumesql-theme.json",
+      "sha256": "8fe81e69cda70e1aa878f0cad64fa2053ee4b96fe59a5f345e279f2e622f3763",
+      "bytes": 2690
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/kanagawa.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 124,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

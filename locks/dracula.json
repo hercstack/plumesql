@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "dracula",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Themes/dracula",
+  "files": [
+    {
+      "path": "dracula.plumesql-theme.json",
+      "sha256": "3f29b5ab0419169198ba424b480542baed31b31287cfb942d76387161994eab9",
+      "bytes": 1382
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/dracula.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 113,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

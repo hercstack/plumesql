@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "stats-core",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Extension Authoring/stats-core",
+  "files": [
+    {
+      "path": "stats-core.plumesql.js",
+      "sha256": "8ff06f87e912dbb10331e92b0c92b6479db06e75ede2094a619e438247f20dc7",
+      "bytes": 15299
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "8d96c45734b0ece460efc93b2bd2c91d4864f93da8edf5d772be88af479ea4e1",
+      "bytes": 598
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 140,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

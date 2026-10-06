@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "ayu",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Themes/ayu",
+  "files": [
+    {
+      "path": "ayu.plumesql-theme.json",
+      "sha256": "a996769a4d0fb7747745ed9d3d982a4f299d159127b7d40a4cbde51fc8dd984d",
+      "bytes": 4012
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/ayu.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 107,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

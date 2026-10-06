@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "search-data",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Objects/search-data",
+  "files": [
+    {
+      "path": "search-data.plumesql.sql",
+      "sha256": "1d9f2db4cec21542193d3900eae2f6237cd84125da2b2792d30bd0ff3e92fa51",
+      "bytes": 6127
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "3f0f59c07ec0ba81baa31b16a7e9f09771f9281215c7c691ad7d68b8b699b04e",
+      "bytes": 562
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/search-data.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 178,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "developer-essentials",
+  "kind": "pack",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Packs/developer-essentials",
+  "files": [
+    {
+      "path": "developer-essentials.plumesql-pack.json",
+      "sha256": "8fd895a3e48c1b123ddd703e3fcfd3a4005a6120b7e797b287fb97dc0be3a788",
+      "bytes": 197
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 181,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

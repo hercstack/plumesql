@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "catppuccin",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Themes/catppuccin",
+  "files": [
+    {
+      "path": "catppuccin.plumesql-theme.json",
+      "sha256": "bab1cd67b784e22ccab4d077e44c3dab76a2a6a36677e72aa649c34f42f4235c",
+      "bytes": 5001
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/catppuccin.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 108,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

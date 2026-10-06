@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "cache-hit-ratio",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Performance/cache-hit-ratio",
+  "files": [
+    {
+      "path": "cache-hit-ratio.plumesql.sql",
+      "sha256": "2aa2dda120fc74addd866bd6dc667cb8eff85329300805ef6d233525258db23d",
+      "bytes": 1431
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/cache-hit-ratio.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 146,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

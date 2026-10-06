@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "cron-schedule-job",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "pg_cron/cron-schedule-job",
+  "files": [
+    {
+      "path": "cron-schedule-job.plumesql.sql",
+      "sha256": "a5eb7063230cf4cf08d5c99cd66a90015699a1f3307f2c3e2d003a56eadaf152",
+      "bytes": 512
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/cron-schedule-job.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 19,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

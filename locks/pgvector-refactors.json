@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "pgvector-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.23.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "pgvector/pgvector-refactors",
+  "files": [
+    {
+      "path": "pgvector-refactors.plumesql.js",
+      "sha256": "a6815651e1fc8fdfc6223e9d3f5e493b65d7d6def5984ca7ef6d5a4e5f62107d",
+      "bytes": 2363
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 186,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

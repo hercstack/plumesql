@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "unpivot",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Reshape/unpivot",
+  "files": [
+    {
+      "path": "unpivot.plumesql.js",
+      "sha256": "45a96e5b46f36676bfdab8a89cb4cba4d52f2a17bbe2c80134219b92f9817f28",
+      "bytes": 3069
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "563463f1e5a959250ed3b6038e56602962964a596240c8c8e993bab7826957c4",
+      "bytes": 841
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/unpivot.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 144,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

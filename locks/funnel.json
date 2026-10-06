@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "funnel",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Dashboards/funnel",
+  "files": [
+    {
+      "path": "funnel.plumesql.js",
+      "sha256": "0216dea8194d59680bfc56f6da0bd141423abc144e81607f2bfdc29a598b55d8",
+      "bytes": 6189
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "e67508cf58cfc020446bad1ad765ba8f8ff2145da8d998882d0504a7d58d055a",
+      "bytes": 423
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "demo": "media/funnel.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 116,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "conditional-format",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Formatting/conditional-format",
+  "files": [
+    {
+      "path": "conditional-format.plumesql.js",
+      "sha256": "61069fb6c1a69b6d7e1392ff1ea4729eeba0e6293b4c48d5c2fdc02fb3d0b7df",
+      "bytes": 6244
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "29d6c77edd063b2479a5df0aa788105af87cf486486a1a8b783605d59e023cc9",
+      "bytes": 715
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/conditional-format.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 111,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

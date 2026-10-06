@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "activity-chart",
+  "kind": "grid",
+  "version": "1.1.0",
+  "plumesql": ">=0.21.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Activity and Locks/activity-chart",
+  "files": [
+    {
+      "path": "activity-chart.plumesql.js",
+      "sha256": "57cc4a49f800adfc29e68f16ea9654b2bb1bfc68dbbcbf3d4ec221213577065b",
+      "bytes": 11811
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "7a4421e2e47fdd13a2c57d87d5b4e94ac0a5e6824e867ec34f191d628719831a",
+      "bytes": 614
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/activity-chart.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 1,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

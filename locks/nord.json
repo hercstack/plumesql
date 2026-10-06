@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "nord",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Themes/nord",
+  "files": [
+    {
+      "path": "nord.plumesql-theme.json",
+      "sha256": "156bf68e2789323b712dc724155c9a0b9df02e522b9bb0db08c27bdd3daef2b0",
+      "bytes": 1345
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/nord.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 129,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

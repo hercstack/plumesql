@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "dump-table",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Backup and Tools/dump-table",
+  "files": [
+    {
+      "path": "dump-table.plumesql.run",
+      "sha256": "fc3ac5d2bae0cdf4691f0ef03731af6d0e35c160f8d909690acddab7e9faeb78",
+      "bytes": 1061
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/dump-table.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 34,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

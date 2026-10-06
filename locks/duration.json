@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "duration",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Formatting/duration",
+  "files": [
+    {
+      "path": "duration.plumesql.js",
+      "sha256": "e5e0a2f0aef032f1099f41b328f26d2613cb18a75193daf559d1d30957ea0f7e",
+      "bytes": 1198
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/duration.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 35,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

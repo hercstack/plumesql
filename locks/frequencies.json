@@ -1,0 +1,30 @@
+{
+  "format": 1,
+  "id": "frequencies",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Analysis/frequencies",
+  "files": [
+    {
+      "path": "frequencies.plumesql.js",
+      "sha256": "964100025eba78460b434c870419608f35d603b8420dfca9f6bd5d9c6c235163",
+      "bytes": 4298
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/frequencies.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 160,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}

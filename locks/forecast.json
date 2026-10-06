@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "forecast",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "7c9fd0f1e331a5f0c0e31845531394d308a92fbe",
+  "path": "Analysis/forecast",
+  "files": [
+    {
+      "path": "forecast.plumesql.js",
+      "sha256": "797403cb37809526fcca87439534f94c2517d0849bc12517152aba47a21044ac",
+      "bytes": 4926
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "c9f28efd067b555d0435f96494c8f3078798f0531280a82787e62bdc5dc3a459",
+      "bytes": 456
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/forecast.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 115,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plume.hercstack.com"
+  },
+  "license": "MIT"
+}
