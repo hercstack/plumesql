@@ -132,6 +132,15 @@
           "summary": "Statement marks show what a statement will do before it runs, red for an UPDATE or DELETE without WHERE. COMMIT can ask first and show what the transaction changed. A script can declare itself read only with @readonly, and then PostgreSQL itself refuses any write; @confirm-writes asks before each one.",
           "seconds": 93,
           "youtube": "NSSrcrC7glI"
+        },
+        {
+          "n": 41,
+          "slug": "refactorings",
+          "title": "Refactorings: the lightbulb rewrites SQL for you",
+          "short": "Joins, fixes, safe changes, JSON and refactors from extensions",
+          "summary": "The lightbulb in the gutter (yellow on the statement you are in) lists what PlumeSQL can rewrite: expand * into columns, join a related table along its foreign key, qualify an ambiguous column (a quick fix for the server's 42702), add the missing GROUP BY, rewrite NOT IN as a NULL-safe NOT EXISTS, turn a value into a run parameter, preview the rows a DELETE would touch, give an UPDATE its WHERE and RETURNING, make an INSERT an upsert, and work with JSON (containment operator, expand an object into rows). Refactor extensions from the Marketplace add their own: PostGIS readable geometry, pgvector nearest neighbours, TimescaleDB time buckets, and an extension suggested for a query. The same list is in the right-click menu, and Refactor Settings turns each one on or off.",
+          "seconds": 167,
+          "youtube": "-sZ1rtXzpt8"
         }
       ]
     },
