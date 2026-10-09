@@ -226,7 +226,7 @@ optional.
 ## Help
 
 - Questions: [Q&A in Discussions](https://github.com/hercstack/plumesql/discussions/categories/q-a)
-- About one extension: its own thread under
+- About an extension: its own thread under
   [Extensions](https://github.com/hercstack/plumesql/discussions/categories/extensions),
   where the comments from its page in the app also go
 - Bugs: [Issues](https://github.com/hercstack/plumesql/issues), or Report a Bug in the app
