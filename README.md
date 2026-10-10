@@ -1,22 +1,24 @@
-<div align="center">
+# <img src="docs/images/logo.png" alt="" height="24"> PlumeSQL
 
-<img src="docs/images/logo.png" alt="PlumeSQL" width="96" height="96" />
+> Turn SQL into tools: a desktop IDE for PostgreSQL, where a SQL file
+> can become a monitor, a dashboard or a button.
 
-# PlumeSQL
-
-**Turn SQL into tools.**
-
-A desktop IDE for PostgreSQL, where a SQL file can become a monitor,
-a dashboard or a button.
+> [!NOTE]
+> PlumeSQL is in beta and actively developed. New releases come often,
+> and features can still change between them. The app updates itself.
+> Something broken or missing?
+> [Open an issue](https://github.com/hercstack/plumesql/issues), or use
+> Report a Bug in the app.
 
 [Download](https://github.com/hercstack/plumesql/releases) ·
 [Videos](https://www.youtube.com/@plumesql) ·
 [Extensions](extensions/) ·
 [Discussions](https://github.com/hercstack/plumesql/discussions)
 
-</div>
-
-This SQL file is a lock monitor:
+Here's a whole extension. It's one SQL file, a query and a few `@`
+comments, and PlumeSQL turns it into a small app you run from the
+Extensions tab or pin to the title bar. This one is a lock monitor. It
+shows who is waiting on a lock and who is holding it:
 
 ```sql
 -- @description Backends waiting on a lock, and the backend holding it
@@ -36,42 +38,90 @@ row, which asks before it acts:
 
 <img src="extensions/Activity%20and%20Locks/blocking-locks/media/blocking-locks.webp" alt="The lock monitor running: a blocked backend's row, its Terminate button, the confirmation, and the row gone" width="720" />
 
-The full version, which also opens everything a blocker holds up, is
-the [blocking-locks](extensions/Activity%20and%20Locks/blocking-locks/)
-extension.
+That's a cut-down version of
+[blocking-locks](extensions/Activity%20and%20Locks/blocking-locks/),
+one of more than 170 extensions in this repo. Others draw charts and 3D
+views, put your PostGIS data on a map, or add refactors for PostGIS,
+pgvector and TimescaleDB. [More below](#extensions).
 
 **Free, no account, for macOS, Windows and Linux.** The app is closed
 source; the extensions and specifications in this repository are
-[MIT](LICENSE). Made by Vedran Bilopavlović, author of
-[NpgsqlRest](https://github.com/NpgsqlRest/NpgsqlRest), and Kristijan
-Soldo.
+[MIT](LICENSE).
 
 ## Deep on PostgreSQL
 
-PlumeSQL does not try to be a universal database client. It uses
-PostgreSQL's own parser, catalogs and sessions, and goes deep where
-general-purpose clients stay shallow:
+Most database tools support every database under the sun, and none of
+them really well. PlumeSQL only does PostgreSQL, and goes deep on it.
+It's built on PostgreSQL's own parser, catalogs and sessions:
 
-- **EXPLAIN that points at the problem.** The
+- **An extension for almost everything.** Locks, waits, vacuum, bloat,
+  replication, indexes, checkpoints, I/O, sequences close to overflow,
+  ranges, network types, backups. We even have extensions for the
+  PostgreSQL extensions: [PostGIS](extensions/PostGIS/),
+  [TimescaleDB](extensions/TimescaleDB/),
+  [pgvector](extensions/pgvector/), [Citus](extensions/Citus/),
+  [pg_cron](extensions/pg_cron/), [pg_partman](extensions/pg_partman/)
+  and `pg_stat_statements`. PlumeSQL sees what's installed on your
+  server and recommends the ones that fit.
+- **The PostgreSQL docs, right where you need them.** Hover a keyword
+  and you get a link to its reference page, for your server's version.
+  Every catalog, every builtin function and type, and every function an
+  extension adds (contrib modules, PostGIS, Citus, TimescaleDB) has a
+  Documentation entry that opens the real page inside PlumeSQL. Even
+  catalog columns explain themselves, so you finally know what
+  `relkind` means. Pages are cached, so they work offline too.
+- **EXPLAIN that tells you what's wrong.** The
   [explain-plan](extensions/Performance/explain-plan/) extension draws
-  the plan and lists the facts worth a look first: a step taking a fifth
-  of the time or more, row estimates off by ten times or more, a sort or
-  a hash that spilled to disk, a bitmap gone lossy. EXPLAIN ANALYZE of a
-  statement that writes runs inside a rollback.
-- **PL/pgSQL checked as you type.** The statements in a function body
-  are checked by your real server without creating anything, so a
-  missing table shows before the function ever runs. plpgsql_check
-  style warnings (unused variables, unreachable code, a missing RETURN)
-  come without installing the extension.
-- **A guard on production.** A script that declares `-- @readonly` has
-  PostgreSQL itself refuse any write. An UPDATE or DELETE without WHERE
-  is marked red before it runs, and COMMIT can ask first and show what
-  the transaction changed. On a Production connection, reading runs as
-  ever and a statement that changes data asks first.
-- **The tree and completion see your session.** They read through the
-  editor's own session: a temp table, or a table created in a
-  transaction you have not committed, is right there in the object tree
-  and in completion. Roll back and it is gone.
+  the plan and points out what to look at first: the steps eating the
+  time, estimates that are way off, sorts that spilled to disk.
+  EXPLAIN ANALYZE on an INSERT, UPDATE or DELETE runs in a rollback, so
+  nothing actually changes.
+- **PL/pgSQL checked as you type.** Your function body is checked
+  against the real server without creating anything, so you see a
+  missing table before the function ever runs. You also get
+  plpgsql_check-style warnings (unused variables, unreachable code, a
+  missing RETURN) without installing plpgsql_check.
+- **Safe on production.** Put `-- @readonly` in a script and PostgreSQL
+  itself refuses any write. An UPDATE or DELETE without WHERE turns red
+  before you run it, and COMMIT can show you what the transaction
+  changed before it goes through. On a Production connection, anything
+  that changes data asks first.
+- **The tree sees your session.** The object tree and completion read
+  through the editor's own session. Create a temp table, or a table in
+  a transaction you haven't committed yet, and it's right there. Roll
+  back and it's gone.
+
+## Scripts that set themselves up
+
+A SQL script can carry its own settings in plain comments. Open it and
+it already knows where to run and how to show the result:
+
+```sql
+-- @connection reporting
+-- @readonly
+
+-- @inputs 1=2026-01-01
+-- @extension echarts beside
+select date_trunc('day', created_at) as day, count(*) as orders
+from orders
+where created_at >= $1
+group by 1
+order by 1;
+```
+
+- `@connection` pins the script to a connection, so it can't run on the
+  wrong server by accident.
+- `@readonly` makes the session read only, and PostgreSQL itself
+  refuses any write.
+- `@inputs` fills in the query's parameters, so it runs without asking.
+- `@extension` picks how the result is shown: a chart, a pivot, KPI
+  cards, beside the grid or instead of it. `@inputs` can set up the
+  view too.
+
+There's more, like `@confirm-writes` and the file's own formatting
+style. The editor completes and explains every annotation as you type,
+and to any other tool it's still just a SQL file. The full list is in
+[ACTIONSPEC.md](docs/ACTIONSPEC.md).
 
 ## Who makes it
 
@@ -155,32 +205,61 @@ plumesql --help                    # everything else
 
 ## Extensions
 
-Need a tool? Search the extensions first:
+There are more than 170 of them, and we keep adding more. Some we use
+a lot:
 
-- **DBAs:** [lock monitor](extensions/Activity%20and%20Locks/blocking-locks/),
+- **Charts.** The usual ones (ECharts, Chart.js, Vega-Lite and a set of
+  [statistical charts](extensions/Statistical%20Charts/)), plus
+  [Scatter GL](extensions/Charts/scatter-gl/) for a million points and
+  [SandDance](extensions/Charts/sanddance/) for when you have even
+  more. For dashboards there are
+  [KPI cards](extensions/Dashboards/kpi-cards/), gauges, funnels and
+  treemaps.
+- **3D.** [Scatter 3D](extensions/Charts/scatter-3d/),
+  [3D bars](extensions/Charts/bars-3d/) and
+  [City 3D](extensions/Charts/city-3d/) turn a query result into
+  something you can spin around with the mouse.
+  [Storage city](extensions/Storage%20and%20Maintenance/storage-city/)
+  draws your database as a city, one building per table, and
+  [Query landscape](extensions/Performance/query-landscape/) does the
+  same for `pg_stat_statements`. The expensive queries stick out.
+- **Maps.** If you use PostGIS, [Map](extensions/PostGIS/postgis-map/)
+  puts your geometry on a real OpenStreetMap map. The
+  [PostGIS](extensions/PostGIS/postgis/) extension makes geometry
+  readable in the grid, with a little sketch of each shape.
+- **Embeddings.** [Vector Space 3D](extensions/pgvector/vector-space-3d/)
+  shows a pgvector column in 3D, so you can see the clusters and the
+  outliers. Click a point to get its nearest neighbours.
+- **Refactors.** Extensions can add their own refactors to the
+  lightbulb. The [pgvector](extensions/pgvector/pgvector-refactors/) one
+  writes the nearest neighbour query for you, and the HNSW index it
+  needs. The [TimescaleDB](extensions/TimescaleDB/timescaledb-refactors/)
+  one counts or averages a hypertable's rows per time bucket, and the
+  [PostGIS](extensions/PostGIS/postgis-refactors/) one moves geometry to
+  WGS 84 or shows it as GeoJSON.
+- **DBA stuff.** [Locks](extensions/Activity%20and%20Locks/blocking-locks/),
   [slow queries](extensions/Performance/top-queries/),
   [table bloat](extensions/Storage%20and%20Maintenance/table-bloat/),
   [health check](extensions/Server%20and%20Security/health-check/),
   [backup](extensions/Backup%20and%20Tools/backup/) and
-  [restore](extensions/Backup%20and%20Tools/restore/)
-- **Developers:** [visual EXPLAIN](extensions/Performance/explain-plan/),
-  [query to CSV](extensions/Backup%20and%20Tools/query-to-csv/),
-  [rows as SQL](extensions/Reshape/rows-as-sql/)
-- **Data people:** [charts](extensions/Charts/echarts/),
-  [dashboards](extensions/Dashboards/kpi-cards/),
-  [PostGIS viewer](extensions/PostGIS/postgis/),
-  [pgvector explorer](extensions/pgvector/pgvector/)
+  [restore](extensions/Backup%20and%20Tools/restore/).
+- **Everyday stuff.** [Visual EXPLAIN](extensions/Performance/explain-plan/),
+  [pivot](extensions/Reshape/pivot/),
+  [profile](extensions/Analysis/profile/),
+  [query to CSV](extensions/Backup%20and%20Tools/query-to-csv/) and
+  [rows as SQL](extensions/Reshape/rows-as-sql/).
 
-Install them from the Extensions tab in the app. Extensions are just
-files: readable before you install them, editable and shareable, with no
-plugin SDK to learn.
+You install them from the Extensions tab, one by one or in packs like
+[DBA essentials](extensions/Packs/dba-essentials/) or
+[PostGIS essentials](extensions/Packs/postgis-essentials/). They're
+just files, so you can read one before you install it, change it, or
+send it to a colleague. There's no plugin SDK to learn.
 
-**Can't find it? Write one:** a SQL file, a command, or a small
-JavaScript view over a result. A few `@` comments add inputs, row
-buttons, a refresh timer and charts to a query; publish it to the
-Marketplace and anyone can install it. Start with
-[extensions/README.md](extensions/README.md); the format is open:
-[ACTIONSPEC.md](docs/ACTIONSPEC.md).
+Can't find what you need? Write it. An extension can be a SQL file, a
+command, or a bit of JavaScript that draws a result. Start with
+[extensions/README.md](extensions/README.md). The annotation format is
+in [ACTIONSPEC.md](docs/ACTIONSPEC.md) if you want the details. Publish
+it to the Marketplace and anyone can install it.
 
 ## See it in action
 
