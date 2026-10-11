@@ -259,6 +259,11 @@ plumesql --help                    # everything else
   last result, the open tab and the database at hand.
 - **Your database as files.** The object browser is a DDL snapshot on
   disk, one file per object, to search and compare without a query.
+- **Foreign data wrappers.** Wrappers, servers, user mappings and
+  foreign tables are in the object tree and the snapshot, with the
+  passwords left out. Right-click a server for a ready
+  `IMPORT FOREIGN SCHEMA`, and completion knows your servers and the
+  options `postgres_fdw`, `file_fdw` and `mysql_fdw` take.
 - **In the desktop app, or in your browser.** The same PlumeSQL runs in
   a tab of the browser you already have: `plumesql -browser .`
 - **Feels like VS Code.** Its editor, its shortcuts, its command palette,
