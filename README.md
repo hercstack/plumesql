@@ -91,6 +91,75 @@ It's built on PostgreSQL's own parser, catalogs and sessions:
   a transaction you haven't committed yet, and it's right there. Roll
   back and it's gone.
 
+## The editor and the grid
+
+### Completion that reads your statement
+
+Completion runs on PostgreSQL's own parser, so it knows what your
+statement defines, not just what's in the database. It keeps up even
+while the statement is only half written.
+
+- **Your query's own names.** A CTE shows up as a table in FROM and its
+  columns follow its alias. A subquery's alias knows what the subquery
+  selects, a function in FROM knows what it returns, and a CTE built on
+  `select *` still knows the columns behind the star. Only what's
+  visible at the cursor is offered.
+- **Whole phrases from your foreign keys.** After a table in FROM it
+  offers every related table as a complete join, ON included. Even the
+  system catalogs join along their own keys. An INSERT gets its column
+  list and VALUES with a placeholder of the right type for each column,
+  ON CONFLICT gets the upsert, and a WHERE gets the EXISTS over the rows
+  that reference the table.
+- **The next word first.** After `select *` the list opens on FROM,
+  after a join on ON, after a condition on AND, GROUP BY and ORDER BY.
+  The alphabet comes second.
+- **PL/pgSQL too.** Inside a function body it completes your parameters
+  and variables with their types, a `%ROWTYPE` variable's columns, RAISE
+  levels, exception names with their SQLSTATE, and every loop and block
+  as a snippet.
+
+### The lightbulb
+
+The lightbulb beside each statement rewrites it for you. There are more
+than thirty refactors, and you can switch off any you don't want. A few
+of them:
+
+- **Fixes.** An ambiguous column gets the table you pick when the server
+  complains about it, a stray comma before FROM goes, and NOT IN turns
+  into a NOT EXISTS that's safe with NULLs.
+- **Rewrites.** Join a related table along its foreign key, expand `*`
+  into columns, extract a subquery into a CTE or a value into a
+  parameter, and inline it back.
+- **Safety.** See the rows an UPDATE or DELETE would touch before you
+  run it, add a WHERE on the primary key to one that has none, add
+  RETURNING or an upsert.
+- **From the results.** Once a query has run, the lightbulb reads what
+  came back: a text column full of dates gets cast to date, the keys of
+  a JSON column become columns, and a column of categories gets counted
+  per value.
+- **Indexes.** A column you filter on, in a big table no index starts
+  with, gets the CREATE INDEX it's missing.
+
+Extensions add their own refactors.
+[Window functions](extensions/Calculations/window-refactors/) writes a
+running total, a moving average, a rank or the top rows per group into
+your query. [Statistics](extensions/Analysis/statistics-refactors/)
+describes a number column, its correlation, trend, histogram and
+outliers, all computed by PostgreSQL. When your query looks like it
+could use one, the lightbulb offers to install it.
+
+### The grid
+
+- **Edit rows.** A result from one table is editable, primary key or
+  not. Press F2 on a row and you get a form with the right control for
+  each type: an enum picks from its labels, a foreign key is picked from
+  the rows of the table it references, and jsonb opens in a full JSON
+  editor. Every change is logged with an Undo, and a row someone else
+  changed in the meantime is never overwritten.
+- **Follow foreign keys.** A foreign key value is a link. Click it and
+  the row it points at opens. Keep clicking to walk through your data,
+  with Back and Forward to retrace your steps.
+
 ## Scripts that set themselves up
 
 A SQL script can carry its own settings in plain comments. Open it and
@@ -100,7 +169,7 @@ it already knows where to run and how to show the result:
 -- @connection reporting
 -- @readonly
 
--- @inputs 1=2026-01-01
+-- @inputs $1=2026-01-01
 -- @extension echarts beside
 select date_trunc('day', created_at) as day, count(*) as orders
 from orders
@@ -110,17 +179,16 @@ order by 1;
 ```
 
 - `@connection` pins the script to a connection, so it can't run on the
-  wrong server by accident.
-- `@readonly` makes the session read only, and PostgreSQL itself
-  refuses any write.
+  wrong server by accident, and `@readonly` keeps it from writing at all.
 - `@inputs` fills in the query's parameters, so it runs without asking.
 - `@extension` picks how the result is shown: a chart, a pivot, KPI
   cards, beside the grid or instead of it. `@inputs` can set up the
   view too.
 
 There's more, like `@confirm-writes` and the file's own formatting
-style. The editor completes and explains every annotation as you type,
-and to any other tool it's still just a SQL file. The full list is in
+style. The editor completes annotations as you type, explains each one
+on hover and lists them in the Outline. To any other tool it's still
+just a SQL file. The full list is in
 [ACTIONSPEC.md](docs/ACTIONSPEC.md).
 
 ## Who makes it
@@ -180,19 +248,13 @@ plumesql --help                    # everything else
 
 - **Connections found in your project.** `.env`, `appsettings.json`,
   docker-compose, Django, Prisma, Rails, Spring: nothing to type.
-- **Completion that understands your query.** PostgreSQL's own parser
-  reads the statement, so completion works inside nested subqueries,
-  CTEs and the aliases you just typed.
-- **Refactors a click away.** The lightbulb beside each statement
-  rewrites it for you: join a related table along its foreign key, fix
-  an ambiguous column, preview the rows a DELETE would touch, turn an
-  INSERT into an upsert, query JSON with containment. Extensions add
-  their own, for PostGIS, pgvector and TimescaleDB.
 - **psql's commands in the editor.** `\d`, `\dt`, `\df`, `\sf` and
   `\conninfo` answer right under the line, and the Log's console speaks
   psql too.
 - **Results of any size.** Millions of rows, kept whole on disk and
-  scrolled smoothly; edit rows in place and follow foreign keys.
+  scrolled smoothly. Freeze and filter columns, peek at a long value,
+  compare two results side by side, and copy them as CSV, JSON or a
+  Markdown table.
 - **A console over your results.** JavaScript under the Log, with the
   last result, the open tab and the database at hand.
 - **Your database as files.** The object browser is a DDL snapshot on
