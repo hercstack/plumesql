@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "three-core",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Three core",
+  "description": "Shared three.js scene the 3D chart extensions import: orbit, labels, hover and click, points, axes, theme colours",
+  "categories": [
+    "Extension Authoring"
+  ],
+  "tags": [
+    "extension authoring",
+    "library",
+    "three.js",
+    "3d",
+    "webgl",
+    "charts"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "three-core.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 198,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/three@0.186.1/+esm",
+    "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/controls/OrbitControls.js/+esm"
+  ],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

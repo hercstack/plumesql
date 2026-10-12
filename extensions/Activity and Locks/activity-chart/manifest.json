@@ -14,9 +14,10 @@
     "sessions",
     "pg_stat_activity",
     "monitoring",
-    "chart",
     "timeseries",
-    "live"
+    "live",
+    "charts",
+    "line chart"
   ],
   "requires": {
     "pgExtensions": [],
@@ -36,7 +37,7 @@
   "demo": "media/activity-chart.webp",
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }

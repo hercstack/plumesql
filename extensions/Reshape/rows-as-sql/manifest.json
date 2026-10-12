@@ -36,7 +36,7 @@
   "icon": "icon.svg",
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT",
   "demo": "media/rows-as-sql.webp"

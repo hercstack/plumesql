@@ -1,0 +1,47 @@
+{
+  "format": 1,
+  "id": "query-landscape",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Query landscape",
+  "description": "Every statement on this server in 3D: calls, mean time and cache hit, sized by total time, from pg_stat_statements",
+  "categories": [
+    "Performance"
+  ],
+  "tags": [
+    "performance",
+    "slow queries",
+    "pg_stat_statements",
+    "statements",
+    "tuning",
+    "cache",
+    "3d",
+    "scatter"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "pg_stat_statements"
+    ],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "query-landscape.plumesql.sql",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "scatter-3d"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 194,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/query-landscape.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

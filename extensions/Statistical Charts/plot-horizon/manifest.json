@@ -11,11 +11,11 @@
   ],
   "tags": [
     "charts",
-    "statistical charts",
     "observable plot",
     "horizon",
     "timeseries",
-    "many series"
+    "many series",
+    "area chart"
   ],
   "requires": {
     "pgExtensions": [],
@@ -37,7 +37,7 @@
   "demo": "media/plot-horizon.webp",
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }

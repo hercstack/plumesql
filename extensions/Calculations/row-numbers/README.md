@@ -15,3 +15,7 @@ PostgreSQL 13 or newer. No server side at all: the grid applies the rule to what
 ## Notes
 
 Write `-- @extension row-numbers` above a query, or in the file header for all of them, or attach it from the result's menu; the page in PlumeSQL has the lines ready to copy. To match other columns or say it differently, fork it from the row menu and edit the pattern and the words in the file.
+
+## In SQL
+
+**Window function refactors** (`window-refactors`) writes the same calculation into your query from the editor's lightbulb, as a window function PostgreSQL computes over every row: a query you keep, filter and share rather than a column of the grid.

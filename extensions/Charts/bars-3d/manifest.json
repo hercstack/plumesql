@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "bars-3d",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "3D Bars",
+  "description": "Bars in 3D: a category along the width, another along the depth, a number as the height; orbit, zoom and pan with the mouse (three.js)",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "charts",
+    "3d",
+    "bar chart",
+    "three.js",
+    "webgl",
+    "orbit"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "bars-3d.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "three-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 190,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/bars-3d.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

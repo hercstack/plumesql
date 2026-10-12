@@ -2,10 +2,10 @@
   "format": 1,
   "id": "postgis-refactors",
   "kind": "refactor",
-  "version": "1.0.0",
-  "plumesql": ">=0.23.0",
+  "version": "1.1.0",
+  "plumesql": ">=0.24.0",
   "name": "PostGIS refactors",
-  "description": "Geometry and geography columns as readable WKT or GeoJSON, a lightbulb away in the editor",
+  "description": "Geometry as readable WKT or GeoJSON, moved to WGS 84, the rows near the first one and the bounding box, in the lightbulb",
   "categories": [
     "PostGIS"
   ],
@@ -25,6 +25,10 @@
     ],
     "pgVersion": ">=13"
   },
+  "types": [
+    "geometry",
+    "geography"
+  ],
   "files": [
     "postgis-refactors.plumesql.js"
   ],
@@ -41,7 +45,7 @@
   "externals": [],
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }

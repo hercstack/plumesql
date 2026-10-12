@@ -11,12 +11,12 @@
   ],
   "tags": [
     "charts",
-    "statistical charts",
     "observable plot",
     "density",
     "hexbin",
     "heatmap",
-    "big data"
+    "big data",
+    "distribution"
   ],
   "requires": {
     "pgExtensions": [],
@@ -38,7 +38,7 @@
   "demo": "media/plot-density.webp",
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }

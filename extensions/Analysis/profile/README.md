@@ -15,3 +15,7 @@ PostgreSQL 13 or newer. Nothing on the server: the view runs in the result's san
 ## Notes
 
 Run `select * from the_table` and open Profile; a LIMIT profiles the sample, not the table. Attach it from a script with `-- @extension profile` above a query (add `open`, `only` or `beside` to open on the view), or from a result's own menu; the extension's page in PlumeSQL lists the lines to paste, and `-- @inputs` answers the inputs in the file so the chart draws with no dialog.
+
+## In SQL
+
+**Statistics refactors** (`statistics-refactors`) writes the same analysis as a query above yours from the editor's lightbulb, computed by PostgreSQL over every row the query returns: a query you keep and share rather than a view of the grid.

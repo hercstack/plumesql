@@ -24,3 +24,7 @@ PostgreSQL 13 or newer. No server side: the result's sandbox computes it from th
 ## Notes
 
 Nulls and values that do not read as numbers are skipped, and the Log says how many. At most 1000 bins: a width too small for the range asks for a wider one. From a script: `-- @extension histogram` above the query, with `-- @inputs column=amount, width=10`. The `bin` column comes first so a chart after a pipe takes it for the categories: `-- @extension histogram | bar-chart` or `-- @extension histogram | echarts` with `-- @inputs echarts: kind=bar, x=bin, series=count`.
+
+## In SQL
+
+**Statistics refactors** (`statistics-refactors`) writes the same analysis as a query above yours from the editor's lightbulb, computed by PostgreSQL over every row the query returns: a query you keep and share rather than a view of the grid.

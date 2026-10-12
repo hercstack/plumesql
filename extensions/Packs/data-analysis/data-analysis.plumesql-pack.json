@@ -10,6 +10,8 @@
     "pivot",
     "percent-of-total",
     "plot-chart",
-    "kpi-cards"
+    "kpi-cards",
+    "window-refactors",
+    "statistics-refactors"
   ]
 }

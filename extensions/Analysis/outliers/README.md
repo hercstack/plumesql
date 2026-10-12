@@ -34,3 +34,7 @@ Quartiles interpolate between ranks, as PostgreSQL's `percentile_cont` and a spr
 The coloured copy is a tab, not a formatting rule on the result itself: a rule sees one row at a time, and a fence needs the whole column.
 
 From a script: `-- @extension outliers` above the query, with `-- @inputs columns=amount, method=z-score, z=2.5` or `-- @inputs columns=amount, output=marked`.
+
+## In SQL
+
+**Statistics refactors** (`statistics-refactors`) writes the same analysis as a query above yours from the editor's lightbulb, computed by PostgreSQL over every row the query returns: a query you keep and share rather than a view of the grid.

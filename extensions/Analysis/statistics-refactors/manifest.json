@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "id": "statistics-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.24.0",
+  "name": "Statistics refactors",
+  "description": "Describe a number column, its correlation, trend, histogram and outliers, computed by PostgreSQL from the lightbulb",
+  "categories": [
+    "Analysis"
+  ],
+  "tags": [
+    "statistics",
+    "percentile",
+    "median",
+    "correlation",
+    "regression",
+    "histogram",
+    "outliers",
+    "refactor"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "statistics-refactors.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "suggest": [
+    "numbers"
+  ],
+  "discussion": 196,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

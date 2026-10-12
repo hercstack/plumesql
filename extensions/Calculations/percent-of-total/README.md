@@ -25,3 +25,7 @@ PostgreSQL 13 or newer. No server side: the result's sandbox computes it from th
 ## Notes
 
 The totals read every row the view reads; the grid lists the first 100,000 and the Log says how many were left out. The rows keep the result's order, so for a running percent sort in SQL. From a script: `-- @extension percent-of-total` above the query, and `-- @inputs column=amount, of=group, group=region` to answer the inputs in the file. The table feeds another extension like a result does: `-- @extension percent-of-total | echarts` charts it.
+
+## In SQL
+
+**Window function refactors** (`window-refactors`) writes the same calculation into your query from the editor's lightbulb, as a window function PostgreSQL computes over every row: a query you keep, filter and share rather than a column of the grid.

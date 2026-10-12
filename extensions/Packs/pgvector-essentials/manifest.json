@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "pgvector-essentials",
+  "kind": "pack",
+  "version": "1.0.0",
+  "plumesql": ">=0.23.0",
+  "name": "pgvector essentials",
+  "description": "Everything PlumeSQL reads embeddings with: vectors you can read, nearest neighbour queries in the editor, and the vector space in 3D",
+  "categories": [
+    "Packs",
+    "pgvector"
+  ],
+  "tags": [
+    "pgvector",
+    "vector",
+    "embeddings",
+    "ai",
+    "rag",
+    "similarity search",
+    "starter"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "vector"
+    ]
+  },
+  "files": [
+    "pgvector-essentials.plumesql-pack.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 192,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

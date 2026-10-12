@@ -1,0 +1,46 @@
+{
+  "format": 1,
+  "id": "city-3d",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "City 3D",
+  "description": "A treemap you walk around: rows as buildings in districts, a number as the footprint, another as the height, a third as the colour",
+  "categories": [
+    "Charts",
+    "Dashboards"
+  ],
+  "tags": [
+    "charts",
+    "treemap",
+    "3d",
+    "hierarchy",
+    "sizes",
+    "part of whole",
+    "three.js",
+    "webgl"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "city-3d.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "three-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 191,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/city-3d.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

@@ -2,22 +2,10 @@
 
 Results that read at a glance: dates, numbers, money, NULLs, booleans, JSON, statuses and highlights.
 
-## What it installs
+## Where to start
 
-- `date-format`
-- `numbers`
-- `currency`
-- `nulls`
-- `booleans`
-- `json`
-- `status`
-- `highlight`
-- `time-ago`
+These change how values read, so they are meant for every result: on each one's page, choose **Everywhere** under **Applies to**, or **This workspace** for this workspace only. **Date format**, **Numbers** and **Currency** let you pick the format; the others work as they are.
 
-## How it installs
+To try one on a single result first, right-click the result and choose **Extensions…**.
 
-A pack has no code of its own: it names the extensions above, and Install all installs the ones you do not have yet, each the way its own kind installs. A grid or theme extension installs at once; a query or command extension shows its code and asks for your consent first, one after the other, exactly as it would on its own page. Skip any of them, or remove one later, and the rest stay.
-
-## Notes
-
-Every member has its own page, requirements and README; the pack's page lists them with where each one stands.
+The pack's members are named in `everyday-formatting.plumesql-pack.json`, and PlumeSQL lists them on the pack's page with where each one stands.

@@ -11,7 +11,6 @@
   ],
   "tags": [
     "charts",
-    "statistical charts",
     "observable plot",
     "regression",
     "trend",
@@ -38,7 +37,7 @@
   "demo": "media/plot-regression.webp",
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }

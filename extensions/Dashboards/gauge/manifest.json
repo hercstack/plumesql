@@ -10,12 +10,12 @@
     "Dashboards"
   ],
   "tags": [
-    "dashboard",
     "charts",
     "gauge",
     "kpi",
     "target",
-    "echarts"
+    "echarts",
+    "big numbers"
   ],
   "requires": {
     "pgExtensions": [],
@@ -39,7 +39,7 @@
   "demo": "media/gauge.webp",
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }

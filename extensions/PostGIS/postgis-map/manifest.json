@@ -1,0 +1,56 @@
+{
+  "format": 1,
+  "id": "postgis-map",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.24.0",
+  "name": "Map",
+  "description": "Geometry on a real map: points, lines and polygons over an OpenStreetMap basemap, coloured, sized and raised by columns",
+  "categories": [
+    "PostGIS",
+    "Charts"
+  ],
+  "tags": [
+    "postgis",
+    "geometry",
+    "geography",
+    "map",
+    "spatial",
+    "gis",
+    "openstreetmap",
+    "geojson",
+    "3d",
+    "maplibre"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "postgis"
+    ],
+    "pgVersion": ">=13"
+  },
+  "types": [
+    "geometry",
+    "geography"
+  ],
+  "files": [
+    "postgis-map.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "postgis"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 193,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js"
+  ],
+  "icon": "icon.svg",
+  "demo": "media/postgis-map.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

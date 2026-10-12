@@ -10,13 +10,13 @@
     "Dashboards"
   ],
   "tags": [
-    "dashboard",
     "charts",
     "waterfall",
     "finance",
     "variance",
     "bridge",
-    "echarts"
+    "echarts",
+    "bar chart"
   ],
   "requires": {
     "pgExtensions": [],
@@ -40,7 +40,7 @@
   "demo": "media/waterfall.webp",
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }

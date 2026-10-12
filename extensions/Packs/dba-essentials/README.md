@@ -2,32 +2,10 @@
 
 The first extensions a database administrator reaches for: activity, locks, slow queries and plans, sizes, bloat, vacuum, indexes and settings.
 
-## What it installs
+## Where to start
 
-- `health-check`
-- `current-activity`
-- `blocking-locks`
-- `long-running`
-- `idle-in-transaction`
-- `wait-events`
-- `top-queries`
-- `explain-plan`
-- `cache-hit-ratio`
-- `unused-indexes`
-- `duplicate-indexes`
-- `fk-without-index`
-- `table-sizes`
-- `table-bloat`
-- `vacuum-candidates`
-- `transaction-age`
-- `integer-overflow-risk`
-- `replication-status`
-- `non-default-settings`
+Run **Health check** from its row in the Extensions side tab: a checklist of what needs attention on this database, each finding with what to do about it.
 
-## How it installs
+**Current activity** and **Blocking locks** bring buttons of their own (**Activity** and **Locks**, the Log says where each one landed): the two to have at hand when something hangs. **Top queries** reads `pg_stat_statements`, so the server needs that extension. **Explain plan** draws every `EXPLAIN` you run as a plan you can read, with nothing to set up.
 
-A pack has no code of its own: it names the extensions above, and Install all installs the ones you do not have yet, each the way its own kind installs. A grid or theme extension installs at once; a query or command extension shows its code and asks for your consent first, one after the other, exactly as it would on its own page. Skip any of them, or remove one later, and the rest stay.
-
-## Notes
-
-Every member has its own page, requirements and README; the pack's page lists them with where each one stands.
+The pack's members are named in `dba-essentials.plumesql-pack.json`, and PlumeSQL lists them on the pack's page with where each one stands.

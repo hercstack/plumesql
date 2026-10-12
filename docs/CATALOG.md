@@ -52,12 +52,12 @@ One JSON object per extension, UTF-8, no comments. Fields:
 | `format` | yes | The manifest format version, the integer `1`. A reader refuses a manifest whose `format` it does not know. |
 | `id` | yes | The extension id (4.1). MUST equal the directory name. |
 | `kind` | yes | `query`, `command`, `grid`, `refactor`, `theme` or `pack`. MUST match the main file's double extension (`.plumesql.sql`, `.plumesql.run`, `.plumesql.js`, `.plumesql-theme.json`, `.plumesql-pack.json`); a `.plumesql.js` module is a `grid` or a `refactor` extension, the manifest saying which. A refactor extension's module declares refactors and nothing else, a grid extension's declares none (docs/GRIDJSSPEC.md, Refactors): the app reads only what the kind allows, and the deep check refuses the rest. |
-| `version` | yes | Semantic version `MAJOR.MINOR.PATCH` of this extension. Bumped on every change to any file in the directory except `README.md` and `media/` (the validator enforces the bump against the previous catalog). |
+| `version` | yes | Semantic version `MAJOR.MINOR.PATCH` of this extension. Bumped on every change to a file the app installs (`files`: everything in the directory but `manifest.json`, `README.md` and `media/`; the validator enforces the bump against the previous catalog's lock). A change to the manifest alone (its tags, description, categories) keeps the version: it reaches every reader with the next catalog read and offers no update, since the installed files are the same. |
 | `plumesql` | yes | The minimum PlumeSQL version this extension needs, `">=X.Y.Z"`: the first release that has every feature the extension uses. A release of the app that does not meet it leaves the extension out of Recommended and Available (a search still finds it), refuses to install it, and does not offer an update to a version that needs more; a development build, running ahead of its last release, meets every requirement. |
 | `name` | yes | The display name, at most 40 characters. Title case, no trailing period. |
 | `description` | yes | One sentence, at most 140 characters, what the extension answers or does. The row's second line. |
 | `categories` | yes | Non-empty list; the first entry MUST be the directory's category. Every entry MUST be a category directory of the repository (4.2). |
-| `tags` | no | Free words for search and recommendation (4.3), lowercase, at most 12. Searchable and visibly so: the page lists them as links that search for them, and a row the search kept by a tag alone shows that tag as a chip with the hit marked. They also decide which extensions an extension's page shows as Related (9.2), so a tag names what the extension is ABOUT (`json`, `locks`, `backup`), from the words other extensions on the same topic already use, rather than what it is (`formatter`, `query`). The kind and the categories are not tags; they have their own filters. |
+| `tags` | no | Free words for search and recommendation (4.3), lowercase, at most 12. Searchable and visibly so: the page lists them as links that search for them, and a row the search kept by a tag alone shows that tag as a chip with the hit marked. They also decide which extensions an extension's page shows as Related (9.2), so a tag names what the extension is ABOUT (`json`, `locks`, `backup`), from the words other extensions on the same topic already use, rather than what it is (`formatter`, `query`). One tag is a role: `library` marks a module other extensions build on, which Related offers only on another library's page. The kind and the categories are not tags; they have their own filters. |
 | `requires` | no | `{ "pgExtensions": ["timescaledb"], "pgVersion": ">=14" }`: PostgreSQL extensions the target database must have and the minimum server version. Both optional. Drives recommendations and the "needs" line of the detail view; nothing is blocked by it. |
 | `files` | yes | The list of every file in the directory the app installs, paths relative to the directory, the main file first, `manifest.json`, `README.md` and `media/` excluded. |
 | `dependencies` | no | Ids of other marketplace extensions this one references (4.4). |
@@ -67,7 +67,8 @@ One JSON object per extension, UTF-8, no comments. Fields:
 | `license` | yes | An SPDX identifier. The repository's own license applies to what is contributed; the field makes it explicit per extension. |
 | `featured` | no | `true` for the curated few the panel shows first under Recommended when nothing else recommends them. Maintainers set it. |
 | `recommend` | no | App-side signals that put the extension under Recommended (4.3), a list of known words: `my-extensions` (the user has extensions of their own). The validator refuses an unknown word. |
-| `types` | no | A grid extension alone: the PostgreSQL data types whose values it reads (its inspectors), bare lowercase names as `format_type` spells them without a schema or a modifier (`geometry`, `vector`, `double precision`), 1 to 12, each once. A result column declared one of them offers the extension while it is not installed, and a query returning one suggests it in the editor's lightbulb (4.3). |
+| `suggest` | no | A refactor extension alone: the statement signals on which the editor's lightbulb offers its install (4.3), a list of known words, each once: `numbers` (a query returning a number column that is no key). The validator refuses an unknown word (rule 8i). Maintainers set it, as they set `featured`: a signal puts the extension in the lightbulb of every matching query, so it is granted to an extension whose refactors genuinely fit such queries, never asked for by declaring it. |
+| `types` | no | A grid or a refactor extension alone: the PostgreSQL data types whose values a grid extension reads (its inspectors), or that a refactor extension's refactors rewrite, bare lowercase names as `format_type` spells them without a schema or a modifier (`geometry`, `vector`, `double precision`), 1 to 12, each once. For a grid extension, a result column declared one of them offers the extension while it is not installed, and a query returning one suggests it in the editor's lightbulb; for a refactor extension, a statement over a column of one of them suggests its install in the lightbulb (4.3). |
 | `forkedFrom` | no | The id the extension was copied from in the app, informational; the validator accepts an id. |
 | `externals` | when the code loads any | Every external library the extension loads at run time, as https URLs: a grid view's `scripts: [...]`, an `import` from a CDN. The validator checks the list against the code both ways (rule 8b of section 12), so a manifest never hides what the code fetches. The app shows them under Dependencies with their hosts, says which hosts the allowlist (`extensions.remoteScriptHosts`) has, and offers to allow the rest. |
 | `icon` | no | The extension's logo: the path of a PNG or SVG (JPEG, WebP and GIF are accepted too) inside the directory, square, at most 64 KB, and listed in `files`, so it is hashed, installed and served like every other file. The panel's row and the detail view's header show it; without one they draw the default icon, the kind's glyph in the kind's colour (the same glyph a logo wears as its corner mark). A logo is a branded mark in colour and separate from the `@toolbar` line's icon, which is a single-colour glyph on the button that follows its colour. |
@@ -175,6 +176,50 @@ Marketplace)", its `-- @extension` line then flagged not installed with
 a quick fix that installs it. The offer is one of the editor's refactors
 (`suggest-extension`), turned off with them.
 
+A REFACTOR extension's `types` name the column types its refactors
+rewrite (pgvector refactors: `vector`, `halfvec`, `sparsevec`). It is
+not attached to a query but to the editor, so the lightbulb offers its
+INSTALL instead: a statement whose tables have a column of one of the
+types, or whose result has one, offers "Install <name> (from the
+Marketplace)" for each catalog refactor extension that declares it and
+is not installed. Choosing it installs the extension, attached where an
+install attaches it (its manifest's `scope`, 7.7), and its refactors are
+in the list from the next ask on. A refactor extension that requires
+`timescaledb` (`requires.pgExtensions`) is offered the same way on a
+statement over a TimescaleDB hypertable, which is no column type. An
+installed refactor extension is never offered, wherever it is attached
+or whichever of its refactors are turned off: that is the user's choice.
+The column header's "Read <type> values" offer is for grid extensions
+alone; a refactor extension reads no values. Same `suggest-extension`
+switch.
+
+A refactor extension whose refactors fit a SHAPE of statement rather
+than a column type names it in `suggest`, words the app knows and the
+validator checks. Maintainers set the field, as they set `featured`
+(section 4): a signal such as `numbers` matches a great many queries, so
+it is a place in other people's lightbulbs that the review grants, not
+one an author claims. `numbers` is on for a query (a SELECT, or a WITH whose
+main statement is one, not a set operation) that returns a number
+column that is no key: a column of type smallint, integer, bigint,
+real, double precision, numeric or decimal whose name is not `id` and
+does not end in `_id`, or a count, sum or avg aggregate. What the query
+returns is its last run's columns when the statement ran as written,
+else what its select list says (a column of its tables, typed by the
+dictionary, and a star's tables' columns). Such a statement offers
+"Install <name> (from the Marketplace)" exactly as a type does, under
+the same rules. A word a later catalog brings and the app does not know
+offers nothing, never a reason to refuse the catalog.
+
+Every install the lightbulb offers is a suggestion the user may decline
+for good. The install's question (2.1), asked from a suggestion, has
+"Don't suggest it again" beside its answers: the extension is then
+never offered in the lightbulb again, in any workspace, whatever the
+signal, until the user takes it back (the Log's entry for the answer has
+Suggest again; the setting is a list of ids). A standing answer that
+installs without asking installs at once, as from any other door. The
+same list silences a grid extension's "Use the <name> extension on this
+query", which has no question to carry the button.
+
 ### 4.4 Dependencies
 
 A query extension that hands its result to a grid extension
@@ -184,7 +229,10 @@ another one (`import '$ext/<id>/...'`) lists that id in
 
 - Installing an extension installs its dependencies first, in one
   operation, each with its own row in the Log; if any dependency fails
-  to install, nothing is written.
+  to install, nothing is written. An install or an update also brings
+  a dependency that is installed at an older version to the catalog's.
+  The question before it (2.1) names every dependency that comes along
+  this way, so nothing lands unseen.
 - A dependency is removed only when no installed extension lists it,
   and the removal dialog says which ones still do.
 - Dependency chains are resolved from the catalog; a dependency that
@@ -220,13 +268,28 @@ manifest, the README and `media/`; a pack has no `dependencies` and no
 `externals` (its members are not dependencies: nothing of the pack runs,
 and a query member must keep its own consent, 4.4).
 
-A pack is never installed. Its Install all installs the members that are
-missing and that this app supports, each the way its own kind installs:
-a grid or theme member at once (a theme member without opening the theme
-picker), and the query and command members after one dialog that names
-them, says what they run, and takes Install as the consent to their
-code, with Review one by one opening the first member's page (its code,
-its own consent) and the Log naming the rest. A member removed later, or
+A pack is never installed, and it is REVIEWED before it installs: its
+row's button is **Review (n)**, n the members that are missing and that
+this app supports, and opens the pack's page on its members (section
+9.2's What it adds, its Install all focused), each a link to its own
+page. The page's **Install all (n)**, like every install of several at
+once (Install recommended (9.1, 9.3), a set of suggested extensions
+(9.6)), asks ONE question, ALWAYS, whatever the set holds: a click alone
+never installs a set. The question (the SET question) lists every
+extension the set brings by kind, nothing landing before the answer,
+each name a link that opens its page (its code, its facts) in a tab of
+its own: the question waits unanswered, nothing installed, and the tab
+it was asked from is KEPT (a pack's page in the preview slot becomes a
+tab of its own first, the pages looked at in turn sharing the preview
+slot, VS Code's way), so the review happens on a full page and coming
+back to that tab finds the question again (unless one of the set was
+installed meanwhile: then Install all asks anew with what is still
+missing). It marks
+the query and command extensions with what they run, and its answer is
+the consent to their code. Two answers: Install n installs them all (a
+theme without opening the theme picker), Cancel installs nothing. What landed is ONE Log entry naming every
+extension, beside the entries of those that brought a button (each
+with its Show Button). The row's button's tooltip names every member. A member removed later, or
 one the user skipped, is simply missing again; nothing tracks the pack.
 A pack with nothing left to bring (every member it can install is
 installed, at least one of them) is COMPLETE: it counts as installed
@@ -235,6 +298,25 @@ with the installed ones, and it is no longer recommended), and it
 becomes incomplete again the moment a member is removed. The catalog
 carries a pack's `members` (section 5), so the panel and the page list
 them without a lock.
+
+### 4.7 Rolling back
+
+An update keeps the version it replaces: its files move whole to
+`<globalDir>/marketplace/previous/<id>/` and its installed record to
+`previous/<id>.json`, one version deep (the next update replaces them).
+**Roll Back to <version>** (the extension's row and page menus, and
+the update's own Log entry while it stands) puts that version back:
+the kept files are checked against the kept record first (a kept
+version changed on disk is refused), the record takes the old version's
+lock facts and keeps its bookkeeping (who needs it, who asked for it),
+and a dependency only the newer version needed, that nobody else needs
+or asked for, goes. The version rolled back from is HELD (the record's
+`held`): no update offers it again, Update all and `marketplace.autoUpdate`
+included, until a newer one appears; the page says so, with **Update
+to <version>** for a user who changes their mind, and any update of the
+id clears the hold. A rollback uses the kept version up; a removal
+deletes it. An old version needing a dependency that is no longer
+installed is refused, naming it.
 ## 5. The index: `catalog.json` and `locks/<id>.json`
 
 Built by `tools/catalog.mjs --write` from every manifest and every file,
@@ -286,7 +368,8 @@ bytes are what the catalog hashes.
 
 `icon` (the manifest's, absent when none), `author` (the manifest
 author's name alone), `recommend` (the manifest's signals, absent when
-none), `types` (the manifest's, absent when none) and `hosts` (the
+none), `suggest` (the manifest's, absent when none), `types` (the
+manifest's, absent when none) and `hosts` (the
 distinct hosts of the manifest's `externals`, absent when none) ride the
 catalog because the row shows them without a
 lock in hand; the author's URL, the externals themselves
@@ -390,10 +473,14 @@ when:
    a key besides `for` and `query`, a value that is not a list of
    strings, no target at all, or a `for` target other than `global` and
    `workspace`;
-8h. `types` is present on an extension that is not a grid extension, is
+8h. `types` is present on an extension that is neither a grid nor a
+   refactor extension, is
    not a list of 1 to 12 strings, lists one twice, or lists one that is
    not a bare lowercase type name (a schema, a modifier or an array's
    `[]` in it);
+8i. `suggest` is present on an extension that is not a refactor
+   extension, is not a non-empty list of strings, lists one twice, or
+   lists a word the validator does not know (`numbers` today);
 9. `permissions` has an unknown key;
 10. reserved;
 11. a `.plumesql.sql` or `.plumesql.run` does not parse under the action

@@ -129,7 +129,7 @@ The checklist, every item of which the validator or the reviewer checks:
   "dependencies": [],
   "permissions": { "fork": true },
   "discussion": 0,
-  "author": { "name": "PlumeSQL", "url": "https://plume.hercstack.com" },
+  "author": { "name": "PlumeSQL", "url": "https://plumesql.com" },
   "license": "MIT",
   "featured": false
 }
@@ -155,6 +155,7 @@ The checklist, every item of which the validator or the reviewer checks:
 | `license` | yes | An SPDX identifier. |
 | `featured` | no | Maintainers only: shown first under Recommended. |
 | `recommend` | no | App-side signals that put the extension under Recommended, a list of known words: `my-extensions` (the user has extensions of their own). An unknown word fails validation. |
+| `suggest` | no | A refactor extension alone: the statement signals on which the editor's lightbulb offers its install, a list of known words: `numbers` (a query returning a number column that is no key). An unknown word fails validation. Maintainers only, like `featured`: it puts the extension in the lightbulb of every matching query, so ask for it in the pull request. |
 | `types` | no | A grid extension alone: the data types whose values it reads, bare lowercase names (`geometry`, `vector`: no schema, no modifier), 1 to 12. A result column of one of them offers the extension's page in its menu while the extension is not installed. |
 | `forkedFrom` | no | The id the extension was copied from in the app, informational. |
 | `icon` | no | The logo: a square PNG or SVG in the directory (not under `media/`), at most 64 KB, listed in `files` so it installs and is hashed like the rest. Without one the app draws the kind's glyph. |

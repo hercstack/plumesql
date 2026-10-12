@@ -1,0 +1,45 @@
+{
+  "format": 1,
+  "id": "storage-city",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Storage city",
+  "description": "Every table as a building: schemas as districts, size as the footprint, dead rows as the height, sequential scans as the colour",
+  "categories": [
+    "Storage and Maintenance"
+  ],
+  "tags": [
+    "storage",
+    "table sizes",
+    "bloat",
+    "vacuum",
+    "dead rows",
+    "sequential scans",
+    "maintenance",
+    "3d"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "storage-city.plumesql.sql",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "city-3d"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 197,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/storage-city.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

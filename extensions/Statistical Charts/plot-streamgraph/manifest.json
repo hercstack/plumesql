@@ -11,11 +11,11 @@
   ],
   "tags": [
     "charts",
-    "statistical charts",
     "observable plot",
     "streamgraph",
     "timeseries",
-    "stacked"
+    "stacked",
+    "area chart"
   ],
   "requires": {
     "pgExtensions": [],
@@ -37,7 +37,7 @@
   "demo": "media/plot-streamgraph.webp",
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }

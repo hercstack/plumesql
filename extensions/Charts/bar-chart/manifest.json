@@ -11,9 +11,7 @@
   ],
   "tags": [
     "charts",
-    "bar chart",
-    "bars",
-    "categories"
+    "bar chart"
   ],
   "requires": {
     "pgExtensions": [],
@@ -33,7 +31,7 @@
   "demo": "media/bar-chart.webp",
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }

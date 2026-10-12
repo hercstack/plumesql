@@ -24,3 +24,7 @@ PostgreSQL 13 or newer. No server side: the result's sandbox computes it from th
 ## Notes
 
 The window walks the rows in the order the result has them, so order the query by time (`order by day`). It counts rows, not days: a missing day is not a gap. The first 100,000 rows are listed. From a script: `-- @extension moving-average` above the query, and `-- @inputs column=sales, window=28, min=28` to answer the inputs in the file. To chart the raw line against the smoothed one: `-- @extension moving-average | echarts`.
+
+## In SQL
+
+**Window function refactors** (`window-refactors`) writes the same calculation into your query from the editor's lightbulb, as a window function PostgreSQL computes over every row: a query you keep, filter and share rather than a column of the grid.

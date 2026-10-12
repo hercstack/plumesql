@@ -11,10 +11,8 @@
   ],
   "tags": [
     "charts",
-    "statistical charts",
     "observable plot",
     "heatmap",
-    "categories",
     "matrix"
   ],
   "requires": {
@@ -37,7 +35,7 @@
   "demo": "media/plot-heatmap.webp",
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }

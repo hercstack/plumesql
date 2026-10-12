@@ -1,7 +1,7 @@
 # Contributing
 
 Everything about writing an extension and sending it in is in
-[extensions/README.md](extensions/README.md): the five kinds, the
+[extensions/README.md](extensions/README.md): the six kinds, the
 directory layout, `manifest.json`, the README template, the review and
 the tools that check a directory before a pull request.
 

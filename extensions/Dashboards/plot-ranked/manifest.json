@@ -10,7 +10,6 @@
     "Dashboards"
   ],
   "tags": [
-    "dashboard",
     "charts",
     "top n",
     "ranking",
@@ -37,7 +36,7 @@
   "demo": "media/plot-ranked.webp",
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }

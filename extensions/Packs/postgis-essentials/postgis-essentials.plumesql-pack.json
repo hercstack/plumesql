@@ -3,6 +3,7 @@
     "postgis",
     "postgis-refactors",
     "validate-geometry",
-    "invalid-geometries"
+    "invalid-geometries",
+    "postgis-map"
   ]
 }

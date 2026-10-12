@@ -4,11 +4,16 @@
 > can become a monitor, a dashboard or a button.
 
 > [!NOTE]
-> PlumeSQL is in beta and actively developed. New releases come often,
-> and features can still change between them. The app updates itself.
-> Something broken or missing?
-> [Open an issue](https://github.com/hercstack/plumesql/issues), or use
-> Report a Bug in the app.
+> **PlumeSQL 0.24.0 is here**, our biggest release so far: one
+> script on several servers, a lightbulb that reads your data, a
+> PostgreSQL server or a sample database in one click, and extensions
+> that tell you what they can do before you install them.
+> [What's in it](changelog/free-v0.24.0/README.md).
+>
+> PlumeSQL is still in beta: new releases come often, and features can
+> still change between them. The app updates itself. Something broken
+> or missing? [Open an issue](https://github.com/hercstack/plumesql/issues),
+> or use Report a Bug in the app.
 
 [Download](https://github.com/hercstack/plumesql/releases) ·
 [Videos](https://www.youtube.com/@plumesql) ·
@@ -47,6 +52,35 @@ pgvector and TimescaleDB. [More below](#extensions).
 **Free, no account, for macOS, Windows and Linux.** The app is closed
 source; the extensions and specifications in this repository are
 [MIT](LICENSE).
+
+## Why not the tool you already use?
+
+Here's the short version. The rest of this page has the details.
+
+- It's all in on PostgreSQL and nothing else, so it can use everything
+  PostgreSQL has. [More on that below](#deep-on-postgresql).
+- It's small: a 14 MB download, no Java. You add extensions for what
+  you need, when you need them.
+- Completion reads the query you're writing, CTEs and subqueries
+  included, and writes whole joins from your foreign keys.
+- [The lightbulb](#the-lightbulb) has more than thirty refactors built
+  in, from fixing an ambiguous column to the index your query is
+  missing. Extensions add their own, for window functions, statistics,
+  PostGIS, pgvector and TimescaleDB.
+- The grid takes millions of rows without slowing down. Freeze rows and
+  columns like in a spreadsheet, filter, or compare two results side by
+  side.
+- You edit data right in the grid. Enums, jsonb and foreign keys each
+  get the right control.
+- There's a JavaScript console, and it reaches everything: your results,
+  the open tab, the connection, the DDL snapshot.
+- A few comments turn a query into a small app you can send to your
+  team. It's still just a SQL file.
+- The [extension gallery](#extensions) has a view for almost any result:
+  charts, maps, 3D, pivots, KPI cards.
+
+And you don't have to give anything up to try it. `plumesql .` opens the
+folder you already work in.
 
 ## Deep on PostgreSQL
 
@@ -115,8 +149,8 @@ while the statement is only half written.
   The alphabet comes second.
 - **PL/pgSQL too.** Inside a function body it completes your parameters
   and variables with their types, a `%ROWTYPE` variable's columns, RAISE
-  levels, exception names with their SQLSTATE, and every loop and block
-  as a snippet.
+  levels, exception names with their SQLSTATE, and every loop and block,
+  written out for you.
 
 ### The lightbulb
 
@@ -180,6 +214,8 @@ order by 1;
 
 - `@connection` pins the script to a connection, so it can't run on the
   wrong server by accident, and `@readonly` keeps it from writing at all.
+  Another `@connection` line further down, and the rest of the script
+  runs on that server: one script, several databases.
 - `@inputs` fills in the query's parameters, so it runs without asking.
 - `@extension` picks how the result is shown: a chart, a pivot, KPI
   cards, beside the grid or instead of it. `@inputs` can set up the
@@ -264,6 +300,14 @@ plumesql --help                    # everything else
   passwords left out. Right-click a server for a ready
   `IMPORT FOREIGN SCHEMA`, and completion knows your servers and the
   options `postgres_fdw`, `file_fdw` and `mysql_fdw` take.
+- **PostgreSQL on your machine.** The System page lists the servers on
+  your machine, installed or in Docker, and adds one to your connections
+  in a click. No PostgreSQL yet? It starts a sample database or an empty
+  server in Docker, or installs one for you. The client tools can run
+  from Docker too, any version, nothing to install.
+- **Terminals, as many as you like.** In the bottom panel or as a tab
+  of their own. Each one shows what runs in it, and nothing gets
+  stopped by accident.
 - **In the desktop app, or in your browser.** The same PlumeSQL runs in
   a tab of the browser you already have: `plumesql -browser .`
 - **Feels like VS Code.** Its editor, its shortcuts, its command palette,
@@ -272,8 +316,23 @@ plumesql --help                    # everything else
 
 ## Extensions
 
-There are more than 170 of them, and we keep adding more. Some we use
-a lot:
+There are more than 170 of them, and we keep adding more. A few, as
+they look:
+
+<table>
+  <tr>
+    <td width="33%"><a href="extensions/Charts/city-3d/"><img src="extensions/Charts/city-3d/media/city-3d.webp" alt="City 3D: films as buildings in districts by category" /></a><br /><b>City 3D</b>: rows as buildings</td>
+    <td width="33%"><a href="extensions/PostGIS/postgis-map/"><img src="extensions/PostGIS/postgis-map/media/postgis-map.webp" alt="Map: a hexagon grid over Zagreb, raised by the number of shops" /></a><br /><b>Map</b>: PostGIS on a real map</td>
+    <td width="33%"><a href="extensions/pgvector/vector-space-3d/"><img src="extensions/pgvector/vector-space-3d/media/vector-space-3d.webp" alt="Vector Space 3D: clusters of embeddings and a point's nearest neighbours" /></a><br /><b>Vector Space 3D</b>: your embeddings</td>
+  </tr>
+  <tr>
+    <td><a href="extensions/Performance/query-landscape/"><img src="extensions/Performance/query-landscape/media/query-landscape.webp" alt="Query landscape: pg_stat_statements in 3D" /></a><br /><b>Query landscape</b>: the costly queries stand out</td>
+    <td><a href="extensions/Storage%20and%20Maintenance/storage-city/"><img src="extensions/Storage%20and%20Maintenance/storage-city/media/storage-city.webp" alt="Storage city: every table as a building" /></a><br /><b>Storage city</b>: your tables by size</td>
+    <td><a href="extensions/Charts/scatter-3d/"><img src="extensions/Charts/scatter-3d/media/scatter-3d.webp" alt="Scatter 3D: three numbers at once, a point per row" /></a><br /><b>Scatter 3D</b>: three numbers at once</td>
+  </tr>
+</table>
+
+Some we use a lot:
 
 - **Charts.** The usual ones (ECharts, Chart.js, Vega-Lite and a set of
   [statistical charts](extensions/Statistical%20Charts/)), plus
@@ -365,9 +424,12 @@ server ready about 40 ms after launch (M4 Pro MacBook).
 No account, no telemetry. Your connections and data stay on your
 machine. Passwords live in your project files or an encrypted vault, and
 never reach the interface. PlumeSQL goes online only for updates and
-release notes, the extension catalog and the video list, and YouTube
-when you press play. Signing in to GitHub, to comment on extensions, is
-optional.
+release notes, the extension catalog with its download counts and
+comments, the video list, the PostgreSQL documentation pages you open,
+Open VSX when you browse its themes, and YouTube when you press play.
+An extension's chart libraries and map tiles come only from hosts you
+allow, and the System page lists every host PlumeSQL reaches. Signing in
+to GitHub, to comment on extensions and releases, is optional.
 
 ## Help
 
@@ -375,6 +437,9 @@ optional.
 - About an extension: its own thread under
   [Extensions](https://github.com/hercstack/plumesql/discussions/categories/extensions),
   where the comments from its page in the app also go
+- About a release: its thread under
+  [Announcements](https://github.com/hercstack/plumesql/discussions/categories/announcements),
+  where the comments from its release notes in the app also go
 - Bugs: [Issues](https://github.com/hercstack/plumesql/issues), or Report a Bug in the app
 - Security: [SECURITY.md](SECURITY.md)
 

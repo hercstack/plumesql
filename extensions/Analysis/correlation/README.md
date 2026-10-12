@@ -23,3 +23,7 @@ PostgreSQL 13 or newer. No server side: the result's sandbox computes it from th
 ## Notes
 
 Each pair uses the rows where both of its values are present, so two pairs may rest on a different n. Fewer than three such rows, or a column that never changes, leaves the cell empty. Correlation is not causation, and r only sees what its method looks for: a U shape reads close to 0 under both. From a script: `-- @extension correlation` above the query, with `-- @inputs method=spearman, output=pairs`. The pairs form pipes on: `-- @extension correlation | echarts` with `-- @inputs output=pairs` and `-- @inputs echarts: kind=bar, x=b, series=r`.
+
+## In SQL
+
+**Statistics refactors** (`statistics-refactors`) writes the same analysis as a query above yours from the editor's lightbulb, computed by PostgreSQL over every row the query returns: a query you keep and share rather than a view of the grid.

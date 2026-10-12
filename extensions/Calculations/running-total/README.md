@@ -15,3 +15,7 @@ PostgreSQL 13 or newer. Nothing on the server: the rule runs in the grid.
 ## Notes
 
 Attach it from a script with `-- @extension running-total` above a query (or in the file header for every query), or from a result's own menu; the extension's page in PlumeSQL lists the lines to paste. The file is short and the pattern and words are the first thing in it: Fork (row menu) and change them to taste. Edit `amount` in the file to your column.
+
+## In SQL
+
+**Window function refactors** (`window-refactors`) writes the same calculation into your query from the editor's lightbulb, as a window function PostgreSQL computes over every row: a query you keep, filter and share rather than a column of the grid.

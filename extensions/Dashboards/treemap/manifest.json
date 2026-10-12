@@ -10,12 +10,12 @@
     "Dashboards"
   ],
   "tags": [
-    "dashboard",
     "charts",
     "treemap",
     "hierarchy",
     "share",
-    "echarts"
+    "echarts",
+    "part of whole"
   ],
   "requires": {
     "pgExtensions": [],
@@ -39,7 +39,7 @@
   "demo": "media/treemap.webp",
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }

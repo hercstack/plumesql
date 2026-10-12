@@ -2,10 +2,10 @@
   "format": 1,
   "id": "data-analysis",
   "kind": "pack",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "plumesql": ">=0.22.0",
   "name": "Data analysis",
-  "description": "Profile, summarize, reshape and chart the rows a query returns: the analyst's everyday set in one install",
+  "description": "Profile, summarize, reshape and chart query results, and write the SQL that computes them: the analyst's everyday set",
   "categories": [
     "Packs"
   ],
@@ -15,7 +15,9 @@
     "charts",
     "reshape",
     "data science",
-    "starter"
+    "starter",
+    "window functions",
+    "sql"
   ],
   "requires": {
     "pgExtensions": []
@@ -32,7 +34,7 @@
   "featured": true,
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }

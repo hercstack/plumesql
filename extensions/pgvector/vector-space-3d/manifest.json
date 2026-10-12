@@ -1,0 +1,57 @@
+{
+  "format": 1,
+  "id": "vector-space-3d",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Vector Space 3D",
+  "description": "Embeddings in 3D: a vector column on its three principal axes, coloured by a category; click a point for its nearest neighbours",
+  "categories": [
+    "pgvector",
+    "Charts"
+  ],
+  "tags": [
+    "pgvector",
+    "vector",
+    "embeddings",
+    "ai",
+    "rag",
+    "similarity",
+    "nearest neighbours",
+    "pca",
+    "clusters",
+    "outliers",
+    "3d",
+    "scatter"
+  ],
+  "requires": {
+    "pgExtensions": [
+      "vector"
+    ],
+    "pgVersion": ">=13"
+  },
+  "types": [
+    "vector",
+    "halfvec",
+    "sparsevec"
+  ],
+  "files": [
+    "vector-space-3d.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "three-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 199,
+  "externals": [],
+  "icon": "icon.svg",
+  "demo": "media/vector-space-3d.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

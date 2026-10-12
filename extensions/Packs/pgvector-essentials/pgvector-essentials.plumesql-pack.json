@@ -1,0 +1,7 @@
+{
+  "members": [
+    "pgvector",
+    "pgvector-refactors",
+    "vector-space-3d"
+  ]
+}

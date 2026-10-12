@@ -262,6 +262,18 @@ interface RenderContext {
    * of a wide result this way moves that column alone:
    * ctx.rows(0, 20000, { columns: [ctx.inputs.column] }). */
   rows(offset: number, limit: number, options?: { columns?: (string | number)[] }): Promise<unknown[][]>;
+  /** The basemap the user chose for maps (extensions.mapStyle), the URL of a
+   * MapLibre style to fetch with fetchMap; '' when maps draw on a plain
+   * background. A map view draws on it rather than naming a host of its own. */
+  mapStyle: string;
+  /** Fetch one file of a map's basemap (its style, a tile, a font, a sprite)
+   * through PlumeSQL: the view itself has no network. The URL must be https
+   * and its host on the user's allowed map tile hosts (extensions.mapTileHosts);
+   * resolves to the file's bytes, from PlumeSQL's map cache when it has them,
+   * and rejects otherwise (the Log then offers to allow the host, and the view
+   * draws again when it is). A map library's own requests go through it with
+   * a custom protocol (MapLibre's addProtocol). */
+  fetchMap(url: string): Promise<ArrayBuffer>;
 }
 
 /** A button PlumeSQL renders in the view's header (its label and an optional icon
@@ -502,6 +514,24 @@ interface RefactorTable {
   columns: RefactorColumn[];
   /** TimescaleDB's hypertable facts, when the table is one. */
   timescale?: { timeColumn?: string };
+  /** Its indexes, when the dictionary knows their keys (absent otherwise: a snapshot built before PlumeSQL 0.24.0). */
+  indexes?: RefactorIndex[];
+  /** The statistics' row estimate, once PlumeSQL has read the statistics
+   * (when the lightbulb's list is opened); absent before, and for a table
+   * never analyzed. */
+  rows?: number;
+}
+
+/** One index of a relation. */
+interface RefactorIndex {
+  name: string;
+  /** The access method: 'btree', 'gin', 'hnsw' ... */
+  method: string;
+  unique: boolean;
+  /** The key columns in order; '' for an expression key. */
+  keys: string[];
+  /** Each key's operator class ('vector_cosine_ops'), in the same order. */
+  ops: string[];
 }
 
 /** The statement a refactor reads. Every offset indexes text. */
@@ -516,12 +546,86 @@ interface RefactorStatement {
   /** The relations it reads or writes at its own level (FROM and JOINs, an
    * UPDATE's or a DELETE's target, an INSERT's table). */
   tables: RefactorTable[];
+  /** A query's main SELECT, read by PlumeSQL so a refactor carries no SQL
+   * parser: absent for anything but a SELECT (or a WITH over one) and for
+   * a set operation (UNION, INTERSECT, EXCEPT). */
+  query?: RefactorQuery;
+}
+
+/** The main SELECT of a query, at the statement's own level (a CTE's body
+ * and a subquery are not it). Every offset indexes the statement's text. */
+interface RefactorQuery {
+  /** The select list; an item appended goes at 'to', after a comma. */
+  select: { from: number; to: number };
+  /** The list's items, in order. */
+  items: RefactorQueryItem[];
+  /** Each clause after the list, from its keyword to its last token;
+   * absent when the query has none. */
+  clauses: {
+    into?: { from: number; to: number };
+    from?: { from: number; to: number };
+    where?: { from: number; to: number };
+    groupBy?: { from: number; to: number };
+    having?: { from: number; to: number };
+    window?: { from: number; to: number };
+    orderBy?: { from: number; to: number };
+    limit?: { from: number; to: number };
+    offset?: { from: number; to: number };
+    fetch?: { from: number; to: number };
+    for?: { from: number; to: number };
+  };
+  /** SELECT DISTINCT (or DISTINCT ON). */
+  distinct?: boolean;
+  /** Where the body ends, before the ';' and any trailing comment: the
+   * query as a CTE is text.slice(0, end). */
+  end: number;
+}
+
+/** One item of a select list. */
+interface RefactorQueryItem {
+  /** The item as written, at text[from, to). */
+  text: string;
+  from: number;
+  to: number;
+  /** The column it gives the result: its alias, else the column it names,
+   * else the function it calls, else '?column?'. */
+  name: string;
+  alias?: string;
+  /** '*' or 't.*'. */
+  star?: boolean;
+  /** It is, or holds, an aggregate call no OVER makes a window one. */
+  aggregate?: boolean;
+  /** A bare column reference's parts, unquoted ('o.amount': ['o', 'amount']). */
+  column?: string[];
+  /** Its declared type when known: the result's once the statement has run
+   * as written, else the dictionary's for a column of its tables. */
+  type?: string;
+}
+
+/** What the statement returned the last time it ran as written. */
+interface RefactorResult {
+  /** The columns, with their declared types as PostgreSQL prints them. */
+  columns: { name: string; type: string }[];
+  /** The first rows (at most 50), each value the server's text, null for
+   * NULL, cut at 4096 characters. */
+  rows: (string | null)[][];
 }
 
 /** The context of one refactor call. */
 interface RefactorContext {
   /** The connected server's major version (17, 18), when known. */
   serverVersion?: number;
+  /** The extension's options (its options export), each the user's value
+   * from the Refactors settings or its default: a number for a number
+   * option, a string otherwise. */
+  options: Record<string, string | number>;
+  /** Where the user wants a new statement a refactor writes: 'above' the
+   * statement, or in a new 'tab' (answer an offer with tab then). */
+  queryPlace: 'above' | 'tab';
+  /** What the statement returned the last time it ran AS WRITTEN (its text
+   * unchanged since): absent before a run and after an edit. Offer what
+   * depends on the data only when it is here. */
+  result?: RefactorResult;
   /** Write a line to PlumeSQL's Log. */
   log(...args: unknown[]): void;
 }
@@ -531,6 +635,29 @@ interface RefactorContext {
 interface RefactorOffer {
   title: string;
   edits: { from: number; to: number; text: string }[];
+  /** A new statement to open in a new tab instead of editing this one;
+   * the edits are then ignored and may be empty. */
+  tab?: string;
+}
+
+/** An OPTION of a refactor extension: a setting its refactors read as
+ * ctx.options[key]. The user sets it in the Refactors settings (under the
+ * refactor it names, or under the extension) and on the extension's page. */
+interface RefactorOption {
+  /** Its name: letters, digits and underscores, a letter first. */
+  key: string;
+  kind: 'choice' | 'number' | 'text';
+  /** What the settings say ("Distance in metres"). */
+  label: string;
+  /** Its value until the user sets one; required (a refactor never asks).
+   * A number for a number option, one of options for a choice. */
+  default: string | number;
+  /** A choice's constants. */
+  options?: string[];
+  /** One sentence on what it does, under its label. */
+  description?: string;
+  /** The id of the refactor it shapes; absent, it belongs to the extension. */
+  refactor?: string;
 }
 
 /** A REFACTOR: a rewrite the SQL editor offers on a statement, beside its own
@@ -543,6 +670,12 @@ interface RefactorOffer {
 interface PlumeSQLRefactor {
   /** Its name within the extension: lowercase letters, digits and hyphens. */
   id: string;
+  /** What the Refactors settings call it ("Rows near the first row"); its id when absent. */
+  label?: string;
+  /** One sentence on what it offers, under its label in the Refactors settings. */
+  description?: string;
+  /** A short piece of the SQL it writes ('limit 100'), shown under the description. */
+  example?: string;
   refactor(statement: RefactorStatement, ctx: RefactorContext): RefactorOffer[] | RefactorOffer | null | undefined | Promise<RefactorOffer[] | RefactorOffer | null | undefined>;
 }
 
@@ -554,4 +687,4 @@ interface PlumeSQLRefactor {
  * with a JSDoc @type PlumeSQLExtension to type the formula and render callbacks. */
 type PlumeSQLExtension =
   | GridRule[]
-  | { inputs?: ViewInput[]; rules?: GridRule[]; views?: PlumeSQLView[]; inspectors?: PlumeSQLInspector[]; formats?: PlumeSQLFormat[]; refactors?: PlumeSQLRefactor[] };
+  | { inputs?: ViewInput[]; rules?: GridRule[]; views?: PlumeSQLView[]; inspectors?: PlumeSQLInspector[]; formats?: PlumeSQLFormat[]; refactors?: PlumeSQLRefactor[]; options?: RefactorOption[] };

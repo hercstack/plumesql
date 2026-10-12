@@ -85,7 +85,7 @@ const HEX_RE = /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8}
 const MANIFEST_FIELDS = new Set([
   'format', 'id', 'kind', 'version', 'plumesql', 'name', 'description', 'categories', 'tags', 'requires',
   'files', 'dependencies', 'permissions', 'discussion', 'author', 'license', 'featured', 'icon', 'externals', 'demo',
-  'recommend', 'forkedFrom', 'scope', 'types'
+  'recommend', 'forkedFrom', 'scope', 'types', 'suggest'
 ])
 // rule 8g: a grid extension's starting scope, where it applies right after
 // its first install (docs/MARKETPLACE.md 7.7): the attachment's own
@@ -95,7 +95,14 @@ const SCOPE_FOR_WORDS = new Set(['global', 'workspace'])
 // The app-side signals a manifest's `recommend` may name (rule 8e): the
 // words the app knows; a new signal is a new word here and in the app.
 const RECOMMEND_SIGNALS = new Set(['my-extensions'])
-// rule 8h: the data types a grid extension reads, bare lowercase names as
+// rule 8i: the statement signals a refactor extension's `suggest` may name,
+// which offer its install in the editor's lightbulb: `numbers`, a query
+// returning a number column that is no key. A new signal is a new word here
+// and in the app. Maintainers set the field, like `featured` (the review
+// grants it; the validator checks only its shape).
+const SUGGEST_SIGNALS = new Set(['numbers'])
+// rule 8h: the data types a grid extension reads (or a refactor extension
+// rewrites), bare lowercase names as
 // format_type spells them without a schema or a modifier (geometry,
 // vector, double precision).
 const TYPE_RE = /^[a-z_][a-z0-9_$]*(?: [a-z_][a-z0-9_$]*)*$/
@@ -290,11 +297,20 @@ function collect(category, id) {
   }
   // rule 8h: the types it reads
   if (m.types !== undefined) {
-    if (m.kind !== 'grid') fail(where, 'types is for a grid extension alone: it names the column types whose values its inspectors read')
+    if (m.kind !== 'grid' && m.kind !== 'refactor') fail(where, 'types is for a grid or a refactor extension: it names the column types whose values its inspectors read, or that its refactors rewrite')
     else if (!Array.isArray(m.types) || m.types.length === 0 || m.types.length > 12) fail(where, 'types must be a list of 1 to 12 type names')
     else {
       for (const t of m.types) if (typeof t !== 'string' || t.length > 63 || !TYPE_RE.test(t)) fail(where, `types "${t}" is not a bare lowercase type name (geometry, vector: no schema, no modifier)`)
       if (new Set(m.types).size !== m.types.length) fail(where, 'types lists a type twice')
+    }
+  }
+  // rule 8i: the lightbulb's signals
+  if (m.suggest !== undefined) {
+    if (m.kind !== 'refactor') fail(where, 'suggest is for a refactor extension alone: it offers the install in the editor\'s lightbulb')
+    else if (!Array.isArray(m.suggest) || m.suggest.length === 0 || !m.suggest.every((w) => typeof w === 'string')) fail(where, 'suggest must be a list of signal words')
+    else {
+      for (const w of m.suggest) if (!SUGGEST_SIGNALS.has(w)) fail(where, `unknown suggest signal "${w}" (known: ${[...SUGGEST_SIGNALS].join(', ')})`)
+      if (new Set(m.suggest).size !== m.suggest.length) fail(where, 'suggest lists a signal twice')
     }
   }
   if (m.forkedFrom !== undefined && (typeof m.forkedFrom !== 'string' || !ID_RE.test(m.forkedFrom))) fail(where, 'forkedFrom must be an extension id')
@@ -812,6 +828,9 @@ const catalog = {
     // The types it reads (rule 8h): a result column of one offers the
     // extension's page while it is not installed.
     ...((e.m.types ?? []).length ? { types: e.m.types } : {}),
+    // The statement signals that offer its install in the lightbulb
+    // (rule 8i).
+    ...((e.m.suggest ?? []).length ? { suggest: e.m.suggest } : {}),
     ...(e.m.icon ? { icon: e.m.icon } : {}),
     author: e.m.author.name,
     // The hosts the external libraries load from, so the row can say

@@ -77,6 +77,29 @@ export interface GridExtensionFile {
   // attached apart. See GridRefactor below and docs/GRIDJSSPEC.md,
   // Refactors.
   refactors?: GridRefactor[]
+  // OPTIONS of a refactor module: settings its refactors read as
+  // ctx.options, set by the user in the Refactors settings or on the
+  // extension's page. See RefactorOption below and docs/GRIDJSSPEC.md,
+  // Refactors.
+  options?: RefactorOption[]
+}
+
+// spec: one option of a refactor module. `key` names it (letters, digits
+// and underscores, a letter first), `kind` is choice, number or text,
+// `label` what the settings say, `default` the value it has until the user
+// sets one (REQUIRED: a refactor never stops to ask), `options` a choice's
+// constants, `description` one sentence on what it does, `refactor` the
+// id of the refactor it shapes (the settings show it under that one;
+// absent, under the extension). A refactor reads it as ctx.options[key]:
+// a number for a number option, a string otherwise.
+export interface RefactorOption {
+  key: string
+  kind: 'choice' | 'number' | 'text'
+  label: string
+  default: string | number
+  options?: string[]
+  description?: string
+  refactor?: string
 }
 
 // spec: a refactor. `id` names it within its extension (lowercase letters,
@@ -89,6 +112,12 @@ export interface GridExtensionFile {
 // module version.
 export interface GridRefactor {
   id: string
+  // spec: what the Refactors settings call it ("Rows near the first row"),
+  // one sentence on what it offers and a short piece of what it writes;
+  // absent, the settings show its id.
+  label?: string
+  description?: string
+  example?: string
   refactor: (
     statement: RefactorStatement,
     ctx: RefactorContext
@@ -107,6 +136,31 @@ export interface RefactorStatement {
   caret: number
   keyword: string
   tables: RefactorTable[]
+  // A query's main SELECT, absent for anything else and for a set operation.
+  query?: RefactorQuery
+}
+
+// The main SELECT of a query, at the statement's own level (a CTE's body
+// and a subquery are not it).
+export interface RefactorQuery {
+  select: { from: number; to: number }
+  items: RefactorQueryItem[]
+  clauses: Partial<Record<'into' | 'from' | 'where' | 'groupBy' | 'having' | 'window' | 'orderBy' | 'limit' | 'offset' | 'fetch' | 'for', { from: number; to: number }>>
+  distinct?: boolean
+  end: number
+}
+
+// One item of the select list.
+export interface RefactorQueryItem {
+  text: string
+  from: number
+  to: number
+  name: string
+  alias?: string
+  star?: boolean
+  aggregate?: boolean
+  column?: string[]
+  type?: string
 }
 
 // spec: one relation of the statement. `ref` is how the statement names it
@@ -120,6 +174,24 @@ export interface RefactorTable {
   columns: RefactorColumn[]
   // TimescaleDB's hypertable facts, when the table is one.
   timescale?: { timeColumn?: string }
+  // spec: its indexes, when the dictionary knows their keys (absent
+  // otherwise: a snapshot built before PlumeSQL 0.24.0).
+  indexes?: RefactorIndex[]
+  // spec: the statistics' row estimate (pg_class.reltuples), once the host
+  // has read the statistics (PlumeSQL: when the lightbulb's list is
+  // opened); absent before, and for a table never analyzed.
+  rows?: number
+}
+
+// spec: one index. `method` the access method ('btree', 'gin', 'hnsw');
+// `keys` the key columns in order, '' for an expression key; `ops` each
+// key's operator class ('vector_cosine_ops'), in the same order.
+export interface RefactorIndex {
+  name: string
+  method: string
+  unique: boolean
+  keys: string[]
+  ops: string[]
 }
 
 // spec: one column. `type` is the declared type as PostgreSQL prints it
@@ -137,7 +209,25 @@ export interface RefactorColumn {
 export interface RefactorContext {
   // The connected server's major version (17, 18), when PlumeSQL knows it.
   serverVersion?: number
+  // spec: the module's options (RefactorOption), each the user's value or
+  // its default: a number for a number option, a string otherwise.
+  options: Record<string, string | number>
+  // spec: where the user wants a NEW statement a refactor writes: 'above'
+  // the statement in the same script, or in a new 'tab' (an offer's tab).
+  queryPlace: 'above' | 'tab'
+  // spec: what the statement returned the last time it ran AS WRITTEN (its
+  // text unchanged since), when it did: the columns with their declared
+  // types and the first 50 rows, each value the server's text (null for
+  // NULL), cut at 4096 characters. Absent before a run, after an edit, or
+  // when the statement returned no rows' shape.
+  result?: RefactorResult
   log: (...args: unknown[]) => void
+}
+
+// spec: the sample a refactor is handed (RefactorContext.result).
+export interface RefactorResult {
+  columns: { name: string; type: string }[]
+  rows: (string | null)[][]
 }
 
 // spec: one rewrite offered. `title` is what the lightbulb's list says;
@@ -147,6 +237,9 @@ export interface RefactorContext {
 export interface RefactorOffer {
   title: string
   edits: { from: number; to: number; text: string }[]
+  // spec: a new statement to open in a NEW TAB instead of editing this
+  // one; the edits are then ignored and may be empty.
+  tab?: string
 }
 
 // spec: a copy and save format. `id` names it within its extension
@@ -948,7 +1041,12 @@ statement beside its own (the lightbulb, Ctrl+. or Cmd+.). A refactor is an
 object with an `id` (lowercase letters, digits and hyphens, unique within the
 module; a repeated id keeps the first) and a `refactor(statement, ctx)`
 function. An entry without either is dropped and the editor's check of the
-file says why. The host keys a refactor `<extension id>/<id>`.
+file says why. The host keys a refactor `<extension id>/<id>`. A refactor MAY
+carry a `label`, what a host's settings call it (PlumeSQL: the Refactors
+checklist, where it is turned off; at most 80 characters, the id when
+absent), a `description`, one sentence on what it offers (at most 300
+characters), and an `example`, a short piece of the SQL it writes
+(`limit 100`, at most 200 characters), which a host shows with it.
 
 **Alone in its module.** A module that declares refactors MUST declare
 nothing else: no rules, views, inspectors or formats (empty lists are
@@ -994,10 +1092,80 @@ quick and MUST answer from what it is given; it cannot ask the server.
   (how the statement names it), `alias`, the exact `schema` and `name`, its
   `columns` (`name`, the declared `type` as PostgreSQL prints it, `pk` its
   place in the primary key, `ref` the column a foreign key makes it
-  reference), and `timescale.timeColumn` when it is a TimescaleDB hypertable.
+  reference), `timescale.timeColumn` when it is a TimescaleDB hypertable,
+  `indexes` (each index's `name`, `method`, `unique`, key columns `keys` and
+  operator classes `ops`) when the dictionary knows them, and `rows`, the
+  statistics' row estimate, once the host has read the statistics (PlumeSQL
+  reads them when the lightbulb's list is opened, so a refactor asked on a
+  caret move before that sees no `rows`); a table never analyzed has none.
+- `query`: a query's MAIN SELECT, read by the host so a refactor carries no
+  SQL parser of its own; absent for anything but a SELECT (or a WITH whose
+  main statement is one) and for a set operation (UNION, INTERSECT,
+  EXCEPT), whose branches no one list describes. Read at the statement's
+  own level: a CTE's body and a subquery are not it. It carries `select`
+  (`from` and `to` of the select list: an item appended goes at `to`, after
+  a comma), `items`, `clauses`, `distinct` (true for SELECT DISTINCT and
+  DISTINCT ON) and `end` (where the body ends, before its `;` and any
+  trailing comment, so the query as a CTE is `text.slice(0, end)`). Each of
+  `items` carries `text`, `from` and `to`, `name` (the column it gives the
+  result: its alias, else the column it names, else the function it calls,
+  else `?column?`), `alias`, `star` (`*` or `t.*`), `aggregate` (it is, or
+  holds, an aggregate call that no OVER makes a window one), `column` (a
+  bare column reference's parts, unquoted: `o.amount` is `["o", "amount"]`;
+  a cast of one still names it) and `type`, the declared type when it is
+  known: the result's, when the statement has run as written and its items
+  line up with the result's columns one for one (no star), else the
+  dictionary's for a column of its `tables`. `clauses` holds each clause
+  after the list that the query writes, from its keyword to its last token:
+  `into`, `from`, `where`, `groupBy`, `having`, `window`, `orderBy`,
+  `limit`, `offset`, `fetch`, `for` (the locking clause).
 
 `ctx` carries `serverVersion` (the connected server's major version, when
-known) and `log` (a line to PlumeSQL's Log, as for a formula).
+known), `options` (below), `queryPlace`, `result` and `log` (a line to
+PlumeSQL's Log, as for a formula). `queryPlace` is where the user wants a
+NEW statement a refactor writes (a count over the query, a preview of the
+rows a change touches): `above` the statement, in the same script, or in a
+new `tab`. A refactor that writes one SHOULD follow it: an edit at offset 0
+for `above`, an offer with `tab` for `tab`.
+
+`result` is what the statement returned the last time it ran AS WRITTEN,
+its text unchanged since (compared without its comments and spacing), and
+is absent before a run, after an edit, and for a statement that returned
+no columns. It carries `columns` (`name`, the declared `type` as PostgreSQL
+prints it) and `rows`, the first 50 rows at most, each an array of values
+in column order: the server's text (what the grid shows), `null` for NULL,
+a value longer than 4096 characters cut there. A refactor that depends on
+the data (a key the JSON holds, the reference system a geometry is in, the
+span of a time column) SHOULD offer it only when `result` is there, and
+MUST NOT take the sample for the whole result: it is the start of it.
+
+**Options.** A module MAY declare `options` beside its `refactors`: the
+settings its refactors read, which the user sets and the module never asks
+for (a refactor runs on every caret move; it cannot stop to ask). An option
+is an object with:
+
+- `key`: its name, letters, digits and underscores with a letter first,
+  unique within the module;
+- `kind`: `choice`, `number` or `text`;
+- `label`: what the settings say;
+- `default`: REQUIRED, its value until the user sets one: a number for a
+  `number` option, one of `options` for a `choice`, a string for `text`;
+- `options`: a `choice`'s constants;
+- `description` (optional): one sentence on what it does;
+- `refactor` (optional): the id of the module's refactor it shapes. A host
+  shows the option with that refactor; without it, with the extension.
+
+An entry that breaks any of this is dropped and the editor's check of the
+file says why. Each call's `ctx.options` holds every option the module
+declares, by `key`: the user's value or the default, a number for a
+`number` option and a string otherwise. A host keeps the values per user
+(PlumeSQL: the `editor.refactorOptions` setting, keyed
+`<extension id>/<option key>`, a workspace's value over the global one, set
+in the Refactors settings and on the extension's page), never in the
+module's file, and hands a refactor only values of the option's kind: a
+stored value that is not one falls back to the default. Options belong to
+refactor modules; a grid module's `options` are not read (its rules have
+`inputs`, section 10).
 
 **The answer.** A refactor answers an offer (`{ title, edits }`), an array of
 them, or `null` / `undefined` for nothing. `title` is what the lightbulb's
@@ -1006,7 +1174,18 @@ list says (trimmed, at most 120 characters). `edits` replace
 integers inside the statement and edits MUST NOT overlap. An offer that
 breaks any of this is dropped whole, and at most 20 offers of one call are
 read. The host lists the offers after its own refactors, every extension's in
-the order the extensions load.
+the order the extensions load, and names on each offer the extension it
+came from, as a way to its page (PlumeSQL: the extension's cube at the
+end of the lightbulb's row); the extension says nothing about it. An offer MAY carry `tab` instead, the text of a NEW
+statement (at most 1,000,000 characters): choosing it opens that statement
+in a new tab and leaves the script as it is; its `edits` are then ignored
+and may be empty. A host lists an offer that writes a new statement (a
+`tab`, or edits that only insert whole statements before or after this one)
+with its own such refactors (PlumeSQL: Write a Statement). An insertion at offset 0 that
+writes whole statements is placed ABOVE the comment lines right over the
+statement's code (its docstring and its annotations, up to a blank line),
+so they stay with the statement they describe; the offer writes it at 0
+all the same.
 
 **Failure.** A refactor that throws, rejects or runs out of time offers
 nothing, and the host logs the failure once per module version, with the

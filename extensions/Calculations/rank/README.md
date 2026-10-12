@@ -26,3 +26,7 @@ PostgreSQL 13 or newer. No server side: the result's sandbox computes it from th
 ## Notes
 
 The ranks read every row the view reads; the grid lists the first 100,000. To see the leaders first, sort the rank tab's column in the grid, or order the query. From a script: `-- @extension rank` above the query, and `-- @inputs column=sales, ties=dense, group=region` to answer the inputs in the file. In a pipeline the rank column is a number like any other: `-- @extension rank | echarts`.
+
+## In SQL
+
+**Window function refactors** (`window-refactors`) writes the same calculation into your query from the editor's lightbulb, as a window function PostgreSQL computes over every row: a query you keep, filter and share rather than a column of the grid.

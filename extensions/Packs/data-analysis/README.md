@@ -1,25 +1,13 @@
 # Data analysis
 
-Profile, summarize, reshape and chart the rows a query returns: the analyst's everyday set in one install.
+Profile, summarize, reshape and chart query results, and write the SQL that computes them: the analyst's everyday set in one install.
 
-## What it installs
+## Where to start
 
-- `profile`
-- `data-quality`
-- `frequencies`
-- `histogram`
-- `correlation`
-- `outliers`
-- `group-by`
-- `pivot`
-- `percent-of-total`
-- `plot-chart`
-- `kpi-cards`
+Run a query, right-click its result and choose **Extensions…**, then **Profile**: every column's nulls, distinct values, range and distribution, the quickest look at data you do not know yet. **Data quality** and **Frequencies** go a step further, **Group by** and **Pivot** fold the rows, and **Plot chart** draws them.
 
-## How it installs
+In the editor, **Window function refactors** and **Statistics refactors** write the same calculations as SQL: put the caret on a number column and open the lightbulb (Ctrl+. or ⌘.) for a running total, a moving average, a rank or a share as a new column, or for a description, a correlation, a histogram or the outliers as a query above yours, computed by PostgreSQL over every row.
 
-A pack has no code of its own: it names the extensions above, and Install all installs the ones you do not have yet, each the way its own kind installs. A grid or theme extension installs at once; a query or command extension shows its code and asks for your consent first, one after the other, exactly as it would on its own page. Skip any of them, or remove one later, and the rest stay.
+The result extensions apply to a result the same way. In a script, `-- @extension profile` above a query shows it every time that query runs, and on an extension's page, **Applies to** puts it on every result (**Everywhere**) or on a workspace's.
 
-## Notes
-
-Every member has its own page, requirements and README; the pack's page lists them with where each one stands.
+The pack's members are named in `data-analysis.plumesql-pack.json`, and PlumeSQL lists them on the pack's page with where each one stands.

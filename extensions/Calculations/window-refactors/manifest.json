@@ -1,0 +1,47 @@
+{
+  "format": 1,
+  "id": "window-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.24.0",
+  "name": "Window function refactors",
+  "description": "A running total, moving average, change, share, rank or the top rows per group, written into your query from the lightbulb",
+  "categories": [
+    "Calculations"
+  ],
+  "tags": [
+    "window functions",
+    "running total",
+    "moving average",
+    "rank",
+    "lag",
+    "top n",
+    "refactor"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "window-refactors.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "suggest": [
+    "numbers"
+  ],
+  "discussion": 200,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

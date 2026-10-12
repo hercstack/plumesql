@@ -2,10 +2,10 @@
   "format": 1,
   "id": "pgvector-refactors",
   "kind": "refactor",
-  "version": "1.0.0",
-  "plumesql": ">=0.23.0",
+  "version": "1.1.0",
+  "plumesql": ">=0.24.0",
   "name": "pgvector refactors",
-  "description": "The nearest neighbour query a lightbulb away in the editor, in the three distances pgvector indexes",
+  "description": "The nearest neighbour query a lightbulb away in the editor, to a vector you paste or to a row you have, and the HNSW index it needs",
   "categories": [
     "pgvector"
   ],
@@ -23,6 +23,11 @@
     ],
     "pgVersion": ">=13"
   },
+  "types": [
+    "vector",
+    "halfvec",
+    "sparsevec"
+  ],
   "files": [
     "pgvector-refactors.plumesql.js"
   ],
@@ -39,7 +44,7 @@
   "externals": [],
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }

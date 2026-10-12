@@ -14,7 +14,8 @@
     "sparklines",
     "arrays",
     "charts",
-    "numbers"
+    "numbers",
+    "line chart"
   ],
   "requires": {
     "pgExtensions": [],
@@ -34,7 +35,7 @@
   "demo": "media/sparklines.webp",
   "author": {
     "name": "PlumeSQL",
-    "url": "https://plume.hercstack.com"
+    "url": "https://plumesql.com"
   },
   "license": "MIT"
 }
