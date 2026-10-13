@@ -2,9 +2,10 @@ name: publish catalog
 
 # After every push to main, the index the app reads is rebuilt and published
 # to the orphan branch `catalog`: extensions/catalog.json (the slim search
-# index) and locks/<id>.json (one per extension: the hashed file list,
+# index), locks/<id>.json (one per extension: the hashed file list,
 # dependencies, permissions, discussion, author, license and the commit the
-# files are served from). Only this workflow ever writes them, so no pull
+# files are served from) and changelog.json (the releases whose notes are in
+# changelog/, which the app lists without spending GitHub's API limit). Only this workflow ever writes them, so no pull
 # request touches the index and two contributors never collide on it; the
 # branch always holds exactly one commit, force pushed, so its history never
 # grows. The app fetches raw.githubusercontent.com/hercstack/plumesql/catalog/...
@@ -37,6 +38,19 @@ jobs:
           git fetch origin catalog:refs/remotes/origin/catalog || true
           mkdir -p /tmp/index
           node extensions/tools/catalog.mjs --write --commit "$GITHUB_SHA" --out /tmp/index
+      - name: List the releases with notes
+        # changelog/<tier>-v<version>/ holding a README.md, in the shape of
+        # GitHub's contents listing (name and type), sorted.
+        run: |
+          node -e '
+            const fs = require("fs")
+            const dirs = fs.readdirSync("changelog", { withFileTypes: true })
+              .filter((d) => d.isDirectory() && fs.existsSync("changelog/" + d.name + "/README.md"))
+              .map((d) => d.name)
+              .sort()
+            fs.writeFileSync("/tmp/index/changelog.json", JSON.stringify(dirs.map((name) => ({ name, type: "dir" }))) + "\n")
+            console.log(dirs.length + " releases with notes")
+          '
       - name: Publish to the catalog branch
         run: |
           set -e
