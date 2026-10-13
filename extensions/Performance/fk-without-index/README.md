@@ -4,7 +4,7 @@ Foreign keys with no index on their own side, the biggest table first, with the 
 
 ![Foreign keys without an index in dvdrental: rental.customer_id references customer (2720 kB, 16044 rows), rental.staff_id, inventory.film_id, film_category.category_id, store.address_id and staff.address_id, each with a create index concurrently statement](media/fk-without-index-dvdrental.webp)
 
-The dvdrental sample has six. The first matters most: `rental.customer_id` points at `customer`, but the only index on rental that has `customer_id` starts with `rental_date`, so it does not help. Every time a customer is deleted, or its id changes, PostgreSQL reads all 16,044 rentals to make sure none still points at it. The statement to fix it is in the last column.
+The dvdrental sample has six. The first matters most: `rental.customer_id` points at `customer`, but the only index on rental that has `customer_id` starts with `rental_date`, so it does not help. Every time a customer is deleted, or its id changes, PostgreSQL reads all 16,044 rentals to make sure none still points at it. The statement that fixes each one starts in the last column, cut off here; in the grid the first one reads `create index concurrently on public.rental (customer_id);`.
 
 ## When to use it
 

@@ -28,7 +28,7 @@ select film_id, title, release_year, rental_duration, rental_rate, length, repla
 from film;
 ```
 
-**The customers**, in the same database: one store's customers are a little more than the other's, every email is unique, and `active` is almost all 1.
+**The customers**, in the same database: one store's customers are a little more than the other's (`store_id` averages 1.46), every email is unique, and `active` is almost all 1 (it averages 0.97). The picture leaves out the distribution column, which follows on the right as in the film table above.
 
 ```sql
 -- @extension profile open

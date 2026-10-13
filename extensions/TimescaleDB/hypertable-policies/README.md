@@ -4,7 +4,7 @@ The automatic jobs TimescaleDB runs on one hypertable or continuous aggregate (c
 
 ![The policies of metrics.readings: job 1003, a Columnstore (compression) policy every 12 hours with compress_after 7 days, and job 1004, a Retention policy every day with drop_after 365 days, both last run successfully](media/hypertable-policies-readings.webp)
 
-Two policies keep `readings` in shape: every 12 hours, compress chunks older than 7 days; every day, drop chunks older than 365 days. Both last ran with `Success`, none has failed, and the next runs are scheduled.
+Two policies keep `readings` in shape: every 12 hours, compress chunks older than 7 days; every day, drop chunks older than 365 days. Both last ran with `Success`; when each runs next, how often it has run and how often it failed (never) follow to the right of the picture.
 
 **TimescaleDB** is a PostgreSQL extension for data that arrives over time, stored in **hypertables** that are split into chunks by time. Instead of compressing or deleting old chunks by hand, you give a hypertable **policies**: "compress chunks older than 7 days", "drop chunks older than a year", "refresh this summary every hour". TimescaleDB runs them as background jobs. This extension shows the ones attached to the object you open it on.
 

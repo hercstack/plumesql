@@ -2,9 +2,9 @@
 
 Every job TimescaleDB runs on its own in this database (compression, retention, summary refreshes and its housekeeping), with how the last run went, and the error of every failed run one click away.
 
-![Background jobs: five jobs, TimescaleDB's own Telemetry Reporter and Job History Log Retention Policy, then the Refresh Continuous Aggregate policy on readings_hourly and the Columnstore and Retention policies on readings, all last run successfully; the refresh policy and the telemetry job show one failure each](media/background-jobs-list.webp)
+![Background jobs: five jobs, TimescaleDB's own Telemetry Reporter and Job History Log Retention Policy, then the Refresh Continuous Aggregate policy on readings_hourly and the Columnstore and Retention policies on readings, all enabled and last run successfully](media/background-jobs-list.webp)
 
-Five jobs: two of TimescaleDB's own housekeeping, then the three policies of the sensor readings. All last ran with `Success`, but the refresh policy of `readings_hourly` and the telemetry job have one failure each in their past.
+Five jobs: two of TimescaleDB's own housekeeping, then the three policies of the sensor readings. All last ran with `Success`. Further right, beyond the picture, come when each last started, how many runs and failures it has had and when it runs next: the refresh policy of `readings_hourly` and the telemetry job have one failure each in their past.
 
 **TimescaleDB** is a PostgreSQL extension for data that arrives over time. Much of its work happens in **background jobs** it schedules itself: a compression policy compresses old data every few hours, a retention policy drops what is too old, a refresh policy keeps a summary table (a continuous aggregate) current. When one of them stops working, nothing tells you; this list does.
 

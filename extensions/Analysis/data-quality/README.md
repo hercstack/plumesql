@@ -4,7 +4,7 @@ Check a table before you trust it: one row per column, saying what is wrong with
 
 ![Data quality: a small customer list checked. id fails (a repeated value), email needs a check (an empty and a missing one), city needs a check (Zagreb and zagreb, a trailing space), signed_up has dates out of range, age holds a value that is not a number](media/data-quality-customers.webp)
 
-A small customer list, checked column by column. Four of five columns have something to look at: an id used twice, an email that is empty in one row and missing in another, a city written as both `Zagreb` and `zagreb` (and once with a space after it), sign-up dates of `0001-01-01` and `9999-12-31`, and an age of `n/a` among numbers.
+A small customer list, checked column by column. Four of five columns have something to look at: an id used twice, an email that is empty in one row and missing in another, a city written as both `Zagreb` and `zagreb` (and once with a space after it), sign-up dates of `0001-01-01` and `9999-12-31`, and an age of `n/a` among numbers. Each finding is counted in its own column; the last column, **issues**, to the right of the picture, says the same in words.
 
 ## What it is for
 

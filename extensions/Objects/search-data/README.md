@@ -4,7 +4,7 @@ Where a value appears in your data: you type a name, an email or an order number
 
 ![Search data for grace in dvdrental: two film titles, one actor first name, one customer email and one customer first name, each with a sample value and a ready select statement](media/search-data-grace.webp)
 
-Searching the [dvdrental](https://neon.com/postgresql/postgresql-getting-started/postgresql-sample-database) sample for `grace`, with no idea where it might be: two film titles (`Bear Graceland` is one), an actor called Grace, and a customer whose first name and email both hold it. The last column is the query that lists those rows, ready to copy into a script.
+Searching the [dvdrental](https://neon.com/postgresql/postgresql-getting-started/postgresql-sample-database) sample for `grace`, with no idea where it might be: two film titles (`Bear Graceland` is one), an actor called Grace, and a customer whose first name and email both hold it. The last column, cut off here, is the query that lists those rows, ready to copy into a script.
 
 ## When to use it
 
@@ -30,7 +30,7 @@ Tables larger than the size limit are not searched; each gets one row at the end
 
 **matching rows** on a count opens the rows of that table whose column holds the term:
 
-![The two films whose title holds grace: Bear Graceland and Graceland Dynamite, with every column of the film table](media/search-data-rows.webp)
+![The two films whose title holds grace: Bear Graceland and Graceland Dynamite, with the first columns of the film table](media/search-data-rows.webp)
 
 ## Try it
 

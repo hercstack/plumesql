@@ -2,9 +2,9 @@
 
 Which PostgreSQL extensions does this database use, which of them have an update waiting, and what else could it install? The statement for each is ready to copy.
 
-![PostgreSQL extensions of a test database: hstore 1.7 installed with 1.8 available and ALTER EXTENSION hstore UPDATE ready, pg_trgm and plpgsql installed and current, then amcheck, autoinc, bloom, btree_gin, btree_gist, citext, cube, dblink and more not installed, each with its CREATE EXTENSION statement](media/installed-extensions-list.webp)
+![PostgreSQL extensions of a test database: hstore 1.7 installed with 1.8 available, pg_trgm and plpgsql installed and current, then amcheck, autoinc, bloom, btree_gin, btree_gist, citext, cube, dblink and more not installed, each with what it is for](media/installed-extensions-list.webp)
 
-`hstore` in this database is still at version 1.7 while the server offers 1.8, so it sits at the top with the statement that updates it. `pg_trgm` and `plpgsql` are current. Below them, every extension the server could install here and does not yet use, each with what it is for: 59 rows on a stock PostgreSQL 17.
+`hstore` in this database is still at version 1.7 while the server offers 1.8, so it sits at the top with the statement that updates it. `pg_trgm` and `plpgsql` are current. Below them, every extension the server could install here and does not yet use, each with what it is for: 59 rows on a stock PostgreSQL 17. The last column, to the right of the picture, holds each row's statement: `ALTER EXTENSION hstore UPDATE;` for hstore, `CREATE EXTENSION amcheck;` and so on for the rest.
 
 These are PostgreSQL's own extensions (the `CREATE EXTENSION` kind, such as PostGIS, pg_trgm or pgvector), not PlumeSQL's.
 

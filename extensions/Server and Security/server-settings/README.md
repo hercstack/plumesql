@@ -2,9 +2,9 @@
 
 Every setting of the server, what it does and what changing it takes; change one, and apply it, without leaving the grid.
 
-![Server settings, the Autovacuum category first: autovacuum on, autovacuum_analyze_scale_factor 0.1, autovacuum_freeze_max_age 200000000 (changes only at postmaster start), autovacuum_naptime 60 s and more, each row with set value, reset and reload buttons](media/server-settings-list.webp)
+![Server settings, the Autovacuum category first: autovacuum on, autovacuum_analyze_scale_factor 0.1, autovacuum_freeze_max_age 200000000 (changes only at postmaster start), autovacuum_naptime 60 s and more, each with where its value comes from](media/server-settings-list.webp)
 
-All 378 settings of a PostgreSQL 17 server, grouped by PostgreSQL's own categories. The column **when it can change** answers the question people ask most: `sighup` takes effect on a reload, `postmaster` only after a restart, `user` can even be changed for one session.
+All 378 settings of a PostgreSQL 17 server, grouped by PostgreSQL's own categories. The column **when it can change** answers the question people ask most: `sighup` takes effect on a reload, `postmaster` only after a restart, `user` can even be changed for one session. The category and each row's **set value**, **reset** and **reload** buttons follow to the right of the picture.
 
 ## When to use it
 

@@ -2,9 +2,9 @@
 
 Who sees which rows? Every table that limits rows per user, each rule spelled out, and the two mistakes that are easy to make and hard to notice.
 
-![Row security on a test database: accounts has row security on with three policies (own_rows lets everyone see their own rows, own_updates lets them update their own rows if the balance stays positive, auditors is a restrictive policy for pg_read_all_data); drafts has a policy but row security OFF, so the policy has no effect; notes has row security forced on and no policy, so only superusers see a row](media/row-security-policies.webp)
+![Row security on a test database: accounts has row security on with three policies (own_rows and own_updates limited to the rows the user owns, auditors a restrictive policy for pg_read_all_data); drafts has a policy but row security OFF; notes has row security forced on and no policy at all](media/row-security-policies.webp)
 
-Three tables, three stories. On `accounts` every user sees and updates only the rows they own, and an update may not leave a negative balance. On `drafts` someone wrote a policy but never switched row security on, so it does nothing and everyone sees everything. On `notes` row security is on, even for the table's owner, but there is no policy at all, so nobody sees a single row except superusers and roles allowed to bypass row security.
+Three tables, three stories. On `accounts` every user sees and updates only the rows they own, and an update may not leave a negative balance. On `drafts` someone wrote a policy but never switched row security on, so it does nothing and everyone sees everything. On `notes` row security is on, even for the table's owner, but there is no policy at all, so nobody sees a single row except superusers and roles allowed to bypass row security. Two more columns sit to the right of the picture: the check an update must pass (`balance >= 0`), and a note in words on each table where a policy does nothing.
 
 ## When to use it
 

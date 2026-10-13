@@ -4,7 +4,7 @@ The latest runs of every pg_cron job, newest first: which job ran, whether it wo
 
 ![Cron job runs: refresh-daily-totals fails every minute with "relation shop.daily_totals does not exist", while minute-heartbeat succeeds every minute with INSERT 0 1](media/cron-job-runs-list.webp)
 
-Two jobs run every minute. `minute-heartbeat` succeeds each time (`INSERT 0 1`). `refresh-daily-totals` fails each time with the server's own error: the summary it refreshes, `shop.daily_totals`, does not exist any more. Nothing else would have said so.
+Two jobs run every minute. `minute-heartbeat` succeeds each time (`INSERT 0 1`). `refresh-daily-totals` fails each time with the server's own error, in the message column the picture cuts off: the summary it refreshes, `shop.daily_totals`, does not exist any more. Nothing else would have said so.
 
 **pg_cron** is a PostgreSQL extension that runs SQL on a schedule, inside the database. It never tells anyone when a job fails: the failure is written to its run log, `cron.job_run_details`, and stays there. This extension reads that log.
 

@@ -2,9 +2,9 @@
 
 The indexes of one table: what each one covers, how big it is, how often it is used, and which ones nothing has ever read.
 
-![Table indexes of film in dvdrental: film_pkey scanned 223 times, idx_title 10 times, film_fulltext_idx (gist) and idx_fk_language_id never read](media/table-indexes-film.webp)
+![Table indexes of film in dvdrental: film_pkey scanned 223 times, idx_title 10 times, film_fulltext_idx (gist) and idx_fk_language_id 0 times](media/table-indexes-film.webp)
 
-The `film` table of the [dvdrental](https://neon.com/postgresql/postgresql-getting-started/postgresql-sample-database) sample. The primary key does most of the work (223 scans); the index on `title` is used now and then. The full-text index and the index on `language_id` have not been read once since the statistics were reset, so they are marked `never read`: on a real database, after a few weeks of normal use, those are the indexes to question.
+The `film` table of the [dvdrental](https://neon.com/postgresql/postgresql-getting-started/postgresql-sample-database) sample. The primary key does most of the work (223 scans); the index on `title` is used now and then. The full-text index and the index on `language_id` have not been read once since the statistics were reset, so the note column, at the right end of the row, marks them `never read`: on a real database, after a few weeks of normal use, those are the indexes to question.
 
 ## When to use it
 

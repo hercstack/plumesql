@@ -4,7 +4,7 @@ Is anything wrong with this database that will hurt later? One click, and a chec
 
 ![Health check on a small shop database: two high findings (an invalid index left by a failed CREATE INDEX CONCURRENTLY, and a table that is 75% dead rows), three medium ones (the orders key two thirds of the way to the integer limit, an abandoned replication slot keeping 580 MB of WAL, a foreign key without an index), two low ones, and six checks that found nothing](media/health-check-findings.webp)
 
-A shop database checked in 21 milliseconds. The two `high` lines need attention today: an index that is maintained on every write but can never be used, and an `events` table where three rows in four are dead. The `medium` ones are the slow fuses: the `orders.id` key has used 67.5% of what an `integer` can count, and a replication slot nobody reads has kept 580 MB of WAL on disk. Each row says what to do in its last column.
+A shop database checked in 21 milliseconds. The two `high` lines need attention today: an index that is maintained on every write but can never be used, and an `events` table where three rows in four are dead. The `medium` ones are the slow fuses: the `orders.id` key has used 67.5% of what an `integer` can count, and a replication slot nobody reads has kept 580 MB of WAL on disk. Each row also says what to do about it, in the column to the right of the picture.
 
 ## When to use it
 

@@ -4,7 +4,7 @@ Which ID columns are running out of numbers: every `integer` and `smallint` key 
 
 ![Integer overflow risk on a small shop database: orders.id at 1,850,000,000 of 2,147,483,647, 86 percent used; order_notes.id, a smallint, at 25,000 of 32,767, 76 percent; customers.id at 5,000, nothing; orders.customer_id not read](media/integer-overflow-risk-keys.webp)
 
-The shop's `orders.id` is an `integer` fed by a sequence that has handed out 1.85 billion numbers: 86 percent of the range is gone and about 297 million inserts are left. `order_notes.id` is a `smallint`, and 25,000 notes have used three quarters of its 32,767. Both rows carry the statement that fixes them. `orders.customer_id` was not measured: no index starts with it, and the extension never scans a table to find out (see Good to know).
+The shop's `orders.id` is an `integer` fed by a sequence that has handed out 1.85 billion numbers: 86 percent of the range is gone and about 297 million inserts are left. `order_notes.id` is a `smallint`, and 25,000 notes have used three quarters of its 32,767. Further right, beyond the picture, each row carries the statement that fixes it. `orders.customer_id` was not measured: no index starts with it, and the extension never scans a table to find out (see Good to know).
 
 ## When to use it
 

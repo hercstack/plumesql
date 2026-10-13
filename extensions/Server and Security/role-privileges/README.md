@@ -2,9 +2,9 @@
 
 Who may do what on this server? Every role with its powers and the groups it belongs to; one click shows everything granted to a role and who is in it, and the grants can be changed right there.
 
-![Role privileges on a test server: app_admin can log in and create databases and roles, app_writer can log in until 2027-01-01, etl is a member of pg_read_server_files, report_reader is a member of readers, and postgres is the superuser; every row has a members and a grant membership button](media/role-privileges-roles.webp)
+![Role privileges on a test server: app_admin can log in and create databases and roles, app_writer can log in until 2027-01-01, etl, legacy_app and report_reader can log in, PostgreSQL's pg_ roles sit among them, and postgres is the superuser](media/role-privileges-roles.webp)
 
-Every role on a test server, alphabetically, with PostgreSQL's built-in `pg_` roles among them. `app_admin` may create databases and other roles; `app_writer`'s login expires on 2027-01-01; `etl` belongs to `pg_read_server_files`, which reads the server's files; `report_reader` gets its rights through the `readers` group.
+Every role on a test server, alphabetically, with PostgreSQL's built-in `pg_` roles among them. `app_admin` may create databases and other roles; `app_writer`'s login expires on 2027-01-01; `etl` belongs to `pg_read_server_files`, which reads the server's files; `report_reader` gets its rights through the `readers` group. Those two memberships are in the **member of** column, to the right of the picture, beside each row's **members** and **grant membership** buttons.
 
 ## When to use it
 

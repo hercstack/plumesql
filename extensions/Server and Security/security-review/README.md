@@ -4,7 +4,7 @@ Who could do too much on this server, and which doors are left open? A first sec
 
 ![Security review of a test server: high findings for a role that can read the server's files, pg_hba.conf lines that let anyone in without a password, a schema where everyone may create objects and a SECURITY DEFINER function without its own search_path; medium ones for the superuser, a role with CREATEROLE and CREATEDB, a password stored as md5 and SSL turned off; low ones for passwords that never expire and databases everyone may connect to](media/security-review-findings.webp)
 
-A test server reviewed. The worst news is at the top: the `etl` role is a member of `pg_read_server_files`, so it can read any file the server can; four lines of `pg_hba.conf` say `trust`, so anyone who reaches the port logs in without a password; and in the `shared` schema every role may create objects. Further down, `legacy_app` still has an md5 password and `ssl` is off. Each row ends with the fix.
+A test server reviewed. The worst news is at the top: the `etl` role is a member of `pg_read_server_files`, so it can read any file the server can; four lines of `pg_hba.conf` say `trust`, so anyone who reaches the port logs in without a password; and in the `shared` schema every role may create objects. Further down, `legacy_app` still has an md5 password and `ssl` is off. Each row ends with the fix, in the column to the right of the picture.
 
 ## When to use it
 

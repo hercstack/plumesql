@@ -2,9 +2,9 @@
 
 One table at a glance: how big it is on disk, how many rows it has live and dead, how it is read, and when it was last vacuumed and analyzed.
 
-![Table details of orders: 29 MB in total, 11 MB of rows and 17 MB of indexes, 200,000 rows, 22,101 dead, 5 sequential scans and 20,402 index scans, never vacuumed or analyzed by hand, autovacuum and autoanalyze today](media/table-details-orders.webp)
+![Table details of orders: 29 MB in total, 11 MB of rows and 17 MB of indexes, 200,000 rows, 22,101 dead, 5 sequential scans and 20,402 index scans, never vacuumed by hand](media/table-details-orders.webp)
 
-A shop's `orders` table: its indexes take more room (17 MB) than its rows (11 MB), which is common for a narrow table with a few indexes. About 22,000 old row versions wait for vacuum, about one in ten. It is read almost only through its indexes (20,402 index scans against 5 full scans), and it has never been vacuumed by hand: autovacuum and autoanalyze look after it.
+A shop's `orders` table: its indexes take more room (17 MB) than its rows (11 MB), which is common for a narrow table with a few indexes. About 22,000 old row versions wait for vacuum, about one in ten. It is read almost only through its indexes (20,402 index scans against 5 full scans), and it has never been vacuumed by hand: autovacuum and autoanalyze look after it. In the columns to the right of the picture, `last_autovacuum` and `last_autoanalyze` both read today.
 
 ## When to use it
 
