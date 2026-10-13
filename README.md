@@ -259,12 +259,8 @@ The app updates itself, and checks each update's signature before
 installing it. What is new in each release is in
 [`changelog/`](changelog/).
 
-The macOS build is not notarized yet: open it once with right click and
-Open, or run
-
-```sh
-xattr -dr com.apple.quarantine /Applications/PlumeSQL.app
-```
+The macOS app is signed and notarized by Apple: it opens on the first
+double click.
 
 The Windows installer is not signed yet: if SmartScreen stops it, choose
 More info and Run anyway.
