@@ -1,0 +1,44 @@
+{
+  "format": 1,
+  "id": "period-over-period",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Period over period",
+  "description": "Each period beside the one before or the same period a year earlier: the value, the earlier one, the change and the change %",
+  "categories": [
+    "Analysis",
+    "Calculations"
+  ],
+  "tags": [
+    "analysis",
+    "time series",
+    "year over year",
+    "month over month",
+    "growth",
+    "change",
+    "comparison"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "period-over-period.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 212,
+  "externals": [],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

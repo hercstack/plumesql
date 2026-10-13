@@ -1,0 +1,46 @@
+{
+  "format": 1,
+  "id": "parallel-coordinates",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Parallel coordinates",
+  "description": "Many columns side by side, every row a line across them, coloured by a number or a category; drag an axis to filter",
+  "categories": [
+    "Charts",
+    "Analysis"
+  ],
+  "tags": [
+    "charts",
+    "parallel coordinates",
+    "multivariate",
+    "compare",
+    "filter",
+    "echarts"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "parallel-coordinates.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "echarts-core",
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 210,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

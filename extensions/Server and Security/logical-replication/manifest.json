@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "logical-replication",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Logical replication",
+  "description": "Logical replication on this database: publications with the tables they publish, and subscriptions with their state",
+  "categories": [
+    "Server and Security"
+  ],
+  "tags": [
+    "replication",
+    "logical replication",
+    "publications",
+    "subscriptions",
+    "cdc"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "logical-replication.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 207,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

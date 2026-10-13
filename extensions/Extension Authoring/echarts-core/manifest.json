@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "echarts-core",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "ECharts core",
+  "description": "Shared helpers for the ECharts chart extensions: the theme's colours as ECharts options, one chart per view, tooltips and axes",
+  "categories": [
+    "Extension Authoring"
+  ],
+  "tags": [
+    "extension authoring",
+    "library",
+    "echarts",
+    "charts"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "echarts-core.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 204,
+  "externals": [],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

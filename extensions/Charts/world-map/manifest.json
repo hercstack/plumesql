@@ -1,0 +1,49 @@
+{
+  "format": 1,
+  "id": "world-map",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "World map",
+  "description": "Countries coloured by a value, and points from latitude and longitude, on a world map drawn offline; no PostGIS needed",
+  "categories": [
+    "Charts",
+    "Dashboards"
+  ],
+  "tags": [
+    "charts",
+    "map",
+    "world map",
+    "choropleth",
+    "countries",
+    "latitude longitude",
+    "geography",
+    "echarts"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "world-map.plumesql.js",
+    "lib/world.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "echarts-core",
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 219,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

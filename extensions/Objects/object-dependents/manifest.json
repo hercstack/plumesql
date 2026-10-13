@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "object-dependents",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Dependents",
+  "description": "What depends on the object this was opened on: views, foreign keys, functions, triggers, and what a DROP would do",
+  "categories": [
+    "Objects"
+  ],
+  "tags": [
+    "dependencies",
+    "drop",
+    "views",
+    "foreign keys",
+    "impact"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "object-dependents.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 209,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

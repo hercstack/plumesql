@@ -1,0 +1,46 @@
+{
+  "format": 1,
+  "id": "tree",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Tree",
+  "description": "A hierarchy as a tree: rows with an id and a parent, drawn left to right, as an org chart or radial; click to fold",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "charts",
+    "tree",
+    "hierarchy",
+    "org chart",
+    "parent child",
+    "recursive",
+    "echarts"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "tree.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "echarts-core",
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 218,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

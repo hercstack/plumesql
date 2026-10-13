@@ -1,0 +1,47 @@
+{
+  "format": 1,
+  "id": "timeline",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Timeline",
+  "description": "A Gantt timeline: every row a bar from its start to its end on a lane, coloured by a category; zoom in time, scroll lanes",
+  "categories": [
+    "Charts",
+    "Dashboards"
+  ],
+  "tags": [
+    "charts",
+    "gantt",
+    "timeline",
+    "schedule",
+    "durations",
+    "jobs",
+    "echarts"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "timeline.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "echarts-core",
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 217,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

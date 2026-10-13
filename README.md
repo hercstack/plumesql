@@ -45,7 +45,7 @@ row, which asks before it acts:
 
 That's a cut-down version of
 [blocking-locks](extensions/Activity%20and%20Locks/blocking-locks/),
-one of more than 170 extensions in this repo. Others draw charts and 3D
+one of more than 200 extensions in this repo. Others draw charts and 3D
 views, put your PostGIS data on a map, or add refactors for PostGIS,
 pgvector and TimescaleDB. [More below](#extensions).
 
@@ -316,7 +316,7 @@ plumesql --help                    # everything else
 
 ## Extensions
 
-There are more than 170 of them, and we keep adding more. A few, as
+There are more than 200 of them, and we keep adding more. A few, as
 they look:
 
 <table>
@@ -331,6 +331,23 @@ they look:
     <td><a href="extensions/Charts/scatter-3d/"><img src="extensions/Charts/scatter-3d/media/scatter-3d.webp" alt="Scatter 3D: three numbers at once, a point per row" /></a><br /><b>Scatter 3D</b>: three numbers at once</td>
   </tr>
 </table>
+
+And the newest, on real data:
+
+<img src="docs/images/new-extensions.webp" alt="Twelve views of the newest extensions: a network of actors, revenue flowing from category to store, rentals on a timeline, an org chart, revenue as rings, price candles, customer segments across four numbers, revenue by country on a world map, customers in three clusters in 3D, RFM segments as a doughnut, sales against the same month a year before, and the world map in the light theme" width="100%" />
+
+From the top left: [Network graph](extensions/Charts/network-graph/),
+[Sankey](extensions/Charts/sankey/),
+[Timeline](extensions/Charts/timeline/),
+[Tree](extensions/Charts/tree/),
+[Sunburst](extensions/Charts/sunburst/),
+[Candlestick](extensions/Charts/candlestick/),
+[Parallel coordinates](extensions/Charts/parallel-coordinates/),
+[World map](extensions/Charts/world-map/),
+[Clusters](extensions/Analysis/clusters/) in Scatter 3D,
+[RFM segments](extensions/Analysis/rfm/),
+[Period over period](extensions/Analysis/period-over-period/) and the
+world map again, in the light theme.
 
 Some we use a lot:
 

@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "partition-tree",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Partition tree",
+  "description": "Every partitioned table as a tree: its key, each partition's bounds, kind, size and rows, the default partitions marked",
+  "categories": [
+    "Storage and Maintenance",
+    "Objects"
+  ],
+  "tags": [
+    "partitioning",
+    "partitions",
+    "sizes",
+    "tables",
+    "declarative partitioning"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "partition-tree.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 211,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

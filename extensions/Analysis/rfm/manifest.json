@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "rfm",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "RFM segments",
+  "description": "Customers scored on recency, frequency and money spent, 1 to 5 each, and named by segment: champions, loyal, at risk, lost",
+  "categories": [
+    "Analysis"
+  ],
+  "tags": [
+    "analysis",
+    "customers",
+    "segmentation",
+    "rfm",
+    "marketing",
+    "retention",
+    "sales"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "rfm.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 213,
+  "externals": [],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

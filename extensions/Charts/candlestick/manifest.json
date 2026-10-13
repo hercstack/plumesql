@@ -1,0 +1,46 @@
+{
+  "format": 1,
+  "id": "candlestick",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Candlestick",
+  "description": "Open, high, low and close as candles over time, with moving averages and volume bars; zoom with the slider",
+  "categories": [
+    "Charts"
+  ],
+  "tags": [
+    "charts",
+    "candlestick",
+    "ohlc",
+    "finance",
+    "prices",
+    "time series",
+    "echarts"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "candlestick.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "echarts-core",
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 202,
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

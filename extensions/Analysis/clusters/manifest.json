@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "clusters",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Clusters",
+  "description": "Groups rows that are alike into k clusters by k-means over the numbers you pick: every row with its cluster, or a summary",
+  "categories": [
+    "Analysis"
+  ],
+  "tags": [
+    "analysis",
+    "statistics",
+    "clustering",
+    "k-means",
+    "segmentation",
+    "machine learning"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "clusters.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 203,
+  "externals": [],
+  "icon": "icon.svg",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

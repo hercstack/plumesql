@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "xml",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Xml",
+  "description": "An xml column reads compact on one line, the indented document on hover",
+  "categories": [
+    "Formatting"
+  ],
+  "tags": [
+    "formatting",
+    "xml",
+    "documents",
+    "pretty print"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "xml.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 220,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

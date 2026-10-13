@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "row-security",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Row security",
+  "description": "Row security on this database: tables that enable it, each policy with its rules, and the policies that do nothing",
+  "categories": [
+    "Server and Security"
+  ],
+  "tags": [
+    "security",
+    "row level security",
+    "rls",
+    "policies",
+    "multi-tenant"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "row-security.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 214,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

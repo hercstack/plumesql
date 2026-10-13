@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "bytea",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "name": "Bytea",
+  "description": "A bytea value reads as what it holds: a PNG of 640 x 480, a PDF, a zip, text, with its size; base64 in the value tab",
+  "categories": [
+    "Data Types",
+    "Formatting"
+  ],
+  "tags": [
+    "data types",
+    "bytea",
+    "binary",
+    "files",
+    "images",
+    "base64"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "bytea.plumesql.js",
+    "icon.svg"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 201,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT",
+  "icon": "icon.svg"
+}
