@@ -19,8 +19,6 @@ and files that read right.
 The Mac app now carries a Developer ID signature and Apple's
 notarization. Open the DMG, drag PlumeSQL to Applications and start it:
 no right click and Open, no warning about an unidentified developer.
-If you cleared the quarantine flag by hand for an earlier release, you
-no longer need to.
 
 ## Updates you can count on
 
