@@ -28,10 +28,6 @@ extensions/
 catalog branch (orphan, one commit, written only by publish.yml):
   catalog.json                    the slim catalog, section 5
   locks/<id>.json                 one lock per extension, section 5
-  changelog.json                  the releases whose notes are in changelog/ (each
-                                  <tier>-v<version> directory holding a README.md,
-                                  as GitHub's contents list them: name, type "dir"),
-                                  for the app's release notes
 ```
 
 The directories and their manifests are the source of truth. No pull
