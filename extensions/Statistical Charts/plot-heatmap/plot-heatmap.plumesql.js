@@ -56,6 +56,9 @@ export default {
           marks
         })
         root.innerHTML = ''
+        // The legend sits outside the chart's SVG and takes its text colour
+        // from the page, which was black on a dark theme.
+        root.style.color = inkOf(dark)
         root.append(fig)
       }
     },

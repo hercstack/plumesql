@@ -2,7 +2,7 @@
   "format": 1,
   "id": "uplot",
   "kind": "grid",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "plumesql": ">=0.21.0",
   "name": "Uplot",
   "description": "A line chart built for speed: a million points in milliseconds, drag to zoom, a live legend (μPlot)",

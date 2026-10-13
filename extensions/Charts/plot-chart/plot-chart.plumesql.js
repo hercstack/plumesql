@@ -45,12 +45,21 @@ export default {
             g.push({ x, y, s: cols[vi].name, f })
           }
         })
+        // A bar stands on a band, one per x: dates go as their text there, read
+        // the SQL way (Plot's own band labels for a Date were local times).
+        const barDates = mark === 'bar' && kind === 'temporal'
+        const pad2 = (n) => String(n).padStart(2, '0')
+        // A date alone parses as UTC midnight (read as local it showed 02:00);
+        // a timestamp parses as local time and keeps its hour.
+        const dayText = (d) => (d.getUTCHours() === 0 && d.getUTCMinutes() === 0 && d.getUTCSeconds() === 0
+          ? d.getUTCFullYear() + '-' + pad2(d.getUTCMonth() + 1) + '-' + pad2(d.getUTCDate())
+          : d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()))
         const long = []
         const bySeries = new Map()
         for (const g of groups.values()) {
           const pts = kind === 'ordinal' ? g : sortByX(g)
           const slim = mark === 'bar' ? (kind === 'ordinal' ? pts.slice(0, 500) : bucketMean(pts, 400, 'y')) : mark === 'dot' ? sample(pts, 20000) : thin(pts, W * 2, 'y')
-          for (const p of slim) long.push(p)
+          for (const p of slim) long.push(barDates ? Object.assign({}, p, { x: dayText(p.x) }) : p)
           if (slim.length) bySeries.set(slim[0].s, slim)
         }
         if (!long.length) { note(root, 'No numeric values to plot.'); return }
@@ -74,21 +83,30 @@ export default {
         }
         if (mark !== 'bar') marks.push(...pointerMarks(long, names, dark, fmtX(kind)))
         if ((mark === 'line' || mark === 'area') && !faceted) marks.push(edgeBadges(bySeries, colorOf))
-        const xcats = kind === 'ordinal' ? new Set(long.map((d) => d.x)).size : 0
+        const xcats = kind === 'ordinal' || barDates ? new Set(long.map((d) => d.x)).size : 0
         const fig = P.plot({
           width: W, height: Math.max(120, H - (legend ? 30 : 0) - (inputs.title ? 34 : 0)),
           marginTop: 24, marginBottom: xcats > 14 ? 60 : 36, marginLeft: leftMargin(ymin, ymax), marginRight: mark === 'line' || mark === 'area' ? 64 : 20,
           title: inputs.title || undefined,
           color: { domain: names, range: names.map(colorOf), legend },
           style: baseStyle(dark),
-          x: { grid: true, label: xi >= 0 ? cols[xi].name : 'row', tickFormat: kind === 'numeric' ? fmtTick : undefined, tickRotate: xcats > 14 ? -35 : 0 },
-          y: { grid: true, tickFormat: fmtTick, label: names.length === 1 ? names[0] : null, domain: zero ? [Math.min(0, ymin), Math.max(0, ymax)] : undefined, nice: true },
+          // An explicit band is what tells Plot the dates are meant as bands.
+          x: { type: barDates ? 'band' : undefined, grid: true, label: xi >= 0 ? cols[xi].name : 'row', tickFormat: kind === 'numeric' ? fmtTick : undefined, tickRotate: xcats > 14 ? -35 : 0 },
+          // Bars stack, so their scale is Plot's own (from the stacked totals);
+          // pinned to one series' range, a day's stacked bar ran off the top.
+          y: { grid: true, tickFormat: fmtTick, label: names.length === 1 ? names[0] : null, domain: zero && mark !== 'bar' ? [Math.min(0, ymin), Math.max(0, ymax)] : undefined, nice: true },
           fy: faceted ? { label: null } : undefined,
           marks
         })
         root.innerHTML = ''
+        // The legend is HTML beside the chart's SVG: it takes the theme's ink
+        // from here, or it read dark on a dark theme.
+        root.style.color = inkOf(dark)
         root.append(fig)
-        if (mark === 'area') areaGradients(fig)
+        // The chart is the figure's last SVG: with a legend, the first ones are
+        // its swatches, and the areas stayed solid, the top series hiding the rest.
+        const svgs = fig.tagName && fig.tagName.toLowerCase() === 'svg' ? [fig] : Array.from(fig.querySelectorAll('svg'))
+        if (mark === 'area' && svgs.length) areaGradients(svgs[svgs.length - 1])
       }
     },
   ]

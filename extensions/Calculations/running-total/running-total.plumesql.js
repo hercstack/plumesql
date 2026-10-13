@@ -5,6 +5,9 @@
 export default [
   {
     add: 'running total',
+    // Only where there is an amount to add up: without the guard, a result
+    // with no amount column grew a running total of zeros.
+    when: (columns) => columns.some((c) => c.name === 'amount'),
     // Summed in binary floating point, 0.1 + 0.2 reads 0.30000000000000004:
     // the total keeps as many decimals as the values it adds, no more.
     fn: (value, row, prevRow, ctx) => {

@@ -35,23 +35,54 @@ export default {
         }
         if (!pts.length) { note(root, 'No numeric values to draw.'); return }
         const groups = Array.from(seen.keys())
-        const W = root.clientWidth || 640
-        const rowH = 22
+        const W = root.clientWidth || 640, H = root.clientHeight || 360
         const bins = Math.max(5, Number(inputs.bins) || 40)
         const palette = palettes[inputs.palette] || palettes.Cool
-        const y = inputs.scale === 'shared' ? 'count' : 'proportion-facet'
+        const shared = inputs.scale === 'shared'
+        // The ridges share the pane's height, the axis included: a few groups
+        // get tall rows that read at a glance (and overlap less), many the
+        // classic tight stack. A ridge stands on the bottom of its own row and
+        // rises into the rows above, so the first one needs room over the plot.
+        const avail = H - 64 - (inputs.title ? 34 : 0)
+        const overlap = avail / groups.length > 60 ? 1.4 : 2.5
+        const rowH = Math.max(22, Math.min(140, Math.floor(avail / (groups.length + overlap - 1))))
+        // Each group counted into the same bins over the whole range, then
+        // scaled: per group to its own peak (the shapes compare), shared to
+        // the tallest of all (the sizes compare too). Empty bins stay as
+        // zeros, so a gap between two humps reads as a gap.
+        let lo = Infinity, hi = -Infinity
+        for (const p of pts) { if (p.v < lo) lo = p.v; if (p.v > hi) hi = p.v }
+        const width = (hi - lo) / bins || 1
+        /** @type {Map<string, Float64Array>} */
+        const counts = new Map(groups.map((g) => [g, new Float64Array(bins)]))
+        for (const p of pts) /** @type {Float64Array} */ (counts.get(p.g))[Math.min(bins - 1, Math.floor((p.v - lo) / width))]++
+        let top = 0
+        for (const c of counts.values()) for (const x of c) if (x > top) top = x
+        const ridge = []
+        for (const g of groups) {
+          const c = /** @type {Float64Array} */ (counts.get(g))
+          let peak = 0
+          for (const x of c) if (x > peak) peak = x
+          const k = shared ? top : peak
+          ridge.push({ x: lo, y: 0, g })
+          for (let i = 0; i < bins; i++) ridge.push({ x: lo + (i + 0.5) * width, y: k ? c[i] / k : 0, g })
+          ridge.push({ x: lo + bins * width, y: 0, g })
+        }
         const labelW = Math.min(180, 20 + 7 * groups.reduce((m, g) => Math.max(m, g.length), 0))
+        // Plot measures a facet's y range from the plot's top margin, not from
+        // the facet's own top: the ridge's baseline is the row's bottom.
+        const mt = 24 + (overlap - 1) * rowH
         const fig = P.plot({
-          width: W, height: 48 + groups.length * rowH, marginLeft: labelW, marginBottom: 30, marginTop: 24,
+          width: W, height: 48 + groups.length * rowH + (overlap - 1) * rowH, marginLeft: labelW, marginBottom: 30, marginTop: mt,
           title: inputs.title || undefined,
           style: baseStyle(dark),
           x: { grid: true, label: cols[vi].name },
-          y: { axis: null, range: [2.5 * rowH - 2, -2] },
+          y: { axis: null, domain: [0, 1], range: [mt + rowH - 2, mt + rowH - overlap * rowH] },
           fy: { label: null, domain: groups },
           color: { domain: groups, range: groups.map((g, i) => palette[i % palette.length]) },
           marks: [
-            P.areaY(pts, P.binX({ y }, { x: 'v', fy: 'g', fill: 'g', fillOpacity: 0.55, curve: 'basis', thresholds: bins })),
-            P.lineY(pts, P.binX({ y }, { x: 'v', fy: 'g', stroke: 'g', strokeWidth: 1, curve: 'basis', thresholds: bins }))
+            P.areaY(ridge, { x: 'x', y: 'y', fy: 'g', fill: 'g', fillOpacity: 0.55, curve: 'basis' }),
+            P.lineY(ridge, { x: 'x', y: 'y', fy: 'g', stroke: 'g', strokeWidth: 1, curve: 'basis' })
           ]
         })
         root.innerHTML = ''

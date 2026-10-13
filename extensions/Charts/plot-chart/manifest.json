@@ -2,7 +2,7 @@
   "format": 1,
   "id": "plot-chart",
   "kind": "grid",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "plumesql": ">=0.21.0",
   "name": "Plot chart",
   "description": "Line / area / dot / bar over one or more Y columns, with a hover read-out and value badges (Observable Plot)",

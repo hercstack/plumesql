@@ -91,7 +91,11 @@ export default {
           axisLine: { lineStyle: { width: 18, color: arc } },
           axisTick: { distance: -26, length: 5, lineStyle: { color: mut, width: 1 } },
           splitLine: { distance: -30, length: 10, lineStyle: { color: mut, width: 1.5 } },
-          axisLabel: { distance: 8, color: mut, fontSize: 11, formatter: (/** @type {number} */ v) => fmtNum(v) },
+          // ECharts measures a label's distance from the split lines (drawn
+          // outside here, distance -30, length 10), so the label stands at
+          // r - 10 - (distance - 30): 52 puts it inside, clear of the 18 px
+          // band. 8 put the numbers on the colours.
+          axisLabel: { distance: 52, color: mut, fontSize: 11, formatter: (/** @type {number} */ v) => fmtNum(v) },
           pointer: { show: limits.length > 0, length: '62%', width: 5, itemStyle: { color: fg } },
           anchor: { show: limits.length > 0, size: 12, itemStyle: { color: fg } },
           title: { show: true, offsetCenter: [0, '72%'], color: mut, fontSize: 12 },

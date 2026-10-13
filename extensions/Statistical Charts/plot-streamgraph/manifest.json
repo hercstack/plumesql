@@ -2,7 +2,7 @@
   "format": 1,
   "id": "plot-streamgraph",
   "kind": "grid",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "plumesql": ">=0.21.0",
   "name": "Plot streamgraph",
   "description": "Series stacked as flowing bands over x, bucket-averaged for a lot of rows (Observable Plot)",

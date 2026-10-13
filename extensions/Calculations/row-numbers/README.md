@@ -1,21 +1,55 @@
 # Row numbers
 
-![Row numbers: Adds a leading computed column that numbers the rows](media/row-numbers.webp)
+Adds a `#` column at the start that numbers the rows 1, 2, 3, so a list reads as a numbered list: a top ten, a queue, a ranking.
 
-Adds a leading computed column that numbers the rows, 1, 2, 3 …
+![Row numbers: dvdrental's most rented films with a # column numbering them from 1 to 20](media/row-numbers-films.webp)
 
-## What it shows
+The twenty most rented films in dvdrental: with the `#` column the list reads as a chart position, "Bucket Brotherhood is number 1".
 
-A formatting rule that adds a column named `#` at the start. The number is the row's index in the whole result, so the count is right past the first screen. The formatting is a reading of the cell, not a change to it, so copy, export and the console keep the raw value.
+## What it is for
+
+- **Top lists**: the ten biggest customers, the slowest queries, the most visited pages, each with its place.
+- **Talking about rows**: "look at row 37" works when everyone sees the same numbers, in a copy or a saved file too.
+- **Counting as you read**: where the 100th row is in a long list.
+
+## How to read it
+
+A computed column named `#` stands first, holding each row's position in the whole result, from 1. The numbers follow the order of the query, so order it the way you want the list numbered. The count is right past the first screen: row 5,000 says 5000.
+
+## Try it
+
+**The most rented films**, in the [dvdrental](https://neon.com/postgresql/postgresql-getting-started/postgresql-sample-database) sample database, the picture above:
+
+```sql
+-- @extension row-numbers
+select f.title, count(*) as rentals
+from rental r join inventory i using (inventory_id) join film f using (film_id)
+group by f.title
+order by rentals desc, f.title
+limit 20;
+```
+
+**The largest tables of a database** (any connection), numbered from the largest:
+
+```sql
+-- @extension row-numbers
+select relname as "table", pg_catalog.pg_size_pretty(pg_catalog.pg_total_relation_size(oid)) as size
+from pg_catalog.pg_class
+where relkind = 'r'
+order by pg_catalog.pg_total_relation_size(oid) desc
+limit 15;
+```
+
+## Where it applies
+
+Every result, wherever the extension is attached. There are no settings.
+
+## Good to know
+
+The number is the row's position, computed in the grid, not a value from the database: it copies and saves with the rest, as shown. Equal values get different numbers (one after the other); for a ranking where ties share a place, the Rank extension does that. To start from 0 or name the column differently, Fork it from the row menu and edit the one line.
+
+To attach it, put `-- @extension row-numbers` above a query, or in the file header for all of them, or attach it from the result's menu. In SQL the same is `row_number() over (order by ...)`: **Window function refactors** (`window-refactors`) writes it into your query from the editor's lightbulb.
 
 ## Requirements
 
-PostgreSQL 13 or newer. No server side at all: the grid applies the rule to what it already has.
-
-## Notes
-
-Write `-- @extension row-numbers` above a query, or in the file header for all of them, or attach it from the result's menu; the page in PlumeSQL has the lines ready to copy. To match other columns or say it differently, fork it from the row menu and edit the pattern and the words in the file.
-
-## In SQL
-
-**Window function refactors** (`window-refactors`) writes the same calculation into your query from the editor's lightbulb, as a window function PostgreSQL computes over every row: a query you keep, filter and share rather than a column of the grid.
+PostgreSQL 13 or newer. Nothing runs on the server: the numbers are added in the grid.

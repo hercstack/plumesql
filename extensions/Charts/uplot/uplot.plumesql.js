@@ -20,7 +20,7 @@ export default {
       tab: 'μPlot',
       scripts: ['https://cdn.jsdelivr.net/npm/uplot@1/dist/uPlot.iife.min.js'],
       inputs: [
-        { key: 'x', kind: 'column', label: 'X (a timestamp, a number, or the row order)', description: 'Horizontal axis: a timestamp draws a time axis, a number a numeric one, anything else categories' },
+        { key: 'x', kind: 'column', label: 'X (a timestamp, a number, or the row order)', description: 'Horizontal axis: a timestamp draws a time axis, a number a numeric one; none (or a text column, which μPlot cannot place) uses the row order' },
         { key: 'series', kind: 'multi-column', label: 'Series (Y)', types: ['numeric'], description: 'One series per column; edit the comma list to add or remove one' },
         { key: 'palette', kind: 'choice', label: 'Palette', options: ['Vivid', 'Cool', 'Warm', 'Mono'], default: 'Vivid' },
         { key: 'title', kind: 'text', label: 'Title', default: '' },
@@ -49,8 +49,11 @@ export default {
         const palette = palettes[inputs.palette] || palettes.Vivid
         const names = idxs.map((vi) => cols[vi].name)
         const temporal = xi >= 0 && /timestamp|date/i.test(cols[xi].type)
+        // μPlot places numbers only: a text X draws along the row order rather
+        // than dropping every row (which left the chart empty).
+        const byOrder = xi < 0 || (!temporal && !/int|numeric|decimal|real|double|float|serial|money/i.test(cols[xi].type || ''))
         const time = (v) => { const d = new Date(String(v).replace(' ', 'T').replace(/(\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?)([+-]\d{2})$/, '$1$2:00')); return isNaN(d.getTime()) ? null : d.getTime() / 1000 }
-        const xOf = (r, i) => { if (xi < 0) return i; const v = temporal ? time(r[xi]) : Number(r[xi]); return v == null || !Number.isFinite(v) ? null : v }
+        const xOf = (r, i) => { if (byOrder) return i; const v = temporal ? time(r[xi]) : Number(r[xi]); return v == null || !Number.isFinite(v) ? null : v }
         const order = []
         const xr = new Float64Array(rows.length)
         rows.forEach((r, i) => { const x = xOf(r, i); if (x != null) { order.push(i); xr[i] = x } })
@@ -76,7 +79,7 @@ export default {
             Object.assign({}, axis, temporal ? {} : { values: (u, vals) => vals.map(fmtTick) }),
             Object.assign({}, axis, { size: 58, values: (u, vals) => vals.map(fmtTick) })
           ],
-          series: [{ label: xi >= 0 ? cols[xi].name : 'row' }].concat(names.map((nm, s) => ({ label: nm, stroke: palette[s % palette.length], width: 1.5, points: { show: false }, value: (u, v) => (v == null ? '' : fmtNum(v)) }))),
+          series: [{ label: byOrder ? 'row' : cols[xi].name }].concat(names.map((nm, s) => ({ label: nm, stroke: palette[s % palette.length], width: 1.5, points: { show: false }, value: (u, v) => (v == null ? '' : fmtNum(v)) }))),
           cursor: { drag: { x: true, y: false }, points: { size: 7 } },
           legend: { live: true }
         }

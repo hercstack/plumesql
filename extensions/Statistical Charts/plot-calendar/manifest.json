@@ -2,7 +2,7 @@
   "format": 1,
   "id": "plot-calendar",
   "kind": "grid",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "plumesql": ">=0.21.0",
   "name": "Plot calendar",
   "description": "One coloured cell per day, weeks across and weekdays down, a row per year (Observable Plot)",

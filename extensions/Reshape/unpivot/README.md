@@ -1,27 +1,62 @@
 # Unpivot
 
-![Unpivot: Turns columns into rows: one row per kept key and melted column, a name and a value, over the whole result, in the grid](media/unpivot.webp)
+Turn a wide table into a long list: a sheet with one column per month or per region becomes rows of "which column, what value", the shape charts and totals want. The opposite of a pivot.
 
-Turns columns into rows: one row per kept key and melted column, a name and a value, over the whole result, in the grid. The reverse of a pivot: a wide table with one column per month or per metric becomes the long shape a chart or a further group by wants.
+![Unpivot: a wide table of monthly sales with a column per region turned into a long list, one row per month and region, with the region's name and its sales](media/unpivot-regions.webp)
 
-## What it shows
+A sales sheet with a column per region (north, south, east, west) turned into a list: one row per month and region, the region's name in one column and its sales in another. Twelve months by four regions become 48 rows.
 
-An **Unpivot** tab beside the grid, itself a grid: for every row of the result and every melted column, one row holding the kept columns, the melted column's name and its value. A result of 100 rows with 12 melted columns becomes 1,200 rows. The value column is numeric when every melted column is numeric, and text otherwise, so a mix of numbers and names still fits in one column.
+## What it is for
 
-## Inputs
+- **Charting a spreadsheet-shaped table**: a chart wants one series column and one value column, not four columns of regions.
+- **Totals across columns**: once the regions are rows, a group by adds them up per region, per month or both.
+- **Comparing measurements**: a row of a test's results (`score_math`, `score_art`, `score_music`) becomes a list you can sort and filter.
 
-| Input | `@inputs` key | Default | Meaning |
+## How to read it
+
+An **Unpivot** tab opens beside the grid, a table of its own: for every row of the result and every column you melt, one row holding the columns you **Keep** (the month here), the melted column's name (in a column called `name`, or what you set) and its value (`value`). The value column holds numbers when every melted column is a number, and text otherwise.
+
+## Try it
+
+**Monthly sales by region** (any connection, made up on the spot), the picture above:
+
+```sql
+-- @extension unpivot open
+-- @inputs keep=month, columns=north, south, east, west, names=region, values=sales
+select to_char(m, 'YYYY-MM') as month,
+       round(900 + random() * 300) as north, round(700 + random() * 300) as south,
+       round(500 + random() * 300) as east, round(1100 + random() * 300) as west
+from generate_series(date '2026-01-01', date '2026-12-01', interval '1 month') m;
+```
+
+**Then add it up**, through a pipeline: the long list handed to Group by, which totals the sales per region.
+
+```sql
+-- @extension unpivot | group-by open
+-- @inputs unpivot: keep=month, columns=north, south, east, west, names=region, values=sales
+-- @inputs group-by: by=region, m1=sales, f1=sum, m2=sales, f2=mean, m3=sales, f3=max
+select to_char(m, 'YYYY-MM') as month,
+       round(900 + random() * 300) as north, round(700 + random() * 300) as south,
+       round(500 + random() * 300) as east, round(1100 + random() * 300) as west
+from generate_series(date '2026-01-01', date '2026-12-01', interval '1 month') m;
+```
+
+![The year's sales per region: the total, the monthly average and the best month of each](media/unpivot-group-by.webp)
+
+## Settings
+
+| Setting | `@inputs` key | Default | What it does |
 |---|---|---|---|
-| Keep | `keep` | none | Identifier columns repeated on every output row, as a comma list |
-| Columns to melt | `columns` | every column not kept | Columns turned into name and value rows, as a comma list |
-| Name column | `names` | name | The header of the column holding the melted column names |
+| Keep | `keep` | none | The columns that identify a row (a month, an id), repeated on every output row, as a comma list |
+| Columns to melt | `columns` | every column not kept | The columns turned into name and value rows, as a comma list |
+| Name column | `names` | name | The header of the column holding the melted columns' names |
 | Value column | `values` | value | The header of the column holding their values |
-| Skip nulls | `skip` | no | yes leaves out the rows whose value is null |
+| Skip nulls | `skip` | no | `yes` leaves out the rows whose value is empty |
+
+## Good to know
+
+Up to 1,000,000 output rows; the rest are left out and the Log says how many. In SQL the same is a `CROSS JOIN LATERAL (VALUES ...)`; this is for a result you already have. From a script: `-- @extension unpivot` above the query, with `-- @inputs keep=month, columns=north, south, east`. The long shape feeds the other views: `-- @extension unpivot | group-by` or `-- @extension unpivot | echarts`.
 
 ## Requirements
 
-PostgreSQL 13 or newer. No server side: the result's sandbox computes it from the rows already fetched. It installs with **stats-core**, the shared helper library of the Analysis extensions.
-
-## Notes
-
-Up to 1,000,000 output rows; the rest are left out and the Log says how many. In SQL the same is a `CROSS JOIN LATERAL (VALUES ...)`; this is for a result you already have. From a script: `-- @extension unpivot` above the query, with `-- @inputs keep=month, columns=north, south, east`. The long shape feeds the other views: `-- @extension unpivot | group-by` or `-- @extension unpivot | echarts`.
+PostgreSQL 13 or newer. Nothing runs on the server: the table is built in the result's sandbox from the rows already fetched. Stats core installs with it.

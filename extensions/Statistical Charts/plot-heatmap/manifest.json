@@ -2,7 +2,7 @@
   "format": 1,
   "id": "plot-heatmap",
   "kind": "grid",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "plumesql": ">=0.21.0",
   "name": "Plot heatmap",
   "description": "A grid of two categories coloured by a folded value (Observable Plot)",

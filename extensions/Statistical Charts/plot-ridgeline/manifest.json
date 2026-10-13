@@ -2,7 +2,7 @@
   "format": 1,
   "id": "plot-ridgeline",
   "kind": "grid",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "plumesql": ">=0.21.0",
   "name": "Plot ridgeline",
   "description": "The distribution of a value per group, as overlapping ridges (Observable Plot)",

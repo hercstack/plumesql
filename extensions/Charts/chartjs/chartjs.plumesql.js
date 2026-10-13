@@ -47,7 +47,7 @@ export default {
           const vi = idxs[0]
           datasets = [{ label: cols[vi].name, data: rows.map((r) => Number(r[vi])), backgroundColor: labels.map((l, i) => palette[i % palette.length]) }]
         } else {
-          datasets = idxs.map((vi, s) => ({ label: cols[vi].name, data: rows.map((r) => Number(r[vi])), backgroundColor: palette[s % palette.length], borderColor: palette[s % palette.length], borderWidth: 1.5 }))
+          datasets = idxs.map((vi, s) => ({ label: cols[vi].name, data: rows.map((r) => Number(r[vi])), backgroundColor: kind === 'radar' ? palette[s % palette.length] + '40' : palette[s % palette.length], borderColor: palette[s % palette.length], borderWidth: 1.5 }))
         }
         const dark = ctx.theme !== 'light'
         const pal = ctx.palette && ctx.palette.id !== 'dark' && ctx.palette.id !== 'light' ? ctx.palette : null // a theme extension's colours; Dark and Light keep the look below
@@ -61,7 +61,14 @@ export default {
         canvas.height = root.clientHeight || 360
         root.appendChild(canvas)
         const title = inputs.title ? { display: true, text: inputs.title, color: ink, font: { size: 14 } } : { display: false }
-        const config = { type: kind, data: { labels, datasets }, options: { responsive: false, animation: false, layout: { padding: 12 }, plugins: { legend: { display: slice || idxs.length > 1 }, title } } }
+        // A radar and a polar area measure from the centre: the scale starts at
+        // zero (a scale starting at the smallest value made a small difference
+        // look like half the chart), and its tick labels go without the light
+        // backdrop Chart.js gives them, which read as grey boxes on a dark theme.
+        const radial = kind === 'radar' || kind === 'polarArea'
+        const grid = dark ? 'rgba(255,255,255,0.10)' : 'rgba(0,0,0,0.10)'
+        const scales = radial ? { r: { beginAtZero: true, grid: { color: grid }, angleLines: { color: grid }, pointLabels: { color: ink }, ticks: { color: pal ? pal.muted : dark ? '#8a92a6' : '#6b7280', backdropColor: 'transparent' } } } : undefined
+        const config = { type: kind, data: { labels, datasets }, options: { responsive: false, animation: false, layout: { padding: 12 }, scales, plugins: { legend: { display: slice || idxs.length > 1 }, title } } }
         chart = new Chart(canvas, /** @type {any} */ (config))
       }
     }

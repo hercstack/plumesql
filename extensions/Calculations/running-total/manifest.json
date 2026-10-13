@@ -2,7 +2,7 @@
   "format": 1,
   "id": "running-total",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Running total",
   "description": "A computed column that accumulates a numeric column down the rows",

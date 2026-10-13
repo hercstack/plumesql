@@ -1,7 +1,7 @@
 // @ts-check
 // @description Series stacked as flowing bands over x, bucket-averaged for a LOT of rows (Observable Plot, CDN)
 // @color cyan
-import { P, palettes, loadRows, colIndex, seriesIdxs, xKind, xValue, sortByX, bucketMean, baseStyle, note, usePalette } from '$ext/plot-core/plot-core.plumesql.js'
+import { P, palettes, loadRows, colIndex, seriesIdxs, xKind, xValue, sortByX, bucketMean, inkOf, baseStyle, note, usePalette } from '$ext/plot-core/plot-core.plumesql.js'
 
 /** @type {PlumeSQLExtension} */
 export default {
@@ -53,6 +53,9 @@ export default {
           marks: [P.areaY(long, { x: 'x', y: 'y', fill: 's', z: 's', offset: 'wiggle', curve: 'basis', tip: true })]
         })
         root.innerHTML = ''
+        // The legend sits outside the chart's SVG and takes its text colour
+        // from the page, which was black on a dark theme.
+        root.style.color = inkOf(dark)
         root.append(chart)
       }
     },

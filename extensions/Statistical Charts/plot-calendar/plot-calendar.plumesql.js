@@ -1,7 +1,7 @@
 // @ts-check
 // @description One coloured cell per day, weeks across and weekdays down, a row per year (Observable Plot, CDN)
 // @color cyan
-import { P, loadRows, colIndex, parseTime, fmtNum, baseStyle, note, usePalette } from '$ext/plot-core/plot-core.plumesql.js'
+import { P, loadRows, colIndex, parseTime, fmtNum, inkOf, baseStyle, note, usePalette } from '$ext/plot-core/plot-core.plumesql.js'
 
 /** @type {PlumeSQLExtension} */
 export default {
@@ -56,6 +56,9 @@ export default {
           marks: [P.cell(cells, { x: (d) => week(d.date), y: (d) => d.date.getUTCDay(), fy: (d) => year(d.date), fill: 'v', inset: 1.5, rx: 2, tip: true, title: (d) => d.date.toISOString().slice(0, 10) + ': ' + fmtNum(d.v) })]
         })
         root.innerHTML = ''
+        // The legend sits outside the chart's SVG and takes its text colour
+        // from the page, which was black on a dark theme.
+        root.style.color = inkOf(dark)
         root.style.overflow = 'auto'
         root.append(fig)
       }

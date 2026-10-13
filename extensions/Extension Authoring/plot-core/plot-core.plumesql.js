@@ -2,9 +2,20 @@
 // @description Shared helpers for the Observable Plot chart extensions: paging, thinning, palettes, axes (a library, no views of its own)
 import * as Plot from 'https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm'
 
+// Plot draws a chart's legend outside its SVG, as HTML in the <figure> it
+// returns, and that HTML takes its text colour from the page: black, which a
+// dark theme made unreadable. Every figure gets the chart's own text colour
+// (the style's color, baseStyle's ink), so every Plot view's legend reads,
+// the ones written later included.
+const plot = (/** @type {any} */ options) => {
+  const fig = /** @type {any} */ (Plot).plot(options)
+  const color = options && options.style && options.style.color
+  if (color && fig && fig.style) fig.style.color = color
+  return fig
+}
 // Cast to any: with the CDN types loaded Plot is strictly typed, and a starter
 // does not gain from fighting those types over accessor and mark signatures.
-export const P = /** @type {any} */ (Plot)
+export const P = /** @type {any} */ ({ ...Plot, plot })
 
 // A few colour palettes (both themes read well); the Palette input picks one.
 export const palettes = {
@@ -230,7 +241,10 @@ export const edgeBadges = (bySeries, colorOf) => (index, scales, values, dims) =
 // has no gradient fills, so the SVG is post-processed: every filled, unstroked
 // path gets a linearGradient in its own colour.
 export const areaGradients = (fig) => {
-  const svg = fig.tagName && fig.tagName.toLowerCase() === 'svg' ? fig : fig.querySelector('svg')
+  // The chart is the figure's LAST svg: with a legend, the first ones are its
+  // swatches, and shading those left the areas solid.
+  const all = fig.tagName && fig.tagName.toLowerCase() === 'svg' ? [fig] : Array.from(fig.querySelectorAll('svg'))
+  const svg = all[all.length - 1]
   if (!svg) return
   const NS = 'http://www.w3.org/2000/svg'
   let defs = svg.querySelector('defs')

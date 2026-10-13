@@ -1,7 +1,7 @@
 // @ts-check
 // @description A scatter with a fitted trend line and a confidence band, fitted on every row (Observable Plot, CDN)
 // @color cyan
-import { P, palettes, loadRows, colIndex, sample, baseStyle, note, usePalette } from '$ext/plot-core/plot-core.plumesql.js'
+import { P, palettes, loadRows, colIndex, sample, inkOf, baseStyle, note, usePalette } from '$ext/plot-core/plot-core.plumesql.js'
 
 /** @type {PlumeSQLExtension} */
 export default {
@@ -43,6 +43,9 @@ export default {
           ]
         })
         root.innerHTML = ''
+        // The legend sits outside the chart's SVG and takes its text colour
+        // from the page, which was black on a dark theme.
+        root.style.color = inkOf(dark)
         root.append(chart)
       }
     },

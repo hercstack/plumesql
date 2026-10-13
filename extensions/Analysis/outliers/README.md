@@ -1,40 +1,64 @@
 # Outliers
 
-![Outliers: Flags outliers of the numeric columns you pick, by IQR fences or z-score: a list of the outlying values, or the result with them coloured](media/outliers.webp)
+Find the values that are far from the rest: the expense claim with three extra zeros, the order that skews the average, the reading from a broken sensor. Each one listed with why it stands out, or the whole result with them coloured.
 
-Flags outliers of the numeric columns you pick, by IQR fences or z-score: a list of the outlying values, or the result with them coloured. The values a chart would stretch its axis for, a typo that added three zeros, the one order that skews the mean: found over the whole result, with the reason beside each.
+![Outliers: expense claims, two flagged far above the rest, 18,500 and 9,800 when the usual claim is 50 to 300, each with the limit it crossed and how far past it it is](media/outliers-expenses.webp)
 
-## What it shows
+A month of expense claims. Most are between 50 and 300; two are 9,800 and 18,500, most likely a typo or a claim that needs a receipt. They come first, the furthest out at the top, with the limit they crossed and how far past it they are.
 
-An **Outliers** tab beside the grid, itself a grid. As a list: one row per outlying value, the furthest out first, with its row number in the result (from 1), the column, the value, its side (`high` or `low`), the limit it crossed, how far past that limit it is, and its score, followed by every column of the row so the record can be told apart. As marked: every column and row of the result in its order, with the outlying cells coloured, red for a high value and amber for a low one; each cell keeps its original value, so copy, filter and export read the data. Hovering a flagged cell says why, for example `above the upper fence 14.5 (Q3 7.75 + 1.5 × IQR 4.5), 19 IQRs past it`.
+## What it is for
 
-Each column is judged on its own, over every row the view reads.
+- **Typos and broken data**: a price of 1,999 instead of 19.99, an age of 340, a sensor reading of -9999 that means "no reading".
+- **Before an average**: one huge order makes the mean misleading; this shows which rows to look at (or leave out) first.
+- **The unusual case worth a look**: the customer who spends ten times the rest, the query that takes a minute when the others take a second, the day with five times the usual traffic.
 
-- **iqr** (Tukey's fences): the quartiles Q1 and Q3 and the interquartile range IQR = Q3 - Q1; a value below Q1 - k × IQR or above Q3 + k × IQR is out. The score is how many IQRs past the fence it lies. It does not assume a bell curve and is not moved by the outliers themselves.
-- **z-score**: the mean and the sample standard deviation; a value whose distance from the mean is more than the threshold in standard deviations is out. The score is its z. It suits roughly bell shaped data; one huge value inflates the standard deviation and can hide itself.
+## How to read it
 
-## Inputs
+With **Output** at `list`, one row per unusual value, the furthest out first: its **row** number in the result (from 1), the **column**, the **value**, its **side** (`high` or `low`), the **limit** it crossed, how far **past limit** it is, and a score of how far out it is in the method's own measure (**IQRs past fence**, or **z** under z-score; bigger means further out), then the rest of the row so you can tell which record it is. With `marked`, the whole result in its own order, the unusual cells coloured: red for high, amber for low; hovering one says why.
 
-| Input | `@inputs` key | Default | Meaning |
+"Far from the rest" is measured on each column on its own, from the middle half of its values: a value more than **IQR multiplier** times that middle range beyond it is flagged. The default, 1.5, flags the clearly unusual; 3 only the extreme.
+
+## Try it
+
+**Expense claims with two typos** (any connection, made up on the spot), the table above:
+
+```sql
+-- @extension outliers open
+-- @inputs columns=claimed, method=iqr, k=1.5, output=list
+select g as claim_id,
+       (array['Ana', 'Ivan', 'Marta', 'Luka', 'Petra'])[1 + g % 5] as employee,
+       case g when 17 then 18500 when 64 then 9800 else round((50 + random() * 250)::numeric, 2) end as claimed
+from generate_series(1, 120) g;
+```
+
+**The most unusual payments**, in the [dvdrental](https://neon.com/postgresql/postgresql-getting-started/postgresql-sample-database) sample database: with the multiplier at 3, only the eight payments of 11.99 are far enough from the usual 0.99 to 4.99. Marked, and sorted by amount, they stand out at the top of the result (the limit is computed over all fourteen thousand payments, so leave LIMIT off):
+
+```sql
+-- @extension outliers open
+-- @inputs columns=amount, method=iqr, k=3, output=marked
+select payment_id, customer_id, amount, payment_date
+from payment
+order by amount desc;
+```
+
+![The dvdrental payments sorted by amount, the 11.99 payments coloured red](media/outliers-payments.webp)
+
+## Settings
+
+| Setting | `@inputs` key | Default | What it does |
 |---|---|---|---|
-| Columns | `columns` | asked | Numeric columns whose outliers are flagged, each judged on its own, as a comma list |
-| Method | `method` | iqr | iqr or z-score |
-| IQR multiplier | `k` | 1.5 | For iqr: how many IQRs beyond the quartiles the fences stand; 1.5 is Tukey's, 3 flags only the far out |
-| Z threshold | `z` | 3 | For z-score: a value further than this many standard deviations from the mean is an outlier |
-| Output | `output` | list | list: one row per outlying value, the furthest out first; marked: the result with the outlying cells coloured |
+| Columns | `columns` | asked | The number columns to check, each on its own, as a comma list |
+| Method | `method` | iqr | `iqr`: far from the middle half of the values (works for any shape of data); `z-score`: far from the average, measured in standard deviations (for bell-shaped data) |
+| IQR multiplier | `k` | 1.5 | For `iqr`: how far beyond the middle half counts as unusual; 1.5 is the usual rule, 3 flags only the extreme |
+| Z threshold | `z` | 3 | For `z-score`: how many standard deviations from the average count as unusual |
+| Output | `output` | list | `list`: one row per unusual value, the furthest first; `marked`: the whole result with them coloured |
+
+## Good to know
+
+`iqr` is Tukey's fences: Q1 and Q3 are the values a quarter and three quarters of the way up, the interquartile range IQR is Q3 - Q1, and a value below Q1 - k × IQR or above Q3 + k × IQR is flagged; its score is how many IQRs past the fence it lies. It does not assume a bell curve and is not moved by the outliers themselves. `z-score` uses the mean and the sample standard deviation; its score is the value's z. One huge value inflates the standard deviation and can hide itself, which is why `iqr` is the default. Quartiles interpolate as PostgreSQL's `percentile_cont` does. Empty values are skipped; a column with fewer than three numbers, or a standard deviation of 0 under z-score, is left alone and the Log says so. With an IQR of 0 (most values the same) every other value is flagged. The marked copy is a tab of its own, since a limit needs the whole column. The grid lists the first 100,000 rows; the limits read every row.
+
+From a script: `-- @extension outliers` above the query, with `-- @inputs columns=amount, method=z-score, z=2.5`. **Statistics refactors** (`statistics-refactors`) writes the same check as a query from the editor's lightbulb, computed by PostgreSQL over every row.
 
 ## Requirements
 
-PostgreSQL 13 or newer. No server side: the result's sandbox computes it from the rows already fetched. It installs with **stats-core**, the shared helper library of the Analysis extensions.
-
-## Notes
-
-Quartiles interpolate between ranks, as PostgreSQL's `percentile_cont` and a spreadsheet's QUARTILE.INC do. Nulls and values that do not read as numbers are skipped; a column with fewer than three numbers, or a standard deviation of 0 under z-score, is left alone and the Log says so. With an IQR of 0 (most values the same) every other value is out, and the score is its plain distance. The Log gives the count per column. The grid lists the first 100,000 rows; the limits read every row.
-
-The coloured copy is a tab, not a formatting rule on the result itself: a rule sees one row at a time, and a fence needs the whole column.
-
-From a script: `-- @extension outliers` above the query, with `-- @inputs columns=amount, method=z-score, z=2.5` or `-- @inputs columns=amount, output=marked`.
-
-## In SQL
-
-**Statistics refactors** (`statistics-refactors`) writes the same analysis as a query above yours from the editor's lightbulb, computed by PostgreSQL over every row the query returns: a query you keep and share rather than a view of the grid.
+PostgreSQL 13 or newer. Nothing runs on the server: the limits are computed in the result's sandbox from the rows already fetched. Stats core installs with it.

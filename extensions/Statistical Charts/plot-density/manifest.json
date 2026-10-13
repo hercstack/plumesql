@@ -2,7 +2,7 @@
   "format": 1,
   "id": "plot-density",
   "kind": "grid",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "plumesql": ">=0.21.0",
   "name": "Plot density",
   "description": "A hexbin heatmap or density contours for a lot of points, where a scatter would be a blob (Observable Plot)",

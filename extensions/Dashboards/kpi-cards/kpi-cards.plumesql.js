@@ -89,7 +89,8 @@ export default {
         const cards = idxs.map((ci, k) => ({ title: titles[k] || cols[ci].name, ...card(rows.map((r) => num(r[ci])), agg, compare) }))
         csv = 'card,' + agg + ',reference,change_pct\n' + cards.map((c) => '"' + c.title.replace(/"/g, '""') + '",' + (c.value ?? '') + ',' + (c.ref ?? '') + ',' + (c.change == null ? '' : round(c.change))).join('\n')
 
-        const caption = agg === 'count' ? 'non-null of ' + rows.length.toLocaleString() + ' rows' : agg + ' of ' + rows.length.toLocaleString() + ' rows'
+        const rowWord = rows.length === 1 ? ' row' : ' rows'
+        const caption = agg === 'count' ? 'non-null of ' + rows.length.toLocaleString() + rowWord : agg + ' of ' + rows.length.toLocaleString() + rowWord
         let html = inputs.title ? '<div style="padding:14px 16px 0;font-weight:600">' + escapeHtml(inputs.title) + '</div>' : ''
         html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;padding:14px 16px">'
         for (const c of cards) {

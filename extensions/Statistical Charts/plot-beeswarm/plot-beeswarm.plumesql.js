@@ -1,7 +1,7 @@
 // @ts-check
 // @description One dodged dot per row, the distribution of a value, a sample of a LOT of rows (Observable Plot, CDN)
 // @color cyan
-import { P, palettes, loadRows, colIndex, sample, baseStyle, note, usePalette } from '$ext/plot-core/plot-core.plumesql.js'
+import { P, palettes, loadRows, colIndex, sample, inkOf, baseStyle, note, usePalette } from '$ext/plot-core/plot-core.plumesql.js'
 
 /** @type {PlumeSQLExtension} */
 export default {
@@ -28,11 +28,28 @@ export default {
         if (!all.length) { note(root, 'No numeric values to draw.'); return }
         const pts = sample(all, Math.max(50, Number(inputs.dots) || 4000))
         const palette = palettes[inputs.palette] || palettes.Vivid
+        // Dots small enough that the densest pile fits its row: a few hundred
+        // rows of one group at one value would otherwise climb into the next
+        // group's row. The densest slice of each group decides.
+        const W = root.clientWidth || 640
+        const height = Math.max(120, (root.clientHeight || 360) - (grouped ? 30 : 0) - (inputs.title ? 34 : 0))
+        const nGroups = grouped ? new Set(pts.map((p) => p.g)).size : 1
+        let lo = Infinity, hi = -Infinity
+        for (const p of pts) { if (p.v < lo) lo = p.v; if (p.v > hi) hi = p.v }
+        const slices = 60, span = hi - lo || 1
+        /** @type {Map<string, number>} */
+        const pile = new Map()
+        let densest = 1
+        for (const p of pts) { const k = p.g + '\u0000' + Math.min(slices - 1, Math.floor(((p.v - lo) / span) * slices)); const c = (pile.get(k) || 0) + 1; pile.set(k, c); if (c > densest) densest = c }
+        const rowH = (height - 60) / nGroups, sliceW = (W - 76) / slices
+        // A dodged pile packs loosely (about half the room is gaps): the 8
+        // leaves that slack.
+        const r = Math.max(1, Math.min(3, Math.sqrt((rowH * 0.85 * sliceW) / (densest * 8))))
         const dodge = grouped
-          ? P.dodgeY({ x: 'v', fy: 'g', fill: 'g', r: 3, tip: true })
-          : P.dodgeY({ x: 'v', fill: palette[0], r: 3, tip: true })
+          ? P.dodgeY('middle', { x: 'v', fy: 'g', fill: 'g', r, tip: true })
+          : P.dodgeY('middle', { x: 'v', fill: palette[0], r, tip: true })
         const chart = P.plot({
-          width: root.clientWidth || 640, height: Math.max(120, (root.clientHeight || 360) - (grouped ? 30 : 0) - (inputs.title ? 34 : 0)),
+          width: W, height,
           marginLeft: 56, marginBottom: 40,
           title: inputs.title || undefined,
           color: { range: palette, legend: grouped }, style: baseStyle(dark),
@@ -41,6 +58,9 @@ export default {
           marks: [P.dot(pts, dodge)]
         })
         root.innerHTML = ''
+        // The legend sits outside the chart's SVG and takes its text colour
+        // from the page, which was black on a dark theme.
+        root.style.color = inkOf(dark)
         root.append(chart)
       }
     },

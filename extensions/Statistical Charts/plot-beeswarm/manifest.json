@@ -2,7 +2,7 @@
   "format": 1,
   "id": "plot-beeswarm",
   "kind": "grid",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "plumesql": ">=0.21.0",
   "name": "Plot beeswarm",
   "description": "One dodged dot per row, the distribution of a value, a sample of a lot of rows (Observable Plot)",

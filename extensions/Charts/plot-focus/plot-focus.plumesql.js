@@ -51,7 +51,8 @@ export default {
         const detailH = Math.max(120, H - masterH - gap - (legend ? 30 : 0) - (inputs.title ? 34 : 0))
         const mL = leftMargin(ymin, ymax), mR = 64
         root.innerHTML = ''
-        root.style.cssText = 'display:flex;flex-direction:column;overflow:hidden'
+        // The legend is HTML: it takes the theme's ink from here.
+        root.style.cssText = 'display:flex;flex-direction:column;overflow:hidden;color:' + ink
         const masterWrap = document.createElement('div'); masterWrap.style.cssText = 'position:relative;flex:0 0 auto;height:' + masterH + 'px'
         const detailWrap = document.createElement('div'); detailWrap.style.cssText = 'position:relative;flex:1 1 auto;min-height:0;margin-top:' + gap + 'px'
         root.append(masterWrap, detailWrap)
