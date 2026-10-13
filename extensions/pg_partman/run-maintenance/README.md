@@ -4,11 +4,9 @@ Make pg_partman do its housekeeping now instead of at its next scheduled run: cr
 
 ![The question: run pg_partman's maintenance now? It creates the partitions that are due and drops or detaches the ones past retention, on every partition set](media/run-maintenance-confirm.webp)
 
-![Before: the newest partition of logs.events is today's, 13 October](media/run-maintenance-before.webp)
+![The answer after the run: logs.events, a partition a day, made 4 ahead and kept 30 days, has 15 partitions from 18 September to 18 October; public.part_demo has 9, from 1 to 9 September](media/run-maintenance-answer.webp)
 
-![After: four more partitions, 14 to 17 October, made ahead](media/run-maintenance-after.webp)
-
-Before, the newest partition of `logs.events` was today's (13 October). After Run maintenance there are four more, 14 to 17 October, ready before their rows arrive, as the set's premake of 4 asks.
+The answer is every set the run looked after, as it stands right after it. `logs.events` makes a partition a day, keeps them 30 days and makes 4 ahead: 15 partitions, the oldest from 18 September, the newest already for 18 October, ready before its rows arrive. `public.part_demo` holds no rows yet, and without `infinite_time_partitions` pg_partman makes partitions ahead of the newest row a set holds, not ahead of today: it stays at 9 September.
 
 **pg_partman** is a PostgreSQL extension that looks after partitioned tables: tables split into child tables, the **partitions**, one per day or month. PostgreSQL never makes the next partition on its own; pg_partman's **maintenance** does, ahead of time, and removes partitions past their retention. Normally it runs on a schedule; this runs it once, now.
 
@@ -24,7 +22,7 @@ Before, the newest partition of `logs.events` was today's (13 October). After Ru
 2. It asks before it runs, and the question says that partitions past retention are dropped or detached.
 3. It calls `run_maintenance()`, which goes over every partition set with maintenance `on`, exactly as the scheduled run would.
 
-The answer is a single empty cell: the function returns nothing. What it did shows in Partition sets (open a set's partitions) and, for retention, in the tables that are gone or detached.
+The answer is one row per partition set it maintains, read right after the run: its interval, how many partitions it makes ahead, its retention, how many partitions it has now (the default partition not counted), and the oldest and the newest of them. A partition retention removed is gone from the count and from oldest; open a set's partitions in Partition sets for the whole list.
 
 ## Settings
 

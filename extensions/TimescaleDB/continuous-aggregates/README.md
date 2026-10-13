@@ -25,7 +25,11 @@ One row per continuous aggregate:
 | materialized only | `t`: a query returns only what has been refreshed so far, so the newest rows show up after the next refresh. `f` ("real time"): the newest raw rows are added on the fly, always current but slower. |
 | compression | Whether the summary's own stored results are compressed. |
 
-**Definition** on a view's name opens the query that defines it, as the server keeps it (the `time_bucket(...)` and the aggregates).
+**Definition** on a view's name opens the query that defines it, as the server keeps it, one line per row with its indentation, so even a long one reads whole:
+
+![The definition of readings_hourly, a line per row: SELECT time_bucket of one hour over time as bucket, device_id, the average temperature and the highest humidity, FROM metrics.readings, GROUP BY the bucket and the device](media/continuous-aggregates-definition.webp)
+
+`readings_hourly` buckets the readings by the hour (`time_bucket('01:00:00'::interval, "time")`) and keeps, per device and hour, the average temperature and the highest humidity.
 
 ## Try it
 

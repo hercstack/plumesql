@@ -2,9 +2,9 @@
 
 What VACUUM, ANALYZE, CREATE INDEX and CLUSTER are doing right now, and how far along each one is, refreshed every three seconds.
 
-![Maintenance progress: a VACUUM on public.sessions in the warehouse database, scanning the heap, 21.8 percent done, 4,249 of 19,512 heap blocks scanned](media/maintenance-progress-vacuum.webp)
+![Maintenance progress: a cancel button, then a VACUUM on public.sessions in the warehouse database, scanning the heap, 21.5 percent done, 4,200 of 19,512 heap blocks scanned](media/maintenance-progress-vacuum.webp)
 
-A `VACUUM` of the shop's `sessions` table, slowed down on purpose: 14 seconds in, it has read 4,249 of the table's 19,512 blocks, so it is about a fifth of the way through its first phase. To the right of the picture the row goes on with how long it has run, who started it, its statement and a **cancel** button. The row stays while it runs and moves on to the next phase as the vacuum does.
+A `VACUUM` of the shop's `sessions` table, slowed down on purpose: it has read 4,200 of the table's 19,512 blocks, so it is about a fifth of the way through its first phase. The row starts with its **cancel** button; to the right of the picture it goes on with how long it has run (14 seconds), who started it and its statement. The row stays while it runs and moves on to the next phase as the vacuum does.
 
 ## When to use it
 

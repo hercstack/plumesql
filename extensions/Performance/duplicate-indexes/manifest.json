@@ -2,7 +2,7 @@
   "format": 1,
   "id": "duplicate-indexes",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.22.0",
   "name": "Duplicate indexes",
   "description": "Indexes another index on the same table already covers, with sizes and the statement to drop each",

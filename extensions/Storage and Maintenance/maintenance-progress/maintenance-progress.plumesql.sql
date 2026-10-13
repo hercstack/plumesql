@@ -66,7 +66,8 @@ from p
      left join pg_catalog.pg_namespace n on n.oid = c.relnamespace
 order by a.query_start nulls last, p.pid;
 
+-- At the row's start (the default place), beside the pid it stops: pinned
+-- at the end it floated over the query column's text.
 -- @button cancel
--- @at end
 -- @confirm "Cancel the operation?", "Cancel the $command running on backend $pid? It stops where it is; a cancelled CREATE INDEX CONCURRENTLY leaves an invalid index behind to drop."
 select pg_catalog.pg_cancel_backend($pid);

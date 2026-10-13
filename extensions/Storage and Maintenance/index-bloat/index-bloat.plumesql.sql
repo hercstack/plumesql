@@ -48,7 +48,8 @@ with idx as (
          join pg_catalog.pg_stats s on s.schemaname = n.nspname
                                    and s.tablename = c.attrelname
                                    and s.attname = c.attname
-    where n.nspname not in ('information_schema', 'pg_toast')
+    -- The system catalogs' indexes waste a page or two: left out.
+    where n.nspname not in ('pg_catalog', 'information_schema', 'pg_toast')
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
 ), widths as (
     select s.*,

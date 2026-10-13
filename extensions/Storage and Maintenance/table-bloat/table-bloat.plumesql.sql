@@ -32,7 +32,9 @@ with t as (
       and tbl.relkind in ('r', 'm')
       and tbl.relpages > 0
       and tbl.reltuples >= 0
-      and ns.nspname <> 'information_schema'
+      -- The system's own catalogs waste a page or two, and only a
+      -- superuser's VACUUM FULL could touch them: not the user's tables.
+      and ns.nspname not in ('pg_catalog', 'information_schema', 'pg_toast')
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
 ), sized as (
     select t.*,

@@ -2,7 +2,7 @@
   "format": 1,
   "id": "continuous-aggregates",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Continuous aggregates",
   "description": "Continuous aggregates and the hypertables they roll up, from TimescaleDB",

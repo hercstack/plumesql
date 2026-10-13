@@ -2,9 +2,9 @@
 
 Indexes you can drop because another index on the same table already does their job, the biggest first, with the statement that drops each.
 
-![Duplicate indexes: big_g_idx 32 MB left prefix of big_g_h_idx; rental_rental_date_idx 368 kB left prefix of the unique rental index; payment_customer_id_idx 128 kB duplicate of idx_fk_customer_id; customer_email_idx 88 kB covered by customer_email_names_idx](media/duplicate-indexes-found.webp)
+![Duplicate indexes: big_g_idx 32 MB left prefix of big_g_h_idx; payment_customer_id_idx 128 kB duplicate of idx_fk_customer_id; customer_email_idx 48 kB covered by customer_email_names_idx; each row with the drop index concurrently statement that removes it](media/duplicate-indexes-found.webp)
 
-Four indexes that can go. `big_g_idx` (32 MB) indexes `big (g)`, but `big_g_h_idx` on `(g, h)` starts with the same column and serves every search it serves. `rental_rental_date_idx` is the same story against the unique index on `(rental_date, inventory_id, customer_id)`. `payment_customer_id_idx` is an exact copy of `idx_fk_customer_id`. `customer_email_idx` is covered by `customer_email_names_idx`, the same key with two more columns carried along. Further right, each row has both definitions and the statement that drops it.
+Three indexes that can go. `big_g_idx` (32 MB) indexes `big (g)`, but `big_g_h_idx` on `(g, h)` starts with the same column and serves every search it serves. `payment_customer_id_idx` is an exact copy of `idx_fk_customer_id`. `customer_email_idx` is covered by `customer_email_names_idx`, the same key with two more columns carried along. Beside each, the statement that drops it; further right, both definitions to compare.
 
 ## When to use it
 
@@ -22,8 +22,8 @@ One row per index that can go.
 | redundant index, size | The index that can go, and the room it takes. |
 | because it is | `duplicate of`: the same columns in the same way; `left prefix of`: its columns are the first columns of a longer index; `covered by`: the same columns, where the other carries extra columns along (INCLUDE). |
 | covering index | The index that stays. |
-| redundant definition, covering definition | Both CREATE INDEX statements, to compare. |
 | drop statement | `DROP INDEX CONCURRENTLY` for a plain index, `ALTER TABLE ... DROP CONSTRAINT` for one behind a constraint. Text only: nothing is run. |
+| redundant definition, covering definition | Both CREATE INDEX statements, to compare. |
 
 What to do: copy a drop statement into a script tab and run it there, one index at a time, then run this again: when three indexes overlap, the index that "stays" in one row can be listed against a third. Before dropping a left prefix on a busy table, look at Unused indexes: the shorter index is smaller and can be the faster one for its searches.
 

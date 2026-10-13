@@ -2,9 +2,9 @@
 
 How much of each index is empty space: the btree indexes that take more room than their entries need, the most wasted first, with the statement to rebuild each one.
 
-![Index bloat on a small shop database: sessions_token_idx is 32 MB with 26 MB wasted (81.5 percent), sessions_last_seen_idx 17 MB with 13 MB wasted; the primary keys of orders, sessions and audit_log about half empty](media/index-bloat-indexes.webp)
+![Index bloat on a small shop database: sessions_token_idx is 32 MB with 27 MB wasted (81.6 percent), sessions_last_seen_idx 17 MB with 13 MB wasted; the primary keys of orders, sessions and audit_log about half empty](media/index-bloat-indexes.webp)
 
-The same shop as in Table bloat. Every session's `token` and `last_seen` were changed three times, so their two indexes received four entries per session and kept the room for all of them after the old ones were removed: 81 and 75 percent empty. The primary keys sit at about half, the usual mark of an index whose pages split while rows were updated in the middle of it. Further down the list (not in the picture) the system catalogs' indexes waste a page or two each, which is nothing.
+The same shop as in Table bloat. Every session's `token` and `last_seen` were changed three times, so their two indexes received four entries per session and kept the room for all of them after the old ones were removed: 81 and 75 percent empty. The primary keys sit at about half, the usual mark of an index whose pages split while rows were updated in the middle of it. The last two, a page each, are nothing to act on.
 
 ## When to use it
 
@@ -62,7 +62,7 @@ The estimate is the well known one computed from the planner's statistics: for e
 
 The estimate knows nothing of btree deduplication (PostgreSQL 13 and newer), which stores a repeated value once: an index on a column with few distinct values can be much smaller than the estimate expects, and then it does not show at all. The figure is a lower bound there, never an exaggeration. Only btree indexes are estimated; GIN, GiST, BRIN and hash indexes are not listed.
 
-Reads only: nothing is rebuilt here. For a superuser the system catalogs' indexes are listed too.
+Reads only: nothing is rebuilt here. The system catalogs' indexes are left out: their waste is a page or two.
 
 ## Requirements
 

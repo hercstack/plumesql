@@ -2,9 +2,9 @@
 
 How much of each table is empty space it carries around: the tables that take more room on disk than their rows need, the most wasted first.
 
-![Table bloat on a small shop database: sessions takes 152 MB, of which 116 MB (76%) is waste; audit_log 38 MB with 26 MB waste and never vacuumed; orders, order_notes and customers between 12 and 20 percent](media/table-bloat-tables.webp)
+![Table bloat on a small shop database: sessions takes 152 MB, of which 116 MB (76%) is waste; audit_log 38 MB with 26 MB waste and never vacuumed; orders and order_notes at 12 and 16 percent](media/table-bloat-tables.webp)
 
-A small shop database. Every row of `sessions` was rewritten three times while autovacuum was switched off for it, then vacuumed by hand: the dead copies are gone, but the space they took is not, so 116 MB of its 152 MB holds nothing. `audit_log` lost two thirds of its rows to a `DELETE` and nobody has vacuumed it since (`never`). The three tables at 12 to 20 percent are healthy: that much is the estimate's own margin.
+A small shop database. Every row of `sessions` was rewritten three times while autovacuum was switched off for it, then vacuumed by hand: the dead copies are gone, but the space they took is not, so 116 MB of its 152 MB holds nothing. `audit_log` lost two thirds of its rows to a `DELETE` and nobody has vacuumed it since (`never`). The two tables at 12 and 16 percent are healthy: that much is the estimate's own margin.
 
 ## When to use it
 
@@ -65,7 +65,7 @@ The table is down to about 13 MB and its waste under one percent. Clean up with 
 
 The estimate is the well known one computed from the planner's statistics (`pg_stats`): from each column's average width and null fraction it builds the size of an average row, with its header and alignment, and from that the pages the live rows need at the table's fillfactor, plus a share for TOAST. What the table has beyond that is the waste. So it reads no table and costs one catalog query whatever the size of the database, and it is as good as the last `ANALYZE`: a table never analyzed, or one with a column the statistics do not cover (a `name` column, a column the current role may not read), is left out rather than guessed at. For an exact figure on one table, the `pgstattuple` extension reads it page by page.
 
-Reads only: nothing is vacuumed or rewritten here. For a superuser the system catalogs are listed too; their waste is usually a few kilobytes and harmless.
+Reads only: nothing is vacuumed or rewritten here. The system catalogs (`pg_catalog`, `information_schema`) are left out: their waste is a page or two, and only a superuser's `VACUUM FULL` could take it back.
 
 ## Requirements
 

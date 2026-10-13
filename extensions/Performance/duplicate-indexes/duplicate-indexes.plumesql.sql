@@ -78,12 +78,14 @@ select r.schema_name as "schema",
        pg_catalog.pg_size_pretty(pg_catalog.pg_relation_size(r.indexrelid)) as "size",
        case p.how when 1 then 'duplicate of' when 2 then 'left prefix of' else 'covered by' end as "because it is",
        k.index_name as "covering index",
-       pg_catalog.pg_get_indexdef(r.indexrelid) as "redundant definition",
-       pg_catalog.pg_get_indexdef(k.indexrelid) as "covering definition",
+       -- The remedy beside the names it is about, where a normal pane shows
+       -- it; the two long definitions follow, to compare.
        case when r.conname is not null
             then pg_catalog.format('alter table %I.%I drop constraint %I;', r.schema_name, r.table_name, r.conname)
             else pg_catalog.format('drop index concurrently %I.%I;', r.schema_name, r.index_name)
-       end as "drop statement"
+       end as "drop statement",
+       pg_catalog.pg_get_indexdef(r.indexrelid) as "redundant definition",
+       pg_catalog.pg_get_indexdef(k.indexrelid) as "covering definition"
 from picked p
      join ix r on r.indexrelid = p.redundant_oid
      join ix k on k.indexrelid = p.kept_oid
