@@ -1,5 +1,7 @@
 # Everforest
 
+![Everforest: the PlumeSQL window in Everforest Dark](media/everforest-preview.webp)
+
 ![Everforest: the PlumeSQL window in Everforest Dark](media/everforest.webp)
 
 A green, forest-inspired scheme designed to be warm and soft for the eyes, dark and light.

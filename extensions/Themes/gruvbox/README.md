@@ -1,5 +1,7 @@
 # Gruvbox
 
+![Gruvbox: the PlumeSQL window in Gruvbox Dark](media/gruvbox-preview.webp)
+
 ![Gruvbox: the PlumeSQL window in Gruvbox Dark](media/gruvbox.webp)
 
 Retro groove colors, warm and earthy with low blue: the dark and the light face of the classic.

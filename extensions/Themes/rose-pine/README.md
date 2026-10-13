@@ -1,5 +1,7 @@
 # Rosé Pine
 
+![Rosé Pine: the PlumeSQL window in Rosé Pine](media/rose-pine-preview.webp)
+
 ![Rosé Pine: the PlumeSQL window in Rosé Pine](media/rose-pine.webp)
 
 All natural pine, faux fur and a bit of soho vibes: Rosé Pine, the dimmer Moon and the light Dawn.

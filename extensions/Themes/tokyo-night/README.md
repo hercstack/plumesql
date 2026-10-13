@@ -1,5 +1,7 @@
 # Tokyo Night
 
+![Tokyo Night: the PlumeSQL window in Tokyo Night](media/tokyo-night-preview.webp)
+
 ![Tokyo Night: the PlumeSQL window in Tokyo Night](media/tokyo-night.webp)
 
 Downtown Tokyo at night, in three versions: Night, the softer Storm and the bright Day.

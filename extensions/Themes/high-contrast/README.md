@@ -1,5 +1,7 @@
 # High Contrast
 
+![High Contrast: the PlumeSQL window in High Contrast Dark](media/high-contrast-preview.webp)
+
 ![High Contrast: the PlumeSQL window in High Contrast Dark](media/high-contrast.webp)
 
 Maximum legibility: pure black and pure white grounds, bright outlines around every focused control.

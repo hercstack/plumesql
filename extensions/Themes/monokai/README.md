@@ -1,5 +1,7 @@
 # Monokai
 
+![Monokai: the PlumeSQL window in Monokai](media/monokai-preview.webp)
+
 ![Monokai: the PlumeSQL window in Monokai](media/monokai.webp)
 
 The classic of text editors: electric pink, lime and violet on warm charcoal.

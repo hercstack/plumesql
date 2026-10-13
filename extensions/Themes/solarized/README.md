@@ -1,5 +1,7 @@
 # Solarized
 
+![Solarized: the PlumeSQL window in Solarized Dark](media/solarized-preview.webp)
+
 ![Solarized: the PlumeSQL window in Solarized Dark](media/solarized.webp)
 
 Ethan Schoonover's precision palette in both faces: the same sixteen colors read on a dark and a light ground.

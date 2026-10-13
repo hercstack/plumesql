@@ -1,5 +1,7 @@
 # PlumeSQL Originals
 
+![PlumeSQL Originals: the PlumeSQL window in Paper](media/plumesql-originals-preview.webp)
+
 ![PlumeSQL Originals: the PlumeSQL window in Paper](media/plumesql-originals.webp)
 
 Four themes made for PlumeSQL: warm Paper, neutral Graphite, the elephant blue Harbor and a dark roast Espresso.

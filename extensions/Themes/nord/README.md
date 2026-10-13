@@ -1,5 +1,7 @@
 # Nord
 
+![Nord: the PlumeSQL window in Nord](media/nord-preview.webp)
+
 ![Nord: the PlumeSQL window in Nord](media/nord.webp)
 
 An arctic, north-bluish dark theme: calm frost blues on polar night grey, easy on long sessions.

@@ -1,5 +1,7 @@
 # Night Owl
 
+![Night Owl: the PlumeSQL window in Night Owl](media/night-owl-preview.webp)
+
 ![Night Owl: the PlumeSQL window in Night Owl](media/night-owl.webp)
 
 Fine tuned for those of us who like to code late into the night, and its Light Owl for the morning after.

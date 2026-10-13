@@ -1,5 +1,7 @@
 # One Dark and Light
 
+![One Dark and Light: the PlumeSQL window in One Dark](media/one-preview.webp)
+
 ![One Dark and Light: the PlumeSQL window in One Dark](media/one.webp)
 
 Atom's beloved pair, the most installed dark theme there is and its bright twin.

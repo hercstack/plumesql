@@ -2,7 +2,7 @@
   "format": 1,
   "id": "explain-plan",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.22.0",
   "name": "Explain plan",
   "description": "The plan of an EXPLAIN as a picture you can read: where the time goes, what was misestimated, what spilled, step by step",

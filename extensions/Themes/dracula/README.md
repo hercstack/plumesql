@@ -1,5 +1,7 @@
 # Dracula
 
+![Dracula: the PlumeSQL window in Dracula](media/dracula-preview.webp)
+
 ![Dracula: the PlumeSQL window in Dracula](media/dracula.webp)
 
 The famous dark theme: purple, pink and green on a deep blue-grey, high energy and very readable.

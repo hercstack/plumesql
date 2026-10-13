@@ -202,6 +202,9 @@ export function measure(root) {
     n.outRows = analyzed(n) ? (n.aRows || 0) * Math.max(1, n.loops || 1) : null
     n.estRows = (n.rows || 0) * (analyzed(n) ? Math.max(1, n.loops || 1) : 1)
     n.factor = n.outRows === null || n.never ? null : (() => { const a = Math.max(n.outRows, 1), e = Math.max(n.estRows, 1); return a >= e ? a / e : -(e / a) })()
+    // Under a Limit a step stops early by design: fewer rows than planned
+    // there is the Limit working, not a misestimate.
+    n.limited = n.factor !== null && n.factor < 0 && (() => { for (let p = n.parent; p; p = p.parent) if (p.type === 'Limit') return true; return false })()
     n.buf = buffersOf(n)
     const kb = n.children.reduce((/** @type {any} */ s, /** @type {any} */ c) => { s.hit += c.buf.hit; s.read += c.buf.read; return s }, { hit: 0, read: 0 })
     n.bufExcl = Math.max(0, n.buf.hit + n.buf.read - kb.hit - kb.read)
@@ -220,10 +223,7 @@ export function findings(all, total, analyzed) {
   const fmt = (/** @type {number} */ x) => Math.round(x).toLocaleString()
   for (const n of all) {
     if (analyzed && total > 0 && n.excl / total >= 0.2) out.push({ node: n, level: n.excl / total >= 0.5 ? 'red' : 'amber', text: pct(n.excl / total) + ' of the time is spent here', weight: 10 + n.excl / total })
-    // Under a Limit a step stops early by design: fewer rows than planned
-    // there is the Limit working, not a misestimate.
-    const limited = n.factor !== null && n.factor < 0 && (() => { for (let p = n.parent; p; p = p.parent) if (p.type === 'Limit') return true; return false })()
-    if (n.factor !== null && !limited && Math.abs(n.factor) >= 10 && Math.max(n.outRows, n.estRows) >= 100) {
+    if (n.factor !== null && !n.limited && Math.abs(n.factor) >= 10 && Math.max(n.outRows, n.estRows) >= 100) {
       out.push({ node: n, level: Math.abs(n.factor) >= 100 ? 'red' : 'amber', text: 'rows ' + (n.factor > 0 ? 'under' : 'over') + 'estimated ×' + fmt(Math.abs(n.factor)) + ' (' + fmt(n.estRows) + ' planned, ' + fmt(n.outRows) + ' actual)', weight: 5 + Math.log10(Math.abs(n.factor)) })
     }
     const removed = Number(prop(n, 'Rows Removed by Filter') || 0) * Math.max(1, n.loops || 1)
@@ -438,7 +438,7 @@ export default {
             const hidden = (() => { for (let p = n.parent; p; p = p.parent) if (collapsed.has(p.id)) return true; return false })()
             if (hidden) return ''
             const chev = n.children.length ? (collapsed.has(n.id) ? '▸' : '▾') : ''
-            const est = n.factor !== null && Math.abs(n.factor) >= 10 ? '<span class="est" style="background:color-mix(in srgb, ' + (Math.abs(n.factor) >= 100 ? c.red : c.amber) + ' 22%, transparent);color:' + (Math.abs(n.factor) >= 100 ? c.red : c.amber) + '" title="' + (n.factor > 0 ? 'under' : 'over') + 'estimated: ' + count(n.estRows) + ' planned">×' + count(Math.abs(n.factor)) + (n.factor > 0 ? '↑' : '↓') + '</span>' : ''
+            const est = n.factor !== null && !n.limited && Math.abs(n.factor) >= 10 ? '<span class="est" style="background:color-mix(in srgb, ' + (Math.abs(n.factor) >= 100 ? c.red : c.amber) + ' 22%, transparent);color:' + (Math.abs(n.factor) >= 100 ? c.red : c.amber) + '" title="' + (n.factor > 0 ? 'under' : 'over') + 'estimated: ' + count(n.estRows) + ' planned">×' + count(Math.abs(n.factor)) + (n.factor > 0 ? '↑' : '↓') + '</span>' : ''
             const chips = flagsOf(n).filter((f) => !/of the time is spent here|estimated/.test(f.text)).map((f) => { const col = f.level === 'red' ? c.red : f.level === 'amber' ? c.amber : c.mut; return '<span class="chip" style="color:' + col + ';border-color:' + col + '" title="' + escapeHtml(f.text) + '">' + escapeHtml(f.text.split(/[(,]/)[0].replace(/^the /, '').trim()) + '</span>' }).join('')
             return '<tr class="row' + (n.id === selected ? ' sel' : '') + (n.never ? ' never' : '') + '" tabindex="' + (n.id === selected ? '0' : '-1') + '" data-id="' + n.id + '"><td><div class="nm" style="padding-left:' + n.depth * 16 + 'px"><span class="chev" data-toggle="' + n.id + '">' + chev + '</span>' +
               (n.sub ? '<span class="sub">' + escapeHtml(n.sub) + '</span>' : n.rel && n.rel !== 'Outer' && n.rel !== 'Inner' && n.rel !== 'Member' ? '<span class="sub">' + escapeHtml(n.rel) + '</span>' : '') +

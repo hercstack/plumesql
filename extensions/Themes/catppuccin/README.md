@@ -1,5 +1,7 @@
 # Catppuccin
 
+![Catppuccin: the PlumeSQL window in Catppuccin Latte](media/catppuccin-preview.webp)
+
 ![Catppuccin: the PlumeSQL window in Catppuccin Latte](media/catppuccin.webp)
 
 The soothing pastel family in all four flavors: Latte by day, Frappé, Macchiato and Mocha into the night.

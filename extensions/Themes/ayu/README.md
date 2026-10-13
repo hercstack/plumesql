@@ -1,5 +1,7 @@
 # Ayu
 
+![Ayu: the PlumeSQL window in Ayu Light](media/ayu-preview.webp)
+
 ![Ayu: the PlumeSQL window in Ayu Light](media/ayu.webp)
 
 A simple, bright and elegant theme in three shades: Light, the dusky Mirage and the deep Dark.

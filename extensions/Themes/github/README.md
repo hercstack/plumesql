@@ -1,5 +1,7 @@
 # GitHub
 
+![GitHub: the PlumeSQL window in GitHub Light](media/github-preview.webp)
+
 ![GitHub: the PlumeSQL window in GitHub Light](media/github.webp)
 
 The colors you already read code in every day: GitHub Light, GitHub Dark and the softer Dark Dimmed.

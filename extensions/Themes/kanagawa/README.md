@@ -1,5 +1,7 @@
 # Kanagawa
 
+![Kanagawa: the PlumeSQL window in Kanagawa Wave](media/kanagawa-preview.webp)
+
 ![Kanagawa: the PlumeSQL window in Kanagawa Wave](media/kanagawa.webp)
 
 Inspired by the colors of Katsushika Hokusai's famous painting: Wave by night, Lotus by day.
