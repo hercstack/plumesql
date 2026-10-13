@@ -11,7 +11,9 @@ select calls,
             then pg_catalog.round(100.0 * shared_blks_hit / (shared_blks_hit + shared_blks_read), 1)
        end as cache_pct,
        pg_catalog.round(rows::numeric / calls, 1) as rows_per_call,
-       coalesce(pg_catalog.lower(pg_catalog.substring(pg_catalog.ltrim(query), '^[A-Za-z]+')), 'other') as kind,
+       -- The kind is the statement's first word, read past the comments
+       -- and the parentheses in front of it.
+       coalesce(pg_catalog.lower(pg_catalog.substring(pg_catalog.regexp_replace(query, '^(\s|--[^\n]*|/\*([^*]|\*+[^*/])*\*+/|\()*', ''), '^[A-Za-z]+')), 'other') as kind,
        query
 from pg_stat_statements
 where dbid = (select oid from pg_catalog.pg_database where datname = pg_catalog.current_database())

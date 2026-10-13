@@ -1,47 +1,41 @@
 # Dump table
 
-![Dump table: Dump the table this was opened on to a file named after it: definition and rows, either alone, rows as COPY or as INSERT statements](media/dump-table.webp)
+One table saved to a SQL file named after it: its definition, its rows, or both, the rows as `COPY` or as `INSERT` statements.
 
-Dump one table into a plain SQL file named after it, from the table's
-own row in the object tree: its definition and rows, the definition
-alone, or the rows alone, with the rows as COPY or as INSERT statements.
-The quick copy of one table before you touch it, the way to carry it to
-another database, or a seed file of INSERTs, whatever the table's size.
+![The end of aircraft-2026-10-13.sql open in PlumeSQL: twelve INSERT INTO postgres_air.aircraft statements with their column names, one per aircraft, from the Airbus 380 to the Cessna 208 Caravan, then the line PostgreSQL database dump complete](media/dump-table-inserts.webp)
+
+The `aircraft` table dumped as rows only, as `INSERT` statements: one statement per row, each naming its columns, so the file runs on another database even when its columns are in a different order. The file opens as soon as it is written.
+
+## When to use it
+
+- **A safety copy of one table** before an `UPDATE` or `DELETE` you are not sure about.
+- **Seed data** for a test database or a repository: the rows of a lookup table as `INSERT` statements.
+- **Move one table** to another database, with or without its rows.
 
 ## What it does
 
-An `@for table` extension: it appears in the Actions submenu of every
-table's row in the object tree and on an open table's header, and runs
-`pg_dump --table=<the table> --file=<name>-<date>.sql` with the flags
-you picked on the tab's connection, in a terminal of its own. The terminal shows pg_dump's own
-output; when it finishes the file opens.
+1. From the table's row menu in the Objects tree, or the dots menu of an open table: **Run Dump table**. While a table's tab is the active one, the title bar shows it as a pin too.
+2. A form asks what to dump and how to write the rows (below), then asks first, naming the table, the database and the host.
+3. Runs `pg_dump --table=<the table>` with your choices on the tab's connection, in a terminal of its own.
+4. Writes `<table>-<date>.sql` into the workspace folder and opens it.
 
-## Inputs
+## Settings
 
-| Input | Default | Meaning |
+| Setting | Default | What it does |
 |---|---|---|
-| dump | `{name}-{date}.sql` | The file's name in the workspace, declared once so the question, the command and the opened file cannot disagree. |
-| What to dump | definition and rows | `--format=plain` dumps both, `--schema-only` the definition alone, `--data-only` the rows alone. |
-| Rows as | COPY | `--format=plain` writes the rows as COPY, the fastest to restore with psql; `--column-inserts` writes one INSERT statement per row, with the column names, which other tools and other databases read too. |
+| What to dump | definition and rows (`--format=plain`) | `--schema-only` writes the `CREATE TABLE` with its indexes and constraints alone; `--data-only` the rows alone. |
+| Rows as | COPY (`--format=plain`) | `COPY` is the fastest to load back with psql; `--column-inserts` writes one `INSERT` per row with the column names, which every tool and other databases read too. |
+| dump | `{name}-{date}.sql` | The file's name in the workspace. |
 
-Each choice is the pg_dump flag itself, shown beside what it means, so
-the command you see is the command that runs.
+Each choice in the form is the pg_dump flag itself, shown beside what it means, so the command you see is the command that runs.
 
-The password never appears in the command line: it reaches pg_dump
-through the environment (`@env PGPASSWORD={password}`).
+## Good to know
+
+- A second dump of the same table on the same day writes over the first (the name carries the date, not the time).
+- **The password stays secret.** It reaches pg_dump through the environment (`PGPASSWORD`), never the command line.
+- **No setup.** PlumeSQL finds the PostgreSQL client tools on this machine and runs a `pg_dump` new enough for the server, or, for a server in Docker here, the server's own image (System, Client tools).
+- For a whole database, **Backup**; for the rows as a spreadsheet, **Export to CSV**.
 
 ## Requirements
 
-`pg_dump` on this machine, at a version not older than the server's:
-PlumeSQL finds every PostgreSQL client installation (System, Client
-tools, which also installs a missing one) and runs the one that suits
-the server, so nothing has to be on the PATH. A connection whose user may
-read the table. PostgreSQL 13 or newer.
-
-## Notes
-
-A command extension: it runs a program on your machine, not a query on
-the server. It asks before it runs (`@confirm`) and writes into the
-WORKSPACE directory, beside your files; move or ignore the file as you
-would any generated one. Plain SQL format: readable, and restorable with
-`psql`.
+PostgreSQL 13 or newer, a connection whose user may read the table, and a PostgreSQL client installation (or Docker) on this machine.

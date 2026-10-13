@@ -2,7 +2,7 @@
   "format": 1,
   "id": "three-core",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Three core",
   "description": "Shared three.js scene the 3D chart extensions import: orbit, labels, hover and click, points, axes, theme colours",

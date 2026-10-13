@@ -1,40 +1,58 @@
 # Row security
 
-Row level security on the connected database: every table that turns it on, each of its policies spelled out (the command, permissive or restrictive, the roles, the `USING` and `WITH CHECK` expressions), and the two mistakes that are easy to make and hard to see: a table with row security on and no policy (nobody but the owner sees a row), and a policy on a table whose row security is off (it does nothing).
+Who sees which rows? Every table that limits rows per user, each rule spelled out, and the two mistakes that are easy to make and hard to notice.
 
-## What it shows
+![Row security on a test database: accounts has row security on with three policies (own_rows lets everyone see their own rows, own_updates lets them update their own rows if the balance stays positive, auditors is a restrictive policy for pg_read_all_data); drafts has a policy but row security OFF, so the policy has no effect; notes has row security forced on and no policy, so only superusers see a row](media/row-security-policies.webp)
+
+Three tables, three stories. On `accounts` every user sees and updates only the rows they own, and an update may not leave a negative balance. On `drafts` someone wrote a policy but never switched row security on, so it does nothing and everyone sees everything. On `notes` row security is on, even for the table's owner, but there is no policy at all, so nobody sees a single row except superusers and roles allowed to bypass row security.
+
+## When to use it
+
+- **One database for many customers** (multi-tenant), where each customer must see only their own rows: check every table that should be protected is.
+- **"I can't see any rows" or "they can see rows they shouldn't"**: read the rules that decide it.
+- **A security review**, to find policies that are switched off and tables locked shut by mistake.
+
+## How to read it
 
 One row per policy, grouped by table:
 
 | Column | Meaning |
 |---|---|
 | schema, table | The table. |
-| row_security | `on`, `on, forced for the owner too` (`FORCE ROW LEVEL SECURITY`), or `OFF` for a table that has policies but does not apply them. |
+| row_security | `on`; `on, forced for the owner too` (the owner obeys the policies as well); or `OFF` for a table that has policies but does not apply them. |
 | policy | The policy's name. |
-| command | `SELECT`, `INSERT`, `UPDATE`, `DELETE` or `ALL`. |
-| kind | `permissive` (any one of them lets a row through) or `restrictive` (every one of them must). |
+| command | What it governs: `SELECT`, `INSERT`, `UPDATE`, `DELETE` or `ALL`. |
+| kind | `permissive`: any one of them is enough to let a row through; `restrictive`: every one of them must agree. |
 | roles | Whom it applies to; `public` is everyone. |
-| using | Which existing rows are visible or may be changed. |
+| using | Which existing rows are visible, or may be changed. |
 | with_check | What new or changed rows must satisfy. |
-| note | Only on a problem: no policy at all, only restrictive policies (no row passes without a permissive one), or a policy that has no effect. |
+| note | Only on a problem: no policy at all, only restrictive policies (no row gets through without a permissive one), or a policy that has no effect. |
 
-## Examples
+The two fixes are one statement each: `ALTER TABLE drafts ENABLE ROW LEVEL SECURITY;` makes its policy count, and a `CREATE POLICY ... ON notes ...` lets someone read `notes`.
 
-Run it from the Extensions side tab (**Run**). On a multi-tenant database it reads like this:
+## Try it
 
-| table | row_security | policy | command | kind | roles | using | note |
-|---|---|---|---|---|---|---|---|
-| accounts | on | own_rows | SELECT | permissive | public | (owner = CURRENT_USER) | |
-| accounts | on | own_updates | UPDATE | permissive | public | (owner = CURRENT_USER) | |
-| drafts | OFF | nobody | ALL | permissive | public | false | has no effect: row security is off on this table |
-| notes | on, forced for the owner too | | | | | | no policy: nobody but the owner and superusers sees a row |
+Open the **Extensions** side tab, find **Row security** and press its **Run**. On a **test database**, make a table each user sees only their part of:
 
-The fixes are one statement each: `ALTER TABLE drafts ENABLE ROW LEVEL SECURITY;` makes the policy count, and `CREATE POLICY ... ON notes ...` lets someone read `notes`. To check what a role really sees, run a query as that role in a transaction: `BEGIN; SET LOCAL ROLE app_user; SELECT count(*) FROM accounts; ROLLBACK;`.
+```sql
+create table accounts (id int primary key, owner text, balance numeric);
+alter table accounts enable row level security;
+create policy own_rows on accounts for select using (owner = current_user);
+```
+
+Run it again: `accounts` and `own_rows` appear. To check what a role really sees, ask as that role inside a transaction (`app_user` stands for the role you want to check):
+
+```sql
+begin;
+set local role app_user;
+select count(*) from accounts;
+rollback;
+```
+
+## Good to know
+
+Superusers and roles with `BYPASSRLS` skip row security entirely, and so does a table's owner unless it is forced: a policy that seems to do nothing for you may simply not apply to the role you are connected as. The policies are read from `pg_policy`, which every role can read; it only reads. **Security review** flags the switched-off policies as part of its checklist.
 
 ## Requirements
 
-PostgreSQL 13 or newer. The policies are read from `pg_policy`, which every role can read.
-
-## Notes
-
-Superusers and roles with `BYPASSRLS` skip row security entirely, and a table's owner does too unless it is forced; a policy that seems to do nothing for you may simply not apply to the role you are connected as. The Security review extension checks the server as a whole.
+PostgreSQL 13 or newer.

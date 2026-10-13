@@ -140,7 +140,7 @@ export const rampRgb01 = (/** @type {string[]} */ stops, /** @type {number} */ t
 // the stage of its last draw and disposes it before the next, so no WebGL
 // context is left behind.
 /**
- * @typedef {{ at: any, el: HTMLElement, align: 'center' | 'right' | 'left', w: number }} Label
+ * @typedef {{ at: any, el: HTMLElement, align: 'center' | 'right' | 'left', w: number, group?: string }} Label
  * @typedef {{ i: number, [k: string]: unknown }} Hit
  * @typedef {{ pick: (ndcX: number, ndcY: number, px: number, py: number, ray: any) => (Hit | null), hover?: (hit: Hit | null, px: number, py: number) => void, click?: (hit: Hit, e: PointerEvent) => void }} PointerHandlers
  */
@@ -188,8 +188,14 @@ export const createStage = (/** @type {HTMLElement} */ root, /** @type {any} */ 
   /** @type {(() => void)[]} */
   const frameHooks = []
   const v3 = new THREE.Vector3()
+  // Labels of one `group` (the categories along an axis) never overlap: a
+  // label that would cover one shown before it in the same group is hidden
+  // for this frame, so a foreshortened axis thins itself as the view turns.
+  /** @type {Map<string, number[][]>} */
+  const shown = new Map()
   const placeLabels = () => {
     const w = root.clientWidth || W, h = root.clientHeight || H
+    shown.clear()
     for (const l of labels) {
       v3.copy(l.at).project(camera)
       if (v3.z > 1 || v3.z < -1) {
@@ -202,6 +208,18 @@ export const createStage = (/** @type {HTMLElement} */ root, /** @type {any} */ 
       // Kept inside the view: an axis name at the left edge stayed half out.
       const at = l.align === 'right' ? px - l.w : l.align === 'left' ? px : px - l.w / 2
       const x = Math.max(2, Math.min(w - l.w - 2, at))
+      if (l.group) {
+        // The text's own height, not its line box: names down a steep axis
+        // stack close and still read.
+        const box = [x - 2, py - 5, x + l.w + 2, py + 5]
+        let taken = shown.get(l.group)
+        if (!taken) shown.set(l.group, (taken = []))
+        if (taken.some((b) => box[0] < b[2] && b[0] < box[2] && box[1] < b[3] && b[1] < box[3])) {
+          l.el.style.display = 'none'
+          continue
+        }
+        taken.push(box)
+      }
       l.el.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(py - 7) + 'px)'
     }
   }
@@ -337,14 +355,15 @@ export const createStage = (/** @type {HTMLElement} */ root, /** @type {any} */ 
     // A label anchored at a point of the scene; `color` paints it in a role
     // colour (the theme's text for a name, the muted for a tick), and `halo`
     // rings it in the pane's colour, for a label that stands over a coloured
-    // shape (a roof) rather than the empty ground.
-    addLabel(/** @type {string} */ text, /** @type {number} */ x, /** @type {number} */ y, /** @type {number} */ z, /** @type {{ color?: string, align?: 'center' | 'right' | 'left', maxWidth?: number, bold?: boolean, halo?: boolean }} */ o = {}) {
+    // shape (a roof) rather than the empty ground. Labels that share a
+    // `group` hide one another rather than overlap (first added wins).
+    addLabel(/** @type {string} */ text, /** @type {number} */ x, /** @type {number} */ y, /** @type {number} */ z, /** @type {{ color?: string, align?: 'center' | 'right' | 'left', maxWidth?: number, bold?: boolean, halo?: boolean, group?: string }} */ o = {}) {
       const el = document.createElement('div')
       el.textContent = text
       el.style.cssText = 'position:absolute;left:0;top:0;white-space:nowrap;max-width:' + (o.maxWidth ?? 140) + 'px;overflow:hidden;text-overflow:ellipsis;will-change:transform' + (o.color ? ';color:' + o.color : '') + (o.bold ? ';font-weight:600' : '') + (o.halo ? ';text-shadow:0 0 3px ' + theme.pane + ',0 0 2px ' + theme.pane + ',0 0 1px ' + theme.pane : '')
       layer.appendChild(el)
       /** @type {Label} */
-      const l = { el, at: new THREE.Vector3(x, y, z), align: o.align ?? 'center', w: 0 }
+      const l = { el, at: new THREE.Vector3(x, y, z), align: o.align ?? 'center', w: 0, group: o.group }
       labels.push(l)
       return l
     },

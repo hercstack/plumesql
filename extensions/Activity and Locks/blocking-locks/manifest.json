@@ -2,7 +2,7 @@
   "format": 1,
   "id": "blocking-locks",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Blocking locks",
   "description": "Backends waiting on a lock, and the backend holding it, refreshed every five seconds",

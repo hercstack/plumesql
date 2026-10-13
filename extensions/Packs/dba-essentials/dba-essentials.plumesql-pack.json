@@ -18,6 +18,11 @@
     "transaction-age",
     "integer-overflow-risk",
     "replication-status",
-    "non-default-settings"
+    "non-default-settings",
+    "installed-extensions",
+    "partition-tree",
+    "object-dependents",
+    "logical-replication",
+    "row-security"
   ]
 }

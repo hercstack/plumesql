@@ -2,7 +2,7 @@
   "format": 1,
   "id": "dba-essentials",
   "kind": "pack",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "plumesql": ">=0.22.0",
   "name": "DBA essentials",
   "description": "The first extensions a database administrator reaches for: activity, locks, slow queries and plans, sizes, bloat, vacuum, indexes, settings",

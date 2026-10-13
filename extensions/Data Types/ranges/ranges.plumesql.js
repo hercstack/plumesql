@@ -69,10 +69,15 @@ function inspectRange(value, ctx) {
 //   - `column` puts "Show Ranges on a Timeline" in the menu of every range
 //     or multirange column while the view applies; choosing it opens this
 //     view with inputs.column set to that column;
-//   - ctx.rows(offset, limit, { columns }) pages that ONE column;
-//   - each row is one lane while the lanes fit the pane (a bar's tooltip
-//     names its row and value, a click selects the row in the grid); past that, ranges that do not overlap
-//     share a lane, as a booking calendar draws them.
+//   - ctx.rows(offset, limit, { columns }) pages that column and the lane
+//     column beside it;
+//   - the rows that share a value of the lane column (`lanes`, by default
+//     the first other column: a room, a product, a person) share a lane,
+//     named on the left, as a booking calendar draws them; two of them that
+//     overlap take a second line under the name, so a double booking shows.
+//     A bar's tooltip names its lane, row and value, a click selects the row
+//     in the grid. When the lanes do not fit the pane, ranges that do not
+//     overlap share a lane whatever their name, and the names go.
 
 // The caps that keep a monster result drawable, said honestly in the line.
 const MAX_RANGES = 20_000
@@ -81,8 +86,8 @@ const PAGE = 2_000
 const MIN_LANE = 6
 
 /**
- * @typedef {{ lo: number, hi: number, row: number, text: string }} Bar
- * @typedef {{ bars: Bar[], rows: number, nulls: number, empty: number, bad: number, capped: boolean, total: number, done: boolean, kind: import('./lib/range.js').Kind, column: string, type: string }} Read
+ * @typedef {{ lo: number, hi: number, row: number, text: string, group: number }} Bar
+ * @typedef {{ bars: Bar[], rows: number, nulls: number, empty: number, bad: number, capped: boolean, total: number, done: boolean, kind: import('./lib/range.js').Kind, column: string, type: string, groups: string[] }} Read
  */
 
 /** @type {{ __rangeTimeline?: { seq: number, read?: Read, hits?: { x0: number, x1: number, y0: number, y1: number, row: number, text: string }[] } }} */
@@ -99,6 +104,31 @@ function pickColumn(columns, picked) {
   const byName = picked ? columns.find((c) => c.name === picked) : undefined
   if (byName && rangeKind(byName.type)) return byName
   return columns.find((c) => rangeKind(c.type)) ?? byName
+}
+
+/**
+ * The column whose values name the lanes: the picked one, else the first
+ * column that is not the drawn one; none when the result has no other.
+ * @param {{ name: string, type: string }[]} columns
+ * @param {string | undefined} picked
+ * @param {string} drawn
+ */
+function laneColumn(columns, picked, drawn) {
+  const byName = picked ? columns.find((c) => c.name === picked && c.name !== drawn) : undefined
+  return byName ?? columns.find((c) => c.name !== drawn)
+}
+
+/**
+ * A text cut to a width with an ellipsis, measured in the canvas's font.
+ * @param {CanvasRenderingContext2D} g
+ * @param {string} text
+ * @param {number} width
+ */
+function fit(g, text, width) {
+  if (g.measureText(text).width <= width) return text
+  let t = text
+  while (t.length > 1 && g.measureText(t + '…').width > width) t = t.slice(0, -1)
+  return t + '…'
 }
 
 /** @param {number} n */
@@ -155,7 +185,7 @@ function layout(root, ctx) {
     const y = e.clientY - rect.top
     const hit = (state.hits ?? []).find((h) => x >= h.x0 - 2 && x <= h.x1 + 2 && y >= h.y0 && y <= h.y1)
     canvas.style.cursor = hit ? 'pointer' : 'default'
-    canvas.title = hit ? `row ${hit.row + 1}: ${hit.text}` : ''
+    canvas.title = hit ? hit.text : ''
   })
   return { line, canvas, empty }
 }
@@ -208,27 +238,52 @@ function paint(canvas, r, ctx) {
     min -= d
     max += d
   }
-  const padL = 12
-  const padR = 12
   const axisH = 22
-  const x0 = padL + 16
-  const x1 = w - padR - 16
-  const X = (/** @type {number} */ v) => (v === -Infinity ? padL : v === Infinity ? w - padR : x0 + ((v - min) / (max - min)) * (x1 - x0))
-
-  // Lanes: a row each while they fit, else packed.
+  // Lanes: one per lane name, the overlaps inside one name on lines of
+  // their own; one per row when the result has no other column; packed
+  // when they do not fit.
   const avail = h - axisH - 8
-  let lanes = r.rows
   /** @type {number[]} */
   let laneOf = r.bars.map((b) => b.row)
+  let lanes = r.rows
+  /** @type {{ lane: number, n: number, text: string }[] | null} */
+  let names = null
+  if (r.groups.length) {
+    /** @type {number[][]} */
+    const byGroup = r.groups.map(() => [])
+    r.bars.forEach((b, i) => byGroup[b.group].push(i))
+    /** @type {{ lane: number, n: number, text: string }[]} */
+    const list = []
+    let next = 0
+    byGroup.forEach((idx, gi) => {
+      if (!idx.length) return
+      const pk = packLanes(idx.map((i) => r.bars[i]))
+      idx.forEach((bi, k) => (laneOf[bi] = next + pk.lane[k]))
+      list.push({ lane: next, n: pk.lanes, text: r.groups[gi] })
+      next += pk.lanes
+    })
+    names = list
+    lanes = next
+  }
   let packed = false
   if (lanes * MIN_LANE > avail) {
     const pk = packLanes(r.bars)
     laneOf = pk.lane
     lanes = pk.lanes
     packed = true
+    names = null
   }
   const laneH = Math.max(0.5, Math.min(22, avail / Math.max(1, lanes)))
   const barH = Math.max(0.5, laneH > 6 ? laneH - 3 : laneH * 0.8)
+
+  // The names' column on the left, as wide as the longest name (up to 160).
+  g.font = '11px system-ui, sans-serif'
+  const gutter = names && names.length ? Math.min(160, Math.ceil(Math.max(...names.map((n) => g.measureText(n.text).width))) + 14) : 0
+  const padL = 12 + gutter
+  const padR = 12
+  const x0 = padL + 16
+  const x1 = w - padR - 16
+  const X = (/** @type {number} */ v) => (v === -Infinity ? padL : v === Infinity ? w - padR : x0 + ((v - min) / (max - min)) * (x1 - x0))
 
   // The axis: ticks and their labels, a faint rule down the lanes.
   // A timestamptz axis reads in local time: its day ticks fall on local
@@ -250,7 +305,34 @@ function paint(canvas, r, ctx) {
     // A label near an edge stays whole inside the pane.
     const label = tickLabel(t, r.kind, step)
     const half = g.measureText(label).width / 2
-    g.fillText(label, Math.min(w - 4 - half, Math.max(4 + half, x)), axisH / 2 - 1)
+    g.fillText(label, Math.min(w - 4 - half, Math.max(padL - 8 + half, x)), axisH / 2 - 1)
+  }
+
+  // The lane names, right aligned against the drawing, each in the middle
+  // of its lines, with a faint rule between two names; a name that would
+  // crowd the one above it is left out (the tooltip still says it).
+  /** @type {string[]} */
+  const laneName = []
+  if (names) {
+    g.textAlign = 'right'
+    let lastY = -Infinity
+    for (const n of names) {
+      for (let k = 0; k < n.n; k++) laneName[n.lane + k] = n.text
+      const top = axisH + 4 + n.lane * laneH
+      if (n.lane > 0 && laneH >= 6) {
+        g.strokeStyle = border
+        g.beginPath()
+        g.moveTo(12, Math.round(top) + 0.5)
+        g.lineTo(w - padR, Math.round(top) + 0.5)
+        g.stroke()
+      }
+      const y = top + (n.n * laneH) / 2
+      if (y - lastY < 12) continue
+      g.fillStyle = muted
+      g.fillText(fit(g, n.text, gutter - 14), padL - 8, y)
+      lastY = y
+    }
+    g.textAlign = 'center'
   }
 
   const fade = (/** @type {number} */ xa, /** @type {number} */ xb, /** @type {boolean} */ left) => {
@@ -264,8 +346,11 @@ function paint(canvas, r, ctx) {
   for (let i = 0; i < r.bars.length; i++) {
     const b = r.bars[i]
     const y = axisH + 4 + laneOf[i] * laneH + (laneH - barH) / 2
-    const a = X(b.lo)
-    const z = Math.max(a + 1.5, X(b.hi))
+    // A pixel off each end of a bar wide enough to spare it: two stays that
+    // meet on one lane (one ends the day the next begins) read as two.
+    const inset = X(b.hi) - X(b.lo) > 6 ? 1 : 0
+    const a = X(b.lo) + (b.lo === -Infinity ? 0 : inset)
+    const z = Math.max(a + 1.5, X(b.hi) - (b.hi === Infinity ? 0 : inset))
     if (b.lo === -Infinity || b.hi === Infinity) {
       // The endless side fades out over its last 40 pixels.
       g.fillStyle = accent
@@ -284,7 +369,7 @@ function paint(canvas, r, ctx) {
       g.fillStyle = accent
       g.fillRect(a, y, z - a, barH)
     }
-    if (!packed) state.hits.push({ x0: a, x1: z, y0: y, y1: y + barH, row: b.row, text: b.text })
+    if (!packed) state.hits.push({ x0: a, x1: z, y0: y, y1: y + barH, row: b.row, text: (laneName[laneOf[i]] !== undefined ? laneName[laneOf[i]] + ' · ' : '') + `row ${b.row + 1}: ${b.text}` })
   }
   if (time) {
     const now = Date.now()
@@ -320,7 +405,10 @@ export default {
       tab: 'Range Timeline',
       // Only a result with a range or multirange column grows the tab.
       when: (columns) => columns.some((c) => /^(int4|int8|num|date|tstz|ts)(multi)?range$/.test(c.type)),
-      inputs: [{ key: 'column', kind: 'column', label: 'Range column' }],
+      inputs: [
+        { key: 'column', kind: 'column', label: 'Range column' },
+        { key: 'lanes', kind: 'column', label: 'Lanes by', default: '', description: 'The rows with the same value share a lane, named on the left (a room, a product, a person); blank takes the first other column' }
+      ],
       ask: 'never',
       column: { input: 'column', label: 'Show Ranges on a Timeline', match: { type: RANGE_TYPE } },
       render: async (root, data, ctx) => {
@@ -334,8 +422,11 @@ export default {
           ui.empty.textContent = 'The result has no range column to draw.'
           return
         }
+        const laneCol = laneColumn(data.columns, ctx.inputs.lanes, col.name)
+        /** @type {Map<string, number>} */
+        const groupOf = new Map()
         /** @type {Read} */
-        const r = { bars: [], rows: 0, nulls: 0, empty: 0, bad: 0, capped: false, total: ctx.rowCount, done: false, kind: t.kind, column: col.name, type: col.type }
+        const r = { bars: [], rows: 0, nulls: 0, empty: 0, bad: 0, capped: false, total: ctx.rowCount, done: false, kind: t.kind, column: col.name, type: col.type, groups: [] }
         state.read = r
         const show = () => {
           const { lanes, packed } = paint(ui.canvas, r, ctx)
@@ -345,7 +436,7 @@ export default {
         }
         show()
         for (let at = 0; ; ) {
-          const page = await ctx.rows(at, PAGE, { columns: [col.name] })
+          const page = await ctx.rows(at, PAGE, { columns: laneCol ? [col.name, laneCol.name] : [col.name] })
           if (seq !== state.seq) return
           if (page.length === 0) break
           for (const row of page) {
@@ -362,7 +453,17 @@ export default {
               continue
             }
             if (segs.length === 0) r.empty++
-            for (const s of segs) r.bars.push({ lo: s.lo, hi: s.hi, row: index, text: String(v) })
+            let group = 0
+            if (laneCol) {
+              const name = row[1] === null || row[1] === undefined ? 'NULL' : String(row[1])
+              const known = groupOf.get(name)
+              if (known === undefined) {
+                group = r.groups.length
+                groupOf.set(name, group)
+                r.groups.push(name)
+              } else group = known
+            }
+            for (const s of segs) r.bars.push({ lo: s.lo, hi: s.hi, row: index, text: String(v), group })
             if (r.bars.length >= MAX_RANGES) {
               r.capped = true
               break

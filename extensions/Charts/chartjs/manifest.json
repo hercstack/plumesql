@@ -2,7 +2,7 @@
   "format": 1,
   "id": "chartjs",
   "kind": "grid",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "plumesql": ">=0.21.0",
   "name": "Chartjs",
   "description": "Bar / line / pie / doughnut / radar charts of the rows (Chart.js)",

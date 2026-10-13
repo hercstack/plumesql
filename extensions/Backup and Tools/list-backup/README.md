@@ -1,31 +1,35 @@
 # List backup
 
-![List backup: What a backup holds, straight from its table of contents](media/list-backup.webp)
+What a backup file holds, read from its table of contents, without restoring anything.
 
-What a backup holds, straight from its table of contents: `pg_restore
---list` over a custom-format archive, in a terminal. The look before a
-restore, and the way to tell two archives apart.
+![The terminal shows pg_restore's listing of demo.dump: created 2026-10-13 from database plumesql_demo, 11 entries, custom format, dumped from PostgreSQL 17.10; then the entries: the schema postgres_air, the tables aircraft and airport, their data and their two primary keys](media/list-backup-toc.webp)
+
+`demo.dump` read in a second: it was taken from the `plumesql_demo` database of a PostgreSQL 17.10 server, and holds one schema, two tables with their rows (`TABLE DATA`) and their two primary keys.
+
+## When to use it
+
+- **Before a restore**: check it is the right file, from the right database, taken when you think it was.
+- **Tell two backups apart** that have similar names.
+- **Plan a partial restore**: the listing is exactly what `pg_restore --use-list` takes, so you can keep only the lines you want.
 
 ## What it does
 
-Asks which archive to read (the workspace's files, newest first) and
-runs `pg_restore --list` on it. Only the archive is read: nothing touches
-a database, which is why this one asks no question and needs no
-connection picked at all.
+1. Asks which backup to read: the workspace's files, newest first.
+2. Runs `pg_restore --list` on it, in a terminal of its own.
 
-## Inputs
+Only the file is read. No database is touched, so it asks nothing first and needs no connection.
 
-| Input | Default | Meaning |
+## Settings
+
+| Setting | Default | What it does |
 |---|---|---|
-| dump | asked | The backup to read, picked from the workspace. |
+| dump | asked | The backup file to read, picked from the workspace. |
+
+## Good to know
+
+- Each entry line reads: its number in the archive, two numbers from the server's catalog, then the object's kind (`TABLE`, `TABLE DATA`, `INDEX`, `CONSTRAINT` ...), its schema, its name and its owner. Lines starting with `;` are comments.
+- It reads the files **Backup** writes, and any custom, directory or tar format archive from `pg_dump`. A plain SQL dump has no table of contents: open it as a file instead.
 
 ## Requirements
 
-`pg_restore` on this machine: PlumeSQL finds every PostgreSQL client installation (System, Client tools, which also installs a missing one) and runs the one that suits the server, so nothing has to be on the PATH. An archive pg_dump wrote in custom
-(or directory, or tar) format; a plain SQL dump has no table of contents.
-
-## Notes
-
-A command extension: it runs a program on your machine. The listing is
-what `pg_restore --use-list` takes, so the terminal's output is also the
-start of a selective restore.
+A PostgreSQL client installation on this machine with `pg_restore` (System, Client tools).

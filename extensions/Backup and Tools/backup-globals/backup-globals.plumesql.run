@@ -3,5 +3,7 @@
 # @env PGPASSWORD={password}
 # @var file=globals-{timestamp}.sql
 # @open-on-success {file}
-pg_dumpall --host={host} --port={port} --username={user} --dbname={db} --no-password \
+# pg_dumpall's --dbname takes a connection string, not a name: the database
+# it connects through goes in --database.
+pg_dumpall --host={host} --port={port} --username={user} --database={db} --no-password \
            --globals-only --file={file}

@@ -2,7 +2,7 @@
   "format": 1,
   "id": "profile",
   "kind": "grid",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "plumesql": ">=0.21.0",
   "name": "Profile",
   "description": "Every column's nulls, distinct count, range, mean and distribution, over the whole result, in the grid",

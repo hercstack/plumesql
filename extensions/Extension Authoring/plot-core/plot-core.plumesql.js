@@ -108,10 +108,19 @@ export const extent = (arr, key) => { let lo = Infinity, hi = -Infinity; for (co
 // (parsed to a Date), a number column numeric, anything else ordinal (a
 // category); no column at all means the row order.
 export const xKind = (col) => (!col ? 'index' : /timestamp|date/i.test(col.type) ? 'temporal' : /int|numeric|decimal|real|double|float|serial/i.test(col.type) ? 'numeric' : 'ordinal')
-// The server's text for a timestamp: a naive one reads as local time, a
-// timestamptz keeps its zone (the hours-only offset PostgreSQL prints, +02, is
-// padded to +02:00 so Date accepts it).
-export const parseTime = (v) => { if (v == null || v === '') return null; const d = new Date(String(v).replace(' ', 'T').replace(/(\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?)([+-]\d{2})$/, '$1$2:00')); return isNaN(d.getTime()) ? null : d }
+// The server's text for a date or a timestamp, read as the wall clock it
+// shows: Plot draws a time axis in UTC, so a naive timestamp, a date and a
+// timestamptz (its offset dropped: the server already wrote it in the
+// session's zone) all parse as UTC, and the chart reads exactly as the grid
+// does, never shifted by this machine's time zone. Anything else (infinity, a
+// BC date) is no time on the axis.
+export const parseTime = (v) => {
+  if (v == null || v === '') return null
+  const m = /^(\d{4}-\d{2}-\d{2})(?:[ T](\d{2}:\d{2})(:\d{2}(?:\.\d{1,3})?)?\d*)?(?:\s*(?:[+-]\d{2}(?::?\d{2})?|Z))?$/.exec(String(v).trim())
+  if (!m) return null
+  const d = new Date(m[1] + 'T' + (m[2] || '00:00') + (m[3] || ':00') + 'Z')
+  return isNaN(d.getTime()) ? null : d
+}
 // Column xi of row r (or the row order i) as the axis value for its kind; null
 // when it does not parse.
 export const xValue = (kind, r, i, xi) => {
@@ -121,8 +130,17 @@ export const xValue = (kind, r, i, xi) => {
   if (kind === 'numeric') { const n = Number(v); return v == null || v === '' || !Number.isFinite(n) ? null : n }
   return v == null ? '' : String(v)
 }
+// A parsed time as the SQL way writes it: 2026-10-12 14:30 (a date alone
+// when it is midnight, the seconds when there are any), from its UTC parts,
+// which are the server's wall clock (parseTime).
+export const timeText = (d) => {
+  const p = (n) => String(n).padStart(2, '0')
+  const day = d.getUTCFullYear() + '-' + p(d.getUTCMonth() + 1) + '-' + p(d.getUTCDate())
+  const h = d.getUTCHours(), mi = d.getUTCMinutes(), se = d.getUTCSeconds()
+  return h === 0 && mi === 0 && se === 0 ? day : day + ' ' + p(h) + ':' + p(mi) + (se ? ':' + p(se) : '')
+}
 // How the hover read-out prints an x of that kind.
-export const fmtX = (kind) => (kind === 'temporal' ? (d) => (d instanceof Date ? d.toLocaleString() : String(d)) : kind === 'ordinal' ? (d) => String(d) : fmtNum)
+export const fmtX = (kind) => (kind === 'temporal' ? (d) => (d instanceof Date ? timeText(d) : String(d)) : kind === 'ordinal' ? (d) => String(d) : fmtNum)
 // Points in x order (the query's order is kept when it already is).
 export const sortByX = (pts) => { for (let i = 1; i < pts.length; i++) if (pts[i].x < pts[i - 1].x) return pts.slice().sort((a, b) => (a.x < b.x ? -1 : a.x > b.x ? 1 : 0)); return pts }
 // The first index whose x is not below v, and the first whose x is above v, in

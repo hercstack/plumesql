@@ -1,53 +1,46 @@
 # Duplicate indexes
 
-![Duplicate indexes: Indexes another index on the same table already covers, with sizes and the statement to drop each](media/duplicate-indexes.webp)
+Indexes you can drop because another index on the same table already does their job, the biggest first, with the statement that drops each.
 
-Indexes that another index on the same table already covers, the
-largest first, each beside the index that covers it and with the
-statement that would drop it. A redundant index costs disk, memory and
-time on every write to its table and serves no query the other one
-could not.
+![Duplicate indexes: big_g_idx 32 MB left prefix of big_g_h_idx; rental_rental_date_idx 368 kB left prefix of the unique rental index; payment_customer_id_idx 128 kB duplicate of idx_fk_customer_id; customer_email_idx 88 kB covered by customer_email_names_idx](media/duplicate-indexes-found.webp)
 
-## What it shows
+Four indexes that can go. `big_g_idx` (32 MB) indexes `big (g)`, but `big_g_h_idx` on `(g, h)` starts with the same column and serves every search it serves. `rental_rental_date_idx` is the same story against the unique index on `(rental_date, inventory_id, customer_id)`. `payment_customer_id_idx` is an exact copy of `idx_fk_customer_id`. `customer_email_idx` is covered by `customer_email_names_idx`, the same key with two more columns carried along. Further right, each row has both definitions and the statement that drops it.
 
-One row per redundant index:
+## When to use it
+
+- **Writes are slower than they should be**: every index is updated on every insert and on most updates, the useless ones too.
+- **The disk fills up**: indexes often take more room than the tables, and duplicates are free space.
+- **After years of "let me add an index"** by several people, or after an ORM created its own next to yours.
+
+## How to read it
+
+One row per index that can go.
 
 | Column | Meaning |
 |---|---|
 | schema, table | The table both indexes belong to. |
-| redundant index, size | The index that can go, and what it takes on disk. |
-| because it is | `duplicate of`: the same key columns and INCLUDE columns; `left prefix of`: its keys are the first keys of a longer btree index; `covered by`: the same keys, where the other adds INCLUDE columns. |
+| redundant index, size | The index that can go, and the room it takes. |
+| because it is | `duplicate of`: the same columns in the same way; `left prefix of`: its columns are the first columns of a longer index; `covered by`: the same columns, where the other carries extra columns along (INCLUDE). |
 | covering index | The index that stays. |
 | redundant definition, covering definition | Both CREATE INDEX statements, to compare. |
-| drop statement | `DROP INDEX CONCURRENTLY` for a plain index, `ALTER TABLE ... DROP CONSTRAINT` for one that backs a constraint. Text only: the query never runs it. |
+| drop statement | `DROP INDEX CONCURRENTLY` for a plain index, `ALTER TABLE ... DROP CONSTRAINT` for one behind a constraint. Text only: nothing is run. |
 
-## What counts as the same
+What to do: copy a drop statement into a script tab and run it there, one index at a time, then run this again: when three indexes overlap, the index that "stays" in one row can be listed against a third. Before dropping a left prefix on a busy table, look at Unused indexes: the shorter index is smaller and can be the faster one for its searches.
 
-Two indexes are compared only on the same table, with the same access
-method and the same predicate (a partial index is compared only with
-indexes of the same WHERE clause). Their key columns are compared in
-order, each with its expression, operator class, collation and sort
-options, so `(a)` and `(a DESC)`, or `(c)` and `(c COLLATE "C")`, are
-not duplicates. Invalid indexes (a failed CONCURRENTLY build) are left
-out.
+## Try it
 
-Of two exact duplicates, the one that stays is the one backing a
-constraint, then a unique one, then the older one. A left prefix is
-reported only for btree, and never when the shorter index is unique,
-backs a constraint or carries INCLUDE columns of its own: those do
-something the longer index cannot.
+Run it from its row in the Extensions side tab (**Run**). To make it find something, on a TEST database (dvdrental here) add an index the sample already covers, run Duplicate indexes, then drop it again:
+
+```sql
+create index rental_rental_date_idx on rental (rental_date);
+-- Duplicate indexes: a left prefix of idx_unq_rental_rental_date_inventory_id_customer_id
+drop index rental_rental_date_idx;
+```
+
+## Good to know
+
+Two indexes are compared only on the same table, with the same index method and the same WHERE clause (a partial index is compared only with indexes of the same predicate). Their columns are compared in order, each with its expression, operator class, collation and sort direction, so `(a)` and `(a DESC)`, or `(c)` and `(c COLLATE "C")`, are not duplicates. Invalid indexes (a failed CONCURRENTLY build) are left out. Of two exact duplicates, the one that stays is the one backing a constraint, then a unique one, then the older one. A left prefix is reported only for btree, and never when the shorter index is unique, backs a constraint or carries INCLUDE columns of its own: those do something the longer one cannot. `DROP INDEX CONCURRENTLY` cannot run inside a transaction block. Reads only. Opens on its result (`@face result`).
 
 ## Requirements
 
-PostgreSQL 13 or newer. User schemas only; the system catalogs are left
-out.
-
-## Notes
-
-Reads only. Drop one row at a time and read the list again: when three
-indexes overlap, the covering index of one row can itself be listed as
-redundant against a third. A left prefix is redundant for searches, but
-the shorter index is smaller and can be the faster one to scan; check
-the index statistics (Unused indexes, Table indexes) before dropping a
-busy one. `DROP INDEX CONCURRENTLY` cannot run inside a transaction
-block.
+PostgreSQL 13 or newer. User schemas only; the system catalogs are left out.

@@ -4,6 +4,12 @@
 /** @type {any} */
 let chart = null
 let csv = ''
+// A CSV field: quoted when it holds a comma, a quote or a line break, so a
+// label like "Smith, John" stays one field.
+const csvCell = (/** @type {unknown} */ v) => {
+  const s = v == null ? '' : String(v)
+  return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s
+}
 const palettes = {
   Vivid: ['#7aa2f7', '#f7768e', '#9ece6a', '#e0af68', '#bb9af7', '#7dcfff', '#ff9e64', '#41a6b5'],
   Cool: ['#4c9be8', '#5ec8c8', '#6ee7b7', '#818cf8', '#38bdf8', '#2dd4bf', '#60a5fa', '#34d399'],
@@ -60,7 +66,7 @@ export default {
         const xOf = (r, i) => (xi < 0 ? i : temporal ? time(r[xi]) : numeric ? Number(r[xi]) : String(r[xi] == null ? '' : r[xi]))
         const axisType = temporal ? 'time' : numeric || xi < 0 ? 'value' : 'category'
         const xs = rows.map(xOf)
-        csv = (xi >= 0 ? cols[xi].name : 'row') + ',' + names.join(',') + '\n' + rows.map((r, i) => String(xs[i]) + ',' + idxs.map((vi) => { const y = num(r[vi]); return Number.isFinite(y) ? y : '' }).join(',')).join('\n')
+        csv = [xi >= 0 ? cols[xi].name : 'row', ...names].map(csvCell).join(',') + '\n' + rows.map((r, i) => [xs[i], ...idxs.map((vi) => { const y = num(r[vi]); return Number.isFinite(y) ? y : '' })].map(csvCell).join(',')).join('\n')
         if (chart) { chart.dispose(); chart = null }
         root.innerHTML = ''
         const el = document.createElement('div')

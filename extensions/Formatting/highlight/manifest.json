@@ -2,7 +2,7 @@
   "format": 1,
   "id": "highlight",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.22.0",
   "name": "Highlight",
   "description": "Colours the cells of the columns you pick that meet a condition: above, below, between, equal to, containing, empty",

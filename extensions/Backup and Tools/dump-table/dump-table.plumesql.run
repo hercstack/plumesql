@@ -10,4 +10,4 @@
 # @open-on-success {dump}
 # Each choice is one pg_dump flag, so the picks reach the command as single
 # arguments; --format=plain is the default format, standing in for "no flag".
-pg_dump --host={host} --port={port} --username={user} --dbname={db} --table={object} {content} {rows} --file={dump}
+pg_dump --host={host} --port={port} --username={user} --dbname={db} --no-password --table={object} {content} {rows} --file={dump}

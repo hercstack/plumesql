@@ -2,7 +2,7 @@
   "format": 1,
   "id": "percent",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Percent",
   "description": "A numeric column named *_pct / percent / ratio / rate / share reads as a percentage with a small bar",

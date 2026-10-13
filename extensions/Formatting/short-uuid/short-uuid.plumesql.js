@@ -8,7 +8,9 @@ export default [
     fn: (value) => {
       if (value == null) return value
       const s = String(value)
-      return { value: s.slice(0, 8) + '\u2026', title: s, style: 'font-family: ui-monospace, SFMono-Regular, Menlo, monospace' }
+      // The short form is the cell's face (html) and the whole id stays its
+      // value, so a copy of the cell copies an id that still finds the row.
+      return { value: s, html: s.slice(0, 8) + '…', title: s, style: 'font-family: ui-monospace, SFMono-Regular, Menlo, monospace' }
     }
   }
 ]

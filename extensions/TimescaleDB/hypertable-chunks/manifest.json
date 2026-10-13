@@ -2,7 +2,7 @@
   "format": 1,
   "id": "hypertable-chunks",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Hypertable chunks",
   "description": "Chunks of the hypertable this was opened on: their time range, size and compression state, from TimescaleDB",

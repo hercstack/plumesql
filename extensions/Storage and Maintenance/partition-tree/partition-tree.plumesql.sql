@@ -2,7 +2,12 @@
 -- @face result
 -- @color green
 select r.oid::pg_catalog.regclass::text as partitioned_table,
-       pg_catalog.repeat('    ', t.level) || t.relid::pg_catalog.regclass::text as partition,
+       -- Indented with non-breaking spaces: the grid collapses plain ones.
+       -- Only where the database is UTF8 (a byte sequence another encoding
+       -- may not hold), plain spaces elsewhere.
+       pg_catalog.repeat(case when pg_catalog.getdatabaseencoding() = 'UTF8'
+                              then pg_catalog.convert_from(pg_catalog.decode('c2a0', 'hex'), 'UTF8')
+                              else ' ' end, 4 * t.level) || t.relid::pg_catalog.regclass::text as partition,
        t.level,
        case when t.level = 0 then 'PARTITION BY ' || pg_catalog.pg_get_partkeydef(t.relid)
             else pg_catalog.pg_get_expr(c.relpartbound, c.oid) end as bounds,

@@ -2,7 +2,7 @@
   "format": 1,
   "id": "plot-horizon",
   "kind": "grid",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "plumesql": ">=0.21.0",
   "name": "Plot horizon",
   "description": "Many series in compact folded bands, one row each, for a lot of rows (Observable Plot)",

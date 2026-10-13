@@ -137,13 +137,16 @@ export default {
         // The axis labels: the categories along the floor's edges, the
         // value's ticks and name riding the post.
         const every = (n) => Math.max(1, Math.ceil(n / 30))
-        xNames.forEach((name, i) => { if (i % every(nx) === 0) s.addLabel(name, i - cx, 0, gz1 + 0.45) })
-        if (zi >= 0) zNames.forEach((name, j) => { if (j % every(nz) === 0) s.addLabel(name, gx1 + 0.45, 0, j - cz) })
+        // Each axis's names in a group of their own, its title first: where
+        // the view foreshortens an axis, the names that would overlap the
+        // title or one another step aside.
+        s.addLabel(cols[xi].name, 0, 0, gz1 + 2.2, { color: th.fg, group: 'x' })
+        if (zi >= 0) s.addLabel(cols[zi].name, gx1 + 2.2, 0, 0, { color: th.fg, group: 'z' })
+        xNames.forEach((name, i) => { if (i % every(nx) === 0) s.addLabel(name, i - cx, 0, gz1 + 0.45, { group: 'x' }) })
+        if (zi >= 0) zNames.forEach((name, j) => { if (j % every(nz) === 0) s.addLabel(name, gx1 + 0.45, 0, j - cz, { group: 'z' }) })
         /** @type {{ l: any, y: number, out: number }[]} */
         const onPost = []
         for (const t of tickVals) onPost.push({ l: s.addLabel(fmtTick(t), 0, 0, 0, { align: 'right' }), y: t * k, out: 0.4 })
-        s.addLabel(cols[xi].name, 0, 0, gz1 + 1.6, { color: th.fg })
-        if (zi >= 0) s.addLabel(cols[zi].name, gx1 + 1.6, 0, 0, { color: th.fg })
         onPost.push({ l: s.addLabel(vName, 0, 0, 0, { color: th.fg }), y: hi * k + H * 0.08, out: 0 })
         const v3 = new THREE.Vector3()
         const outward = new THREE.Vector3()

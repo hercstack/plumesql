@@ -1,56 +1,40 @@
 # Export to CSV
 
-![Export to CSV: Export a table or view to a CSV file with psql, whatever its size](media/export-csv.webp)
+A whole table or view saved as a CSV file that a spreadsheet opens, however many rows it has.
 
-Export a table or a view to a CSV file, from its row in the object tree.
-psql streams the rows straight into the file, so the size does not
-matter: a table of fifty million rows exports the same way as one of
-fifty, without passing through the grid or the copy limit.
+![aircraft-2026-10-13.csv open in PlumeSQL: a header line model, range, class, velocity, code, then twelve aircraft, one per line, from Airbus 340 to Cessna 208 Caravan](media/export-csv-file.webp)
+
+The `aircraft` table exported: a first line with the column names, then one line per row, commas between the values. Excel, Numbers, LibreOffice and any data tool open it as it is.
+
+## When to use it
+
+- **Hand data to someone** who works in a spreadsheet.
+- **Load it elsewhere**: another database, a notebook, a BI tool.
+- **A table too big for the grid**: the rows go straight from the server into the file through psql, never through PlumeSQL's grid, so fifty million rows export the same way as fifty.
 
 ## What it does
 
-An `@for` extension on tables, views, materialized views and foreign
-tables: it appears in the Actions submenu of their rows in the object
-tree and on an open table's header, and runs psql's `\copy` on the tab's
-connection, in a terminal of its own:
+1. From the row menu of a table, view, materialized view or foreign table in the Objects tree, or the dots menu of an open one: **Run Export to CSV**. While the table's tab is active, the title bar shows it as a pin too.
+2. Asks where to write (by default `<table>-<date>.csv` in the workspace), then asks first.
+3. Runs psql's `\copy (select * from <the table>) to stdout with (format csv, header)`, its output sent to the file.
+4. Says **Export finished**, naming the file, or **Export failed** with the reason in the terminal.
 
-```
-\copy (select * from <the table>) to stdout with (format csv, header)
-```
+The CSV is PostgreSQL's own: an empty field for NULL, and a value that holds a comma, a quote or a line break is quoted.
 
-with the output sent to the file you named. The file has a header line
-with the column names, then one line per row, in PostgreSQL's own CSV:
-NULL is an empty field, and a value with a comma, a quote or a line
-break is quoted.
+## Settings
 
-## Inputs
-
-| Input | Default | Meaning |
+| Setting | Default | What it does |
 |---|---|---|
-| Write to | `{name}-{date}.csv` | The file to write, in the workspace unless you give a full path. |
+| Write to | `{name}-{date}.csv` | The file to write: in the workspace, or anywhere when you give a full path. A file of the same name is overwritten. |
 
-The password never appears in the command line: it reaches psql through
-the environment (`@env PGPASSWORD={password}`).
+## Good to know
+
+- **Where is the file?** The alert names it. The Explorer lists CSV files only while it shows other files (its filter window, or the pane menu's File Kinds); the file is there either way.
+- `\copy` runs on your machine, so it needs no right to write files on the server, unlike `COPY ... TO`.
+- The path is passed to psql as an argument of its own, never inside the `\copy` text, so a space or a quote in it is simply part of the name.
+- **The password stays secret.** It reaches psql through the environment (`PGPASSWORD`), never the command line.
+- The result of a query rather than a whole table: **Query to CSV**, or Save As in a result's menu for rows already in the grid.
 
 ## Requirements
 
-`psql` on this machine, at a version not older than the server's:
-PlumeSQL finds every PostgreSQL client installation (System, Client
-tools, which also installs a missing one) and runs the one that suits
-the server. A connection whose user may read the table or view.
-PostgreSQL 13 or newer.
-
-## Notes
-
-A command extension: it runs a program on your machine, not a query in
-the app. It asks before it runs (`@confirm`), says when it is done, and
-overwrites a file of the same name. `\copy` runs on your machine, so it
-needs no right to write files on the server, unlike `COPY ... TO`.
-
-The path you type is passed to psql as an argument of its own, never
-inside the `\copy` text, so a space or a quote in it is just part of the
-name.
-
-To export a query's result instead of a whole table, save it from the
-result's menu (Save As), or copy it with Copy As. To send a query
-straight into a file without loading it into the grid, use Query to CSV.
+PostgreSQL 13 or newer, a connection whose user may read the table or view, and a PostgreSQL client installation (or Docker) on this machine.

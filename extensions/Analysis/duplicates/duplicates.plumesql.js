@@ -1,7 +1,7 @@
 // @ts-check
 // @description Finds rows repeated on the key columns you pick, or on every column: each repeated key with its count and row numbers, or the result marked
 // @color violet
-import { loadRows, topOf, colIndexes, tint } from '$ext/stats-core/stats-core.plumesql.js'
+import { loadRows, topOf, colIndexes, isNumericCol, tint } from '$ext/stats-core/stats-core.plumesql.js'
 
 // The grid lists 100,000 rows at most; the counts still read every row.
 const CAP = 100000
@@ -56,12 +56,14 @@ export default {
             const at = /** @type {number[]} */ (seen.get(keyOfRow[i]))
             if (at.length < 2) return r
             // The first row of a key is lighter than its repeats: dedupe keeps the first and drops the deeper ones.
+            // Strong enough to tell apart on a dark theme too.
             const nth = nthOfRow[i]
-            const style = 'background:' + tint('amber', nth === 1 ? 18 : 38)
+            const style = 'background:' + tint('amber', nth === 1 ? 28 : 62)
             let list = listed.get(at)
             if (list == null) { list = rowList(at); listed.set(at, list) }
             const title = (nth === 1 ? 'First of ' : 'Repeat ' + nth + ' of ') + at.length + ' rows with this key: rows ' + list
-            return r.map((v, ci) => (marked.has(ci) ? { value: v, style, title } : v))
+            // The alignment makes the shade fill the cell, on the side the column reads from.
+            return r.map((v, ci) => (marked.has(ci) ? { value: v, style, title, align: isNumericCol(cols[ci]) ? 'right' : 'left' } : v))
           })
           if (rows.length > CAP) ctx.log((rows.length - CAP).toLocaleString() + ' rows beyond the first ' + CAP.toLocaleString() + ' were counted but not listed.')
           return { columns: cols.map((c) => ({ name: c.name, type: c.type })), rows: out }

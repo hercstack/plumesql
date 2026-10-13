@@ -2,7 +2,7 @@
   "format": 1,
   "id": "dump-table",
   "kind": "command",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Dump table",
   "description": "Dump the table this was opened on to a file named after it: definition and rows, either alone, rows as COPY or as INSERT statements",

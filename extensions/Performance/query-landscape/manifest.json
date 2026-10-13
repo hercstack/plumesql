@@ -2,7 +2,7 @@
   "format": 1,
   "id": "query-landscape",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Query landscape",
   "description": "Every statement on this server in 3D: calls, mean time and cache hit, sized by total time, from pg_stat_statements",

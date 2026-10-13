@@ -2,7 +2,7 @@
   "format": 1,
   "id": "numbers",
   "kind": "grid",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "plumesql": ">=0.22.0",
   "name": "Numbers",
   "description": "Every number column reads your way: thousands separators, a fixed number of decimals, negatives in red or in parentheses",

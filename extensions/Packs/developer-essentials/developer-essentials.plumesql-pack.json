@@ -9,6 +9,8 @@
     "json",
     "nulls",
     "short-uuid",
-    "time-ago"
+    "time-ago",
+    "bytea",
+    "object-dependents"
   ]
 }

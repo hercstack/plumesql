@@ -2,7 +2,7 @@
   "format": 1,
   "id": "bars-3d",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "3D Bars",
   "description": "Bars in 3D: a category along the width, another along the depth, a number as the height; orbit, zoom and pan with the mouse (three.js)",

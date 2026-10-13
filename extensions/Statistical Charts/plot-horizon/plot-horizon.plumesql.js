@@ -36,7 +36,11 @@ export default {
         const ramp = ramps[inputs.scheme] || ramps.blues
         const [, ymax] = extent(long, 'y')
         const step = Number((Math.max(ymax, 1e-9) / bands).toPrecision(2))
-        const rowH = Math.max(28, Math.min(72, Math.floor((H - 40) / names.length)))
+        // The strips share the pane's height (up to 160 px each, so a few
+        // series never stretch into walls); a time axis needs room for its
+        // second tick line (the year under the month).
+        const marginTop = 20, marginBottom = kind === 'temporal' ? 38 : 26
+        const rowH = Math.max(28, Math.min(160, Math.floor((H - marginTop - marginBottom - 6) / names.length)))
         const labelW = Math.min(200, 20 + 7 * names.reduce((m, n) => Math.max(m, n.length), 0))
         const marks = []
         for (let b = 0; b < bands; b++) {
@@ -46,7 +50,7 @@ export default {
         marks.push(P.text(long, P.pointerX({ x: 'x', fy: 's', frameAnchor: 'top-right', dx: -4, dy: 3, text: (d) => fmtNum(d.y), fill: inkOf(dark), stroke: paperOf(dark), strokeWidth: 3, paintOrder: 'stroke', fontWeight: 700, fontSize: 11 })))
         marks.push(P.text(long, P.pointerX({ x: 'x', frameAnchor: 'top', dy: -12, text: (d) => fmtX(kind)(d.x), fill: inkOf(dark), stroke: paperOf(dark), strokeWidth: 3, paintOrder: 'stroke', fontWeight: 700, fontSize: 11 })))
         const fig = P.plot({
-          width: W, height: 30 + names.length * rowH, marginLeft: labelW, marginRight: 12, marginTop: 20, marginBottom: 24,
+          width: W, height: marginTop + marginBottom + names.length * rowH, marginLeft: labelW, marginRight: 12, marginTop, marginBottom,
           style: baseStyle(dark),
           x: { grid: true, label: null, tickFormat: kind === 'numeric' ? fmtTick : undefined },
           y: { domain: [0, step], axis: null },

@@ -2,7 +2,7 @@
   "format": 1,
   "id": "pgvector",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.22.0",
   "name": "pgvector",
   "description": "vector, halfvec and sparsevec values read as dimensions, range and norm with a sparkline: on hover, in the peek and the value tab",

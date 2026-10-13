@@ -2,7 +2,7 @@
   "format": 1,
   "id": "short-uuid",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Short uuid",
   "description": "A uuid column shows its first 8 characters, the whole id on hover",

@@ -86,7 +86,9 @@ export default {
             const most = top4[0][1]
             distribution = {
               value: top4.map(([v, n]) => short(v, 24) + ' ×' + n.toLocaleString()).join(', '),
-              html: top4.map(([v, n]) => '<span style="display:inline-flex;align-items:center;gap:4px;margin-right:8px"><span style="display:inline-block;width:' + Math.max(2, Math.round((n / most) * 28)) + 'px;height:7px;border-radius:3px;background:' + accent + '"></span>' + esc(short(v, 18)) + ' <span style="opacity:.7">×' + n.toLocaleString() + '</span></span>').join(''),
+              // Plain inline runs (not flex boxes): a cell too narrow for all
+              // four ends in one ellipsis, never a value pushed to the far edge.
+              html: top4.map(([v, n]) => '<span style="margin-right:10px"><span style="display:inline-block;vertical-align:middle;margin-right:4px;width:' + Math.max(2, Math.round((n / most) * 28)) + 'px;height:7px;border-radius:3px;background:' + accent + '"></span>' + esc(short(v, 18)) + ' <span style="opacity:.7">×' + n.toLocaleString() + '</span></span>').join(''),
               title: top4.map(([v, n]) => v + ' ×' + n.toLocaleString()).join(', ')
             }
           }

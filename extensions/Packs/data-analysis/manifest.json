@@ -2,7 +2,7 @@
   "format": 1,
   "id": "data-analysis",
   "kind": "pack",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "plumesql": ">=0.22.0",
   "name": "Data analysis",
   "description": "Profile, summarize, reshape and chart query results, and write the SQL that computes them: the analyst's everyday set",

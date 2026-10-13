@@ -1,9 +1,11 @@
 # Publish with gh
 
-Publish one of your extensions to the marketplace without leaving
-PlumeSQL: the fork, the copy, the branch, the push and the pull request,
-done in a terminal by the GitHub CLI, with every step named as it runs.
-For the moment after **Prepare to Publish** said your extension is ready.
+Send one of your own extensions to the PlumeSQL marketplace as a pull request, without leaving PlumeSQL: the GitHub CLI does the fork, the copy, the branch, the push and the pull request in a terminal, every step named as it runs.
+
+## When to use it
+
+- **Your extension is ready**: **Prepare to Publish** said so, and you want it in the marketplace for everyone.
+- **A new version**: bump the version in its manifest and run this again; the pull request follows.
 
 ## What it does
 
@@ -32,6 +34,18 @@ open, or that something stopped it and the terminal has why.
 
 None: the extension it publishes is the row it was opened on.
 
+## Good to know
+
+- The branch on your fork is force-pushed on every run, so publishing
+  a new version is running this again with the version bumped in the
+  manifest; the pull request follows the branch.
+- A pull request already open for the branch makes `gh pr create` stop
+  with its address; push it again from the branch to update it.
+- The reviewer opens the extension's Discussions thread and fills in the
+  manifest's `discussion` number before the merge; leave it at 0.
+- Recommended to whoever has extensions of their own (the manifest's
+  `recommend: ["my-extensions"]`), shown to nobody else.
+
 ## Requirements
 
 - The GitHub CLI, `gh` (https://cli.github.com), signed in (`gh auth
@@ -43,15 +57,3 @@ None: the extension it publishes is the row it was opened on.
   the run on a problem before anything is pushed.
 - No database connection: the command spends none of the connection's
   placeholders.
-
-## Notes
-
-- The branch on your fork is force-pushed on every run, so publishing
-  a new version is running this again with the version bumped in the
-  manifest; the pull request follows the branch.
-- A pull request already open for the branch makes `gh pr create` stop
-  with its address; push it again from the branch to update it.
-- The reviewer opens the extension's Discussions thread and fills in the
-  manifest's `discussion` number before the merge; leave it at 0.
-- Recommended to whoever has extensions of their own (the manifest's
-  `recommend: ["my-extensions"]`), shown to nobody else.

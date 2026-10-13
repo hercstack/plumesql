@@ -1,43 +1,41 @@
 # Foreign keys without an index
 
-![Foreign keys without an index: Foreign keys with no index on their referencing columns, largest table first, with the statement to add one](media/fk-without-index.webp)
+Foreign keys with no index on their own side, the biggest table first, with the statement that adds one.
 
-Foreign keys whose referencing columns no index leads with, the largest
-table first, with the statement that adds one. PostgreSQL indexes the
-referenced side of a foreign key (it must be unique) but never the
-referencing side, so a DELETE or a key UPDATE on the parent scans the
-whole child table for every row it touches, and a join from parent to
-child has nothing to use.
+![Foreign keys without an index in dvdrental: rental.customer_id references customer (2720 kB, 16044 rows), rental.staff_id, inventory.film_id, film_category.category_id, store.address_id and staff.address_id, each with a create index concurrently statement](media/fk-without-index-dvdrental.webp)
 
-## What it shows
+The dvdrental sample has six. The first matters most: `rental.customer_id` points at `customer`, but the only index on rental that has `customer_id` starts with `rental_date`, so it does not help. Every time a customer is deleted, or its id changes, PostgreSQL reads all 16,044 rentals to make sure none still points at it. The statement to fix it is in the last column.
 
-One row per uncovered foreign key:
+## When to use it
+
+- **Deleting a row in a parent table is slow**, or locks up the child table while it runs.
+- **Joins from a parent to its children** (an order to its lines, a customer to its rentals) read the whole child table.
+- **Reviewing a schema** before it goes to production: a missing index on a foreign key is the most common oversight.
+
+## How to read it
+
+One row per foreign key whose columns no index starts with.
 
 | Column | Meaning |
 |---|---|
-| schema, table | The referencing table. |
+| schema, table | The table that holds the foreign key (the child). |
 | foreign key | The constraint's name. |
-| columns | Its referencing columns, in the constraint's order. |
-| references | The referenced table. |
-| on delete | What a delete on the parent does here; `cascade` and `set null` make the missing index cost even more. |
-| table size, rows (est.) | The referencing table's total size and estimated rows: the scan each parent delete pays. |
-| create statement | The CREATE INDEX to add, `CONCURRENTLY` except on a partitioned table (which cannot build one that way). Text only: the query never runs it. |
+| columns | Its columns, in the constraint's order. |
+| references | The table it points at (the parent). |
+| on delete | What deleting a parent does here; `cascade` and `set null` make a missing index cost even more, since every child row must be found and changed. |
+| table size, rows (est.) | The child table's size and estimated rows: what each parent delete has to read. |
+| create statement | The CREATE INDEX that fixes it, `CONCURRENTLY` (no lock on writes) except on a partitioned table, which cannot build one that way. Text only: nothing is run. |
 
-## What counts as covered
+What to do: copy the create statement into a script tab and run it. Start at the top: a small child table, or a parent nobody deletes from, may not need the index (the store and staff rows above, with 2 rows each, do not).
 
-A foreign key is covered when a valid index on the referencing table,
-without a WHERE clause, has exactly the foreign key's columns as its
-leading key columns, in any order. An index that has them further
-along, or a partial index, does not count. On a partitioned table the
-foreign key is reported once, on the partitioned table itself.
+## Try it
+
+Run it from its row in the Extensions side tab (**Run**). On dvdrental it lists the six above; after `create index concurrently on public.rental (customer_id);` the first row is gone.
+
+## Good to know
+
+PostgreSQL indexes the parent side of a foreign key by force (it must be unique) but never the child side. A foreign key counts as covered when a valid index on the child table, without a WHERE clause, starts with exactly the foreign key's columns, in any order; an index that has them further along, or a partial index, does not count. On a partitioned table the foreign key is reported once, on the partitioned table itself. `CREATE INDEX CONCURRENTLY` cannot run inside a transaction block. Reads only. Opens on its result (`@face result`).
 
 ## Requirements
 
 PostgreSQL 13 or newer. User schemas only.
-
-## Notes
-
-Reads only. A small child table, or a parent that is never deleted from
-or updated, may not need the index; the size column says which ones
-matter. `CREATE INDEX CONCURRENTLY` cannot run inside a transaction
-block.

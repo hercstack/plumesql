@@ -2,7 +2,7 @@
   "format": 1,
   "id": "table-details",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Table details",
   "description": "Size, rows and maintenance state of the table this was opened on",

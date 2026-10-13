@@ -2,7 +2,7 @@
   "format": 1,
   "id": "plot-core",
   "kind": "grid",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "plumesql": ">=0.21.0",
   "name": "Plot core",
   "description": "Shared helpers the Observable Plot chart extensions import: paging, thinning, palettes, axes",

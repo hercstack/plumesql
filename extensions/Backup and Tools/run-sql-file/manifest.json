@@ -4,7 +4,7 @@
   "kind": "command",
   "version": "1.0.0",
   "plumesql": ">=0.21.0",
-  "name": "Run sql file",
+  "name": "Run SQL file",
   "description": "Run a SQL file with psql on this connection",
   "categories": [
     "Backup and Tools"

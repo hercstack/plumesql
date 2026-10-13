@@ -2,7 +2,7 @@
   "format": 1,
   "id": "correlation",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Correlation",
   "description": "Pearson or Spearman correlation between numeric columns, as a coloured matrix or a ranked list of pairs, in the grid",

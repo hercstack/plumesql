@@ -2,9 +2,9 @@
 
 Read PostgreSQL's ranges at a glance: bookings, validity periods, shifts and price bands as bars on a line instead of brackets in text, one value at a time or a whole column on a timeline.
 
-![Ranges: a Range Timeline of twelve hotel stays in November 2026, one bar per booking, with weekly ticks from 2026-11-05 to 2026-11-26. Stays in the same room never overlap; one bar is a single night, one runs the whole month](media/ranges-bookings.webp)
+![Ranges: a Range Timeline of twelve hotel stays in November 2026, one lane per room from 101 to 106, one bar per booking, with weekly ticks from 2026-11-05 to 2026-11-26. Room 105 is taken the whole month; rooms 101 and 103 have stays that follow each other end to start](media/ranges-bookings.webp)
 
-Twelve hotel stays in November, one bar per booking, in room order. Stays in the same room never overlap: some follow each other end to start (a guest leaves on the morning the next one arrives), others leave a few empty nights between them. The one-night stay is the short stub in the middle; the long bar is a guest who has room 105 for the whole month. Hover a bar to see whose stay it is.
+Twelve hotel stays in November, a lane per room, the room's number on the left. Stays in the same room never overlap: some follow each other end to start (in room 101 a guest leaves on the morning the next one arrives, the thin gap between two bars), others leave a few empty nights between them. The one-night stay is the short stub in room 103; room 105 is taken for the whole month. Hover a bar to see whose stay it is.
 
 ## What it is for
 
@@ -20,7 +20,7 @@ A range is written `[2026-03-01,2026-03-08)`: a square bracket means that end is
 - **Peek** a cell (Space): the same line and bar above the value as stored.
 - **Open Value in Tab**: the facts: the type, each end and whether it is included (`lower 2024-03-01, inclusive`, `no upper bound`, `upper infinity`), the width of a number range or how many integers an integer range holds, the length of a date or time range in days, and in hours and weeks where that helps, and what is unbounded. A multirange lists its members, its gaps and its total size.
 - **Edit a row** (F2): the field draws the bar of what you type, live; a half typed range draws nothing.
-- **Show Ranges on a Timeline**, in the menu of a range or multirange column's header: a **Range Timeline** tab beside the grid draws every range of that column as a bar on one axis, one lane per row, with round ticks on top (months and years on the first of the month, dates as `YYYY-MM-DD`, times with their hour and minute; a `tstzrange` in your local time) and a dashed line at now on a date or time axis. A bar's tooltip names its row and its value, and a click on it selects the row in the grid. A range that runs forever fades into the edge.
+- **Show Ranges on a Timeline**, in the menu of a range or multirange column's header: a **Range Timeline** tab beside the grid draws every range of that column as a bar on one axis, a lane per value of another column (by default the first other one: a room, a product, a nurse), named on the left, with round ticks on top (months and years on the first of the month, dates as `YYYY-MM-DD`, times with their hour and minute; a `tstzrange` in your local time) and a dashed line at now on a date or time axis. Two ranges of one lane that overlap take a second line under its name, so a double booking stands out. A bar's tooltip names its lane, its row and its value, and a click on it selects the row in the grid. A range that runs forever fades into the edge.
 
 ## Try it
 
@@ -60,9 +60,9 @@ from (values
 ) as price_list(product, price, valid);
 ```
 
-![Ranges: the price list on a Range Timeline from 2025 to late 2026. Each old price ends where the new one starts; the two current prices fade into the right edge because they have no end; a short launch offer sits at the dashed line marking now](media/ranges-prices.webp)
+![Ranges: the price list on a Range Timeline from 2025 to late 2026, a lane each for Basic plan, Pro plan and Launch offer. Each old price ends where the new one starts; the two current prices fade into the right edge because they have no end; the short launch offer sits at the dashed line marking now](media/ranges-prices.webp)
 
-Each old price ends exactly where the new one starts, so there is no day without a price and no day with two. The current Basic and Pro prices fade into the right edge: they have no end yet. The dashed line marks now: on the day this picture was taken it fell on the short bar, the two-week launch offer.
+A lane per product. Each old price ends exactly where the new one starts, so there is no day without a price and no day with two. The current Basic and Pro prices fade into the right edge: they have no end yet. The dashed line marks now: on the day this picture was taken it fell on the short bar, the two-week launch offer.
 
 Without the timeline, hover a cell in the grid: the open-ended price reads `unbounded above`, its bar running into an arrow.
 
@@ -81,15 +81,16 @@ from (values
 
 ![Ranges: the rota grid, Ana's shifts cell hovered. The card reads 3 ranges, 1 day 4 h in all, and draws three short bars on one line between 2026-11-02 and 2026-11-06](media/ranges-shifts.webp)
 
-Ana's cell holds three shifts. The card adds them up (`3 ranges · 1 day 4 h in all`, two eight-hour day shifts and a twelve-hour night) and draws them on one line, so the long gap before her night shift shows at once.
+Ana's cell holds three shifts. The card adds them up (`3 ranges · 1 day 4 h in all`, two eight-hour day shifts and a twelve-hour night) and draws them on one line, so the long gap before her night shift shows at once. **Show Ranges on a Timeline** in the shifts column's menu draws the whole rota, a lane per nurse.
 
 ## Settings
 
-The timeline has one setting; everything else works with nothing to set.
+The timeline has two settings; everything else works with nothing to set.
 
 | Setting | `@inputs` key | Default | What it does |
 |---|---|---|---|
 | Range column | `column` | the first one | The range or multirange column the Range Timeline draws (the column menu's entry sets it) |
+| Lanes by | `lanes` | the first other column | The column whose values name the lanes: the rows with the same value (a room, a product, a person) share one. Pick a column that differs on every row for a lane per row |
 
 ## Where it applies
 
@@ -97,7 +98,7 @@ Every column whose declared type is `int4range`, `int8range`, `numrange`, `dater
 
 ## Good to know
 
-When the rows do not fit the pane, the timeline lets ranges that do not overlap share a lane, as a booking calendar draws them, and the line above says `packed into N lanes`. That line also counts the ranges, the empty ones, the NULLs and anything that could not be placed. The view reads the column page by page up to 20,000 ranges, saying how far it read (`first 20,000 of 25,000 rows`). It resizes with the pane and paints in the theme's colours.
+When the lanes do not fit the pane, the timeline lets any ranges that do not overlap share a lane, whatever their names, the names go, and the line above says `packed into N lanes`. A result with no column but the ranges draws a lane per row. That line also counts the ranges, the empty ones, the NULLs and anything that could not be placed. The view reads the column page by page up to 20,000 ranges, saying how far it read (`first 20,000 of 25,000 rows`). It resizes with the pane and paints in the theme's colours.
 
 Integer ranges count exactly, whatever their size. Dates and times are placed when the server prints them in ISO style (the default `DateStyle`); a value in another style is still listed in the facts but not drawn, and the timeline says how many it could not place. A BC date is not placed.
 

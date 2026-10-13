@@ -20,7 +20,7 @@ The statements of a busy database. Most are small blue `select`s, fast and run t
 | Height | `mean_ms`, its mean execution time | log |
 | Depth | `cache_pct`, the share of blocks found in memory (shared buffers) | linear |
 | Size | `total_ms`, the time it took in total | |
-| Colour | `kind`, the statement's first word (`select`, `update`, `insert` ...) | |
+| Colour | `kind`, the statement's first word (`select`, `update`, `insert` ...), read past any comment in front of it | |
 
 On a log axis each step is ten times the one before (1, 10, 100, 1k), so statements that differ a thousandfold still fit in one picture. Hover a point for its numbers and its text; click it to select its row in the grid, where `rows_per_call` and the full statement are too. The legend hides and shows a kind with a click.
 

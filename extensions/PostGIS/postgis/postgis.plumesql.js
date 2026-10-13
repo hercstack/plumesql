@@ -106,7 +106,13 @@ function inspectGeometry(value, ctx) {
   const html = geometryHtml(g, ctx.width, ctx.height)
   if (ctx.surface === 'field') return html ? { html } : null
   const ewkt = toEWKT(g)
-  if (ctx.surface === 'hover') return { html, face: { text: ewkt.length > 2048 ? `${ewkt.slice(0, 2048)}…` : ewkt } }
+  if (ctx.surface === 'hover') {
+    // The card is narrow and wraps where it can: the SRID on a line of its
+    // own and a space after every comma, so a line breaks between two
+    // points and never inside a coordinate.
+    const card = ewkt.replace(/^(SRID=-?\d+;)/, '$1\n').replace(/,(?=\S)/g, ', ')
+    return { html, face: { text: card.length > 2048 ? `${card.slice(0, 2048)}…` : card } }
+  }
   if (ctx.surface === 'peek') return { html, face: { text: ewkt } }
   const ext = geometryExtent([g])
   const facts = [`${g.kind}${g.hasZ ? ' Z' : ''}${g.hasM ? (g.hasZ ? 'M' : ' M') : ''}`]

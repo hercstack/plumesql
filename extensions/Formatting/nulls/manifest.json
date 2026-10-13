@@ -2,7 +2,7 @@
   "format": 1,
   "id": "nulls",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Nulls",
   "description": "Every NULL cell reads as a dimmed symbol and an empty string as (empty), in every column",

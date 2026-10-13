@@ -17,17 +17,39 @@ from pg_catalog.pg_stat_activity w
 order by w.query_start;
 
 -- One blocker usually holds up more than the row in view: its pid opens
--- everything waiting behind it.
+-- everything waiting behind it, directly or through another waiter (the
+-- second session to want a locked row waits on the first one in line, not
+-- on the holder), with the pid each one waits on.
 -- @open everything it blocks
 -- @on blocker
+with recursive waits as materialized (
+    select a.pid, b.blocker
+    from pg_catalog.pg_stat_activity a
+         cross join lateral pg_catalog.unnest(pg_catalog.pg_blocking_pids(a.pid)) as b(blocker)
+    where a.wait_event_type = 'Lock'
+), tree (pid, waits_on, depth) as (
+    select w.pid, w.blocker, 1
+    from waits w
+    where w.blocker = $blocker
+    union
+    select w.pid, w.blocker, t.depth + 1
+    from tree t
+         join waits w on w.blocker = t.pid
+    where t.depth < 50
+), firsts as (
+    select distinct on (t.pid) t.pid, t.waits_on, t.depth
+    from tree t
+    order by t.pid, t.depth, t.waits_on
+)
 select a.pid as waiter,
+       f.waits_on as "waits on",
        coalesce(a.usename, '') as "user",
        coalesce(a.state, '') as state,
        coalesce(pg_catalog.date_trunc('second', pg_catalog.clock_timestamp() - a.query_start)::text, '') as "waiting for",
        coalesce(a.query, '') as query
-from pg_catalog.pg_stat_activity a
-where $blocker = any(pg_catalog.pg_blocking_pids(a.pid))
-order by a.query_start;
+from firsts f
+     join pg_catalog.pg_stat_activity a on a.pid = f.pid
+order by f.depth, a.query_start;
 
 -- @button terminate blocker
 -- @confirm Terminate backend $blocker? Any transaction it holds is rolled back, which is what releases the lock.

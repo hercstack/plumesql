@@ -66,7 +66,7 @@ The months are ordered newest first in the query so the short rows stand in fron
 
 ## Good to know
 
-Each axis takes at most 80 categories; rows past them are left out and the Log says how many. Negative numbers grow down from the floor. All bars are one instanced mesh, a single draw call, so thousands of them turn smoothly, and the scene only draws while something moves. **Reset camera** in the header does the same as a double-click, **Copy data** copies the bars as CSV. The labels are drawn over the canvas, so Copy as Image gives the bars without their labels. Attach it from a script with `-- @extension bars-3d` above a query (add `open`, `only` or `beside` to open on the view), or from a result's own menu; `-- @inputs` answers the settings in the file so the chart draws with no dialog.
+Each axis takes at most 80 categories; rows past them are left out and the Log says how many. Negative numbers grow down from the floor. All bars are one instanced mesh, a single draw call, so thousands of them turn smoothly, and the scene only draws while something moves. **Reset camera** in the header does the same as a double-click, **Copy data** copies the bars as CSV. The labels are drawn over the canvas, so Copy as Image gives the bars without their labels. Where the view foreshortens an axis, the names that would overlap step aside (every other one shows), and they come back as you turn the view. Attach it from a script with `-- @extension bars-3d` above a query (add `open`, `only` or `beside` to open on the view), or from a result's own menu; `-- @inputs` answers the settings in the file so the chart draws with no dialog.
 
 ## Requirements
 

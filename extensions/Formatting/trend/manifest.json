@@ -2,7 +2,7 @@
   "format": 1,
   "id": "trend",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Trend",
   "description": "Every number column shows an up / down arrow and colour vs the row above",

@@ -43,7 +43,9 @@ export default {
         const c = /^#[0-9a-f]{6}$/i.test(o.colour || '') ? o.colour : 'var(--' + (['red', 'amber', 'green', 'accent', 'violet'].includes(o.colour) ? o.colour : 'red') + ')'
         const style = o.style === 'text' ? 'color: ' + c
           : o.style === 'bold text' ? 'color: ' + c + '; font-weight: 700'
-            : 'background: color-mix(in srgb, ' + c + ' 32%, transparent)'
+            // A fill covers the cell, not just the width of its text: a
+            // short value ("86") was a speck of colour.
+            : 'background: color-mix(in srgb, ' + c + ' 32%, transparent); display: block'
         return { value, style, title: when + (v1 ? ' ' + v1 : '') + (when === 'between' && v2 ? ' and ' + v2 : '') }
       }
     }

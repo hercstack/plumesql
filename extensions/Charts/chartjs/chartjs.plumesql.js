@@ -6,6 +6,12 @@ import Chart from 'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/auto/+esm'
 /** @type {InstanceType<typeof Chart> | null} */
 let chart = null
 let csv = ''
+// A CSV field: quoted when it holds a comma, a quote or a line break, so a
+// label like "Smith, John" stays one field.
+const csvCell = (/** @type {unknown} */ v) => {
+  const s = v == null ? '' : String(v)
+  return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s
+}
 const palettes = {
   Vivid: ['#7aa2f7', '#f7768e', '#9ece6a', '#e0af68', '#bb9af7', '#7dcfff', '#ff9e64', '#41a6b5'],
   Cool: ['#4c9be8', '#5ec8c8', '#6ee7b7', '#818cf8', '#38bdf8', '#2dd4bf', '#60a5fa', '#34d399'],
@@ -40,7 +46,7 @@ export default {
         if (top > rows.length && typeof ctx.rows === 'function') { try { rows = await ctx.rows(0, top) } catch (e) { ctx.log('ctx.rows: ' + e) } }
         rows = rows.slice(0, top)
         const labels = rows.map((r, i) => (ci >= 0 ? String(r[ci] == null ? '' : r[ci]) : String(i + 1)))
-        csv = 'label,' + idxs.map((vi) => cols[vi].name).join(',') + '\n' + rows.map((r, i) => labels[i] + ',' + idxs.map((vi) => Number(r[vi])).join(',')).join('\n')
+        csv = ['label', ...idxs.map((vi) => cols[vi].name)].map(csvCell).join(',') + '\n' + rows.map((r, i) => [labels[i], ...idxs.map((vi) => Number(r[vi]))].map(csvCell).join(',')).join('\n')
         const slice = kind === 'pie' || kind === 'doughnut' || kind === 'polarArea'
         let datasets
         if (slice) {

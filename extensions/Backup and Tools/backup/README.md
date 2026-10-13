@@ -1,48 +1,42 @@
 # Backup
 
-![Backup: Back up the connected database into the workspace as a custom-format pg_dump archive](media/backup.webp)
+A copy of the whole database in one file, made with one click before you change anything.
 
-Back up the connected database into the workspace directory as a
-custom-format `pg_dump` archive, one click from any tab. For the "before
-I touch this" moment: a restorable copy, named after the database and the
-minute it was taken, without leaving PlumeSQL.
+![Backup has finished: an alert says the dump is in plumesql_demo-2026-10-13_12-20-58.dump, in the workspace, and the line above the terminal says pg_dump ran for a PostgreSQL 17 server and is done](media/backup-finished.webp)
+
+**Backup** pressed in the title bar on the `plumesql_demo` database: a moment later the alert names the file it wrote, `plumesql_demo-2026-10-13_12-20-58.dump`, in the workspace folder. The line above the terminal says which `pg_dump` ran and that it is done. The terminal stays empty because pg_dump says nothing when all goes well.
+
+## When to use it
+
+- **Before you change something risky**: a migration, a big `UPDATE`, dropping a column. If it goes wrong, **Restore** puts the database back from this file.
+- **Before an upgrade** of the server or of the application that uses it.
+- **To carry a database to another machine**: copy the file, then restore it there.
 
 ## What it does
 
-Runs `pg_dump --format=custom` on the connection the tab is on and writes
-`<database>-<YYYY-MM-DD_HH-MM-SS>.dump` into the workspace. The terminal
-shows pg_dump's own output; when it finishes an alert names the file, and
-when it fails the alert says the terminal has why and that the file is
-missing or incomplete.
+1. Asks first: "Back up plumesql_demo?", naming the file it will write.
+2. Runs `pg_dump` on the database of the tab's connection, in a terminal of its own.
+3. Writes `<database>-<date>_<time>.dump` into the workspace folder, so every run makes a new file and never overwrites an older one.
+4. Says how it ended: **Backup finished** with the file's name, or **Backup failed**, the terminal holding pg_dump's own reason.
 
-Custom format on purpose: it restores with `pg_restore`, which can pick
-what to restore and in which order, and it sidesteps the plain-text
-pipeline entirely. The companion **Restore** extension reads exactly this
-archive.
+The file is pg_dump's custom format: compressed, and read by `pg_restore`, which can restore all of it or only the parts you pick. It is not a SQL script you open and read; **Dump schema** and **Dump table** write those.
 
-## Inputs
+## Settings
 
-| Input | Default | Meaning |
+| Setting | Default | What it does |
 |---|---|---|
-| dump | `{db}-{timestamp}.dump` | The archive's file name in the workspace, declared once so the question, the report and the command cannot disagree. |
+| dump | `{db}-{timestamp}.dump` | The file's name in the workspace. It is declared once in the extension, so the question, the alert and the command always name the same file. |
 
-The password never appears in the command line: it reaches pg_dump
-through the environment (`@env PGPASSWORD={password}`), the only place a
-command extension may spend it.
+To name it differently, open the extension's file, use **Copy to My Extensions** in its header, and edit the `@var dump=` line of your copy.
+
+## Good to know
+
+- **The password stays secret.** It reaches pg_dump through the environment (`PGPASSWORD`), never the command line, so no other program on the machine can read it from the process list.
+- **No setup.** PlumeSQL finds the PostgreSQL client tools on this machine and runs a `pg_dump` new enough for the server; for a server that runs in Docker here it can run the server's own image instead (System, Client tools, where you can also choose).
+- **Roles are not in it.** Users and their passwords belong to the server, not to one database: **Backup globals** writes them.
+- The file lands in the workspace, beside your files. In a git repository, move it out or ignore `*.dump`.
+- Pinned to the title bar's right end as **Backup** (`@toolbar end`); it also runs from its row in the Extensions side tab.
 
 ## Requirements
 
-`pg_dump` on this machine, at a version not older than the server's:
-PlumeSQL finds every PostgreSQL client installation (System, Client
-tools, which also installs a missing one) and runs the one that suits
-the server, so nothing has to be on the PATH. A connection whose user
-may read every object it is asked to dump. PostgreSQL 13 or newer.
-
-## Notes
-
-This is a command extension: it runs a program on your machine, not a
-query on the server. It asks before it runs (`@confirm`) and reports
-success or failure with an alert. Ships pinned at the title bar's right
-end as "Backup" (`@toolbar end`). It writes into the WORKSPACE directory,
-so a backup taken in a repository lands beside its files; move or ignore
-it as you would any generated file.
+PostgreSQL 13 or newer, a connection whose user may read every object in the database, and a PostgreSQL client installation (or Docker) on this machine.

@@ -6,13 +6,16 @@
 select pid,
        coalesce(usename, '') as "user",
        coalesce(application_name, '') as application,
+       -- A failed transaction has already let go of its locks and its
+       -- snapshot (and of its start time); it only waits for a ROLLBACK.
+       case when state = 'idle in transaction (aborted)' then 'transaction failed' else 'in transaction' end as state,
        coalesce(pg_catalog.date_trunc('second', pg_catalog.clock_timestamp() - xact_start)::text, '') as "in transaction for",
        coalesce(pg_catalog.date_trunc('second', pg_catalog.clock_timestamp() - state_change)::text, '') as "idle for",
        coalesce(query, '') as "last statement"
 from pg_catalog.pg_stat_activity
 where state in ('idle in transaction', 'idle in transaction (aborted)')
   and pid <> pg_catalog.pg_backend_pid()
-order by xact_start;
+order by xact_start nulls last, state_change;
 
 -- @button terminate
 -- @confirm Terminate backend $pid? Its open transaction is rolled back.

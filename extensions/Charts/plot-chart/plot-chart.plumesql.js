@@ -49,11 +49,11 @@ export default {
         // the SQL way (Plot's own band labels for a Date were local times).
         const barDates = mark === 'bar' && kind === 'temporal'
         const pad2 = (n) => String(n).padStart(2, '0')
-        // A date alone parses as UTC midnight (read as local it showed 02:00);
-        // a timestamp parses as local time and keeps its hour.
+        // Every time parses as the server's wall clock in UTC (plot-core's
+        // parseTime): a midnight reads as its day, any other time keeps its hour.
         const dayText = (d) => (d.getUTCHours() === 0 && d.getUTCMinutes() === 0 && d.getUTCSeconds() === 0
           ? d.getUTCFullYear() + '-' + pad2(d.getUTCMonth() + 1) + '-' + pad2(d.getUTCDate())
-          : d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()))
+          : d.getUTCFullYear() + '-' + pad2(d.getUTCMonth() + 1) + '-' + pad2(d.getUTCDate()) + ' ' + pad2(d.getUTCHours()) + ':' + pad2(d.getUTCMinutes()))
         const long = []
         const bySeries = new Map()
         for (const g of groups.values()) {

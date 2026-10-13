@@ -2,7 +2,7 @@
   "format": 1,
   "id": "rebalance-plan",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Rebalance plan",
   "description": "Shard moves the Citus rebalancer would make now, without making them: which shard from which node to which, and its size",

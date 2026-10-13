@@ -14,7 +14,8 @@ from (
                      from pg_catalog.unnest(p.polroles) as r(oid)), '') as roles,
            coalesce(pg_catalog.pg_get_expr(p.polqual, p.polrelid), '') as "using",
            coalesce(pg_catalog.pg_get_expr(p.polwithcheck, p.polrelid), '') as with_check,
-           case when p.polname is null then 'no policy: nobody but the owner and superusers sees a row'
+           case when p.polname is null and c.relforcerowsecurity then 'no policy: only superusers and BYPASSRLS roles see a row, the owner included'
+                when p.polname is null then 'no policy: nobody but the owner, superusers and BYPASSRLS roles sees a row'
                 when not p.polpermissive and not exists (select 1 from pg_catalog.pg_policy q where q.polrelid = c.oid and q.polpermissive)
                 then 'only restrictive policies: no row passes without a permissive one'
                 else '' end as note

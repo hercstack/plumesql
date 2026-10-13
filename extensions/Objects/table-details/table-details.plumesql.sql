@@ -10,10 +10,10 @@ select pg_catalog.pg_size_pretty(pg_catalog.pg_total_relation_size(c.oid)) as to
        s.n_dead_tup as dead_rows,
        s.seq_scan as sequential_scans,
        s.idx_scan as index_scans,
-       s.last_vacuum,
-       s.last_autovacuum,
-       s.last_analyze,
-       s.last_autoanalyze
+       coalesce(pg_catalog.to_char(s.last_vacuum, 'YYYY-MM-DD HH24:MI'), 'never') as last_vacuum,
+       coalesce(pg_catalog.to_char(s.last_autovacuum, 'YYYY-MM-DD HH24:MI'), 'never') as last_autovacuum,
+       coalesce(pg_catalog.to_char(s.last_analyze, 'YYYY-MM-DD HH24:MI'), 'never') as last_analyze,
+       coalesce(pg_catalog.to_char(s.last_autoanalyze, 'YYYY-MM-DD HH24:MI'), 'never') as last_autoanalyze
 from pg_catalog.pg_class c
      join pg_catalog.pg_namespace n on n.oid = c.relnamespace
      left join pg_catalog.pg_stat_all_tables s on s.relid = c.oid

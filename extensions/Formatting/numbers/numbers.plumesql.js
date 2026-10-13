@@ -15,12 +15,18 @@ export default {
         const n = Number(value)
         if (value == null || value === '' || !Number.isFinite(n)) return value
         const o = ctx.inputs
-        const fixed = /^\d$/.test(o.decimals ?? '') ? Number(o.decimals) : null
+        // A whole-number column (a count, an id) has no decimals to fix:
+        // 182 payments never read 182.00.
+        const whole = /^(smallint|integer|bigint)/.test(ctx.column.type)
+        const fixed = !whole && /^\d$/.test(o.decimals ?? '') ? Number(o.decimals) : null
         // "As sent" keeps the digits the server sent after the point.
         const sent = (String(value).split('.')[1] ?? '').length
         const digits = fixed ?? Math.min(sent, 20)
         const grouped = !(o.grouping ?? '').startsWith('as sent')
-        const text = new Intl.NumberFormat(undefined, { useGrouping: grouped, minimumFractionDigits: digits, maximumFractionDigits: digits }).format(Math.abs(n))
+        // The server's text, not a JavaScript number, is what gets
+        // formatted: a bigint past 2^53 or a long numeric keeps every digit.
+        const abs = String(value).trim().replace(/^[-+]/, '')
+        const text = new Intl.NumberFormat(undefined, { useGrouping: grouped, minimumFractionDigits: digits, maximumFractionDigits: digits }).format(/** @type {any} */ (abs))
         const title = fixed !== null && digits < sent ? String(value) : undefined
         if (n < 0 && o.negatives === 'in parentheses') return { value: '(' + text + ')', class: 'fmt-bad', align: 'right', title }
         const out = (n < 0 ? '-' : '') + text

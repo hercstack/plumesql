@@ -15,7 +15,7 @@ Without this extension the cell would hold `0103000020E6100000020000000500...`, 
 ## How to read it
 
 - **The cell** shows the value as EWKT, the text `ST_AsEWKT` prints: `SRID=4326;POINT(15.9819 45.815)`, the coordinate system first, then the kind of shape and its coordinates.
-- **Hover** a cell: a card with the same text and a sketch of the shape.
+- **Hover** a cell: a card with the same text (broken between points, so no coordinate is cut in two) and a sketch of the shape.
 - **Peek** a cell (Space): the text and the sketch in a strip above the value as stored.
 - **Open Value in Tab**: the facts (the kind of shape, with Z and M when present, the SRID, how many points, the bounding box), the sketch, and the text in the editor. **Decode geometry** in the header flips the editor back to the hex as stored; **Copy** copies whichever is shown.
 - **Edit a row** (F2): the geometry field draws the stored value, and the drawing follows as you type EWKT or WKT (`SRID=4326;POLYGON((0 0,4 0,4 4,0 0))`, `POINT Z (1 2 3)`, `MULTIPOINT((1 1),(2 2))`). A half typed shape draws nothing; the server stays the judge of what you typed.

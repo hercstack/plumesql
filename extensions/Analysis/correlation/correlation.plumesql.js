@@ -6,8 +6,9 @@ import { loadRows, topOf, colIndexes, isNumericCol, ask, num, round, pearson, sp
 const MAX_COLUMNS = 30
 const strength = (/** @type {number} */ r) => { const a = Math.abs(r); return a >= 0.7 ? 'strong' : a >= 0.3 ? 'moderate' : 'weak' }
 // Blue for positive, red for negative, the stronger the deeper: a theme token, so every theme repaints it.
+// The alignment makes the shade fill the cell (a block), not only the number's width.
 const paint = (/** @type {number|null} */ r, /** @type {number} */ n) =>
-  r == null ? null : { value: round(r, 3), style: 'background:' + tint(r >= 0 ? 'accent' : 'red', Math.abs(r) * 60), title: 'r = ' + round(r, 3) + ', n = ' + n.toLocaleString() }
+  r == null ? null : { value: round(r, 3), style: 'background:' + tint(r >= 0 ? 'accent' : 'red', Math.abs(r) * 60), title: 'r = ' + round(r, 3) + ', n = ' + n.toLocaleString(), align: /** @type {'right'} */ ('right') }
 
 /** @type {PlumeSQLExtension} */
 export default {

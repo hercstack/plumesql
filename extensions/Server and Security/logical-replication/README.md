@@ -1,36 +1,52 @@
 # Logical replication
 
-Logical replication on the connected database, in one list: each publication with what it publishes and the tables in it, and each subscription with the publications it follows, its slot and whether its worker is running. Refreshed every ten seconds while it is open.
+What does this database send to other databases, and what does it receive? Its publications with the tables in them, and its subscriptions with whether they are running.
 
-## What it shows
+![Logical replication on the publishing database: pub_customers publishes insert and update for two tables, customers (24 kB) and orders (16 kB); pub_sales publishes every change of the partitioned sales table (1760 kB) as the partition root](media/logical-replication-publisher.webp)
+
+The publishing side. `pub_customers` sends new and changed rows of `customers` and `orders`, but not deletes; `pub_sales` sends every change of `sales`, a partitioned table, as if it were one table (`as the partition root`), so the other side needs no partitions of its own.
+
+![Logical replication on the subscribing database: the subscription sub_sales to pub_sales through slot sub_sales, running, last message 1.6 s ago](media/logical-replication-subscriber.webp)
+
+The receiving side, in another database: `sub_sales` follows `pub_sales` and is running; the last word from the publisher came 1.6 seconds ago.
+
+## When to use it
+
+- **Setting up replication** between two databases (a reporting copy, a migration to a new server, an upgrade with little downtime): check both ends are what you meant.
+- **"The copy is missing rows"**: is the table in the publication at all, does it publish deletes, is the subscription running?
+- **Before changing a table that is published**: see which publications carry it.
+
+## How to read it
 
 One row per thing, publications first:
 
 | kind | name | detail | state |
 |---|---|---|---|
-| `publication` | Its name. | How many tables (or all tables) and which changes it publishes: insert, update, delete, truncate. | `as the partition root` when a partitioned table is published as one table (`publish_via_partition_root`). |
-| `published table` | `publication: schema.table`. | The table's size on disk, its partitions' together for a partitioned table. | A warning when the table has `REPLICA IDENTITY NOTHING`, so its updates and deletes would fail. |
-| `subscription` | Its name. | The publications it follows and its replication slot. | `running, last message 0.4 s ago`, `not running` (its worker is down: look at the server log) or `DISABLED`. |
+| `publication` | Its name. | How many tables (or `all tables`) and which changes it sends: insert, update, delete, truncate. | `as the partition root` when a partitioned table is sent as one table. |
+| `published table` | `publication: schema.table`. | The table's size on disk (its partitions' together for a partitioned table). | A warning when the table has `REPLICA IDENTITY NOTHING`, so its updates and deletes would fail. |
+| `subscription` | Its name. | The publications it follows and its replication slot on the publisher. | `running, last message 1.6 s ago`, `not running` (its worker stopped: the server log says why) or `DISABLED`. |
 
 A database with neither says so in one line.
 
-## Examples
+## Try it
 
-Run it from the Extensions side tab (**Run**), on the publisher's database to see what goes out, and on the subscriber's to see what comes in. The output on a publisher with two publications:
+Open the **Extensions** side tab, find **Logical replication** and press its **Run**, once on the publisher's database and once on the subscriber's. It refreshes every ten seconds while its tab is in front, so you can watch a new subscription start.
 
-| kind | name | detail | state |
-|---|---|---|---|
-| publication | pub_customers | 2 tables, publishes insert, update | |
-| publication | pub_sales | 1 table, publishes insert, update, delete, truncate | as the partition root |
-| published table | pub_customers: public.customers | 24 kB | |
-| published table | pub_sales: public.sales | 1720 kB | |
+Common fixes, once you have read the list:
 
-To put a table into a publication, or take it out, the statements are `ALTER PUBLICATION pub_sales ADD TABLE public.refunds;` and `ALTER PUBLICATION pub_sales DROP TABLE public.refunds;`. A subscription that says `not running` restarts with `ALTER SUBSCRIPTION sub_sales DISABLE;` then `ENABLE;`, once the cause in the server log is fixed.
+```sql
+alter publication pub_sales add table public.refunds;    -- send another table
+alter publication pub_sales drop table public.refunds;   -- stop sending it
+alter subscription sub_sales disable;                    -- restart a stuck subscription,
+alter subscription sub_sales enable;                     -- after fixing what the log says
+```
+
+To try it on a **test server** started with `wal_level = logical`: `create table t (id int primary key, v text); create publication pub_t for table t;` and run it.
+
+## Good to know
+
+A subscription's connection string is never read: it may hold a password. The replication slots a publisher keeps for its subscribers, and how much WAL each one holds back, are in **Replication status**. It reads `pg_publication`, `pg_publication_tables`, `pg_subscription` and `pg_stat_subscription`, and only reads.
 
 ## Requirements
 
-PostgreSQL 13 or newer. Reading publications needs no privilege; a subscription's state comes from `pg_stat_subscription`, which every role can read. The connection string of a subscription is never read (it may hold a password).
-
-## Notes
-
-The replication slots a publisher holds for its subscribers, with the WAL each one keeps, are in the Replication status extension. Lag in bytes is measured on the publisher, in its slots, not here.
+PostgreSQL 13 or newer. Reading publications needs no privilege; a subscription's state comes from `pg_stat_subscription`, which every role can read.

@@ -102,9 +102,16 @@ export function vecStats(v) {
 export function vecSparkline(v, w, h, pad = 4) {
   const s = vecStats(v)
   if (!s) return null
-  const lo = Math.min(s.min, 0)
-  const hi = Math.max(s.max, 0)
-  const span = hi - lo || 1
+  let lo = Math.min(s.min, 0)
+  let hi = Math.max(s.max, 0)
+  // An all-zero vector (an embedding that never got filled) draws its flat
+  // line through the middle of the box, where the zero line is, not along
+  // its top edge.
+  if (hi === lo) {
+    lo = -1
+    hi = 1
+  }
+  const span = hi - lo
   /** @param {number} n */
   const Y = (n) => pad + (hi - n) * ((h - 2 * pad) / span)
   const innerW = w - 2 * pad

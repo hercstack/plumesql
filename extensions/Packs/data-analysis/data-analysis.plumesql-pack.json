@@ -12,6 +12,9 @@
     "plot-chart",
     "kpi-cards",
     "window-refactors",
-    "statistics-refactors"
+    "statistics-refactors",
+    "period-over-period",
+    "clusters",
+    "rfm"
   ]
 }
