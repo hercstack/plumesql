@@ -380,6 +380,8 @@ Some we use a lot:
   [slow queries](extensions/Performance/top-queries/),
   [table bloat](extensions/Storage%20and%20Maintenance/table-bloat/),
   [health check](extensions/Server%20and%20Security/health-check/),
+  [server setup](extensions/Server%20and%20Security/server-setup/) for
+  your machine's memory, cores and disks,
   [backup](extensions/Backup%20and%20Tools/backup/) and
   [restore](extensions/Backup%20and%20Tools/restore/).
 - **Everyday stuff.** [Visual EXPLAIN](extensions/Performance/explain-plan/),
@@ -392,7 +394,9 @@ You install them from the Extensions tab, one by one or in packs like
 [DBA essentials](extensions/Packs/dba-essentials/) or
 [PostGIS essentials](extensions/Packs/postgis-essentials/). They're
 just files, so you can read one before you install it, change it, or
-send it to a colleague. There's no plugin SDK to learn.
+send it to a colleague. There's no plugin SDK to learn. Pin the ones
+you use to the top of the tab and run them from Go to Tab or File; what
+was published since your last start waits at the top, marked New.
 
 Can't find what you need? Write it. An extension can be a SQL file, a
 command, or a bit of JavaScript that draws a result. Start with
