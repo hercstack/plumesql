@@ -34,9 +34,9 @@ where s.name = $name
 order by v.n;
 
 -- @button set value
--- @var new_value "New value", ""
+-- @var new_value "New value (a list: comma separated; one value holding a comma: in double quotes)", ""
 -- @inline name identifier
--- @inline new_value literal
+-- @inline new_value list
 -- @confirm "Set $name", "Write $name = {new_value} into postgresql.auto.conf? It takes effect after Reload (or a restart where required); Reset undoes it."
 -- @at end
 alter system set $name = {new_value};

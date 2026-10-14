@@ -34,7 +34,7 @@ One row per setting, by category then name:
 
 Each one asks first, in plain words.
 
-- **set value** asks for the new value and writes it with `ALTER SYSTEM SET`. The server checks the value before writing anything: one the setting cannot take is refused in the server's own words. The new value lands in `postgresql.auto.conf` and takes effect on **reload**, or on a restart for a `postmaster` setting.
+- **set value** asks for the new value and writes it with `ALTER SYSTEM SET`. The server checks the value before writing anything: one the setting cannot take is refused in the server's own words. The new value lands in `postgresql.auto.conf` and takes effect on **reload**, or on a restart for a `postmaster` setting. A list setting (`shared_preload_libraries`, `search_path`) takes its values comma separated and gets one quoted value each, `'timescaledb', 'pg_stat_statements'`, the only form ALTER SYSTEM stores as a list; a single value that must hold a comma goes in double quotes.
 - **reset** removes the setting from `postgresql.auto.conf`; what `postgresql.conf` or the default says returns on the next reload.
 - **reload** asks the server to read its configuration files again (`pg_reload_conf()`): every setting a reload can apply takes its new value at once; the `postmaster` ones keep waiting for a restart.
 
@@ -52,4 +52,4 @@ The name and the value are passed to the server as an identifier and a literal i
 
 ## Requirements
 
-PostgreSQL 13 or newer. Reading needs no privilege. `ALTER SYSTEM` and `pg_reload_conf()` need a superuser, or a role granted `ALTER SYSTEM` on the setting (PostgreSQL 15 and newer) and EXECUTE on the function; a hosted service may allow neither.
+PlumeSQL 0.25.0 or newer, PostgreSQL 13 or newer. Reading needs no privilege. `ALTER SYSTEM` and `pg_reload_conf()` need a superuser, or a role granted `ALTER SYSTEM` on the setting (PostgreSQL 15 and newer) and EXECUTE on the function; a hosted service may allow neither.
