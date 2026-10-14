@@ -1,0 +1,44 @@
+{
+  "format": 1,
+  "id": "server-setup",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.25.0",
+  "name": "Server setup",
+  "description": "Set the server up for speed, a view of what it does, a stop to runaway sessions and security; every change on its own button",
+  "categories": [
+    "Server and Security"
+  ],
+  "tags": [
+    "configuration",
+    "tuning",
+    "settings",
+    "alter system",
+    "postgresql.conf",
+    "performance",
+    "logging",
+    "timeouts",
+    "security",
+    "pg_hba",
+    "patroni",
+    "kubernetes"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "server-setup.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 222,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}
