@@ -57,7 +57,7 @@ export const ANNOTATIONS = new Set([
   'inputs', 'ask', 'noask', 'for', 'env', 'file', 'dir', 'var', 'open-on-success', 'open-on-failure',
   'open-on-done', 'alert-on-success', 'alert-on-failure', 'alert-on-done', 'format-keywords', 'format-commas',
   'format-indent', 'format-width', 'readonly', 'confirm-writes', 'parse', 'button', 'row-action', 'action',
-  'open', 'on', 'confirm', 'at', 'inline', 'pick'
+  'open', 'on', 'confirm', 'at', 'inline', 'pick', 'choices', 'help'
 ])
 // The markers a grid extension's leading comments may carry (docs/GRIDJSSPEC.md).
 export const GRID_MARKERS = new Set(['ts-check', 'description', 'color', 'for', 'query', 'ask', 'noask', 'extension'])

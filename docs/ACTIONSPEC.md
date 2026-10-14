@@ -313,8 +313,10 @@ MUST behave exactly as described.
 | `@on` | | `@on <column>` | button | query | the button gets a column of its own, placed by `@at` |
 | `@confirm` | | `@confirm <text> or "<title>", "<text>"` | action, button | query, command | no question: the action and its buttons run on the click |
 | `@at` | | `@at start\|end\|before <column>\|after <column>` | button | query | `start` |
-| `@inline` | | `@inline <name> literal\|identifier` | action, button | query | every value travels bound; a utility statement then refuses to run |
+| `@inline` | | `@inline <name> literal\|identifier\|list` | action, button | query | every value travels bound; a utility statement then refuses to run |
 | `@pick` | | `@pick <name> <query>` | action, button | query, command | the field is typed: no list of values is offered |
+| `@choices` | | `@choices <name> <value> [= <description>] [, ...]` | action, button | query, command | the field is typed: any value is accepted and the server judges it |
+| `@help` | | `@help <name> <text>` | action, button | query, command | the field carries its prompt alone |
 
 ### 8.1 `@description <text>`
 
@@ -917,7 +919,7 @@ Requirements:
   runs on the connection whose values the command spends, and the
   chosen value travels as the command's other inputs do (12.1).
 
-### 8.27 `@inline <name> literal|identifier`
+### 8.27 `@inline <name> literal|identifier|list`
 
 Expand the named value INTO the statement's text instead of binding it
 beside the statement. This exists for exactly one reason: PostgreSQL
@@ -926,7 +928,8 @@ accepts no bound parameters in utility statements (`ALTER SYSTEM`,
 with a value from a row or a form has no bound road to travel. The name
 is a `$column` (10) or `{placeholder}` (11) the command under this
 header references; `literal` expands it as a quoted VALUE, `identifier`
-as a quoted NAME. Everything not named by an `@inline` stays bound, and
+as a quoted NAME, `list` as a LIST of quoted values (below). Everything
+not named by an `@inline` stays bound, and
 binding remains the default and the preferred road: a conforming file
 inlines only what the statement cannot take as a parameter.
 
@@ -942,15 +945,35 @@ value inlines as the keyword `NULL` under `literal`; under `identifier`
 a NULL names nothing and the run MUST be refused with a message that
 says so.
 
+**A list.** A setting that takes a list (`shared_preload_libraries`,
+`search_path`) cannot be written as ONE quoted value holding commas:
+`ALTER SYSTEM SET shared_preload_libraries = 'a, b'` stores a single
+element named `a, b`, and for a library list the server then fails to
+start. `list` writes it the one way that works, one quoted value per
+element: `'a', 'b'`. A value holding neither a comma nor a double
+quote is ONE element exactly as given, white space included, and
+expands under `list` exactly as under `literal` (`'%m [%p] '` keeps its
+last space), so a button that writes any setting MAY use `list`. Any
+other value is read as PostgreSQL reads a list setting: the elements
+stand between commas, each trimmed of the white space around it; a
+double-quoted element keeps its commas and spaces, the quotes are
+removed and a doubled `""` inside them is one quote character. Each
+element is then quoted as a value by the server, exactly as `literal`
+is (`quote_literal`), and the quoted elements are joined by `, `. A NULL
+is no list, and an empty element (`a,,b`) or an unclosed double quote is
+no list either: in each case the run MUST be refused with a message
+that says so, never guessed at. A single value that must hold a comma
+is written in double quotes.
+
 Requirements:
 
-- The value is two words: a name, then `literal` or `identifier`. Any
-  other shape MUST be diagnosed and the line ignored (the ref then stays
+- The value is two words: a name, then `literal`, `identifier` or
+  `list`. Any other shape MUST be diagnosed and the line ignored (the ref then stays
   bound, the safe default: the statement fails loudly at the server
   rather than running differently than written).
 - The name MUST be one the command under this header actually binds; an
   `@inline` naming nothing there MUST be diagnosed and ignored.
-- One name has one kind: the same name inlined again with the OTHER kind
+- One name has one kind: the same name inlined again with ANOTHER kind
   MUST be diagnosed, and the first reading holds.
 - `{password}` never enters SQL (11.3); `@inline` creates no exception,
   and the refusal is the same one.
@@ -1219,6 +1242,83 @@ the author did not write. The header the line sits in sets its reach as
 for `@inputs`; a query's own header wins over the file's. Excludes `@ask`
 in the same scope (8.31). Query kind only.
 
+### 8.33 `@choices <name> <value> [= <description>] [, ...]`
+
+Make an asked `@var` (8.9) a CHOICE among values written in the file:
+
+```
+-- @var storage "Storage", "ssd"
+-- @choices storage ssd = local SSD or NVMe, network = a cloud volume, hdd = spinning disks
+```
+
+The first word of the value is the NAME of an asked `@var` declared in
+the SAME header, above or below this line (a header is read whole, 7).
+The rest is the list: items separated by commas, each a value, or a
+value, an `=` and what that value means. White space around a value and
+a description is trimmed; a value or a description that holds a comma
+or an `=` is written in double quotes, a doubled `""` inside them being
+one quote character. The description is a MESSAGE (11.2), shown beside
+its value to help the choice, never sent anywhere.
+
+**A choice, not a suggestion.** Unlike `@pick` (8.26), whose list helps
+while the field stays typeable, the answer to a `@choices` input MUST be
+one of its values, exactly as written: the implementation MUST NOT run
+with any other value, and offers no NULL (a NULL is not one of the
+values). Nothing is asked of any server for the list: it is the file's
+own text, known before the form opens, so the form MAY draw it at once
+(the reference implementation: up to four short values side by side as
+one control, a boolean's two-button shape grown to four; more of them,
+or longer ones, as a drop-down list; each value's description beside
+it).
+
+Requirements:
+
+- The name MUST be an asked `@var` of the same header. A name nothing
+  asks for, a `@file` or `@dir`, or a declared `@var <name>=<value>`
+  MUST be diagnosed and the line ignored.
+- One list per input: a second `@choices`, or a `@choices` beside a
+  `@pick` for the same name, MUST be diagnosed and ignored.
+- The list MUST hold two or more values, each non-empty and each once;
+  an unclosed double quote, an empty value, a value offered twice or a
+  single value MUST be diagnosed and the line ignored.
+- A default the `@var` writes (8.9) MUST be one of the values, or be
+  diagnosed; the field then opens with no choice made, and the form
+  waits for one.
+- A command action (3) MAY carry `@choices` in its one scope, and the
+  chosen value travels as the command's other inputs do (12.1).
+
+### 8.34 `@help <name> <text>`
+
+Explain one asked input where the form asks for it:
+
+```
+-- @var vcpus "vCPUs for PostgreSQL (0: not known)", "0"
+-- @help vcpus The cores PostgreSQL may use; they size the parallel worker pools.
+```
+
+The first word of the value is the NAME of an input the SAME header
+asks for (an asked `@var`, a `@file` or a `@dir`, 8.7 to 8.9), above or
+below this line (a header is read whole, 7). The rest of the line is the
+text, as it should read (6.4: nothing is quoted or escaped), a MESSAGE
+(11.2): placeholders fill in as text. Several `@help` lines for one
+input JOIN into one text, in written order, separated by a space, so a
+longer explanation needs no long line.
+
+The prompt stays the label; the help is what a reader asks for when the
+label is not enough: what the input is, what it changes, when to leave
+it as it is. An implementation SHOULD offer it beside the input on
+demand rather than print it in full by every field (the reference
+implementation: a `?` beside the label, its tooltip the text, a click
+or Enter opening the text under the field and a second one closing it).
+
+Requirements:
+
+- The name MUST be an input this header asks for. A name nothing asks
+  for, or a declared `@var <name>=<value>` (asked of no one), MUST be
+  diagnosed and the line ignored.
+- A line with a name and no text MUST be diagnosed and ignored.
+- `{password}` never enters a message (11.3); a help text is one.
+
 ## 9. Dependencies between annotations
 
 Several annotations exist only in relation to another, and several
@@ -1244,6 +1344,10 @@ sections):
   (8.7); a command action has only the action scope.
 - `@pick`: both kinds, both scopes (8.26), and only beside an asked
   `@var` of the same header (9.7).
+- `@choices`: both kinds, both scopes (8.33), and only beside an asked
+  `@var` of the same header that has no `@pick`.
+- `@help`: both kinds, both scopes (8.34), and only naming an input the
+  same header asks for.
 - `@inline`: query kind, both scopes (8.27), and only naming a value the
   same header's command binds (9.9).
 - `@button`, `@open`, `@on`, `@at`: query kind, button scope only.
