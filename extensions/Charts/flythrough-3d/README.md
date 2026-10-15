@@ -42,7 +42,7 @@ A **Flythrough 3D** tab beside the grid.
 | **G** | Glide to the picked box |
 | **F** or **Esc** | Land: orbit again around what is ahead |
 
-**H** hides the key list in either mode. The cruising speed is set at take-off from where the camera is: what it looks at is six seconds away, so a take-off from high above crosses the city and one beside a box creeps along the shelf. The keys go to the view once it has been clicked; the **Fly** button takes off too, and the key list asks for a click when the view does not have the keys yet. **Tour** flies over the blocks by itself, in the order they stand; any key or a click takes over. **Reset camera** brings the camera home, **Copy data** copies the rows' picked columns as CSV.
+**H** hides the key list in either mode. The cruising speed is set at take-off from where the camera is: what it looks at is six seconds away, so a take-off from high above crosses the city and one beside a box creeps along the shelf. The keys go to the view once it has been clicked; the **Fly** button takes off too, and the key list asks for a click when the view does not have the keys yet. **Tour** flies over the blocks by itself, in the order they stand; any key or a click takes over. **Reset camera** brings the camera home, the copy button copies the rows' picked columns as CSV.
 
 ## Inputs
 

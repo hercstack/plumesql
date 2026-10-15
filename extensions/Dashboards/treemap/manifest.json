@@ -2,7 +2,7 @@
   "format": 1,
   "id": "treemap",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Treemap",
   "description": "Nested rectangles sized by a value over one or more hierarchy levels, with drill-down and a breadcrumb (ECharts)",

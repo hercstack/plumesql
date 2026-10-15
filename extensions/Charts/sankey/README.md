@@ -11,7 +11,7 @@ A **Sankey** tab beside the grid.
 - **Stages** are two or more columns in order. Every pair of neighbours is a flow: with two columns, `from` and `to`; with more, a path through each stage in turn.
 - **Value** makes a band as wide as its total; without one, every row counts once.
 - A name is a node **at its stage**: `search` in the first column and `search` in the second are two nodes, so a flow never loops back and a page visited twice in a journey reads as two steps.
-- **Direction** turns the flow top down. **Copy data** copies the flows as CSV.
+- **Direction** turns the flow top down. The copy button in the header copies the flows as CSV.
 
 The 3,000 widest flows are drawn; rows with no positive value are left out, and the Log says how many.
 

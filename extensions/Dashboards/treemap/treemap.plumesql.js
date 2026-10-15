@@ -26,7 +26,7 @@ export default {
         { key: 'agg', kind: 'choice', label: 'Fold', options: ['sum', 'mean', 'count'], default: 'sum', description: 'How the rows of one rectangle combine' },
         { key: 'title', kind: 'text', label: 'Title', default: '' },
       ],
-      actions: [{ label: 'Copy data', run: (ctx) => ctx.copy(csv) }],
+      actions: [{ label: 'Copy the chart data (CSV)', icon: 'copy', run: (ctx) => ctx.copy(csv) }],
       render: async (root, data, ctx) => {
         const echarts = /** @type {any} */ (window).echarts
         if (!echarts) { note(root, 'ECharts did not load. Allow the CDN host in the Log.'); return }

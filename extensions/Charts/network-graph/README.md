@@ -12,7 +12,7 @@ A **Network** tab beside the grid.
 - Two shapes of data work the same way: rows that are things with a parent (`id`, `parent_id`), and rows that are edges (`from`, `to`).
 - **Size by** a number grows a node with it; without one, a node grows with how many links it has, so the hubs stand out. **Colour by** gives each of the twelve most frequent categories a colour, toggled from the legend.
 - **Labels** name the thirty largest nodes by default; hovering names any of them.
-- **Copy data** copies the links as a `source,target` CSV.
+- The copy button in the header copies the links as a `source,target` CSV.
 
 Up to 3,000 nodes and 12,000 links are drawn; past that the Log says how many were left out, and a narrower query reads better anyway.
 

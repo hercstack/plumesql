@@ -12,7 +12,7 @@ A **Timeline** tab beside the grid.
 - A bar runs from **Start** to **End**. A row with no end (still running, or an event at one moment) is a short mark at its start.
 - **Colour by** gives each of the twelve most frequent categories a colour, toggled from the legend.
 - With more than thirty lanes, a scroll bar on the right moves through them: the wheel scrolls the lanes, and a pinch (or Ctrl and the wheel) zooms time. With fewer, the wheel zooms time.
-- Times read in the clock the server wrote them in, never shifted to this machine's zone. **Copy data** copies the bars as CSV.
+- Times read in the clock the server wrote them in, never shifted to this machine's zone. The copy button in the header copies the bars as CSV.
 
 ## Inputs
 

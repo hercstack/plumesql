@@ -75,7 +75,7 @@ group by p.customer_id;
 
 ## Good to know
 
-The whole result is paged in, up to a million rows. A line of that size is thinned to the pixels on the fly with its peaks kept (ECharts' LTTB sampling), and points and bars switch to ECharts' large mode, so a million rows draw in about a second. A pie draws the first series over its first 40 rows. **Copy data** in the header copies what was drawn as CSV. From a script: `-- @extension echarts` (plus `open`, `only` or `beside`) above the query, and `-- @inputs` to answer the settings in the file so the dialog never shows. As the last step of a pipeline it charts what another extension computed: `-- @extension group-by | echarts`, `-- @extension forecast | echarts`.
+The whole result is paged in, up to a million rows. A line of that size is thinned to the pixels on the fly with its peaks kept (ECharts' LTTB sampling), and points and bars switch to ECharts' large mode, so a million rows draw in about a second. A pie draws the first series over its first 40 rows. The copy button in the header copies what was drawn as CSV. From a script: `-- @extension echarts` (plus `open`, `only` or `beside`) above the query, and `-- @inputs` to answer the settings in the file so the dialog never shows. As the last step of a pipeline it charts what another extension computed: `-- @extension group-by | echarts`, `-- @extension forecast | echarts`.
 
 ## Requirements
 

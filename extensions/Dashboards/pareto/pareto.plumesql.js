@@ -33,7 +33,7 @@ export default {
         { key: 'n', kind: 'number', label: 'Top categories', default: '30', description: 'How many of the largest categories get a bar of their own; the rest are folded into Other' },
         { key: 'title', kind: 'text', label: 'Title', default: '' },
       ],
-      actions: [{ label: 'Copy data', run: (ctx) => ctx.copy(csv) }],
+      actions: [{ label: 'Copy the chart data (CSV)', icon: 'copy', run: (ctx) => ctx.copy(csv) }],
       render: async (root, data, ctx) => {
         const echarts = /** @type {any} */ (window).echarts
         if (!echarts) { note(root, 'ECharts did not load. Allow the CDN host in the Log.'); return }

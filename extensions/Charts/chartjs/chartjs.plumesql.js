@@ -32,7 +32,7 @@ export default {
         { key: 'title', kind: 'text', label: 'Title', default: '' },
         { key: 'top', kind: 'number', label: 'Top rows', default: '60', description: 'How many rows the view reads from the result, from the first one; the rest are left out' }
       ],
-      actions: [{ label: 'Copy data', run: (ctx) => ctx.copy(csv) }],
+      actions: [{ label: 'Copy the chart data (CSV)', icon: 'copy', run: (ctx) => ctx.copy(csv) }],
       render: async (root, data, ctx) => {
         const cols = data.columns || []
         const inputs = ctx.inputs || {}

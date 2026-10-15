@@ -69,7 +69,7 @@ select * from (values ('Applied', 420), ('Passed screening', 180), ('Interviewed
 
 ## Good to know
 
-The bands are drawn to scale against the largest step. Up to 50 steps; the rest are left out and the Log says how many. A share too small for two decimals reads `<0.01%`. **Copy data** copies the steps with both percentages as CSV. From a script: `-- @extension funnel` above the query (add `open`, `only` or `beside` for how the view opens), and `-- @inputs` to answer the settings in the file so the dialog never shows; a result's own menu attaches it too.
+The bands are drawn to scale against the largest step. Up to 50 steps; the rest are left out and the Log says how many. A share too small for two decimals reads `<0.01%`. The copy button in the header copies the steps with both percentages as CSV. From a script: `-- @extension funnel` above the query (add `open`, `only` or `beside` for how the view opens), and `-- @inputs` to answer the settings in the file so the dialog never shows; a result's own menu attaches it too.
 
 ## Requirements
 

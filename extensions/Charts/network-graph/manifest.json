@@ -2,7 +2,7 @@
   "format": 1,
   "id": "network-graph",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Network graph",
   "description": "Rows as a network: nodes and their links, laid out by force or on a circle, sized by links or a number, coloured by a category",

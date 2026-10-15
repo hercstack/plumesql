@@ -2,7 +2,7 @@
   "format": 1,
   "id": "sunburst",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Sunburst",
   "description": "Rings of a hierarchy: each level a ring, each slice as wide as its share of the value; click a slice to zoom into it",

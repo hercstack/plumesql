@@ -2,7 +2,7 @@
   "format": 1,
   "id": "sankey",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Sankey",
   "description": "Flows between stages as bands as wide as their value: a from and a to column, or several for a path through stages",

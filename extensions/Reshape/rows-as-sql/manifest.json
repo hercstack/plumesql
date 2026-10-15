@@ -2,7 +2,7 @@
   "format": 1,
   "id": "rows-as-sql",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.22.0",
   "name": "Rows as SQL",
   "description": "The result's rows as SQL: INSERT, multi-row INSERT, UPDATE by key or upsert, to copy, to save or in a tab",

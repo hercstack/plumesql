@@ -11,7 +11,7 @@ A **Tree** tab beside the grid.
 - Every row is a node: its **Id**, and in **Parent** the id of the node above it. A row with no parent is a root; several roots hang under one shared root.
 - The first **Open levels** show unfolded, the rest fold, and a folded node says how many it holds (`+42`). Hover any node for its children and its whole count.
 - **Size by** grows a node with a number; **Label** names it.
-- A parent the result does not hold, or a loop of parents, makes the row a root, and the Log says how many. **Copy data** copies the tree as `id, parent, label, depth` in tree order.
+- A parent the result does not hold, or a loop of parents, makes the row a root, and the Log says how many. The copy button in the header copies the tree as `id, parent, label, depth` in tree order.
 
 This is what a recursive query (`with recursive`) produces, and what a table with a `parent_id` column holds.
 

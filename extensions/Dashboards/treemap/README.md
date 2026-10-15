@@ -71,7 +71,7 @@ from payment p
 
 ## Good to know
 
-A parent's area is always the total of its children, whatever the fold, since that is what an area can show; with `mean`, the labels on the leaves are the means. Up to 5,000 rectangles, the largest; the rest, and any with a zero or negative value, are left out and the Log says how many. **Copy data** copies the leaves with their values as CSV. From a script: `-- @extension treemap` above the query (add `open`, `only` or `beside`), and `-- @inputs` to answer the settings so the dialog never shows; a result's own menu attaches it too. Sunburst draws the same levels as rings, better for seeing the levels; a treemap compares sizes better.
+A parent's area is always the total of its children, whatever the fold, since that is what an area can show; with `mean`, the labels on the leaves are the means. Up to 5,000 rectangles, the largest; the rest, and any with a zero or negative value, are left out and the Log says how many. The copy button in the header copies the leaves with their values as CSV. From a script: `-- @extension treemap` above the query (add `open`, `only` or `beside`), and `-- @inputs` to answer the settings so the dialog never shows; a result's own menu attaches it too. Sunburst draws the same levels as rings, better for seeing the levels; a treemap compares sizes better.
 
 ## Requirements
 

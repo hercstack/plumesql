@@ -2,7 +2,7 @@
   "format": 1,
   "id": "city-3d",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "City 3D",
   "description": "A treemap you walk around: rows as buildings in districts, a number as the footprint, another as the height, a third as the colour",

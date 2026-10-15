@@ -2,7 +2,7 @@
   "format": 1,
   "id": "kpi-cards",
   "kind": "grid",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "plumesql": ">=0.21.0",
   "name": "KPI cards",
   "description": "Big-number cards for a dashboard, one per numeric column, with the change against a reference row and a sparkline",

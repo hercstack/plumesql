@@ -11,7 +11,7 @@ A **Sunburst** tab beside the grid.
 - **Levels** are one column per level of the hierarchy, the innermost ring first: region, country, city.
 - **Value** makes a slice as wide as its total (or its mean, or its row count, by **Fold**); without one, every row counts once.
 - Slices are sorted largest first within their parent. The outermost ring carries its labels outside, where there is room.
-- **Copy data** copies the slices as CSV, one row per full path.
+- The copy button in the header copies the slices as CSV, one row per full path.
 
 A treemap shows the same data as nested rectangles, better for comparing sizes; a sunburst shows the levels better, and where a share comes from.
 

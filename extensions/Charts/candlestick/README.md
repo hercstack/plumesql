@@ -12,7 +12,7 @@ A **Candlestick** tab beside the grid.
 - **Open**, **High**, **Low** and **Close** draw the candle; a row missing any of them is left out, never drawn as a zero.
 - **Volume** adds bars under the candles, each coloured like its candle.
 - **Moving averages** are the close averaged over the last N periods, as a comma list (`5, 20` by default; blank for none).
-- The view opens on the last 120 candles; the slider brings the rest in. Hover a period for its four prices, its change and its averages. **Copy data** copies the candles as CSV.
+- The view opens on the last 120 candles; the slider brings the rest in. Hover a period for its four prices, its change and its averages. The copy button in the header copies the candles as CSV.
 
 Candles are not only for prices: any measurement folded per period has an open, a high, a low and a close (the first, the largest, the smallest and the last response time of each hour), and reads well this way.
 

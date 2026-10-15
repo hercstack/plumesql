@@ -28,8 +28,8 @@ export default {
         { key: 'top', kind: 'number', label: 'Top rows', default: '100000', description: 'How many rows the view reads from the result, from the first one; the rest are left out' }
       ],
       actions: [
-        { label: 'Reset camera', run: () => { if (stage) stage.reset() } },
-        { label: 'Copy data', run: (ctx) => ctx.copy(csv) }
+        { label: 'Reset camera', icon: 'reset', run: () => { if (stage) stage.reset() } },
+        { label: 'Copy the chart data (CSV)', icon: 'copy', run: (ctx) => ctx.copy(csv) }
       ],
       render: async (root, data, ctx) => {
         if (stage) stage.dispose()

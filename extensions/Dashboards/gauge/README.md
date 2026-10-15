@@ -63,7 +63,7 @@ from pg_catalog.pg_stat_database;
 
 ## Good to know
 
-With two limits the bands are red, amber and green (or the other way round with **Good is** at `low`); with one, red and green. The dial starts at 0 unless told otherwise, and ends on a round number (1, 2, 2.5 or 5 times a power of ten) above the value and the target unless **Dial end** is given. For a live number, pair it with a query extension's `@refresh` timer and the needle moves with each run. **Copy data** copies the number and the dial's range as CSV. From a script: `-- @extension gauge` above the query (add `open`, `only` or `beside`), and `-- @inputs` to answer the settings so the dialog never shows; a result's own menu attaches it too.
+With two limits the bands are red, amber and green (or the other way round with **Good is** at `low`); with one, red and green. The dial starts at 0 unless told otherwise, and ends on a round number (1, 2, 2.5 or 5 times a power of ten) above the value and the target unless **Dial end** is given. For a live number, pair it with a query extension's `@refresh` timer and the needle moves with each run. The copy button in the header copies the number and the dial's range as CSV. From a script: `-- @extension gauge` above the query (add `open`, `only` or `beside`), and `-- @inputs` to answer the settings so the dialog never shows; a result's own menu attaches it too.
 
 ## Requirements
 

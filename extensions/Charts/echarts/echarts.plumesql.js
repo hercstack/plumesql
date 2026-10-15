@@ -34,7 +34,7 @@ export default {
         { key: 'palette', kind: 'choice', label: 'Palette', options: ['Vivid', 'Cool', 'Warm', 'Mono'], default: 'Vivid' },
         { key: 'title', kind: 'text', label: 'Title', default: '' },
       ],
-      actions: [{ label: 'Copy data', run: (ctx) => ctx.copy(csv) }],
+      actions: [{ label: 'Copy the chart data (CSV)', icon: 'copy', run: (ctx) => ctx.copy(csv) }],
       render: async (root, data, ctx) => {
         const echarts = /** @type {any} */ (window).echarts
         if (!echarts) { root.innerHTML = '<div style="padding:16px;color:#888;font:13px system-ui,sans-serif">ECharts did not load. Allow the CDN host in the Log.</div>'; return }

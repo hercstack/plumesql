@@ -23,7 +23,7 @@ export default {
         { key: 'total', kind: 'choice', label: 'Total bar', options: ['yes', 'no'], default: 'yes', description: 'A last bar from zero to where the steps end' },
         { key: 'title', kind: 'text', label: 'Title', default: '' },
       ],
-      actions: [{ label: 'Copy data', run: (ctx) => ctx.copy(csv) }],
+      actions: [{ label: 'Copy the chart data (CSV)', icon: 'copy', run: (ctx) => ctx.copy(csv) }],
       render: async (root, data, ctx) => {
         const echarts = /** @type {any} */ (window).echarts
         if (!echarts) { note(root, 'ECharts did not load. Allow the CDN host in the Log.'); return }

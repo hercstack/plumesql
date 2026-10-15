@@ -231,7 +231,7 @@ export default {
         { key: 'top', kind: 'number', label: 'Top rows', default: '20000', description: 'How many rows the view reads from the result, from the first one' }
       ],
       actions: [
-        { label: 'Reset view', run: () => { if (map && fitTo) map.fitBounds(fitTo, { padding: 48, maxZoom: 15, duration: 400, pitch: tilted ? 55 : 0, bearing: 0 }) } },
+        { label: 'Reset view', icon: 'reset', run: () => { if (map && fitTo) map.fitBounds(fitTo, { padding: 48, maxZoom: 15, duration: 400, pitch: tilted ? 55 : 0, bearing: 0 }) } },
         { label: 'Tilt', run: () => { if (map) { tilted = !tilted; map.easeTo({ pitch: tilted ? 55 : 0, duration: 500 }) } } }
       ],
       render: async (root, data, ctx) => {

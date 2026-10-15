@@ -11,7 +11,7 @@ A **World map** tab beside the grid.
 - **Countries** come from a **Country** column holding a name or an ISO code: `Croatia`, `HR`, `HRV` and `191` are the same country. Names are matched with their usual spellings (`Russian Federation` and `Russia`, `Viet Nam` and `Vietnam`, `Congo, The Democratic Republic of the`), accents, case and punctuation ignored. A country takes its colour from **Value**, folded over its rows (sum, mean, count, max, min or median); without a value, from how many rows name it. The handle on the colour scale narrows the range shown.
 - **Points** come from a **Latitude** and a **Longitude** column, one per row, sized by **Point size** and named by **Point label** in their tooltip. Countries and points can be drawn together.
 - Names the map does not recognise, and countries too small to draw at this scale (Andorra, Singapore, the smaller islands), are listed in the Log, so nothing goes missing silently. An ISO code always works.
-- **Copy data** copies the countries with their folded values (or the points) as CSV.
+- The copy button in the header copies the countries with their folded values (or the points) as CSV.
 
 The shapes are Natural Earth's countries at 1:110m, which is the right detail for a world view; for streets and buildings, the PostGIS map extension draws geometry over a real basemap.
 

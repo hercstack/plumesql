@@ -46,7 +46,7 @@ export default {
         { key: 'good', kind: 'choice', label: 'Good is', options: ['high', 'low'], default: 'high', description: 'Which end of the dial is green' },
         { key: 'title', kind: 'text', label: 'Title', default: '' },
       ],
-      actions: [{ label: 'Copy data', run: (ctx) => ctx.copy(csv) }],
+      actions: [{ label: 'Copy the gauge data (CSV)', icon: 'copy', run: (ctx) => ctx.copy(csv) }],
       render: async (root, data, ctx) => {
         const echarts = /** @type {any} */ (window).echarts
         if (!echarts) { note(root, 'ECharts did not load. Allow the CDN host in the Log.'); return }

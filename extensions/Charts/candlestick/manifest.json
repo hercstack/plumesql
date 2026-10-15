@@ -2,7 +2,7 @@
   "format": 1,
   "id": "candlestick",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Candlestick",
   "description": "Open, high, low and close as candles over time, with moving averages and volume bars; zoom with the slider",

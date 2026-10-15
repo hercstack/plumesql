@@ -2,7 +2,7 @@
   "format": 1,
   "id": "pareto",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Pareto",
   "description": "Categories as bars from largest to smallest with a cumulative share line and an 80% mark (ECharts)",

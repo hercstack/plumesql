@@ -76,7 +76,7 @@ where datname = current_database();
 
 ## Good to know
 
-The previous row is the one before the last (or after the first, when the card shows the first); empty values are skipped. A count card shows no change. The line needs three rows or more. The cards reflow with the pane's width; hand drawn, no chart library. For a live board, pair it with a query extension's `@refresh` timer. **Copy data** copies the cards as CSV. From a script: `-- @extension kpi-cards` above the query (add `open`, `only` or `beside`), and `-- @inputs` to answer the settings so the dialog never shows; a result's own menu attaches it too.
+The previous row is the one before the last (or after the first, when the card shows the first); empty values are skipped. A count card shows no change. The line needs three rows or more. The cards reflow with the pane's width; hand drawn, no chart library. For a live board, pair it with a query extension's `@refresh` timer. The copy button in the header copies the cards as CSV. From a script: `-- @extension kpi-cards` above the query (add `open`, `only` or `beside`), and `-- @inputs` to answer the settings so the dialog never shows; a result's own menu attaches it too.
 
 ## Requirements
 

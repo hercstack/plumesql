@@ -154,7 +154,7 @@ export default {
         { key: 'top', kind: 'number', label: 'Top rows', default: '3000', description: 'How many rows the view reads from the result, from the first one; the projection takes longer the more there are' }
       ],
       actions: [
-        { label: 'Reset camera', run: () => { if (stage) { stage.spin(false); stage.reset() } } },
+        { label: 'Reset camera', icon: 'reset', run: () => { if (stage) { stage.spin(false); stage.reset() } } },
         { label: 'Spin', run: () => { if (stage) stage.spin() } }
       ],
       render: async (root, data, ctx) => {

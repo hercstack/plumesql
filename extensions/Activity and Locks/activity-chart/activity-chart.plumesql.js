@@ -182,7 +182,7 @@ export default {
       ],
       actions: [
         { label: 'Reset', run: () => { store.samples = []; store.hover = -1; store.lastKey = ''; if (store.root && store.ctx) draw(store.root, store.ctx, store.shape) } },
-        { label: 'Copy samples', run: (ctx) => ctx.copy(['time,' + SERIES.join(',')].concat(store.samples.map((s) => new Date(s.t).toISOString() + ',' + s.counts.join(','))).join('\n')) }
+        { label: 'Copy the samples (CSV)', icon: 'copy', run: (ctx) => ctx.copy(['time,' + SERIES.join(',')].concat(store.samples.map((s) => new Date(s.t).toISOString() + ',' + s.counts.join(','))).join('\n')) }
       ],
       render: (root, data, ctx) => {
         const c = sample(data, ctx.inputs || {})

@@ -2,7 +2,7 @@
   "format": 1,
   "id": "gauge",
   "kind": "grid",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "plumesql": ">=0.21.0",
   "name": "Gauge",
   "description": "One number on a dial, with an optional target and green, amber and red bands (ECharts)",

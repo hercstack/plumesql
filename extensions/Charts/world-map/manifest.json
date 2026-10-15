@@ -2,7 +2,7 @@
   "format": 1,
   "id": "world-map",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "World map",
   "description": "Countries coloured by a value, and points from latitude and longitude, on a world map drawn offline; no PostGIS needed",

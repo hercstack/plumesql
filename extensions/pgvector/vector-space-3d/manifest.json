@@ -2,7 +2,7 @@
   "format": 1,
   "id": "vector-space-3d",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.22.0",
   "name": "Vector Space 3D",
   "description": "Embeddings in 3D: a vector column on its three principal axes, coloured by a category; click a point for its nearest neighbours",

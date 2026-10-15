@@ -68,7 +68,7 @@ export default {
         { key: 'format', kind: 'choice', label: 'Number format', options: ['number', 'compact', 'percent', 'currency'], default: 'number' },
         { key: 'title', kind: 'text', label: 'Title', default: '' },
       ],
-      actions: [{ label: 'Copy data', run: (ctx) => ctx.copy(csv) }],
+      actions: [{ label: 'Copy the card data (CSV)', icon: 'copy', run: (ctx) => ctx.copy(csv) }],
       render: async (root, data, ctx) => {
         const cols = data.columns || []
         const inputs = ctx.inputs || {}

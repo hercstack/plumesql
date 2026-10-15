@@ -125,7 +125,7 @@ export default {
         { key: 'top', kind: 'number', label: 'Top rows', default: '10000', description: 'How many rows the view reads from the result, from the first one; the rest are left out' }
       ],
       actions: [
-        { label: 'Copy', icon: 'copy', run: (ctx) => ctx.copy(sqlAll) },
+        { label: 'Copy all rows as SQL', icon: 'copy', run: (ctx) => ctx.copy(sqlAll) },
         { label: 'Copy first 100 rows', run: (ctx) => ctx.copy(sqlFirst) }
       ],
       render: async (root, data, ctx) => {

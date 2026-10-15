@@ -2,7 +2,7 @@
   "format": 1,
   "id": "funnel",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Funnel",
   "description": "Stages narrowing from first to last, each with its share of the first and of the previous stage (ECharts)",

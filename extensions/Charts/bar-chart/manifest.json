@@ -2,7 +2,7 @@
   "format": 1,
   "id": "bar-chart",
   "kind": "grid",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "plumesql": ">=0.21.0",
   "name": "Bar chart",
   "description": "An interactive, hand drawn bar chart of the rows, in a tab of its own",

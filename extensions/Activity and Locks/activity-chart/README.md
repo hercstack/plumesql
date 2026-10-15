@@ -68,7 +68,7 @@ Every setting has a default, so the chart draws with no dialog.
 
 ## Good to know
 
-The points live as long as the tab: close it and the history is gone, and a tab you are not looking at does not refresh, so the chart has a gap for the time nobody looked. **Reset** in the header starts it over; **Copy samples** copies every point as CSV (time and the five counts), to paste into a spreadsheet.
+The points live as long as the tab: close it and the history is gone, and a tab you are not looking at does not refresh, so the chart has a gap for the time nobody looked. **Reset** in the header starts it over; the copy button copies every point as CSV (time and the five counts), to paste into a spreadsheet.
 
 It is the "Server sessions" graph of pgAdmin's dashboard, drawn by hand with no library. Attach it from a script with `-- @extension activity-chart` above a query (add `open`, `only` or `beside` to open on the view), or from a result's own menu; `-- @inputs` answers the settings in the file.
 

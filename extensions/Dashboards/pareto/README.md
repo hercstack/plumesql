@@ -62,7 +62,7 @@ In the dvdrental sample database, four tables of fifteen hold four fifths of the
 
 ## Good to know
 
-The raw rows can go in as they are: the view does the grouping, so `select reason from support_tickets` is enough. Categories with a zero or negative total are left out and the Log says how many. The tooltip shows each bar's value, share and cumulative share. The 80/20 rule is a rule of thumb (the Pareto principle), not a law: the chart shows how close your data comes to it. **Copy data** copies the table behind the chart as CSV. From a script: `-- @extension pareto` above the query (add `open`, `only` or `beside`), and `-- @inputs` to answer the settings so the dialog never shows; a result's own menu attaches it too.
+The raw rows can go in as they are: the view does the grouping, so `select reason from support_tickets` is enough. Categories with a zero or negative total are left out and the Log says how many. The tooltip shows each bar's value, share and cumulative share. The 80/20 rule is a rule of thumb (the Pareto principle), not a law: the chart shows how close your data comes to it. The copy button in the header copies the table behind the chart as CSV. From a script: `-- @extension pareto` above the query (add `open`, `only` or `beside`), and `-- @inputs` to answer the settings so the dialog never shows; a result's own menu attaches it too.
 
 ## Requirements
 

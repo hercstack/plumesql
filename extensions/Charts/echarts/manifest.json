@@ -2,7 +2,7 @@
   "format": 1,
   "id": "echarts",
   "kind": "grid",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "plumesql": ">=0.21.0",
   "name": "Echarts",
   "description": "Line / area / bar / scatter / pie with zoom and a range slider, built for a lot of rows (ECharts)",

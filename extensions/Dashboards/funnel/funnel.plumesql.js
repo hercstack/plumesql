@@ -30,7 +30,7 @@ export default {
         { key: 'sort', kind: 'choice', label: 'Stage order', options: ['as seen', 'descending'], default: 'as seen', description: 'as seen keeps the order the stages first appear in; descending sorts them by value' },
         { key: 'title', kind: 'text', label: 'Title', default: '' },
       ],
-      actions: [{ label: 'Copy data', run: (ctx) => ctx.copy(csv) }],
+      actions: [{ label: 'Copy the chart data (CSV)', icon: 'copy', run: (ctx) => ctx.copy(csv) }],
       render: async (root, data, ctx) => {
         const echarts = /** @type {any} */ (window).echarts
         if (!echarts) { note(root, 'ECharts did not load. Allow the CDN host in the Log.'); return }

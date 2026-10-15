@@ -2,7 +2,7 @@
   "format": 1,
   "id": "tree",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Tree",
   "description": "A hierarchy as a tree: rows with an id and a parent, drawn left to right, as an org chart or radial; click to fold",

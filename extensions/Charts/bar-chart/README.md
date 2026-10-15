@@ -66,7 +66,7 @@ limit 15;
 
 ## Good to know
 
-The chart is hand drawn in plain HTML with no library: the smallest chart extension there is, and the one to read to learn how a view is written. It draws the rows the result shows, up to **Top rows**. **Copy values** in the header copies the numbers, one per line. Both themes. Put `-- @extension bar-chart open` above the query to land on the chart after Run (`only` hides the grid, `beside` splits the two), or attach it from the result's menu; `-- @inputs` answers the settings in the file so nothing asks.
+The chart is hand drawn in plain HTML with no library: the smallest chart extension there is, and the one to read to learn how a view is written. It draws the rows the result shows, up to **Top rows**. The copy button in the header copies the numbers, one per line. Both themes. Put `-- @extension bar-chart open` above the query to land on the chart after Run (`only` hides the grid, `beside` splits the two), or attach it from the result's menu; `-- @inputs` answers the settings in the file so nothing asks.
 
 ## Requirements
 

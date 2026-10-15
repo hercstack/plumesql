@@ -2,7 +2,7 @@
   "format": 1,
   "id": "flythrough-3d",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Flythrough 3D",
   "description": "Fly through a result: rows as boxes packed on shelves in blocks, linked rows joined by paths with signals running along them",

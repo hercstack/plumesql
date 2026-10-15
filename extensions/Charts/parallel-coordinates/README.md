@@ -11,7 +11,7 @@ A **Parallel** tab beside the grid.
 - **Axes** are the columns, in the order given: a number gets a scale, a text column its values in the order they first come.
 - **Colour by** a number runs the lines along a ramp (`ramp` blue to red, or `alarm` green to red), with a handle to narrow the range; a category gives each of its ten most frequent values a colour, toggled from the legend.
 - **Filter by dragging**: a drag along an axis keeps the lines that pass through that stretch and fades the rest. Drag on more axes to combine; click an axis outside its selection to clear it.
-- The lines fade as there are more of them, so a few thousand still read. **Copy data** copies the rows' axes as CSV.
+- The lines fade as there are more of them, so a few thousand still read. The copy button in the header copies the rows' axes as CSV.
 
 ## Inputs
 

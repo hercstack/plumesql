@@ -79,7 +79,7 @@ order by c.name;
 
 ## Good to know
 
-Chart.js 4 draws on a canvas, loaded once on the first draw and cached after. **Copy data** in the header copies the rows drawn as CSV. `-- @extension chartjs` above a query attaches it; `open`, `only` or `beside` after the id says how the tab opens, and `-- @inputs` in the file draws it without the dialog. As the last step of a pipeline it charts what another extension computed, for example RFM segments: `-- @extension rfm | chartjs`.
+Chart.js 4 draws on a canvas, loaded once on the first draw and cached after. The copy button in the header copies the rows drawn as CSV. `-- @extension chartjs` above a query attaches it; `open`, `only` or `beside` after the id says how the tab opens, and `-- @inputs` in the file draws it without the dialog. As the last step of a pipeline it charts what another extension computed, for example RFM segments: `-- @extension rfm | chartjs`.
 
 ## Requirements
 

@@ -2,7 +2,7 @@
   "format": 1,
   "id": "activity-chart",
   "kind": "grid",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "plumesql": ">=0.21.0",
   "name": "Activity chart",
   "description": "The backends of a current activity result as a rolling graph: total, active, idle, in transaction and waiting, one sample per refresh",

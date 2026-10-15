@@ -2,7 +2,7 @@
   "format": 1,
   "id": "scatter-3d",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Scatter 3D",
   "description": "Three numbers at once: every row a point in 3D, coloured and sized by two more columns; orbit, spin, hover and click (three.js)",

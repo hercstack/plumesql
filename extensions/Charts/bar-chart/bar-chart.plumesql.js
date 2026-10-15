@@ -13,7 +13,7 @@ export default {
         { key: 'label', kind: 'column', label: 'Label', description: 'The column that names each bar (the first text column when left empty; the row number when there is none)' },
         { key: 'top', kind: 'number', label: 'Top rows', default: '50', description: 'How many rows the view reads from the result, from the first one; the rest are left out' }
       ],
-      actions: [{ label: 'Copy values', run: (ctx) => ctx.copy(values.join('\n')) }],
+      actions: [{ label: 'Copy the bar values (one per line)', icon: 'copy', run: (ctx) => ctx.copy(values.join('\n')) }],
       render: async (root, data, ctx) => {
         const cols = data.columns || []
         const inputs = ctx.inputs || {}

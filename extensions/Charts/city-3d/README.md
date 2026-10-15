@@ -70,7 +70,7 @@ from (select g,
 
 ## Good to know
 
-Rows with no positive footprint are left out, and the Log says how many. A category colour gives each of the twelve most frequent values a colour; a building with no value for a number colour is muted. **Copy data** copies the buildings as CSV. Labels are drawn over the canvas, so Copy as Image gives the city without its labels. The Storage city extension (Storage and Maintenance) opens a database's tables in this view: schemas as districts, size as the footprint, dead rows as the height. Attach it from a script with `-- @extension city-3d` above a query (add `open`, `only` or `beside` to open on the view), or from a result's own menu; `-- @inputs` answers the settings in the file so the city draws with no dialog.
+Rows with no positive footprint are left out, and the Log says how many. A category colour gives each of the twelve most frequent values a colour; a building with no value for a number colour is muted. The copy button in the header copies the buildings as CSV. Labels are drawn over the canvas, so Copy as Image gives the city without its labels. The Storage city extension (Storage and Maintenance) opens a database's tables in this view: schemas as districts, size as the footprint, dead rows as the height. Attach it from a script with `-- @extension city-3d` above a query (add `open`, `only` or `beside` to open on the view), or from a result's own menu; `-- @inputs` answers the settings in the file so the city draws with no dialog.
 
 ## Requirements
 

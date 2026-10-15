@@ -2,7 +2,7 @@
   "format": 1,
   "id": "parallel-coordinates",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Parallel coordinates",
   "description": "Many columns side by side, every row a line across them, coloured by a number or a category; drag an axis to filter",

@@ -115,8 +115,8 @@ export default {
         { label: 'Fly', run: () => { if (api) api.fly() } },
         { label: 'Tour', run: () => { if (api) api.tour() } },
         { label: 'Signals', run: () => { if (api) api.signals() } },
-        { label: 'Reset camera', run: () => { if (api) api.reset() } },
-        { label: 'Copy data', run: (ctx) => ctx.copy(csv) }
+        { label: 'Reset camera', icon: 'reset', run: () => { if (api) api.reset() } },
+        { label: 'Copy the chart data (CSV)', icon: 'copy', run: (ctx) => ctx.copy(csv) }
       ],
       render: async (root, data, ctx) => {
         if (stage) stage.dispose()

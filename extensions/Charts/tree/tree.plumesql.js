@@ -28,7 +28,7 @@ export default {
         { key: 'top', kind: 'number', label: 'Top rows', default: '20000', description: 'How many rows the view reads from the result, from the first one' }
       ],
       actions: [
-        { label: 'Copy data', run: (ctx) => ctx.copy(csv) }
+        { label: 'Copy the tree nodes (CSV)', icon: 'copy', run: (ctx) => ctx.copy(csv) }
       ],
       render: async (root, data, ctx) => {
         if (!echartsOf()) { note(root, NO_ECHARTS); return }

@@ -2,7 +2,7 @@
   "format": 1,
   "id": "postgis-map",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.24.0",
   "name": "Map",
   "description": "Geometry on a real map: points, lines and polygons over an OpenStreetMap basemap, coloured, sized and raised by columns",

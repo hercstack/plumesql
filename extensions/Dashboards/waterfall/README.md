@@ -62,7 +62,7 @@ select * from (values ('Base price', 80), ('Shipping', 6.5), ('Gift wrap', 3), (
 
 ## Good to know
 
-The first row is usually the starting balance and the rest the changes, in the order the query returns them. A step that crosses zero is drawn whole, part above the axis and part below. Rows without a number are skipped and the Log says how many. Up to 500 bars; past 40 a zoom slider appears, and past 500 the rest are left out and the Log says how many (fold them in SQL). The tooltip shows each step and the running total after it. **Copy data** copies the steps and running totals as CSV. From a script: `-- @extension waterfall` above the query (add `open`, `only` or `beside`), and `-- @inputs` to answer the settings so the dialog never shows; a result's own menu attaches it too.
+The first row is usually the starting balance and the rest the changes, in the order the query returns them. A step that crosses zero is drawn whole, part above the axis and part below. Rows without a number are skipped and the Log says how many. Up to 500 bars; past 40 a zoom slider appears, and past 500 the rest are left out and the Log says how many (fold them in SQL). The tooltip shows each step and the running total after it. The copy button in the header copies the steps and running totals as CSV. From a script: `-- @extension waterfall` above the query (add `open`, `only` or `beside`), and `-- @inputs` to answer the settings so the dialog never shows; a result's own menu attaches it too.
 
 ## Requirements
 

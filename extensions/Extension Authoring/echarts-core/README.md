@@ -10,7 +10,7 @@ Import it from `$ext/echarts-core/echarts-core.plumesql.js` and list `echarts-co
 - **One chart per view**: `mount(root, previous)` disposes the chart the view drew last and starts a new one filling the view, so a redraw leaves no canvas or listener behind.
 - **The theme**: `themeOf(ctx)` gives the colours to paint with (text, muted text, lines, grid, panes, the accent, a categorical set, two ramps, up and down). Under Dark and Light they are the curated set every chart was drawn against; under a theme extension, that theme's own colours, so a chart follows Nord or Solarized like the rest of the app.
 - **Options in the theme**: `titleOf`, `tooltipOf`, `axisOf`, `legendOf` and `sliderOf` return the ECharts option pieces every chart repeats, already coloured; each takes extra options to merge.
-- **Small helpers**: `note(root, message)` for a calm line in place of a chart, `NO_ECHARTS` (the message when the library did not load), `rampColor`, `fmtNum` (1.2k, 3.4M), `csvCell` and `csvOf` for a Copy data menu, and `esc` for text put into a tooltip.
+- **Small helpers**: `note(root, message)` for a calm line in place of a chart, `NO_ECHARTS` (the message when the library did not load), `rampColor`, `fmtNum` (1.2k, 3.4M), `csvCell` and `csvOf` for the CSV a copy button copies, and `esc` for text put into a tooltip.
 
 A bar chart of one number per category:
 
