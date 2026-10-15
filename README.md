@@ -4,11 +4,11 @@
 > can become a monitor, a dashboard or a button.
 
 > [!NOTE]
-> **PlumeSQL 0.24.0 is here**, our biggest release so far: one
-> script on several servers, a lightbulb that reads your data, a
-> PostgreSQL server or a sample database in one click, and extensions
-> that tell you what they can do before you install them.
-> [What's in it](changelog/free-v0.24.0/README.md).
+> **PlumeSQL 0.26.0 is here**: faster queries from the lightbulb
+> (conditions an index can read, keyset pages, STABLE functions,
+> constraints that keep writes going), scripts that run statement by
+> statement with no hidden transaction, Run All above a script, and a
+> camera on every chart. [What's in it](changelog/free-v0.26.0/README.md).
 >
 > PlumeSQL is still in beta: new releases come often, and features can
 > still change between them. The app updates itself. Something broken
