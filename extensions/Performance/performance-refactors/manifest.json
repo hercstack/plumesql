@@ -1,0 +1,45 @@
+{
+  "format": 1,
+  "id": "performance-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.25.0",
+  "name": "Performance refactors",
+  "description": "Faster queries from the lightbulb: conditions an index can read, keyset pages, STABLE functions, constraints that keep writes going",
+  "categories": [
+    "Performance"
+  ],
+  "tags": [
+    "performance",
+    "index",
+    "sargable",
+    "keyset pagination",
+    "offset",
+    "stable",
+    "not valid",
+    "refactor"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "performance-refactors.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 224,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

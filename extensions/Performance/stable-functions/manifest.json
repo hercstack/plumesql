@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "stable-functions",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.25.0",
+  "name": "Functions that could be STABLE",
+  "description": "PL/pgSQL functions left VOLATILE that only read: declared STABLE, they run once per query and an index can serve them",
+  "categories": [
+    "Performance"
+  ],
+  "tags": [
+    "performance",
+    "functions",
+    "plpgsql",
+    "stable",
+    "volatile",
+    "volatility",
+    "indexes",
+    "alter function"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "stable-functions.plumesql.sql"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 226,
+  "externals": [],
+  "demo": "media/stable-functions.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

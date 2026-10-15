@@ -1,0 +1,45 @@
+{
+  "format": 1,
+  "id": "sample-data",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.24.0",
+  "name": "Sample data",
+  "description": "Made-up rows for a table from the lightbulb, written as an INSERT script in a new tab; nothing runs until you run it",
+  "categories": [
+    "Objects"
+  ],
+  "tags": [
+    "sample data",
+    "test data",
+    "fake data",
+    "mock data",
+    "seed",
+    "generate_series",
+    "insert",
+    "refactor"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "sample-data.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 225,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}
