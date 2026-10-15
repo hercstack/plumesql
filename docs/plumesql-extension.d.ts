@@ -283,7 +283,10 @@ interface RenderContext {
 interface PlumeSQLViewAction {
   /** The button's label (also its tooltip). */
   label: string;
-  /** An optional icon name (a short generic word); the label shows if absent. */
+  /** An optional icon name, one of the app's own glyphs: `copy` (the copy
+   * glyph every pane's Copy all rows has), `refresh`, `reset`, `play`,
+   * `search`. The button then shows the glyph with the label as its
+   * tooltip; with no icon, or a name not in this list, it shows the label. */
   icon?: string;
   /** What the button does, given the view's render ctx. */
   run(ctx: RenderContext): void | Promise<void>;
@@ -499,6 +502,14 @@ interface RefactorColumn {
   type: string;
   /** Its place in the primary key, 1 for the first column; absent when in none. */
   pk?: number;
+  /** True when it can hold no NULL (NOT NULL, or in the primary key); absent otherwise. PlumeSQL 0.26.0 and later. */
+  notNull?: boolean;
+  /** An identity column's GENERATED ALWAYS or BY DEFAULT; absent for any other. PlumeSQL 0.26.0 and later. */
+  identity?: 'always' | 'by default';
+  /** A generated column (GENERATED ALWAYS AS (...)), computed from the others: an INSERT cannot set it. PlumeSQL 0.26.0 and later. */
+  generated?: 'stored' | 'virtual';
+  /** The DEFAULT expression as PostgreSQL prints it (`now()`, `nextval('orders_id_seq'::regclass)`); absent when none. PlumeSQL 0.26.0 and later. */
+  default?: string;
   /** The column a foreign key makes this one reference. */
   ref?: { schema: string; table: string; column: string };
 }
@@ -520,6 +531,8 @@ interface RefactorTable {
    * (when the lightbulb's list is opened); absent before, and for a table
    * never analyzed. */
   rows?: number;
+  /** Its constraints' names (keys, foreign keys, checks, exclusions), when it has any. PlumeSQL 0.26.0 and later. */
+  constraints?: string[];
 }
 
 /** One index of a relation. */
@@ -544,12 +557,48 @@ interface RefactorStatement {
   /** Its leading keyword in lower case: 'select', 'with', 'insert', ... */
   keyword: string;
   /** The relations it reads or writes at its own level (FROM and JOINs, an
-   * UPDATE's or a DELETE's target, an INSERT's table). */
+   * UPDATE's or a DELETE's target, an INSERT's table, and from PlumeSQL
+   * 0.26.0 an ALTER TABLE's table). */
   tables: RefactorTable[];
   /** A query's main SELECT, read by PlumeSQL so a refactor carries no SQL
    * parser: absent for anything but a SELECT (or a WITH over one) and for
    * a set operation (UNION, INTERSECT, EXCEPT). */
   query?: RefactorQuery;
+  /** A CREATE FUNCTION's or CREATE PROCEDURE's facts and what its body
+   * does, read by PostgreSQL's own parser: absent for anything else and
+   * until the parser has loaded. PlumeSQL 0.26.0 and later. */
+  routine?: RefactorRoutine;
+}
+
+/** What a CREATE FUNCTION or CREATE PROCEDURE states, and what its body does. */
+interface RefactorRoutine {
+  kind: 'function' | 'procedure';
+  /** Lower case: 'plpgsql', 'sql', 'c' ... */
+  language: string;
+  /** As declared; absent when the statement declares none (PostgreSQL then takes VOLATILE). */
+  volatility?: 'immutable' | 'stable' | 'volatile';
+  /** The return type as the parser names it ('int4', 'text', 'void', 'trigger'), 'setof ' before a set; absent for a procedure. */
+  returns?: string;
+  /** The LANGUAGE clause in text: a word added after it (' stable') goes at its 'to'. */
+  languageClause?: { from: number; to: number };
+  /** What the body does; absent when it does not parse, and for a C or internal function. */
+  body?: RefactorRoutineBody;
+}
+
+/** What a routine's body does, read statement by statement. */
+interface RefactorRoutineBody {
+  /** A statement that is not a query (INSERT, UPDATE, DELETE, MERGE, DDL, SET ...), or a query with a data-modifying WITH. */
+  writes: boolean;
+  /** SQL built at run time: EXECUTE, FOR ... IN EXECUTE, OPEN ... FOR EXECUTE, RETURN QUERY EXECUTE. */
+  dynamic: boolean;
+  /** COMMIT or ROLLBACK. */
+  transaction: boolean;
+  /** A query that locks rows (FOR UPDATE, FOR SHARE ...). */
+  locks: boolean;
+  /** Every function and procedure it calls, each name once in order, with
+   * its volatility from the dictionary (absent for a name the dictionary
+   * does not know). */
+  calls: { name: string; volatility?: 'immutable' | 'stable' | 'volatile' }[];
 }
 
 /** The main SELECT of a query, at the statement's own level (a CTE's body
@@ -622,6 +671,8 @@ interface RefactorContext {
   /** Where the user wants a new statement a refactor writes: 'above' the
    * statement, or in a new 'tab' (answer an offer with tab then). */
   queryPlace: 'above' | 'tab';
+  /** How the user writes a run parameter (the Refactors settings): '$name' or ':name'. Absent before PlumeSQL 0.26.0, which wrote '$name'. */
+  paramStyle?: '$name' | ':name';
   /** What the statement returned the last time it ran AS WRITTEN (its text
    * unchanged since): absent before a run and after an edit. Offer what
    * depends on the data only when it is here. */

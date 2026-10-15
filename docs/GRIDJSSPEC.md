@@ -138,6 +138,24 @@ export interface RefactorStatement {
   tables: RefactorTable[]
   // A query's main SELECT, absent for anything else and for a set operation.
   query?: RefactorQuery
+  routine?: RefactorRoutine
+}
+
+export interface RefactorRoutine {
+  kind: 'function' | 'procedure'
+  language: string
+  volatility?: 'immutable' | 'stable' | 'volatile'
+  returns?: string
+  languageClause?: { from: number; to: number }
+  body?: RefactorRoutineBody
+}
+
+export interface RefactorRoutineBody {
+  writes: boolean
+  dynamic: boolean
+  transaction: boolean
+  locks: boolean
+  calls: { name: string; volatility?: 'immutable' | 'stable' | 'volatile' }[]
 }
 
 // The main SELECT of a query, at the statement's own level (a CTE's body
@@ -181,6 +199,7 @@ export interface RefactorTable {
   // has read the statistics (PlumeSQL: when the lightbulb's list is
   // opened); absent before, and for a table never analyzed.
   rows?: number
+  constraints?: string[]
 }
 
 // spec: one index. `method` the access method ('btree', 'gin', 'hnsw');
@@ -197,11 +216,17 @@ export interface RefactorIndex {
 // spec: one column. `type` is the declared type as PostgreSQL prints it
 // ('integer', 'vector(3)', 'geometry(Point,4326)'); `pk` its place in the
 // primary key (1 for the first column), absent when it is in none; `ref`
-// the column a foreign key makes it reference.
+// the column a foreign key makes it reference; `identity` how an identity
+// column takes its values; `generated` a column computed from the others;
+// `default` the DEFAULT expression as PostgreSQL prints it.
 export interface RefactorColumn {
   name: string
   type: string
   pk?: number
+  notNull?: boolean
+  identity?: 'always' | 'by default'
+  generated?: 'stored' | 'virtual'
+  default?: string
   ref?: { schema: string; table: string; column: string }
 }
 
@@ -215,6 +240,7 @@ export interface RefactorContext {
   // spec: where the user wants a NEW statement a refactor writes: 'above'
   // the statement in the same script, or in a new 'tab' (an offer's tab).
   queryPlace: 'above' | 'tab'
+  paramStyle: '$name' | ':name'
   // spec: what the statement returned the last time it ran AS WRITTEN (its
   // text unchanged since), when it did: the columns with their declared
   // types and the first 50 rows, each value the server's text (null for
@@ -1086,18 +1112,26 @@ quick and MUST answer from what it is given; it cannot ask the server.
 - `keyword`: the leading keyword in lower case (`select`, `with`, `insert`,
   `update`, `delete`, ...).
 - `tables`: the relations the statement reads or writes at its own level (its
-  FROM and JOINs, an UPDATE's or a DELETE's target, an INSERT's table),
+  FROM and JOINs, an UPDATE's or a DELETE's target, an INSERT's table, an
+  ALTER TABLE's table),
   resolved in the connection's dictionary; one the dictionary does not know
   is left out, a subquery's own tables are not listed. Each carries `ref`
   (how the statement names it), `alias`, the exact `schema` and `name`, its
   `columns` (`name`, the declared `type` as PostgreSQL prints it, `pk` its
-  place in the primary key, `ref` the column a foreign key makes it
-  reference), `timescale.timeColumn` when it is a TimescaleDB hypertable,
+  place in the primary key, `notNull` true when it can hold no NULL (NOT
+  NULL, or in the primary key), `identity` (`always` or `by default`) for
+  an identity column, `generated` (`stored` or `virtual`) for a column
+  computed from the others, which an INSERT cannot set, `default` its
+  DEFAULT expression as PostgreSQL prints it (`now()`,
+  `nextval('orders_id_seq'::regclass)`), absent when it has none, `ref`
+  the column a foreign key makes it reference), `timescale.timeColumn` when it is a TimescaleDB hypertable,
   `indexes` (each index's `name`, `method`, `unique`, key columns `keys` and
   operator classes `ops`) when the dictionary knows them, and `rows`, the
   statistics' row estimate, once the host has read the statistics (PlumeSQL
   reads them when the lightbulb's list is opened, so a refactor asked on a
-  caret move before that sees no `rows`); a table never analyzed has none.
+  caret move before that sees no `rows`); a table never analyzed has none;
+  and `constraints`, the names of its constraints (keys, foreign keys,
+  checks, exclusions) when it has any.
 - `query`: a query's MAIN SELECT, read by the host so a refactor carries no
   SQL parser of its own; absent for anything but a SELECT (or a WITH whose
   main statement is one) and for a set operation (UNION, INTERSECT,
@@ -1119,10 +1153,32 @@ quick and MUST answer from what it is given; it cannot ask the server.
   after the list that the query writes, from its keyword to its last token:
   `into`, `from`, `where`, `groupBy`, `having`, `window`, `orderBy`,
   `limit`, `offset`, `fetch`, `for` (the locking clause).
+- `routine`: a CREATE FUNCTION's or CREATE PROCEDURE's facts, read by
+  PostgreSQL's own parser, so a refactor that rewrites a routine carries
+  no parser either; absent for any other statement and until the parser
+  has loaded. It carries `kind` (`function` or `procedure`), `language` in
+  lower case, `volatility` as declared (`immutable`, `stable`,
+  `volatile`; absent when the statement declares none, which PostgreSQL
+  reads as VOLATILE), `returns` (the return type as the parser names it:
+  `int4`, `text`, `void`, `trigger`, with `setof ` before a set; absent
+  for a procedure), `languageClause` (`from` and `to` of the LANGUAGE
+  clause: a word added after it goes at `to`) and `body`, what the body
+  does, absent when it does not parse and for a C or internal function:
+  `writes` (a statement that is not a query, or a query with a
+  data-modifying WITH), `dynamic` (SQL built at run time: EXECUTE, FOR ...
+  IN EXECUTE, OPEN ... FOR EXECUTE, RETURN QUERY EXECUTE), `transaction`
+  (COMMIT or ROLLBACK), `locks` (a query with FOR UPDATE or FOR SHARE) and
+  `calls`, every function and procedure it calls, each name once in
+  order, with its `volatility` from the connection's dictionary (absent
+  for a name the dictionary does not know). These are facts, never a
+  verdict: whether a body may be declared STABLE, for one, is the
+  refactor's to decide.
 
 `ctx` carries `serverVersion` (the connected server's major version, when
-known), `options` (below), `queryPlace`, `result` and `log` (a line to
-PlumeSQL's Log, as for a formula). `queryPlace` is where the user wants a
+known), `options` (below), `queryPlace`, `paramStyle`, `result` and `log`
+(a line to PlumeSQL's Log, as for a formula). `paramStyle` is how the user
+writes a run parameter, `$name` or `:name` (the Refactors settings): a
+refactor that writes one follows it. `queryPlace` is where the user wants a
 NEW statement a refactor writes (a count over the query, a preview of the
 rows a change touches): `above` the statement, in the same script, or in a
 new `tab`. A refactor that writes one SHOULD follow it: an edit at offset 0
@@ -1179,7 +1235,9 @@ came from, as a way to its page (PlumeSQL: the extension's cube at the
 end of the lightbulb's row); the extension says nothing about it. An offer MAY carry `tab` instead, the text of a NEW
 statement (at most 1,000,000 characters): choosing it opens that statement
 in a new tab and leaves the script as it is; its `edits` are then ignored
-and may be empty. A host lists an offer that writes a new statement (a
+and may be empty. (PlumeSQL: the tab is an unsaved script named after the
+offer's title, without a trailing "(new tab)"; Save asks where and under
+which name.) A host lists an offer that writes a new statement (a
 `tab`, or edits that only insert whole statements before or after this one)
 with its own such refactors (PlumeSQL: Write a Statement). An insertion at offset 0 that
 writes whole statements is placed ABOVE the comment lines right over the
