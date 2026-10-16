@@ -33,9 +33,10 @@
     },
     {
       "name": "For everyone",
-      "description": "How values read and how the app looks, whatever you query",
+      "description": "Whatever you query: queries that return what you meant, how values read, how the app looks",
       "categories": [
         "Packs",
+        "Correctness",
         "Formatting",
         "Themes"
       ]

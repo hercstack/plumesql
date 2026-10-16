@@ -5,12 +5,14 @@
     "json-to-rows",
     "rows-as-sql",
     "explain-plan",
+    "performance-refactors",
     "profile",
     "json",
     "nulls",
     "short-uuid",
     "time-ago",
     "bytea",
-    "object-dependents"
+    "object-dependents",
+    "correctness-refactors"
   ]
 }

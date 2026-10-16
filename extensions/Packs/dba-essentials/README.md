@@ -20,6 +20,7 @@ The questions a database administrator asks every week, each one click away: wha
 
 - **Top queries**: the heaviest statements on the server, from `pg_stat_statements` (the server needs that extension).
 - **Explain plan**: every `EXPLAIN` you run drawn as a plan you can read: where the time goes, what was misjudged.
+- **Performance refactors**: the lightbulb rewrites a slow query where it measurably helps: a condition the index can read, keyset pages instead of OFFSET, STABLE functions, constraints added without holding writes.
 
 **Indexes**
 

@@ -1,0 +1,46 @@
+{
+  "format": 1,
+  "id": "correctness-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.26.2",
+  "name": "Correctness refactors",
+  "description": "Queries that return what you meant: a LEFT JOIN the WHERE undoes, = NULL, count(*) over a LEFT JOIN, BETWEEN's lost last day, AND and OR",
+  "categories": [
+    "Correctness"
+  ],
+  "tags": [
+    "correctness",
+    "left join",
+    "null",
+    "count",
+    "between",
+    "timestamp",
+    "precedence",
+    "refactor"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "correctness-refactors.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 229,
+  "externals": [],
+  "featured": true,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

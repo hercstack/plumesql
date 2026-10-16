@@ -26,9 +26,14 @@ The everyday set for someone writing an application against PostgreSQL: find whe
 - **Time ago**: a timestamp named `*_at` reads as "3 hours ago", the exact time on hover.
 - **Bytea**: a binary column reads as what it holds: a PNG of 640 x 480, a PDF, a zip, text.
 
+**Queries that return what you meant**
+
+- **Correctness refactors**: the lightbulb catches a LEFT JOIN the WHERE undoes, `= NULL`, `count(*)` over a LEFT JOIN, a BETWEEN that loses its last day and AND with OR without parentheses.
+
 **Performance**
 
 - **Explain plan**: every `EXPLAIN` you run drawn as a plan you can read.
+- **Performance refactors**: the lightbulb rewrites a slow query where it measurably helps: a condition the index can read, keyset pages instead of OFFSET, STABLE functions.
 - **Profile**: every column of a result at a glance: empty values, distinct values, range.
 
 ## Where to start

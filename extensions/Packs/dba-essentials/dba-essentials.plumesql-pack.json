@@ -8,6 +8,7 @@
     "wait-events",
     "top-queries",
     "explain-plan",
+    "performance-refactors",
     "cache-hit-ratio",
     "unused-indexes",
     "duplicate-indexes",

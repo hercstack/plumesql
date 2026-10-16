@@ -37,6 +37,7 @@
   },
   "discussion": 224,
   "externals": [],
+  "featured": true,
   "author": {
     "name": "PlumeSQL",
     "url": "https://plumesql.com"
