@@ -54,7 +54,7 @@ export const FORMAT = 1
 // header line is a typo the app would report, so the catalog refuses it first.
 export const ANNOTATIONS = new Set([
   'description', 'desc', 'refresh', 'hide', 'toolbar', 'color', 'face', 'connection', 'extension',
-  'inputs', 'ask', 'noask', 'for', 'env', 'file', 'dir', 'var', 'open-on-success', 'open-on-failure',
+  'inputs', 'ask', 'noask', 'format', 'computed', 'for', 'env', 'file', 'dir', 'var', 'open-on-success', 'open-on-failure',
   'open-on-done', 'alert-on-success', 'alert-on-failure', 'alert-on-done', 'format-keywords', 'format-commas',
   'format-indent', 'format-width', 'readonly', 'confirm-writes', 'parse', 'button', 'row-action', 'action',
   'open', 'on', 'confirm', 'at', 'inline', 'pick', 'choices', 'help'

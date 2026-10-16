@@ -166,6 +166,10 @@ export interface RefactorQuery {
   clauses: Partial<Record<'into' | 'from' | 'where' | 'groupBy' | 'having' | 'window' | 'orderBy' | 'limit' | 'offset' | 'fetch' | 'for', { from: number; to: number }>>
   distinct?: boolean
   end: number
+  // What PostgreSQL's parser reads (PlumeSQL 0.26.2 and later): the
+  // FROM's joins in the order written, and the WHERE as an expression.
+  joins?: RefactorJoin[]
+  where?: RefactorExpr
 }
 
 // One item of the select list.
@@ -179,6 +183,42 @@ export interface RefactorQueryItem {
   aggregate?: boolean
   column?: string[]
   type?: string
+  // Its expression as the parser reads it, the alias left out.
+  expr?: RefactorExpr
+}
+
+// One join of the FROM: what is joined, the words that join it, and ON.
+export interface RefactorJoin {
+  kind: 'inner' | 'left' | 'right' | 'full' | 'cross'
+  natural?: boolean
+  table?: string
+  schema?: string
+  alias?: string
+  lateral?: boolean
+  keyword?: { from: number; to: number }
+  on?: RefactorExpr
+  using?: string[]
+}
+
+// An expression as PostgreSQL's parser reads it, where it is written.
+export interface RefactorExpr {
+  kind:
+    | 'and' | 'or' | 'not' | 'operator'
+    | 'between' | 'not between' | 'in' | 'not in'
+    | 'like' | 'not like' | 'ilike' | 'not ilike'
+    | 'distinct' | 'not distinct' | 'is null' | 'is not null'
+    | 'column' | 'constant' | 'cast' | 'function' | 'subquery' | 'case' | 'other'
+  from: number
+  to: number
+  parenthesized?: boolean
+  op?: string
+  args?: RefactorExpr[]
+  column?: string[]
+  value?: string
+  type?: 'string' | 'number' | 'boolean' | 'null'
+  name?: string
+  star?: { from: number; to: number }
+  over?: boolean
 }
 
 // spec: one relation of the statement. `ref` is how the statement names it
@@ -479,6 +519,9 @@ export interface GridContext {
   // For a SpreadRule's column: the key its spread answered for it. Absent
   // for every other rule.
   key?: string
+  // The formatting helpers (gridfmt.ts): ctx.fmt.number(value) and the rest,
+  // the same object a formula written as text reaches as plain `fmt`.
+  fmt: GridFmt
 }
 
 // spec: what a formula returns. A plain value shows as text; a descriptor also
@@ -613,6 +656,13 @@ not the formatted text). A formatter that throws on a row leaves that computed
 cell undressed. A host SHOULD count computed columns as columns wherever a
 column input is answered or checked.
 
+A host MAY let the file that produces a result shape it with formulas of
+its own, beside the modules' rules (PlumeSQL: a script's `-- @format` and
+`-- @computed` lines, docs/ACTIONSPEC.md 8.35 and 8.36). Such a format is
+the consuming file's word and SHOULD win over every module's formatter of
+the same column, whatever their priorities; among its own, the same
+specificity applies, and on a tie the line nearer the query.
+
 ### 5. Placement (`at`)
 
 An AddRule's `at` places its computed column in the grid: `'end'` (the default)
@@ -650,7 +700,8 @@ ctx)`:
   previous returned value; this is what makes a running total possible),
   `inputs` (the answers to the module's inputs, section 10, every one a string;
   an empty object when the module declares none), and
-  `log` (a function that writes a line to the host's log, like `console.log`).
+  `log` (a function that writes a line to the host's log, like `console.log`),
+  and `fmt`, the formatting helpers (below).
   - `prev` threads over the rows the host computes together. When the result is
     small enough to compute at once, that is the WHOLE result, so a value that
     accumulates down the rows (a running total) is correct end to end. On a large
@@ -693,7 +744,28 @@ cycle. Dynamic `import()` is not resolved.
 
 An inline rule authored in the host UI (a formula typed as a string, not a file)
 is compiled from its source and is self contained by nature; there, a body with
-no `return` is treated as a single returned expression.
+no `return` is treated as a single returned expression, and the formatting
+helpers are in scope as plain `fmt` as well as `ctx.fmt`.
+
+**The formatting helpers.** `ctx.fmt` holds the shapes a format most often
+wants, each one call, so a formula stays short. Each leaves a value it cannot
+read UNCHANGED, and NULL above all, so a NULL cell keeps showing NULL:
+
+| Helper | What it returns |
+|---|---|
+| `fmt.number(value, options?)` | the number with the locale's group separators, right aligned; `options` are `Intl.NumberFormat`'s |
+| `fmt.currency(value, currency = 'USD', options?)` | the number as an amount of money in the currency named by its ISO code, right aligned |
+| `fmt.percent(value, digits = 0)` | a fraction as a percentage: 0.25 reads 25% |
+| `fmt.date(value)` | the day of a date or timestamp, `YYYY-MM-DD` |
+| `fmt.ago(value)` | how long ago (or ahead) a timestamp is, with the exact value as the cell's title |
+| `fmt.yesNo(value, yes = 'Yes', no = 'No')` | a boolean in words, `fmt-ok` for true and `fmt-bad` for false |
+| `fmt.upper(value)`, `fmt.lower(value)` | the text in capitals, in small letters |
+| `fmt.tag(value)` | the value in a rounded tag, its text escaped |
+| `fmt.dimNull(value, text = '(null)')` | NULL as a dimmed word |
+| `fmt.escape(text)` | the text made safe to put into a descriptor's `html` |
+
+A numeric value that arrives as decimal text keeps its exact digits on its way
+to the separators where the engine's `Intl.NumberFormat` reads decimal strings.
 
 A formula MAY write to the host's log through `ctx.log(...)` or the standard
 `console` (`log`, `info`, `debug`, `warn`, `error`, and `dir`, `trace`, `group`,
@@ -1153,6 +1225,38 @@ quick and MUST answer from what it is given; it cannot ask the server.
   after the list that the query writes, from its keyword to its last token:
   `into`, `from`, `where`, `groupBy`, `having`, `window`, `orderBy`,
   `limit`, `offset`, `fetch`, `for` (the locking clause).
+  From PlumeSQL 0.26.2, once PostgreSQL's parser has loaded and when the
+  statement parses, `query` also carries what that parser reads, facts and
+  never a verdict, so a refactor that asks what a condition does carries
+  no parser either: `joins`, the FROM's joins in the order written, each
+  with its `kind` (`inner`, `left`, `right`, `full`, `cross` for a join
+  with no condition), `natural`, the `table` (and `schema`) joined as the
+  parser reads the name, or a subquery's or function's `lateral`, its
+  `alias`, `keyword` (the join's words from LEFT, INNER, NATURAL or CROSS to
+  JOIN: replacing them turns a LEFT JOIN into a JOIN; absent for a join
+  inside parentheses), `on` (ON's condition) or `using`; `where`, the
+  WHERE as an expression; and each item's `expr`, its expression without
+  its alias. An expression (`RefactorExpr`) carries its `kind` (`and`,
+  `or`, `not`, `operator`, `between`, `not between`, `in`, `not in`,
+  `like`, `not like`, `ilike`, `not ilike`, `distinct` and `not distinct`
+  for IS [NOT] DISTINCT FROM, `is null`, `is not null`, `column`,
+  `constant`, `cast`, `function`, `subquery`, `case`, `other`), where it is
+  written (`from`, `to`, its own parentheses outside, and
+  `parenthesized` when it has some: an AND written inside an OR without
+  them is one PostgreSQL grouped by precedence), and by kind: `op` (the
+  operator as PostgreSQL names it: `<>` for both `<>` and `!=`), `args`
+  (the operands in order: an operator's, a BETWEEN's value and bounds, an
+  IN's value then its list, a LIKE's value and pattern, a null test's
+  value, AND's and OR's terms, NOT's term, a cast's value, a function's
+  arguments), `column` (a column's parts, unquoted), a constant's `value`
+  (a string without its quotes; absent for NULL) and `type` (`string`,
+  `number`, `boolean`, `null`), `name` (a function's, unqualified; a
+  cast's type as the parser names it: `date`, `timestamptz`), `star` (the
+  `*` of `count(*)`) and `over` (a window call). Where the text cannot be
+  taken apart the way the parser reads it, an expression keeps its kind
+  and place and has no `args`: offer nothing about it. On an older
+  PlumeSQL these are absent; an extension that reads them offers the rest
+  and keeps installing there.
 - `routine`: a CREATE FUNCTION's or CREATE PROCEDURE's facts, read by
   PostgreSQL's own parser, so a refactor that rewrites a routine carries
   no parser either; absent for any other statement and until the parser

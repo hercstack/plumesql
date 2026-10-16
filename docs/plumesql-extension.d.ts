@@ -38,7 +38,50 @@ interface GridContext {
   /** In a spread rule's column: the key its spread answered for this column.
    * Absent for every other rule. */
   key?: string;
+  /** The formatting helpers: ctx.fmt.number(value), ctx.fmt.ago(value) and the
+   * rest. A formula written on a script's -- @format or -- @computed line
+   * reaches the same helpers as plain fmt. */
+  fmt: GridFmt;
 }
+
+/** The formatting helpers a formula reaches as ctx.fmt (and as fmt on a
+ * script's -- @format and -- @computed lines). Each one leaves a value it
+ * cannot read unchanged, NULL above all, so a NULL cell keeps showing NULL. */
+interface GridFmt {
+  /** The number with the locale's group separators, right aligned. options
+   * are Intl.NumberFormat's, such as { maximumFractionDigits: 2 }. */
+  number(value: GridValue, options?: Intl.NumberFormatOptions): GridResult;
+  /** The number as an amount of money in the currency named by its ISO code
+   * (USD by default), right aligned. */
+  currency(value: GridValue, currency?: string, options?: Intl.NumberFormatOptions): GridResult;
+  /** A fraction as a percentage with this many decimals (0 by default):
+   * 0.25 reads 25%. */
+  percent(value: GridValue, digits?: number): GridResult;
+  /** The day of a date or timestamp, YYYY-MM-DD. */
+  date(value: GridValue): GridResult;
+  /** How long ago (or how far ahead) a timestamp is, such as 3 hours ago,
+   * with the exact value on hover. */
+  ago(value: GridValue): GridResult;
+  /** A boolean in words (Yes and No by default), green for true and red for
+   * false. */
+  yesNo(value: GridValue, yes?: string, no?: string): GridResult;
+  /** The text in capitals. */
+  upper(value: GridValue): GridResult;
+  /** The text in small letters. */
+  lower(value: GridValue): GridResult;
+  /** The value in a rounded tag. */
+  tag(value: GridValue): GridResult;
+  /** NULL as a dimmed word ((null) by default), so it stands apart from an
+   * empty string. */
+  dimNull(value: GridValue, text?: string): GridResult;
+  /** Text made safe to put into a cell descriptor's html. */
+  escape(text: unknown): string;
+}
+
+/** The formula on a script's -- @format or -- @computed line, as its editor
+ * tab shows it: the cell, the row, the row above, the context and the
+ * formatting helpers, returning what the cell shows. */
+type PlumeSQLFormula = (value: GridValue, row: GridRow, prevRow: GridRow | null, ctx: GridContext, fmt: GridFmt) => GridResult;
 
 /** The context of a spread rule's spread call. */
 interface SpreadContext {
@@ -628,6 +671,78 @@ interface RefactorQuery {
   /** Where the body ends, before the ';' and any trailing comment: the
    * query as a CTE is text.slice(0, end). */
   end: number;
+  /** The FROM's joins in the order written, as PostgreSQL's parser reads
+   * them. Absent until the parser has loaded, for a statement that does
+   * not parse, and before PlumeSQL 0.26.2. */
+  joins?: RefactorJoin[];
+  /** The WHERE as an expression tree, as PostgreSQL's parser reads it.
+   * Absent when the query has none, until the parser has loaded, for a
+   * statement that does not parse, and before PlumeSQL 0.26.2. */
+  where?: RefactorExpr;
+}
+
+/** One join of a query's FROM. */
+interface RefactorJoin {
+  /** 'cross' for CROSS JOIN (an inner join with no condition). */
+  kind: 'inner' | 'left' | 'right' | 'full' | 'cross';
+  /** NATURAL JOIN. */
+  natural?: boolean;
+  /** The table or view joined (the right side), as the parser reads its
+   * name (unquoted; an unquoted name in lower case), and its schema when
+   * written. Absent for a subquery or a function. */
+  table?: string;
+  schema?: string;
+  /** The alias of what is joined. */
+  alias?: string;
+  /** A LATERAL subquery or function. */
+  lateral?: boolean;
+  /** The join's words, from the first (LEFT, INNER, NATURAL, CROSS) to
+   * JOIN: an edit turning a LEFT JOIN into a JOIN replaces them. Absent
+   * where the words could not be placed (a join inside parentheses). */
+  keyword?: { from: number; to: number };
+  /** ON's condition; absent for USING, NATURAL and CROSS. */
+  on?: RefactorExpr;
+  /** USING's columns. */
+  using?: string[];
+}
+
+/** An expression as PostgreSQL's parser reads it, where it is written. */
+interface RefactorExpr {
+  kind:
+    | 'and' | 'or' | 'not'
+    | 'operator'
+    | 'between' | 'not between'
+    | 'in' | 'not in'
+    | 'like' | 'not like' | 'ilike' | 'not ilike'
+    | 'distinct' | 'not distinct'
+    | 'is null' | 'is not null'
+    | 'column' | 'constant' | 'cast' | 'function' | 'subquery' | 'case' | 'other';
+  /** The expression at text[from, to), its own parentheses outside. */
+  from: number;
+  to: number;
+  /** Written inside parentheses of its own: (a and b). */
+  parenthesized?: boolean;
+  /** 'operator': the operator as PostgreSQL names it ('=', '<>' for both <> and !=, '<=', '||'). */
+  op?: string;
+  /** The operands in order: an operator's (one for a prefix operator), a
+   * BETWEEN's value, low and high bound, an IN's value then its list, a
+   * LIKE's value and pattern, a null test's value, AND's and OR's terms,
+   * NOT's term, a cast's value, a function's arguments. Absent when the
+   * text could not be taken apart the way the parser reads it: offer
+   * nothing about such an expression. */
+  args?: RefactorExpr[];
+  /** 'column': its parts, unquoted ('o.amount': ['o', 'amount']). */
+  column?: string[];
+  /** 'constant': its value as text, a string without its quotes; absent for NULL. */
+  value?: string;
+  /** 'constant': what it is. */
+  type?: 'string' | 'number' | 'boolean' | 'null';
+  /** 'function': its name, unqualified; 'cast': the type as the parser names it ('date', 'timestamptz'). */
+  name?: string;
+  /** 'function': the * of count(*). */
+  star?: { from: number; to: number };
+  /** 'function': called with OVER. */
+  over?: boolean;
 }
 
 /** One item of a select list. */
@@ -649,6 +764,9 @@ interface RefactorQueryItem {
   /** Its declared type when known: the result's once the statement has run
    * as written, else the dictionary's for a column of its tables. */
   type?: string;
+  /** Its expression as PostgreSQL's parser reads it, the alias left out.
+   * Absent for a star, until the parser has loaded, and before PlumeSQL 0.26.2. */
+  expr?: RefactorExpr;
 }
 
 /** What the statement returned the last time it ran as written. */

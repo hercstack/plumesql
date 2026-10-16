@@ -290,6 +290,8 @@ MUST behave exactly as described.
 | `@inputs` | | `@inputs [<id>:] <key>=<value> [, <key>=<value> ...]` | action | query | a result view's inputs take the view's own defaults, and the implementation MAY ask for one that has none |
 | `@ask` | | `@ask [<key> [, <key> ...]]` | action | query | the implementation asks for inputs only when a required one has no answer |
 | `@noask` | | `@noask` | action | query | the implementation asks for inputs when a required one has no answer |
+| `@format` | | `@format <column> [, <column> ...] = <formula>` | action | query | the result's columns show as the server sent them, or as an implementation's result-shaping extensions shape them |
+| `@computed` | | `@computed <column> [at start\|at end\|after <column>\|before <column>] = <formula>` | action | query | the result has the columns the query selects and no others of the file's making |
 | `@for` | | `@for <object type> [, <object type> ...]` | action | query, command | the action belongs to no object: it is opened from the actions list alone, and the object placeholders (11.1) are undefined |
 | `@env` | | `@env <key>=<value>` | action | command | the command inherits the application's own environment and nothing more |
 | `@file` | | `@file <name> ["<prompt>", "<default>"]` | action, button | query, command | nothing is asked for: the command runs on what it already knows |
@@ -1319,6 +1321,98 @@ Requirements:
 - A line with a name and no text MUST be diagnosed and ignored.
 - `{password}` never enters a message (11.3); a help text is one.
 
+### 8.35 `@format <column> [, <column> ...] = <formula>`
+
+Formats columns of this query's result with a FORMULA written in the
+file, the consuming side's own counterpart of a result-shaping
+extension (8.29):
+
+```
+-- @format rental_rate = fmt.currency(value, 'EUR')
+-- @format column(timestamp, date) = fmt.ago(value)
+select * from film;
+```
+
+The value is a HEAD, an `=`, and the formula. The head names what is
+formatted, a comma-separated list of targets:
+
+- a column NAME, read the way SQL reads an identifier: bare, it folds to
+  lower case (`Rental_Rate` names `rental_rate`); in double quotes, it is
+  taken exactly, a doubled `""` being one quote character (`"Order
+  Total"`);
+- `column(<type> [, <type> ...])`: every column of the result declared
+  one of those types, compared by the base type with any modifier set
+  aside (`numeric` covers `numeric(8,2)`), as `@for column(...)` reads
+  its types (8.28). The bare word `column` is a column name.
+
+The `=` that ends the head is the first one outside a quoted name and
+outside the parentheses of `column(...)`. Everything after it, trimmed,
+is the formula: JavaScript, in the language of the implementation's
+result-shaping extensions where it has them, run once per row for each
+column the head names. A formula holding no `return` is one expression
+whose value is returned; one holding `return` is a function body. It
+reads `value` (the cell), `row` (the row by column name and by position),
+`prevRow` (the row above, or null), `ctx` (the row's index in the whole
+result, the result's row count, the column, the value this column showed
+on the row above) and `fmt`, the formatting helpers (`fmt.number`,
+`fmt.currency`, `fmt.percent`, `fmt.date`, `fmt.ago`, `fmt.yesNo`,
+`fmt.upper`, `fmt.lower`, `fmt.tag`, `fmt.dimNull`, `fmt.escape`), and
+returns what the cell shows: a value, or a descriptor that also
+decorates it (`{ value, class, style, title, align, html }`). The
+formula and the helpers are specified with the result-shaping
+extensions' formulas (PlumeSQL's docs/GRIDJSSPEC.md, sections 6 and 7);
+the formula runs where they do, with no network and no access to the
+implementation's interface.
+
+The header the line sits in sets its reach as for `@extension` (8.29):
+in a query's own header, that query's result; in the file's header,
+every result of the file. Several lines ADD UP. A format written in the
+file wins over every extension's format of the same column; among the
+file's own, a column named outranks a type, and on a tie the query's own
+header outranks the file's and a later line an earlier one. A column
+that a `@computed` line of the same reach adds (8.36) is named by its
+name and is formatted like any other.
+
+Requirements:
+
+- A line with no head, no `=` or nothing after the `=`, or a head that
+  is not a list of names and `column(...)` targets, MUST be diagnosed
+  and the line ignored.
+- A formula that does not compile MUST be diagnosed and the line
+  ignored; a formula that fails on a row MUST leave that cell as the
+  server sent it.
+- A name or a type the result does not have formats nothing; an
+  implementation that knows the result SHOULD say so.
+- Query kind only: a command action answers in a terminal, with no
+  result to shape.
+
+### 8.36 `@computed <column> [at start|at end|after <column>|before <column>] = <formula>`
+
+Adds a column to this query's result, computed by a FORMULA from each
+row:
+
+```
+-- @computed "row #" at start = ctx.i + 1
+-- @computed per_minute after length = row.rental_rate / row.length
+select * from film;
+```
+
+The head names the new column as `@format` names one (bare, folded to
+lower case, or in double quotes, taken exactly) and, optionally, where
+it goes: `at start` (first), `at end` (last, the default), `after
+<column>` or `before <column>` (beside a column of the result, named the
+same way; a name the result does not have places it at the end). Then
+an `=` and the formula, read as for `@format` (8.35), with `value`
+undefined (a computed column has no cell of its own) and `ctx.prev` the
+value this column computed on the row above, which is what makes a
+running total. The value a formula returns is the column's value on that
+row: later `@computed` columns and the next row's `prevRow` read it.
+
+The header the line sits in sets its reach as for `@format`; several
+lines ADD UP, each column placed in the order written. The same
+requirements hold, with the head's place words: a placement that is not
+one of the four MUST be diagnosed and the line ignored. Query kind only.
+
 ## 9. Dependencies between annotations
 
 Several annotations exist only in relation to another, and several
@@ -1329,9 +1423,9 @@ below, with the stated diagnostics and outcomes.
 
 Each annotation belongs to these headers and kinds and nowhere else
 (the annotations added after this matrix, `@for`, `@extension`,
-`@inputs`, `@ask`, `@noask`, the `@format-*` family, `@readonly`,
-`@confirm-writes` and `@parse`, state their scope in their own
-sections):
+`@inputs`, `@ask`, `@noask`, `@format`, `@computed`, the `@format-*`
+family, `@readonly`, `@confirm-writes` and `@parse`, state their scope in
+their own sections):
 
 - `@description`, `@toolbar`, `@color`, `@face`, `@connection`,
   `@confirm`: both kinds, action scope (`@confirm` is also legal in the
