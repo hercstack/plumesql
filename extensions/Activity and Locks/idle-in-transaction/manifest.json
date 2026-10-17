@@ -2,7 +2,7 @@
   "format": 1,
   "id": "idle-in-transaction",
   "kind": "query",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "plumesql": ">=0.21.0",
   "name": "Idle in transaction",
   "description": "Backends sitting idle inside an open transaction, oldest first; they hold locks and block vacuum until they finish",

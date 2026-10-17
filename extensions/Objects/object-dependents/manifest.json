@@ -2,7 +2,7 @@
   "format": 1,
   "id": "object-dependents",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Dependents",
   "description": "What depends on the object this was opened on: views, foreign keys, functions, triggers, and what a DROP would do",

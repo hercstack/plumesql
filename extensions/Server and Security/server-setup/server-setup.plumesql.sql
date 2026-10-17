@@ -1,6 +1,5 @@
 -- @description Set the server up for speed, a view of what it does, a stop to runaway sessions and security; every change on its own button
 -- @face result
--- @color teal
 -- @var speed "Goal: speed", "true"
 -- @help speed Memory, WAL and checkpoints, the planner's costs, the parallel workers and autovacuum, sized from the memory, vCPUs and storage below and from what this server measured: checkpoints forced by WAL, temporary files written.
 -- @var insight "Goal: see what the server does", "true"

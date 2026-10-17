@@ -1,6 +1,5 @@
 -- @description Client connections grouped by user, application and address, with their states, against max_connections
 -- @face result
--- @color cyan
 with c as (
     select coalesce(a.usename::text, '') as usr,
            coalesce(a.application_name, '') as app,

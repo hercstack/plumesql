@@ -2,7 +2,7 @@
   "format": 1,
   "id": "server-settings",
   "kind": "query",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "plumesql": ">=0.25.0",
   "name": "Server settings",
   "description": "Every server configuration parameter, its value and what changing it takes; set one through ALTER SYSTEM and reload",

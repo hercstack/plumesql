@@ -1,6 +1,5 @@
 -- @description Row security on this database: tables that enable it, each policy with its rules, and the policies that do nothing
 -- @face result
--- @color red
 select v.schema, v."table", v.row_security, v.policy, v.command, v.kind, v.roles, v."using", v.with_check, v.note
 from (
     -- Tables with row security on, a row per policy (or one saying there is none).

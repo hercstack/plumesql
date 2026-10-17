@@ -2,7 +2,7 @@
   "format": 1,
   "id": "search-data",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.22.0",
   "name": "Search data",
   "description": "Where a value appears in the data: every text column of every table that holds it, with a count and a sample",

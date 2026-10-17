@@ -1,6 +1,5 @@
 -- @description Integer keys and sequences by how much of their range is used, with the statement that moves them to bigint
 -- @face result
--- @color amber
 -- @var min_percent "Show from (percent used)", "0"
 -- A column fed by a sequence is read through the sequence, which costs
 -- nothing. Any other integer key is read with max(column) through

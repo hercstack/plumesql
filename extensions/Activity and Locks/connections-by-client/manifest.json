@@ -2,7 +2,7 @@
   "format": 1,
   "id": "connections-by-client",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.22.0",
   "name": "Connections by client",
   "description": "Client connections grouped by user, application and address, with their states, against max_connections",

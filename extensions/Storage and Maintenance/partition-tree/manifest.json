@@ -2,7 +2,7 @@
   "format": 1,
   "id": "partition-tree",
   "kind": "query",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "plumesql": ">=0.21.0",
   "name": "Partition tree",
   "description": "Every partitioned table as a tree: its key, each partition's bounds, kind, size and rows, the default partitions marked",

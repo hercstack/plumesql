@@ -2,7 +2,7 @@
   "format": 1,
   "id": "server-setup",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.25.0",
   "name": "Server setup",
   "description": "Set the server up for speed, a view of what it does, a stop to runaway sessions and security; every change on its own button",

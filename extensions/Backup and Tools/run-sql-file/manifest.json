@@ -2,7 +2,7 @@
   "format": 1,
   "id": "run-sql-file",
   "kind": "command",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Run SQL file",
   "description": "Run a SQL file with psql on this connection",

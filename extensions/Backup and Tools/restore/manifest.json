@@ -2,7 +2,7 @@
   "format": 1,
   "id": "restore",
   "kind": "command",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Restore",
   "description": "Restore a backup into this database, custom format",

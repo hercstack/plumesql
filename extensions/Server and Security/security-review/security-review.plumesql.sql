@@ -1,6 +1,5 @@
 -- @description A first security review of this server as a checklist: each finding with a severity and what to do
 -- @face result
--- @color red
 -- Two checks read what only a superuser may (pg_authid for passwords,
 -- pg_hba_file_rules for client authentication). They run through
 -- query_to_xml only when the privilege is there, so the rest of the

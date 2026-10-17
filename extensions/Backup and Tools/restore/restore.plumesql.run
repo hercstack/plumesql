@@ -1,5 +1,4 @@
 # @description Restore a backup into this database, custom format
-# @color red
 # @env PGPASSWORD={password}
 # @file dump Pick the backup to restore
 # @confirm "Restore into {db}?", "This restores {dump} into {db} on {host}. Objects it recreates are dropped first (--clean --if-exists)."

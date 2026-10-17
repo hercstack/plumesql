@@ -1,6 +1,5 @@
 -- @description Every server configuration parameter with its value and what changing it takes; Set value writes it through ALTER SYSTEM, Reload applies what a reload can
 -- @face result
--- @color orange
 select s.name,
        coalesce(s.setting, '') as value,
        coalesce(s.unit, '') as unit,

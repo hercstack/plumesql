@@ -2,7 +2,7 @@
   "format": 1,
   "id": "installed-extensions",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "PostgreSQL extensions",
   "description": "Extensions of this database: installed ones with a newer version ready, the rest, and every one the server offers",

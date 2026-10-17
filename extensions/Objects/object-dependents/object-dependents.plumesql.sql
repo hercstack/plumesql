@@ -1,7 +1,6 @@
 -- @description What depends on the object this was opened on: views, foreign keys, functions, triggers, and what a DROP would do
 -- @for table, view, materialized view
 -- @face result
--- @color amber
 with target as (
     select c.oid
     from pg_catalog.pg_class c

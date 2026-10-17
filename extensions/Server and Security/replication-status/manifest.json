@@ -2,7 +2,7 @@
   "format": 1,
   "id": "replication-status",
   "kind": "query",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "plumesql": ">=0.21.0",
   "name": "Replication status",
   "description": "Every standby and subscriber this server streams to and every replication slot it holds, with lag and retained WAL",

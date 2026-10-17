@@ -1,6 +1,5 @@
 -- @description A health check of this database as a checklist: each finding with a severity and what to do
 -- @face result
--- @color green
 -- Every check reads statistics and catalogs only. The thresholds are
 -- written next to each check; the README lists them.
 with checks (no, name, advice) as (

@@ -1,6 +1,5 @@
 -- @description Where a value appears in the data: every text column of every table that holds it, with a count and a sample
 -- @face result
--- @color lavender
 -- @var term "Search for"
 -- @var in_schema "Schema (* for every schema)", "*"
 -- @pick in_schema select '*' as in_schema, 'every schema you can read' as holds union all select n.nspname::text, pg_catalog.count(c.oid)::text || ' tables' from pg_catalog.pg_namespace n left join pg_catalog.pg_class c on c.relnamespace = n.oid and c.relkind in ('r', 'p', 'm') where n.nspname !~ '^pg_' and n.nspname <> 'information_schema' group by n.nspname order by 1

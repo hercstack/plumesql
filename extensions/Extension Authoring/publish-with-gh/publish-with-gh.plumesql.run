@@ -1,5 +1,4 @@
 # @description Publish one of your extensions to the marketplace: fork, copy, branch and pull request through the GitHub CLI
-# @color lavender
 # @for my extension
 # @confirm "Publish {name}?", "Runs gh and git in a terminal: forks hercstack/plumesql once, clones the fork into a temporary directory, copies your extension into its category, pushes a branch ext/{name} to your fork and opens the pull request. Nothing is merged; the reviewer takes it from there."
 # @alert-on-success "Pull request opened", "The terminal has its address. The reviewer opens the discussion thread and merges; the extension is published with the next index build."

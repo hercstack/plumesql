@@ -1,6 +1,5 @@
 -- @description Every partitioned table as a tree: its key, each partition's bounds, kind, size and rows, the default partitions marked
 -- @face result
--- @color green
 select r.oid::pg_catalog.regclass::text as partitioned_table,
        -- Indented with non-breaking spaces: the grid collapses plain ones.
        -- Only where the database is UTF8 (a byte sequence another encoding

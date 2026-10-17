@@ -1,6 +1,5 @@
 -- @description Extensions of this database: installed ones with a newer version ready, the rest, and every one the server offers
 -- @face result
--- @color lavender
 select v.extension, v.installed, v.available, v.status, v.schema, v.description, v.statement
 from (
     select case when a.default_version is not null and a.default_version is distinct from e.extversion then 1 else 2 end as ord,

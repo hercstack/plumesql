@@ -1,6 +1,5 @@
 -- @description What VACUUM, ANALYZE, CREATE INDEX and CLUSTER are doing right now, with how far along each is
 -- @face result
--- @color green
 -- @refresh 3s
 with p as (
     select 'VACUUM' as command, v.pid, v.datid, v.datname, v.relid, v.phase,

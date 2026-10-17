@@ -1,6 +1,5 @@
 -- @description Logical replication on this database: publications with the tables they publish, and subscriptions with their state
 -- @face result
--- @color cyan
 -- @refresh 10s
 select v.kind, v.name, v.detail, v.state
 from (

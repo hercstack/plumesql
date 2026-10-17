@@ -2,7 +2,7 @@
   "format": 1,
   "id": "logical-replication",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Logical replication",
   "description": "Logical replication on this database: publications with the tables they publish, and subscriptions with their state",

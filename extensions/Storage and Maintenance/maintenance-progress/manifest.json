@@ -2,7 +2,7 @@
   "format": 1,
   "id": "maintenance-progress",
   "kind": "query",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "plumesql": ">=0.22.0",
   "name": "Maintenance progress",
   "description": "What VACUUM, ANALYZE, CREATE INDEX and CLUSTER are doing right now, with how far along each is, refreshed every three seconds",

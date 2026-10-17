@@ -2,7 +2,7 @@
   "format": 1,
   "id": "current-activity",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.21.0",
   "name": "Current activity",
   "description": "What every backend on this database is doing",

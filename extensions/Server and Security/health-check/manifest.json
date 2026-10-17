@@ -2,7 +2,7 @@
   "format": 1,
   "id": "health-check",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.22.0",
   "name": "Health check",
   "description": "A health check of this database as a checklist: each finding with a severity and what to do",

@@ -1,6 +1,5 @@
 -- @description What the busy backends are waiting on right now, grouped by wait event, with counts and an example query
 -- @face result
--- @color amber
 -- @refresh 5s
 -- Idle sessions waiting for their client and background processes
 -- waiting for work (wait type Activity) are left out: they wait by

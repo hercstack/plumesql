@@ -2,7 +2,7 @@
   "format": 1,
   "id": "row-security",
   "kind": "query",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "plumesql": ">=0.21.0",
   "name": "Row security",
   "description": "Row security on this database: tables that enable it, each policy with its rules, and the policies that do nothing",

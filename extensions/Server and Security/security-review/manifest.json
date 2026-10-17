@@ -2,7 +2,7 @@
   "format": 1,
   "id": "security-review",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.22.0",
   "name": "Security review",
   "description": "A first security review of this server as a checklist: each finding with a severity and what to do",

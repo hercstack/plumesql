@@ -2,7 +2,7 @@
   "format": 1,
   "id": "integer-overflow-risk",
   "kind": "query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.22.0",
   "name": "Integer overflow risk",
   "description": "Integer keys and sequences by how much of their range is used, with the statement that moves them to bigint",
