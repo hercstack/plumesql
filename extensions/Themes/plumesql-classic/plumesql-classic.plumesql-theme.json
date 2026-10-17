@@ -1,0 +1,88 @@
+{
+  "themes": [
+    {
+      "id": "classic-dark",
+      "name": "Classic Dark",
+      "base": "dark",
+      "colors": {
+        "bg": "#0d1016",
+        "panel": "#171d28",
+        "panel-2": "#212a38",
+        "editor-gutter": "#11151d",
+        "border": "#2f3b4d",
+        "text": "#dae0ea",
+        "muted": "#8b98ad",
+        "accent": "#7aa2f7",
+        "accent-dim": "#33436e",
+        "green": "#6fbf8f",
+        "red": "#e0687a",
+        "amber": "#d9a35c",
+        "violet": "#a48ae0",
+        "row-hover": "#1f2835",
+        "grid-line": "#8e8e8e",
+        "grid-null": "#f7dcb8",
+        "grid-hl": "#1e2a3a",
+        "find-match": "#515c6a",
+        "find-match-hl": "#ea5c0055",
+        "float-border": "#4a5a72",
+        "footer-bg": "#212a3f",
+        "footer-text": "#dae0ea",
+        "footer-muted": "#aeb9cb",
+        "footer-conn": "#6fbf8f",
+        "footer-conn-hover": "#85cda0"
+      },
+      "syntax": {
+        "keyword": "#569cd6",
+        "string": "#9ece6a",
+        "number": "#ff9e64",
+        "comment": "#565f89",
+        "operator": "#89ddff",
+        "type": "#2ac3de",
+        "func": "#7aa2f7",
+        "annotation": "#bb9af7"
+      }
+    },
+    {
+      "id": "classic-light",
+      "name": "Classic Light",
+      "base": "light",
+      "colors": {
+        "bg": "#f4f5f8",
+        "panel": "#ffffff",
+        "panel-2": "#eef0f5",
+        "editor-gutter": "#eceef3",
+        "border": "#d9dde6",
+        "text": "#24292f",
+        "muted": "#6b7280",
+        "accent": "#3b63c4",
+        "accent-dim": "#c8d5f5",
+        "green": "#1a7f4b",
+        "red": "#c02942",
+        "amber": "#9a6a1e",
+        "violet": "#6d4fc0",
+        "row-hover": "#eef2fa",
+        "grid-line": "#b8b8b8",
+        "grid-null": "#9a6a1e",
+        "grid-hl": "#dde6ef",
+        "find-match": "#a8ac9480",
+        "find-match-hl": "#ea5c0055",
+        "float-border": "#aab3c5",
+        "footer-bg": "#d3dbef",
+        "footer-text": "#24292f",
+        "footer-muted": "#414a56",
+        "footer-conn": "#1a7f4b",
+        "footer-conn-hover": "#23935a"
+      },
+      "syntax": {
+        "keyword": "#0550ae",
+        "string": "#1a7f4b",
+        "number": "#b45309",
+        "comment": "#9ca3af",
+        "operator": "#0e7490",
+        "type": "#0e7490",
+        "func": "#3b63c4",
+        "annotation": "#7c3aed"
+      }
+    }
+  ]
+}

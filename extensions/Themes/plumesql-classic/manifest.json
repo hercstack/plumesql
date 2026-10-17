@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "plumesql-classic",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "PlumeSQL Classic",
+  "description": "The look PlumeSQL had before 0.27.0: Classic Dark, blue slate with a periwinkle accent, and Classic Light",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "plumesql",
+    "classic",
+    "blue"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "plumesql-classic.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 231,
+  "externals": [],
+  "demo": "media/plumesql-classic.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}
