@@ -4,11 +4,11 @@
 > can become a monitor, a dashboard or a button.
 
 > [!NOTE]
-> **PlumeSQL 0.26.0 is here**: faster queries from the lightbulb
-> (conditions an index can read, keyset pages, STABLE functions,
-> constraints that keep writes going), scripts that run statement by
-> statement with no hidden transaction, Run All above a script, and a
-> camera on every chart. [What's in it](changelog/free-v0.26.0/README.md).
+> **PlumeSQL 0.27.0 is here**: a new look (calm neutral Dark and
+> Light themes with one clear blue, tabs and splitters like VS Code's),
+> hovers you can leave out per keyword, per kind of object or entirely,
+> and a checkbox for each extension when you install several at once.
+> [What's in it](changelog/free-v0.27.0/README.md).
 >
 > PlumeSQL is still in beta: new releases come often, and features can
 > still change between them. The app updates itself. Something broken
