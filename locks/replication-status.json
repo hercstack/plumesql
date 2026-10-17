@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "replication-status",
+  "kind": "query",
+  "version": "1.0.2",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Server and Security/replication-status",
+  "files": [
+    {
+      "path": "replication-status.plumesql.sql",
+      "sha256": "30ca0ffc22a427fe75b5cdbe0aad20c26681811169cc9ccdaa2c70a18c37807e",
+      "bytes": 1913
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/replication-status.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 74,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

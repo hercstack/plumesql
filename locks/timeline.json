@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "timeline",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Charts/timeline",
+  "files": [
+    {
+      "path": "timeline.plumesql.js",
+      "sha256": "259a53f404a7f1ef913d4b83cbb9c2ad17f72124504291f0be230a2dcd16a922",
+      "bytes": 8305
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "c7961dd83a902bb880bdab728189f153baa530c4186db2ae8983a15912b7ac98",
+      "bytes": 528
+    }
+  ],
+  "dependencies": [
+    "echarts-core",
+    "stats-core"
+  ],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 217,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "postgis",
+  "kind": "grid",
+  "version": "1.1.1",
+  "plumesql": ">=0.22.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "PostGIS/postgis",
+  "files": [
+    {
+      "path": "postgis.plumesql.js",
+      "sha256": "7a266a6fcc8881e21b1145053147b279300c8b2c5d3b4d0a2f1e40e2d73956d5",
+      "bytes": 14388
+    },
+    {
+      "path": "lib/wkb.js",
+      "sha256": "ae2724a4448aaed59086085b975b75358c5c74d369a7703320957dce2045d2b6",
+      "bytes": 20704
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "e56dd5128220fb43616babec37d9f0ab9f081f267645e2d7f82b9004f023eaaa",
+      "bytes": 448
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 168,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

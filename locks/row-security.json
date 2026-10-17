@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "row-security",
+  "kind": "query",
+  "version": "1.0.2",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Server and Security/row-security",
+  "files": [
+    {
+      "path": "row-security.plumesql.sql",
+      "sha256": "272c44a2d609751044085ef4b7d2ee1a7761716e621f40d57e4257ff1b9db3e8",
+      "bytes": 3289
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 214,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

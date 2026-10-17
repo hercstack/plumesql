@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "validate-geometry",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "PostGIS/validate-geometry",
+  "files": [
+    {
+      "path": "validate-geometry.plumesql.sql",
+      "sha256": "427a62fb4bd8b7f40eb6ece009efb47eac263742106891088d8876fb813fb3f8",
+      "bytes": 695
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 170,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

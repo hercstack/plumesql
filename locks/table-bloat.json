@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "table-bloat",
+  "kind": "query",
+  "version": "1.0.1",
+  "plumesql": ">=0.22.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Storage and Maintenance/table-bloat",
+  "files": [
+    {
+      "path": "table-bloat.plumesql.sql",
+      "sha256": "dfc487a4984da211611cb269b4f7df0aff99247eb1844f7d9fd6f9b07721531e",
+      "bytes": 4735
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/table-bloat.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 166,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

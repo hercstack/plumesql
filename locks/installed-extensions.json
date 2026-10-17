@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "installed-extensions",
+  "kind": "query",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Server and Security/installed-extensions",
+  "files": [
+    {
+      "path": "installed-extensions.plumesql.sql",
+      "sha256": "675ee8763b36cf777c1643d394d76dc12a6fc72953dd1ed3614032cee2c7e3fe",
+      "bytes": 1522
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 206,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

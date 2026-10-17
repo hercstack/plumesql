@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "pgvector",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.22.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "pgvector/pgvector",
+  "files": [
+    {
+      "path": "pgvector.plumesql.js",
+      "sha256": "433c3740b2bc75b78b3b87710a4461f1b0d506163eabcc6a2246a37492255864",
+      "bytes": 2511
+    },
+    {
+      "path": "lib/vec.js",
+      "sha256": "f5f380c0d390fed60ef49f1e0b90a952cba3f35c45fca7d58e3f12def65cacf1",
+      "bytes": 5957
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "e1b0294610a5d4d7a409d5aa9abb209fdaf3a886ea7f135754093a39e2b620a5",
+      "bytes": 416
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 169,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

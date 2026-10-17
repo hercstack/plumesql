@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "timescaledb-refactors",
+  "kind": "refactor",
+  "version": "1.1.0",
+  "plumesql": ">=0.24.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "TimescaleDB/timescaledb-refactors",
+  "files": [
+    {
+      "path": "timescaledb-refactors.plumesql.js",
+      "sha256": "cd2b6852c2b8eee32594efb2b2c63abdef12244b2ac892916f424605583d63f2",
+      "bytes": 6221
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 188,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

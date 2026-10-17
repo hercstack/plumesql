@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "bytea",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Data Types/bytea",
+  "files": [
+    {
+      "path": "bytea.plumesql.js",
+      "sha256": "cd5cd6b331b632b2f63fd5627254483102fb9f8e7e49e432540a6af40b9d9203",
+      "bytes": 7098
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "ecd61ca5fa98c2c1c73c79cdd10bf1ddbd78c754e7f10cfc939971470725aa18",
+      "bytes": 504
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 201,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

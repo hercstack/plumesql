@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "fk-without-index",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Performance/fk-without-index",
+  "files": [
+    {
+      "path": "fk-without-index.plumesql.sql",
+      "sha256": "afe9432d412e6104f4b09ac490d0cc2ece420e86c5c2cb9ee14f8c14289aa6af",
+      "bytes": 2700
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/fk-without-index.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 159,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

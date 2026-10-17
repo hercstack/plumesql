@@ -1,0 +1,34 @@
+{
+  "format": 1,
+  "id": "rfm",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Analysis/rfm",
+  "files": [
+    {
+      "path": "rfm.plumesql.js",
+      "sha256": "5be376d1bc4743f9ca9ae626915a2675769fdc8c888e6a466fd9244002ea6ec5",
+      "bytes": 6015
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "968338fc4b1e4660ab9a86e932b7257d5987fc23703876729ff691ac369c5469",
+      "bytes": 539
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 213,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

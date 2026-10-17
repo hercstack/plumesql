@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "nulls",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Formatting/nulls",
+  "files": [
+    {
+      "path": "nulls.plumesql.js",
+      "sha256": "164f9f30216667584c269beafa72a8077a949e90aa5e61c19df9746cdb647534",
+      "bytes": 873
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/nulls.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 52,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "wait-events",
+  "kind": "query",
+  "version": "1.0.1",
+  "plumesql": ">=0.22.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Activity and Locks/wait-events",
+  "files": [
+    {
+      "path": "wait-events.plumesql.sql",
+      "sha256": "69b0f259f36006dd5d2d5d8f14d1b41f7acbaf1b9b9b8abff7468e5666e5122c",
+      "bytes": 2301
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/wait-events.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 167,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

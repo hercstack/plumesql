@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "connections-by-client",
+  "kind": "query",
+  "version": "1.0.1",
+  "plumesql": ">=0.22.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Activity and Locks/connections-by-client",
+  "files": [
+    {
+      "path": "connections-by-client.plumesql.sql",
+      "sha256": "664ce549043bac31eca81051b1928697ebcb9bedd24f6c5129e71be7c9a386da",
+      "bytes": 3198
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/connections-by-client.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 149,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

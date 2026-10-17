@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "plot-regression",
+  "kind": "grid",
+  "version": "1.1.1",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Statistical Charts/plot-regression",
+  "files": [
+    {
+      "path": "plot-regression.plumesql.js",
+      "sha256": "aaf9d9ea0154213819f0d8c9a8db45e38a2d16027febe777d4da44796b10102a",
+      "bytes": 2874
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "56a77a99bb71cb6d5f92c850f9aa24caeba73decda1406ba5bbcb130e543f252",
+      "bytes": 617
+    }
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "externals": [],
+  "demo": "media/plot-regression.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 67,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

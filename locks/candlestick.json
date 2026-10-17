@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "candlestick",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Charts/candlestick",
+  "files": [
+    {
+      "path": "candlestick.plumesql.js",
+      "sha256": "e59777a94a7b8a8aa3a327f143f218cf76aee9cf9f602962326ffadd28830668",
+      "bytes": 8080
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "45b2f9407197d3f354b3567d1f6ed34a350e680844dcb8a45d9f26e65576ff01",
+      "bytes": 603
+    }
+  ],
+  "dependencies": [
+    "echarts-core",
+    "stats-core"
+  ],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 202,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

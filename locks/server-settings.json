@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "server-settings",
+  "kind": "query",
+  "version": "1.1.1",
+  "plumesql": ">=0.25.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Server and Security/server-settings",
+  "files": [
+    {
+      "path": "server-settings.plumesql.sql",
+      "sha256": "0c04bbaad0acd4f8bc3edfe1ad1b6589e5962166ae19dcf2dce6b08ed24e4af3",
+      "bytes": 2400
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/server-settings.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 86,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

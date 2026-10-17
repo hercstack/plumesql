@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "pgvector-essentials",
+  "kind": "pack",
+  "version": "1.0.0",
+  "plumesql": ">=0.23.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Packs/pgvector-essentials",
+  "files": [
+    {
+      "path": "pgvector-essentials.plumesql-pack.json",
+      "sha256": "637256dc41c711aaf45fa971e49535710e4f3b60fd2c9fa4ff6d047b073a2b5b",
+      "bytes": 87
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 192,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

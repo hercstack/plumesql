@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "pareto",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Dashboards/pareto",
+  "files": [
+    {
+      "path": "pareto.plumesql.js",
+      "sha256": "3e5bbe64a8c04d3eef3c3607a46d412353345b20babf22cdd9c5bb736afb2571",
+      "bytes": 6882
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "3b599f2f4ad63dab261a6aebf4d90692b1382660b10642e7a72e09d80c82d1f2",
+      "bytes": 524
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "demo": "media/pareto.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 131,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

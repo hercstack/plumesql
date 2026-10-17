@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "trend",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Formatting/trend",
+  "files": [
+    {
+      "path": "trend.plumesql.js",
+      "sha256": "1e4bc37f2be39d222843dad91ebf1f06ff73175b397deb2ea40d4de708dacead",
+      "bytes": 1063
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/trend.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 100,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

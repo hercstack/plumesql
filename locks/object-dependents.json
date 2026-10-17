@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "object-dependents",
+  "kind": "query",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Objects/object-dependents",
+  "files": [
+    {
+      "path": "object-dependents.plumesql.sql",
+      "sha256": "0e61d905c7c6e3828413515dab3850fc735282128349d679c37e30f60f1d75fb",
+      "bytes": 1901
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 209,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

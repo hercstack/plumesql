@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "vector-space-3d",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.22.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "pgvector/vector-space-3d",
+  "files": [
+    {
+      "path": "vector-space-3d.plumesql.js",
+      "sha256": "37a420dfdd38a5d58a3048f4768e09d33d1a1078c1ff8ae987db9f00b5fe8030",
+      "bytes": 19858
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "d0a5236133fa17c37559aaeb06d35297d0c85d2de12317e00488bc6e5c45a391",
+      "bytes": 751
+    }
+  ],
+  "dependencies": [
+    "three-core"
+  ],
+  "externals": [],
+  "demo": "media/vector-space-3d.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 199,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

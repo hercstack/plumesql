@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "compress-chunks",
+  "kind": "query",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "TimescaleDB/compress-chunks",
+  "files": [
+    {
+      "path": "compress-chunks.plumesql.sql",
+      "sha256": "9d6ac6018d5c217da3411eee95afe45bf10c34f67c54255af80ac598f6a547e1",
+      "bytes": 865
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/compress-chunks.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 15,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

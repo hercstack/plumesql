@@ -1,0 +1,34 @@
+{
+  "format": 1,
+  "id": "clusters",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Analysis/clusters",
+  "files": [
+    {
+      "path": "clusters.plumesql.js",
+      "sha256": "0eef6ac9014c6abbca8b91a347a914084ec8bfad571b8304fc319c3871bd19c0",
+      "bytes": 6221
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "04c020cd62b79749fc35b9ae37d4dd9d85aa02179b66c0b50d7ed5e1778b3627",
+      "bytes": 766
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 203,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

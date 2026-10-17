@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "postgis-refactors",
+  "kind": "refactor",
+  "version": "1.1.0",
+  "plumesql": ">=0.24.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "PostGIS/postgis-refactors",
+  "files": [
+    {
+      "path": "postgis-refactors.plumesql.js",
+      "sha256": "3a2b35a004135f7ada44cb905295731548a57f2f9b38aa998b1ead082787389b",
+      "bytes": 12107
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 187,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

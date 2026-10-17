@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "statistics-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.24.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Analysis/statistics-refactors",
+  "files": [
+    {
+      "path": "statistics-refactors.plumesql.js",
+      "sha256": "dda979aa46d3282a0aac494ac8b5838de54917ad6c5c67efc32c0b530ed7e006",
+      "bytes": 21529
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 196,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

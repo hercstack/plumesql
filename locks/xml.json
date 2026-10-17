@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "xml",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Formatting/xml",
+  "files": [
+    {
+      "path": "xml.plumesql.js",
+      "sha256": "357c6d26a2f90e18eea570b1269238e7bb63f746ea38e901b2da09bb0855361b",
+      "bytes": 1653
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 220,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

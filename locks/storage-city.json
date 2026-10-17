@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "storage-city",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Storage and Maintenance/storage-city",
+  "files": [
+    {
+      "path": "storage-city.plumesql.sql",
+      "sha256": "dcdeab6b4d2a01142b4b0f29eaaab8c6060d53b96063bcf391de2fdcbd3b954c",
+      "bytes": 1390
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "794b243b4007bbdcc7a1862bfdcfac7358328b81a51dcaf293859c7f0e07985d",
+      "bytes": 664
+    }
+  ],
+  "dependencies": [
+    "city-3d"
+  ],
+  "externals": [],
+  "demo": "media/storage-city.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 197,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

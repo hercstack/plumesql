@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "world-map",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Charts/world-map",
+  "files": [
+    {
+      "path": "world-map.plumesql.js",
+      "sha256": "c4166424df5f36d13e7b7246e1664031a4ca3037b703a7451902c0b28fe807e3",
+      "bytes": 13534
+    },
+    {
+      "path": "lib/world.js",
+      "sha256": "017fcb4713c3fafd803a10b3e1075feed6ce15deba81bc69ef343264dc8b72de",
+      "bytes": 124154
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "17b661323a548fd56f7fff7ed77a7a1108bf108a9f0e240c55c1a723ecf6c3ee",
+      "bytes": 534
+    }
+  ],
+  "dependencies": [
+    "echarts-core",
+    "stats-core"
+  ],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 219,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "sample-data",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.24.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Objects/sample-data",
+  "files": [
+    {
+      "path": "sample-data.plumesql.js",
+      "sha256": "651ae36413117256f351defa987e474859457dd6e330f2dec6291b59e5aaae0d",
+      "bytes": 18255
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 225,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

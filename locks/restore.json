@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "restore",
+  "kind": "command",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Backup and Tools/restore",
+  "files": [
+    {
+      "path": "restore.plumesql.run",
+      "sha256": "65037171380a325ecc57b724093fa25839f1d5de7d24f21203d3ac8d12ffb058",
+      "bytes": 652
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/restore.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 75,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

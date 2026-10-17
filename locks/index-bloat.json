@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "index-bloat",
+  "kind": "query",
+  "version": "1.0.1",
+  "plumesql": ">=0.22.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Storage and Maintenance/index-bloat",
+  "files": [
+    {
+      "path": "index-bloat.plumesql.sql",
+      "sha256": "222ccbe2d6b1c407c378b88c5258da22a29c3068692ba1e24d0d6debc3420569",
+      "bytes": 4586
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/index-bloat.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 161,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

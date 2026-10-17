@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "profile",
+  "kind": "grid",
+  "version": "1.1.1",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Analysis/profile",
+  "files": [
+    {
+      "path": "profile.plumesql.js",
+      "sha256": "00fa12009e3ac74d9f63af5c67e8c13f2d4ea8e501bd262aa353d468b302cb0d",
+      "bytes": 6560
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "a296433a1e252462749cba8a9c13c9409b688456589308aff40965deb4fa851b",
+      "bytes": 548
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/profile.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 70,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

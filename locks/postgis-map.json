@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "postgis-map",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.24.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "PostGIS/postgis-map",
+  "files": [
+    {
+      "path": "postgis-map.plumesql.js",
+      "sha256": "cdae1e93eaf93c9c2ac85d64c37562d87b6777cd8a493ec516d3b2117567eb3f",
+      "bytes": 29678
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "181eb7104a13cae538df74f3ec7ff0a48592789ce1c9a690bd09016399757e28",
+      "bytes": 598
+    }
+  ],
+  "dependencies": [
+    "postgis"
+  ],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js"
+  ],
+  "demo": "media/postgis-map.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 193,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

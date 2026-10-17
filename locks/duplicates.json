@@ -1,0 +1,30 @@
+{
+  "format": 1,
+  "id": "duplicates",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.22.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Analysis/duplicates",
+  "files": [
+    {
+      "path": "duplicates.plumesql.js",
+      "sha256": "6834b12b8d81344b20de2e892c38654399c5a791009380f9742c20b6857edc70",
+      "bytes": 5422
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/duplicates.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 156,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

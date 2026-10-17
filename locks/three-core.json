@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "three-core",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Extension Authoring/three-core",
+  "files": [
+    {
+      "path": "three-core.plumesql.js",
+      "sha256": "3b73a564990e06c827df276c34bd9b1942a838aa54fe12bc705cb4254e6d045c",
+      "bytes": 33062
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "e819235349b18bfd457c1508b24551ba4c49c542c63b5f4030c8e0021c407fe5",
+      "bytes": 442
+    }
+  ],
+  "dependencies": [],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/three@0.186.1/+esm",
+    "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/controls/OrbitControls.js/+esm"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 198,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

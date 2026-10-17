@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "scatter-3d",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Charts/scatter-3d",
+  "files": [
+    {
+      "path": "scatter-3d.plumesql.js",
+      "sha256": "117ab114d062a6f433940ee29602853a2976137792833081b8ebe7213c1ae9ff",
+      "bytes": 9993
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "f039c6517d9d660e65eb51073fe3fc464ce0793f60320718518d73b3625c2598",
+      "bytes": 613
+    }
+  ],
+  "dependencies": [
+    "three-core"
+  ],
+  "externals": [],
+  "demo": "media/scatter-3d.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 195,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

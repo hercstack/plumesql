@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "partition-tree",
+  "kind": "query",
+  "version": "1.0.2",
+  "plumesql": ">=0.21.0",
+  "commit": "32e07b780a634ce932713e4b0b15ea416a84401e",
+  "path": "Storage and Maintenance/partition-tree",
+  "files": [
+    {
+      "path": "partition-tree.plumesql.sql",
+      "sha256": "e4a31c5f7ce44069e959b46f2b9fdb67f07c3401d6ffa377f1de8b4fdb01fe3b",
+      "bytes": 2374
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 211,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}
