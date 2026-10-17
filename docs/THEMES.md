@@ -1,7 +1,11 @@
 # Color themes
 
-PlumeSQL ships two color themes, Dark and Light, built in. Every other
-theme is a THEME EXTENSION: a fourth kind of marketplace extension, next
+PlumeSQL ships two color themes, Dark and Light, built in: neutral greys
+with one blue accent, their palette taken (since 0.27.0) from the Plain
+variants of [Monochromator](https://codeberg.org/beem/monochromator) by
+Josias Beem, MIT licensed. The blue-slate palette they had before lives on
+as Classic Dark and Classic Light in the PlumeSQL Classic theme
+extension. Every other theme is a THEME EXTENSION: a fourth kind of marketplace extension, next
 to the query, command and grid extensions, whose one file is a JSON
 document of colors. A theme is data and nothing else. It names hex
 colors for the application's design tokens; it cannot load a file, reach

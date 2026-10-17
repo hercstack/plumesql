@@ -290,8 +290,12 @@ back to that tab finds the question again (unless one of the set was
 installed meanwhile: then Install all asks anew with what is still
 missing). It marks
 the query and command extensions with what they run, and its answer is
-the consent to their code. Two answers: Install n installs them all (a
-theme without opening the theme picker), Cancel installs nothing. What landed is ONE Log entry naming every
+the consent to their code. It is a PICK: each extension of the set
+carries a checkbox, all ticked to begin with, with an All box above
+them; a dependency is listed while one of the ticked extensions needs
+it, and only what stays ticked installs, with what it needs. Two
+answers: Install n installs the n ticked (a theme without opening the
+theme picker; with none ticked it is off), Cancel installs nothing. What landed is ONE Log entry naming every
 extension, beside the entries of those that brought a button (each
 with its Show Button). The row's button's tooltip names every member. A member removed later, or
 one the user skipped, is simply missing again; nothing tracks the pack.
