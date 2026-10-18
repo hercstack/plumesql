@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "idle-in-transaction",
+  "kind": "query",
+  "version": "1.0.2",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Activity and Locks/idle-in-transaction",
+  "files": [
+    {
+      "path": "idle-in-transaction.plumesql.sql",
+      "sha256": "d25deaca3804567bd7672b99b918f859634cb1cab26045d617cfd7a52d2ac71b",
+      "bytes": 1429
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/idle-in-transaction.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 44,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

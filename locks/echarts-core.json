@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "echarts-core",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Extension Authoring/echarts-core",
+  "files": [
+    {
+      "path": "echarts-core.plumesql.js",
+      "sha256": "9846f660defddfbe24b200057f4d2a9220a4e645b05c3ad523eac0ac3531eb17",
+      "bytes": 7355
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "3cdb2ca24312d2d8a3382c6a1af1d445463f882f819ae2778b9eb78c9b20275f",
+      "bytes": 410
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 204,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

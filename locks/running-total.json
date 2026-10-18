@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "running-total",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Calculations/running-total",
+  "files": [
+    {
+      "path": "running-total.plumesql.js",
+      "sha256": "30acd106df9846af56460c9fa2f69b77d5bedebf7f4e3c51f3ba76d45476d9ba",
+      "bytes": 835
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/running-total.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 81,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

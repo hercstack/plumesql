@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "run-maintenance",
+  "kind": "query",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "pg_partman/run-maintenance",
+  "files": [
+    {
+      "path": "run-maintenance.plumesql.sql",
+      "sha256": "c128f3e3ba1b59c5ca8ca9fc6b5635513cbc00e69c1c42d0c2435fef84e479d9",
+      "bytes": 2534
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/run-maintenance.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 79,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

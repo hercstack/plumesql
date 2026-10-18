@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "duplicate-indexes",
+  "kind": "query",
+  "version": "1.0.1",
+  "plumesql": ">=0.22.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Performance/duplicate-indexes",
+  "files": [
+    {
+      "path": "duplicate-indexes.plumesql.sql",
+      "sha256": "1b94e850b30b474fa29073c6d1b6da1ab5dbff7f858415a879a16b3c61ea45a2",
+      "bytes": 5134
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/duplicate-indexes.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 155,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

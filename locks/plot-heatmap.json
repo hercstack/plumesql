@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "plot-heatmap",
+  "kind": "grid",
+  "version": "1.1.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Statistical Charts/plot-heatmap",
+  "files": [
+    {
+      "path": "plot-heatmap.plumesql.js",
+      "sha256": "841ecd96eb40036ea3aaffedb1442fe049af046f73761e032ac417859984288b",
+      "bytes": 4110
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "18da6230a853b483efd1c068c1307bff5dccd258bf92bb7303fe39768655aedd",
+      "bytes": 1481
+    }
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "externals": [],
+  "demo": "media/plot-heatmap.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 64,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

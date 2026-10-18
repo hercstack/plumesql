@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "histogram",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Analysis/histogram",
+  "files": [
+    {
+      "path": "histogram.plumesql.js",
+      "sha256": "16ea97f9d8845b35a17c374a6fba4355bd0ee3b5dc3d563642c4e702f4ca35bf",
+      "bytes": 5201
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "b9f60fa40ccb444b1fb457f906048557d21d7db36e8626b556638c65f5c31621",
+      "bytes": 433
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/histogram.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 123,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

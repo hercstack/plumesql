@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "hypertables",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "TimescaleDB/hypertables",
+  "files": [
+    {
+      "path": "hypertables.plumesql.sql",
+      "sha256": "cf9772b5f02cf8860cdfbb5d91302258fb2181920c6eab6e4b73712b03d5f711",
+      "bytes": 899
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/hypertables.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 43,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

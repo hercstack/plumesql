@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "security-review",
+  "kind": "query",
+  "version": "1.0.1",
+  "plumesql": ">=0.22.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Server and Security/security-review",
+  "files": [
+    {
+      "path": "security-review.plumesql.sql",
+      "sha256": "c73be735163b83a8a26e135e0e4ce5f14e38bba04433e239e0cdd68a6ae991b9",
+      "bytes": 11062
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/security-review.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 165,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

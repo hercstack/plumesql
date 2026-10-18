@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "export-csv",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Backup and Tools/export-csv",
+  "files": [
+    {
+      "path": "export-csv.plumesql.run",
+      "sha256": "3bfcfddef906ae1d9d37b2dbe34b5c05ccc24340827e85c422b68dcbe574b668",
+      "bytes": 931
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/export-csv.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 184,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

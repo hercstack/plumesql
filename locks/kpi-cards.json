@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "kpi-cards",
+  "kind": "grid",
+  "version": "1.0.2",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Dashboards/kpi-cards",
+  "files": [
+    {
+      "path": "kpi-cards.plumesql.js",
+      "sha256": "133ee6ce038ebe784c169ceaf652f6c4d2eb0f66d7e2c2bb81f5b17fd560041a",
+      "bytes": 8828
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "1b06f167f5d67c78e6689a28dea89b15aba55fc0355d5e6208d7d0db34008977",
+      "bytes": 667
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/kpi-cards.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 125,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

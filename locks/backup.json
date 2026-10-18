@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "backup",
+  "kind": "command",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Backup and Tools/backup",
+  "files": [
+    {
+      "path": "backup.plumesql.run",
+      "sha256": "9e81ef3b1feb2b121fc0d5d6b28e788534327b9122bbbedec645173354a4c836",
+      "bytes": 999
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/backup.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 7,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

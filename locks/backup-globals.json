@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "backup-globals",
+  "kind": "command",
+  "version": "1.0.2",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Backup and Tools/backup-globals",
+  "files": [
+    {
+      "path": "backup-globals.plumesql.run",
+      "sha256": "4ed4d8d5ee4d92c03b1fd40ee4b3df216944e636cb8b0ad34a03edefda923ffa",
+      "bytes": 413
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/backup-globals.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 8,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

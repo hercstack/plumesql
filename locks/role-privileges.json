@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "role-privileges",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Server and Security/role-privileges",
+  "files": [
+    {
+      "path": "role-privileges.plumesql.sql",
+      "sha256": "ac83b961f436e2a3fac2f0aa4792ddff9867d7e9767cf371e750c2764dd6bb7a",
+      "bytes": 7904
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/role-privileges.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 76,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

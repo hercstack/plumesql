@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "flythrough-3d",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Charts/flythrough-3d",
+  "files": [
+    {
+      "path": "flythrough-3d.plumesql.js",
+      "sha256": "a400b288c67dd0983522ab325fd5adfa10e1c32b40aab0167280e72941e9b386",
+      "bytes": 46807
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "1e243a9e34cf52a8ddd0798e352872437036200553572360b254b49f8de50437",
+      "bytes": 1031
+    }
+  ],
+  "dependencies": [
+    "three-core"
+  ],
+  "externals": [],
+  "demo": "media/flythrough-3d.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 205,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

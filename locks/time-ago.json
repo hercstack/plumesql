@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "time-ago",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Formatting/time-ago",
+  "files": [
+    {
+      "path": "time-ago.plumesql.js",
+      "sha256": "624a17e7b2854cb9d81687cecac29067b226eb8d79db7546f4d3b3823ffa2abe",
+      "bytes": 1007
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/time-ago.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 95,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

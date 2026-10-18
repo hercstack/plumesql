@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "add-retention-policy",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "TimescaleDB/add-retention-policy",
+  "files": [
+    {
+      "path": "add-retention-policy.plumesql.sql",
+      "sha256": "cf405b24ba9f770090897768b2ac08c5a953db2ef8864f6bf7ba8eb287b82a62",
+      "bytes": 615
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/add-retention-policy.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 3,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

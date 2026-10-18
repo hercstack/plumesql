@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "sankey",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Charts/sankey",
+  "files": [
+    {
+      "path": "sankey.plumesql.js",
+      "sha256": "3faf38191b048509cac88c27e3601e741f515d30977eace65e6780877a86829f",
+      "bytes": 5380
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "0d8d12a71417db4ad5f444ee28b7fc7e29efd4eceb4336c3b7fdbc9f76d13502",
+      "bytes": 470
+    }
+  ],
+  "dependencies": [
+    "echarts-core",
+    "stats-core"
+  ],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 215,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

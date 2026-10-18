@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "psql",
+  "kind": "command",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Backup and Tools/psql",
+  "files": [
+    {
+      "path": "psql.plumesql.run",
+      "sha256": "fd324645e1b88c4909b9fb07e00216e62353fb865c5342ea5044cfd28ae697bf",
+      "bytes": 386
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/psql.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 71,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "logical-replication",
+  "kind": "query",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Server and Security/logical-replication",
+  "files": [
+    {
+      "path": "logical-replication.plumesql.sql",
+      "sha256": "56e992f2cb66c83c85d10a02aa57f635331783e25b568967bdf1028acd6c041c",
+      "bytes": 3249
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 207,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

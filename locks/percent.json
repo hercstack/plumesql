@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "percent",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Formatting/percent",
+  "files": [
+    {
+      "path": "percent.plumesql.js",
+      "sha256": "c27a68a7a6a6e32897aaaaa057df53bcdb8c9a2be8d7a30e307ee3530d728f6a",
+      "bytes": 1650
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/percent.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 55,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

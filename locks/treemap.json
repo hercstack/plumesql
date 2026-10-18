@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "treemap",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Dashboards/treemap",
+  "files": [
+    {
+      "path": "treemap.plumesql.js",
+      "sha256": "ab59dfa7057b823c13442a628f8b55243506a65a22bdeec4b9d191d97d884279",
+      "bytes": 7583
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "be8ef6ab66fdd526b67fc725619d18aefdb524b7c80c99fc4df183f6e5de3dcf",
+      "bytes": 423
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "demo": "media/treemap.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 143,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

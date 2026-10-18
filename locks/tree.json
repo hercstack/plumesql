@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "tree",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Charts/tree",
+  "files": [
+    {
+      "path": "tree.plumesql.js",
+      "sha256": "14198640dfb6fc50844b6aa770f02d0a33b3e708ddd8d282b10e5e58eb1e635b",
+      "bytes": 8392
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "e476ca26b8c051f4b6d346f878af68bfc6c061f91326f1e5a464374c85143224",
+      "bytes": 597
+    }
+  ],
+  "dependencies": [
+    "echarts-core",
+    "stats-core"
+  ],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 218,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

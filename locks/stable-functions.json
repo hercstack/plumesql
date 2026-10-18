@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "stable-functions",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.25.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Performance/stable-functions",
+  "files": [
+    {
+      "path": "stable-functions.plumesql.sql",
+      "sha256": "38c782f0aa157670a7bfdbddae362cd6c704d883deecfc42b4243cd4d4b24060",
+      "bytes": 5517
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/stable-functions.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 226,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "sunburst",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Charts/sunburst",
+  "files": [
+    {
+      "path": "sunburst.plumesql.js",
+      "sha256": "737e7e89952f6f3f010045194146d445b0020805e4910787a4f0e7306d3a6629",
+      "bytes": 5967
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "80db3b70ee20fe8a3beefee8bf824baa2a0da564fd367d29144ffff4a417ae68",
+      "bytes": 544
+    }
+  ],
+  "dependencies": [
+    "echarts-core",
+    "stats-core"
+  ],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 216,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

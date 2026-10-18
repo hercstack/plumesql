@@ -1,0 +1,30 @@
+{
+  "format": 1,
+  "id": "data-quality",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Analysis/data-quality",
+  "files": [
+    {
+      "path": "data-quality.plumesql.js",
+      "sha256": "215861112109db6ae06d01e7d6b76201c4730475055d455d62d246c60242f125",
+      "bytes": 11863
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/data-quality.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 152,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

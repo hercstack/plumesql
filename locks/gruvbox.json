@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "gruvbox",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Themes/gruvbox",
+  "files": [
+    {
+      "path": "gruvbox.plumesql-theme.json",
+      "sha256": "41651a4596ea2f7d98e1ff2c0ca11576bbb095f745c23b4a4bc4d41128373f4b",
+      "bytes": 2688
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/gruvbox.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 120,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

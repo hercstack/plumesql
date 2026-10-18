@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "numbers",
+  "kind": "grid",
+  "version": "2.0.1",
+  "plumesql": ">=0.22.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Formatting/numbers",
+  "files": [
+    {
+      "path": "numbers.plumesql.js",
+      "sha256": "5b7f49a4109e4017ee52c60057d75e02cb39ed03ffb69251e09fd835a61669eb",
+      "bytes": 2308
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/numbers.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 53,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "plot-density",
+  "kind": "grid",
+  "version": "1.1.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Statistical Charts/plot-density",
+  "files": [
+    {
+      "path": "plot-density.plumesql.js",
+      "sha256": "41a95dc2e7fa48cedb66391bf4a59ac608d9a0953c0ae42d6ae7365fa5f18079",
+      "bytes": 3003
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "8e302f52565a98f9db6b35b49a9f3ce26f402cec6ceeed323c6ea33f2698e985",
+      "bytes": 544
+    }
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "externals": [],
+  "demo": "media/plot-density.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 62,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

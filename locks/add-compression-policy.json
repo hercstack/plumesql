@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "add-compression-policy",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "TimescaleDB/add-compression-policy",
+  "files": [
+    {
+      "path": "add-compression-policy.plumesql.sql",
+      "sha256": "a47e0ffb2b9fb54acc44a400856c714d31be9c5ff33914e5e739debb692c8cb3",
+      "bytes": 634
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/add-compression-policy.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 2,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "table-shards",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Citus/table-shards",
+  "files": [
+    {
+      "path": "table-shards.plumesql.sql",
+      "sha256": "9a9a4c4fdcc1ef380be7fcf7e75a806e49ed78ac556f8f94fbfa7086bd7378c5",
+      "bytes": 453
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/table-shards.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 93,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

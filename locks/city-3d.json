@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "city-3d",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Charts/city-3d",
+  "files": [
+    {
+      "path": "city-3d.plumesql.js",
+      "sha256": "5a5612e34cf1cdf1dfdf6f850ac5500c73f18621544d167895aa669f0b2ce170",
+      "bytes": 15149
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "325f80a8b878391438b2b5ad9a6c7b2335ee6fdfb32d46444a8ea07b17368f1c",
+      "bytes": 664
+    }
+  ],
+  "dependencies": [
+    "three-core"
+  ],
+  "externals": [],
+  "demo": "media/city-3d.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 191,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "json-to-rows",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Reshape/json-to-rows",
+  "files": [
+    {
+      "path": "json-to-rows.plumesql.js",
+      "sha256": "0780f8a0c0542dc862fda1376bc7b6f5b8081e0c258a1ba2529cce3468679c85",
+      "bytes": 7147
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "d101dce3afdfaa87eedc362a6b1e75ab071a048ed3dc11660cd0c59ed658d6c1",
+      "bytes": 581
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/json-to-rows.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 182,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

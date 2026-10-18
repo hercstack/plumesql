@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "waterfall",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Dashboards/waterfall",
+  "files": [
+    {
+      "path": "waterfall.plumesql.js",
+      "sha256": "bce3cc34d987e2a479a55744c865ec8f8748355ee22bfa2907751ea0159936c6",
+      "bytes": 7364
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "af2a8b4e73d073cf51b1f08009673db36b84df598364104a9d905d98ed2ab1b8",
+      "bytes": 480
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "demo": "media/waterfall.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 145,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

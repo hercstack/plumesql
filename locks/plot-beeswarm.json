@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "plot-beeswarm",
+  "kind": "grid",
+  "version": "1.1.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Statistical Charts/plot-beeswarm",
+  "files": [
+    {
+      "path": "plot-beeswarm.plumesql.js",
+      "sha256": "cac1e25a99e962c16b5deadd63250fb09c52cb15bab6572551eddc2f13c60586",
+      "bytes": 3920
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "baa2cf694eaf4a33e32520ab138144caf9eb10ddf1f679b23cd78b1a735d3a27",
+      "bytes": 582
+    }
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "externals": [],
+  "demo": "media/plot-beeswarm.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 57,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

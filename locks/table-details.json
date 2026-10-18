@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "table-details",
+  "kind": "query",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Objects/table-details",
+  "files": [
+    {
+      "path": "table-details.plumesql.sql",
+      "sha256": "3e9f095db86de6e628f4c36dc601e8baffa1c5cf4193df8f734fa5ff113e029b",
+      "bytes": 1515
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/table-details.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 91,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

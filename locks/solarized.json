@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "solarized",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Themes/solarized",
+  "files": [
+    {
+      "path": "solarized.plumesql-theme.json",
+      "sha256": "0e1902a4e143116baea6f853266a997e6b6a0a46d54cad1debc74ee795f390e2",
+      "bytes": 2692
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/solarized.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 138,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "full-name",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Calculations/full-name",
+  "files": [
+    {
+      "path": "full-name.plumesql.js",
+      "sha256": "423b9646aaaa5d17cdfe7d9add574b6dc29811788a586a1b372b24b4eccf19c2",
+      "bytes": 436
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/full-name.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 37,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

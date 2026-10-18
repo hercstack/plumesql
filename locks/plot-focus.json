@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "plot-focus",
+  "kind": "grid",
+  "version": "1.1.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Charts/plot-focus",
+  "files": [
+    {
+      "path": "plot-focus.plumesql.js",
+      "sha256": "842925652d918c643fab75140b7d011f0e3c25c4c42314300c651cdd0fefb855",
+      "bytes": 10731
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "97b7b9166b666b31ef4c73052b526967d3dad40a571b311b6507c550d1eba6c5",
+      "bytes": 550
+    }
+  ],
+  "dependencies": [
+    "plot-core"
+  ],
+  "externals": [],
+  "demo": "media/plot-focus.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 63,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

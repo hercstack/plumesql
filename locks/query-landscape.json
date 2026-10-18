@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "query-landscape",
+  "kind": "query",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Performance/query-landscape",
+  "files": [
+    {
+      "path": "query-landscape.plumesql.sql",
+      "sha256": "afb074d2aaeba1add28ea67ff419603c79fc2ca29d292656030d67964fd72fa4",
+      "bytes": 1323
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "630761f4b3c99e2a62400c79299a76cf37df9033dd750e1cbe30a7b36bf2bd10",
+      "bytes": 565
+    }
+  ],
+  "dependencies": [
+    "scatter-3d"
+  ],
+  "externals": [],
+  "demo": "media/query-landscape.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 194,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

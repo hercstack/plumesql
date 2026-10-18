@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "publish-with-gh",
+  "kind": "command",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Extension Authoring/publish-with-gh",
+  "files": [
+    {
+      "path": "publish-with-gh.plumesql.run",
+      "sha256": "fcf18286c8003267c668173a5c398ed353152f03c465e65e88e5bbc91d41e76a",
+      "bytes": 2999
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 72,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

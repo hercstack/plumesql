@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "github",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Themes/github",
+  "files": [
+    {
+      "path": "github.plumesql-theme.json",
+      "sha256": "65101103b6a80ecb0d2cf504c0989b375eb2c856a7d7b3022dcd2f1029d31d19",
+      "bytes": 4031
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/github.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 118,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

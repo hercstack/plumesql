@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "gauge",
+  "kind": "grid",
+  "version": "1.0.2",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Dashboards/gauge",
+  "files": [
+    {
+      "path": "gauge.plumesql.js",
+      "sha256": "897151e1fc48073a9a1cbca66f80deb11b8e1fcf1f38124c5c1dbc16ab50778e",
+      "bytes": 8314
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "93f99552f7b355829ecefc5f8fcafb03a233fcf89ae0399c6f31dedbbb458c51",
+      "bytes": 508
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "demo": "media/gauge.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 117,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

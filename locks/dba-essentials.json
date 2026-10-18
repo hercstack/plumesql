@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "dba-essentials",
+  "kind": "pack",
+  "version": "1.3.0",
+  "plumesql": ">=0.22.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Packs/dba-essentials",
+  "files": [
+    {
+      "path": "dba-essentials.plumesql-pack.json",
+      "sha256": "a174aaa3f26e9497d8b582b6854617c6cb58c89bbdcb41b409132e0098ee1d88",
+      "bytes": 607
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 154,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

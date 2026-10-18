@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "network-graph",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Charts/network-graph",
+  "files": [
+    {
+      "path": "network-graph.plumesql.js",
+      "sha256": "d631d109154b78e4f8456c184daad2f3949e5ba3d4ed1616a40662ebef9bf3a4",
+      "bytes": 9860
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "1158e0a80d4e889f28d94a9d6e57c4c55293d19b4b846e764f4cebe86825e77b",
+      "bytes": 591
+    }
+  ],
+  "dependencies": [
+    "echarts-core",
+    "stats-core"
+  ],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 208,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

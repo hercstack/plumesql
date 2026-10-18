@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "blocking-locks",
+  "kind": "query",
+  "version": "1.0.2",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Activity and Locks/blocking-locks",
+  "files": [
+    {
+      "path": "blocking-locks.plumesql.sql",
+      "sha256": "7c16c83f306f26720585aa2306e541b0dc3619c9e5aad0991d749b1eabe8f45e",
+      "bytes": 2504
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/blocking-locks.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 10,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

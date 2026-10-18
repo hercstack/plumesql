@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "byte-sizes",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Formatting/byte-sizes",
+  "files": [
+    {
+      "path": "byte-sizes.plumesql.js",
+      "sha256": "e1a256db45879d431240906720d537e525caa6948fa9c1ca3602ea75b0cd68fd",
+      "bytes": 607
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/byte-sizes.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 12,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

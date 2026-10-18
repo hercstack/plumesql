@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "parallel-coordinates",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Charts/parallel-coordinates",
+  "files": [
+    {
+      "path": "parallel-coordinates.plumesql.js",
+      "sha256": "125569db1447e7f3356553c609434f613539c1607599bfb8c6f10421f838e4f5",
+      "bytes": 7106
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "0ea96a2ed75ef077fb87ae97392c4b498d16377baa35a8a04dc400cb842d82b4",
+      "bytes": 491
+    }
+  ],
+  "dependencies": [
+    "echarts-core",
+    "stats-core"
+  ],
+  "externals": [
+    "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"
+  ],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 210,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

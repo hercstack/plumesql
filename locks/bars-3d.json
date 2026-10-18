@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "bars-3d",
+  "kind": "grid",
+  "version": "1.0.2",
+  "plumesql": ">=0.21.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Charts/bars-3d",
+  "files": [
+    {
+      "path": "bars-3d.plumesql.js",
+      "sha256": "164031a5db0ea118df2a741068273b2550fc114831533c66c8b0d4425fc30dc2",
+      "bytes": 11759
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "5104e5568c822a5d7f34c9d80dedf2cdcb60b57cea05414b0923405031ddfcaa",
+      "bytes": 852
+    }
+  ],
+  "dependencies": [
+    "three-core"
+  ],
+  "externals": [],
+  "demo": "media/bars-3d.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 190,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

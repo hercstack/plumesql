@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "retro",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.28.0",
+  "commit": "ea2874d7510237d14c4f2ac6b27a514c7ba8f866",
+  "path": "Themes/retro",
+  "files": [
+    {
+      "path": "retro.plumesql-theme.json",
+      "sha256": "e3abd3efc64b462a3fc9279c95d176ee3b47c644ea9d01ed572cff33875ab8cb",
+      "bytes": 8461
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/retro.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 233,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}
