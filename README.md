@@ -4,11 +4,11 @@
 > can become a monitor, a dashboard or a button.
 
 > [!NOTE]
-> **PlumeSQL 0.27.0 is here**: a new look (calm neutral Dark and
-> Light themes with one clear blue, tabs and splitters like VS Code's),
-> hovers you can leave out per keyword, per kind of object or entirely,
-> and a checkbox for each extension when you install several at once.
-> [What's in it](changelog/free-v0.27.0/README.md).
+> **PlumeSQL 0.28.0 is here**: sort a result from a column's menu, a
+> font and a size for each part of the window (the interface, the pages,
+> the results, the code), pixel themes with their own fonts and square
+> corners, and Markdown files with Preview, Source and a toolbar.
+> [What's in it](changelog/free-v0.28.0/README.md).
 >
 > PlumeSQL is still in beta: new releases come often, and features can
 > still change between them. The app updates itself. Something broken
