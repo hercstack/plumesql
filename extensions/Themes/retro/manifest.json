@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "retro",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.28.0",
+  "name": "Retro",
+  "description": "Five pixel themes: green and amber phosphor, a home computer's blue, a handheld's greens, a fantasy console's colors",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "dark",
+    "light",
+    "retro",
+    "pixel"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "retro.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 233,
+  "externals": [],
+  "demo": "media/retro.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}
