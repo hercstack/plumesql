@@ -25,7 +25,9 @@ a JavaScript module, by its manifest's `kind`):
   a JavaScript module whose refactors the SQL editor's lightbulb offers on
   a statement, and nothing else (a grid extension declares no refactors);
 - a **theme extension**, `<id>.plumesql-theme.json`: one or more color
-  themes, hex colors for the app's design tokens and nothing else;
+  themes, hex colors for the app's design tokens, perhaps the names of
+  the fonts and the shape (square corners, hard shadows) a theme wants,
+  and nothing else;
 - a **pack**, `<id>.plumesql-pack.json`: a list of other extensions to
   install together, and nothing else. A pack runs nothing and is never
   installed itself; its Install all installs the members still missing,

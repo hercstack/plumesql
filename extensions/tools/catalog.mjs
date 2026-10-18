@@ -76,6 +76,8 @@ const THEME_COLORS = new Set([
   'footer-muted', 'footer-conn', 'footer-conn-hover'
 ])
 const THEME_REQUIRED = ['bg', 'panel', 'text', 'accent']
+// A face a theme names: a family's name and nothing else (docs/THEMES.md 2.4).
+const FONT_NAME_RE = /^[A-Za-z0-9](?:[A-Za-z0-9 ._-]{0,62}[A-Za-z0-9.])?$/
 const THEME_SYNTAX = new Set(['keyword', 'string', 'number', 'comment', 'operator', 'type', 'func', 'annotation'])
 const THEME_TERMINAL = new Set([
   'black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white',
@@ -389,7 +391,10 @@ function collect(category, id) {
 
   // rule 11 (structural half): every header line opening with @ names a known annotation
   let members
-  if (mainExt && kind === 'theme') checkTheme(join(dir, id + mainExt), where)
+  if (mainExt && kind === 'theme' && checkTheme(join(dir, id + mainExt), where) && RANGE_RE.test(m.plumesql ?? '') && compareSemver(m.plumesql.slice(2), '0.28.0') < 0) {
+    // An older app refuses a theme for these fields (docs/THEMES.md 2.5).
+    fail(where, `a theme that names fonts or shape needs "plumesql": ">=0.28.0", not "${m.plumesql}"`)
+  }
   else if (mainExt && kind === 'pack') members = readPack(join(dir, id + mainExt), where)
   else if (mainExt) checkHeaders(join(dir, id + mainExt), kind, where)
   if (kind === 'grid' || kind === 'refactor') {
@@ -426,8 +431,10 @@ function readPack(file, where) {
 }
 
 // A theme file: a `themes` list of one or more themes, each with a unique id, a
-// name, a base (dark or light) and its colors, every one a hex literal. A theme
-// whose text reads under 4.5:1 on its background is a warning, not a stop.
+// name, a base (dark or light) and its colors, every one a hex literal, and
+// perhaps its faces (family NAMES) and its shape (docs/THEMES.md 2.4, 2.5). A
+// theme whose text reads under 4.5:1 on its background is a warning, not a stop.
+// Answers whether a theme of the file names fonts or shape.
 function checkTheme(file, where) {
   let doc
   try {
@@ -440,10 +447,11 @@ function checkTheme(file, where) {
   for (const k of Object.keys(doc)) if (k !== 'themes' && k !== 'format') fail(where, `the theme file has an unknown field "${k}"`)
   if (!Array.isArray(doc.themes) || !doc.themes.length) return fail(where, '"themes" must be a non-empty list')
   const ids = new Set()
+  let newer = false
   doc.themes.forEach((t, i) => {
     const at = `${where} themes[${i}]`
     if (!t || typeof t !== 'object') return fail(at, 'not an object')
-    for (const k of Object.keys(t)) if (!['id', 'name', 'base', 'highContrast', 'colors', 'syntax', 'terminal'].includes(k)) fail(at, `unknown field "${k}"`)
+    for (const k of Object.keys(t)) if (!['id', 'name', 'base', 'highContrast', 'colors', 'syntax', 'terminal', 'fonts', 'shape'].includes(k)) fail(at, `unknown field "${k}"`)
     if (typeof t.id !== 'string' || !ID_RE.test(t.id) || t.id.length > 48) fail(at, `id "${t.id}" is not lowercase words joined by hyphens`)
     else if (ids.has(t.id)) fail(at, `id "${t.id}" repeats`)
     ids.add(t.id)
@@ -466,12 +474,31 @@ function checkTheme(file, where) {
     group('colors', THEME_COLORS, THEME_REQUIRED)
     group('syntax', THEME_SYNTAX, [])
     group('terminal', THEME_TERMINAL, [])
+    const words = (field, check) => {
+      const g = t[field]
+      if (g === undefined) return
+      if (!g || typeof g !== 'object' || Array.isArray(g)) return fail(at, `"${field}" is not an object`)
+      for (const [k, v] of Object.entries(g)) {
+        const why = check(k, v)
+        if (why) fail(at, `${field}.${k}: ${why}`)
+      }
+    }
+    if (t.fonts !== undefined || t.shape !== undefined) newer = true
+    words('fonts', (k, v) =>
+      k === 'ui' || k === 'code' ? (typeof v === 'string' && FONT_NAME_RE.test(v) ? '' : `${JSON.stringify(v)} is not a font family name (letters, digits, spaces, . _ -; at most 64)`)
+      : k === 'smoothing' ? (typeof v === 'boolean' ? '' : 'must be true or false')
+      : 'unknown field')
+    words('shape', (k, v) =>
+      k === 'corners' ? (v === 'rounded' || v === 'square' ? '' : 'must be "rounded" or "square"')
+      : k === 'shadows' ? (v === 'soft' || v === 'hard' ? '' : 'must be "soft" or "hard"')
+      : 'unknown field')
     const c = t.colors ?? {}
     if (HEX_RE.test(c.text ?? '') && HEX_RE.test(c.bg ?? '')) {
       const ratio = contrast(c.text, c.bg)
       if (ratio < 4.5) warn(at, `the text reads at ${ratio.toFixed(1)}:1 on the background, under the 4.5:1 WCAG asks for`)
     }
   })
+  return newer
 }
 
 // The WCAG contrast ratio of two opaque hex colors.
