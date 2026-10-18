@@ -8,8 +8,9 @@ as Classic Dark and Classic Light in the PlumeSQL Classic theme
 extension. Every other theme is a THEME EXTENSION: a fourth kind of marketplace extension, next
 to the query, command and grid extensions, whose one file is a JSON
 document of colors. A theme is data and nothing else. It names hex
-colors for the application's design tokens; it cannot load a file, reach
-a URL, run code or change a font, which is why it installs on one click
+colors for the application's design tokens and, if it wants, the NAMES
+of two faces and a shape (square corners, hard shadows); it cannot load
+a file, reach a URL or run code, which is why it installs on one click
 with no consent, like a grid extension.
 
 This document specifies the theme file (sections 1 to 3), says how the
@@ -56,6 +57,8 @@ Each theme is an object with exactly these fields:
 | `colors` | yes | The surface and state tokens (section 2.1). `bg`, `panel`, `text` and `accent` are required. |
 | `syntax` | no | The editor's syntax colors (section 2.2). |
 | `terminal` | no | The terminal's sixteen ANSI colors (section 2.3). |
+| `fonts` | no | The interface's and the code's faces, and text smoothing (section 2.4). |
+| `shape` | no | Square corners and hard shadows (section 2.5). |
 
 Every color value MUST be a hex literal: `#rgb`, `#rgba`, `#rrggbb` or
 `#rrggbbaa`. Nothing else is a color here: no `rgb()`, no names, no
@@ -116,6 +119,36 @@ editors.
 their `bright` forms (`brightBlack` ... `brightWhite`). Each one left out
 falls back to the palette (red to `red`, blue to `accent`, and so on).
 
+### 2.4 `fonts`
+
+| Field | Value | What it does |
+|---|---|---|
+| `ui` | a family name | The interface's face: the trees, the tabs, the menus, the pages, the result grids. |
+| `code` | a family name | The code face: the editor, the terminal, code in a page. |
+| `smoothing` | `true` or `false` | `false` draws text without antialiasing, the crisp edges a pixel face is drawn for. The platform decides whether it can (macOS can). `true` when absent. |
+
+A family name is 1 to 64 characters of letters, digits, spaces, `.`, `_`
+and `-`, beginning with a letter or a digit: a NAME, never a list, a URL
+or a file. The face draws when the computer has the family or the
+application carries it; any other leaves the base's face, so a theme
+MUST still read in the base's faces. The application carries two pixel
+faces, under the SIL Open Font License: **Departure Mono** (monospaced)
+and **Pixelify Sans** (proportional). The user's own font settings stand
+over the theme's: a face the user picked is never replaced by one a
+theme names.
+
+### 2.5 `shape`
+
+| Field | Value | What it does |
+|---|---|---|
+| `corners` | `"rounded"` or `"square"` | `square` draws every corner of the window square, the editor's widgets included. `rounded` when absent. |
+| `shadows` | `"soft"` or `"hard"` | `hard` gives the floating windows (menus, dialogs, the find bar, the suggestions) a hard shadow: an offset in a solid shade, no blur. `soft` when absent. |
+
+A theme that names `fonts` or `shape` needs PlumeSQL 0.28.0 or later:
+an older release refuses the theme for its unknown field. An extension
+carrying one MUST declare `"plumesql": ">=0.28.0"` in its manifest, so
+an older release never offers it.
+
 ## 3. Completion: a dozen colors paint the whole window
 
 A theme names what it cares about; the application derives the rest, in
@@ -148,8 +181,10 @@ accent fill and ON a red fill (a primary button, a checked box, a
 danger badge), white or near-black `#111418`, whichever reads better on
 the fill; a light accent would swallow white text.
 
-What a theme cannot name at all (the shadows, the fonts, the spacing)
-stays its base's. A theme's `text` SHOULD read at 4.5:1 or better on its
+What a theme cannot name at all (the spacing, the sizes) stays its
+base's, and so do the faces and the shape it does not name (section 2.4
+and 2.5): the system's interface and code faces, rounded corners, soft
+shadows. A theme's `text` SHOULD read at 4.5:1 or better on its
 `bg` (WCAG AA); the validator warns under that, it does not refuse.
 
 ## 4. In the application
@@ -162,7 +197,9 @@ stays its base's. A theme's `text` SHOULD read at 4.5:1 or better on its
   themes under Appearance.
 - **Applying.** The page keeps the base's `data-theme` (so everything
   written for "both themes" still holds) and lays the theme's tokens
-  over it as custom properties on the document root. The editor, the
+  over it as custom properties on the document root; its faces go ahead
+  of the system's lists there, and its shape and smoothing are attributes
+  of the root the stylesheet answers. The editor, the
   terminal, the result grid, the trees and every floating window read
   the same tokens, so one switch repaints all of them.
 - **Result views.** A view's `ctx.theme` stays the base (`'dark'` or
@@ -197,7 +234,8 @@ stays its base's. A theme's `text` SHOULD read at 4.5:1 or better on its
   else), the window shows Dark and the Log says so once, with Select
   Color Theme as its button. Startup opens nothing for it.
 - **Your own.** New Theme from Current Colors writes a theme extension
-  into My Extensions holding the colors on screen, opens its file and
+  into My Extensions holding the colors on screen (and the faces and
+  shape of the theme showing, when it names any), opens its file and
   makes it the theme showing (the window looks the same), so every save
   repaints the window.
   The editor helps with the file: a swatch and the color picker on
