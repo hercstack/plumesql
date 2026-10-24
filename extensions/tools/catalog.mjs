@@ -391,9 +391,10 @@ function collect(category, id) {
 
   // rule 11 (structural half): every header line opening with @ names a known annotation
   let members
-  if (mainExt && kind === 'theme' && checkTheme(join(dir, id + mainExt), where) && RANGE_RE.test(m.plumesql ?? '') && compareSemver(m.plumesql.slice(2), '0.28.0') < 0) {
+  const needs = mainExt && kind === 'theme' ? checkTheme(join(dir, id + mainExt), where) : null
+  if (needs && RANGE_RE.test(m.plumesql ?? '') && compareSemver(m.plumesql.slice(2), needs) < 0) {
     // An older app refuses a theme for these fields (docs/THEMES.md 2.5).
-    fail(where, `a theme that names fonts or shape needs "plumesql": ">=0.28.0", not "${m.plumesql}"`)
+    fail(where, needs === '0.28.0' ? `a theme that names fonts or shape needs "plumesql": ">=0.28.0", not "${m.plumesql}"` : `a theme with shape.bevels needs "plumesql": ">=${needs}", not "${m.plumesql}"`)
   }
   else if (mainExt && kind === 'pack') members = readPack(join(dir, id + mainExt), where)
   else if (mainExt) checkHeaders(join(dir, id + mainExt), kind, where)
@@ -434,7 +435,8 @@ function readPack(file, where) {
 // name, a base (dark or light) and its colors, every one a hex literal, and
 // perhaps its faces (family NAMES) and its shape (docs/THEMES.md 2.4, 2.5). A
 // theme whose text reads under 4.5:1 on its background is a warning, not a stop.
-// Answers whether a theme of the file names fonts or shape.
+// Answers the release its fields need: 0.29.0 for shape.bevels, 0.28.0 for
+// any other fonts or shape field, null for neither.
 function checkTheme(file, where) {
   let doc
   try {
@@ -447,7 +449,7 @@ function checkTheme(file, where) {
   for (const k of Object.keys(doc)) if (k !== 'themes' && k !== 'format') fail(where, `the theme file has an unknown field "${k}"`)
   if (!Array.isArray(doc.themes) || !doc.themes.length) return fail(where, '"themes" must be a non-empty list')
   const ids = new Set()
-  let newer = false
+  let newer = null
   doc.themes.forEach((t, i) => {
     const at = `${where} themes[${i}]`
     if (!t || typeof t !== 'object') return fail(at, 'not an object')
@@ -483,7 +485,8 @@ function checkTheme(file, where) {
         if (why) fail(at, `${field}.${k}: ${why}`)
       }
     }
-    if (t.fonts !== undefined || t.shape !== undefined) newer = true
+    if (t.shape?.bevels !== undefined) newer = '0.29.0'
+    else if ((t.fonts !== undefined || t.shape !== undefined) && !newer) newer = '0.28.0'
     words('fonts', (k, v) =>
       k === 'ui' || k === 'code' ? (typeof v === 'string' && FONT_NAME_RE.test(v) ? '' : `${JSON.stringify(v)} is not a font family name (letters, digits, spaces, . _ -; at most 64)`)
       : k === 'smoothing' ? (typeof v === 'boolean' ? '' : 'must be true or false')
@@ -491,6 +494,7 @@ function checkTheme(file, where) {
     words('shape', (k, v) =>
       k === 'corners' ? (v === 'rounded' || v === 'square' ? '' : 'must be "rounded" or "square"')
       : k === 'shadows' ? (v === 'soft' || v === 'hard' ? '' : 'must be "soft" or "hard"')
+      : k === 'bevels' ? (v === 'flat' || v === 'raised' ? '' : 'must be "flat" or "raised"')
       : 'unknown field')
     const c = t.colors ?? {}
     if (HEX_RE.test(c.text ?? '') && HEX_RE.test(c.bg ?? '')) {

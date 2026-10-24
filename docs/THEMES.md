@@ -9,7 +9,8 @@ extension. Every other theme is a THEME EXTENSION: a fourth kind of marketplace 
 to the query, command and grid extensions, whose one file is a JSON
 document of colors. A theme is data and nothing else. It names hex
 colors for the application's design tokens and, if it wants, the NAMES
-of two faces and a shape (square corners, hard shadows); it cannot load
+of two faces and a shape (square corners, hard shadows, controls in
+relief); it cannot load
 a file, reach a URL or run code, which is why it installs on one click
 with no consent, like a grid extension.
 
@@ -58,7 +59,7 @@ Each theme is an object with exactly these fields:
 | `syntax` | no | The editor's syntax colors (section 2.2). |
 | `terminal` | no | The terminal's sixteen ANSI colors (section 2.3). |
 | `fonts` | no | The interface's and the code's faces, and text smoothing (section 2.4). |
-| `shape` | no | Square corners and hard shadows (section 2.5). |
+| `shape` | no | Square corners, hard shadows and controls in relief (section 2.5). |
 
 Every color value MUST be a hex literal: `#rgb`, `#rgba`, `#rrggbb` or
 `#rrggbbaa`. Nothing else is a color here: no `rgb()`, no names, no
@@ -143,11 +144,13 @@ theme names.
 |---|---|---|
 | `corners` | `"rounded"` or `"square"` | `square` draws every corner of the window square, the editor's widgets included. `rounded` when absent. |
 | `shadows` | `"soft"` or `"hard"` | `hard` gives the floating windows (menus, dialogs, the find bar, the suggestions) a hard shadow: an offset in a solid shade, no blur. `soft` when absent. |
+| `bevels` | `"flat"` or `"raised"` | `raised` draws the controls in relief, the way a desktop of the nineties drew them: buttons, tabs, scroll bars, a grid's column headers, the menus and floating windows raised, inputs sunken, an active tab or a pressed button pressed in. The four edges come from the theme's `panel`: a highlight near white, a shadow a third of the way to black, an outer edge near black. Nothing moves or changes size. `flat` when absent. |
 
-A theme that names `fonts` or `shape` needs PlumeSQL 0.28.0 or later:
-an older release refuses the theme for its unknown field. An extension
-carrying one MUST declare `"plumesql": ">=0.28.0"` in its manifest, so
-an older release never offers it.
+A theme that names `fonts` or `shape` needs PlumeSQL 0.28.0 or later,
+and one that names `shape.bevels` needs 0.29.0 or later: an older
+release refuses the theme for its unknown field. An extension carrying
+one MUST declare that release in its manifest (`"plumesql": ">=0.28.0"`,
+`">=0.29.0"` for `bevels`), so an older release never offers it.
 
 ## 3. Completion: a dozen colors paint the whole window
 
