@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "id": "desktop-95",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.29.0",
+  "name": "Desktop 95",
+  "description": "Desktops of three eras: the grey 95 with raised buttons and sunken fields, a database studio classic in relief and modern flat",
+  "categories": [
+    "Themes"
+  ],
+  "tags": [
+    "themes",
+    "light",
+    "retro"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "desktop-95.plumesql-theme.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 0,
+  "externals": [],
+  "demo": "media/desktop-95.webp",
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}
