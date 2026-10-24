@@ -66,6 +66,42 @@ a bare `*` (`USING` merges the two columns into one). Going back to `ON`,
 a column the query reads without a table name gets the right one, so it
 does not turn ambiguous.
 
+## Joins that may repeat rows
+
+This query runs, and it is wrong:
+
+```sql
+select c.customer_id, count(r.rental_id) as rentals, sum(p.amount) as paid
+from customer c
+left join rental r on r.customer_id = c.customer_id
+left join payment p on p.customer_id = c.customer_id
+group by c.customer_id;
+```
+
+Customer 1 has 32 rentals and paid 118.68. The query says 1024 and
+3797.76: every rental is repeated once per payment, and every payment
+once per rental.
+
+PlumeSQL now reads every join against the keys of its tables, the idea
+the Key Joins proposal (accepted by the SQL standard's working group in
+October 2026) makes a guarantee of. A join on a unique key of the joined
+table (its primary key, a unique index) keeps every row before it exactly
+once. Any other join may repeat them:
+
+- a quiet dotted hint under such a join says so on hover ("This join may
+  repeat rows: each customer row once per matching rental row"). A
+  customer joined to their rentals is often what you mean, so it stays
+  quiet;
+- a **warning**, in the Problems tab too, where it is most likely a
+  mistake: a `sum`, `avg`, `count` of a column or `string_agg` over a
+  table whose rows a join repeats, and two one-to-many joins multiplying
+  each other, as above.
+
+The fix is usually to aggregate each child in a subquery first. Only
+what can be proven is said: a view, a subquery or a condition other than
+equalities is left unread. **Settings > Editor > Joins that may repeat
+rows** chooses all, warnings only, or off.
+
 ## Fixed
 
 - **The lines above a query belong to that query alone.** A script can
