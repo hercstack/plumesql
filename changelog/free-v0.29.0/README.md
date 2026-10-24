@@ -1,4 +1,4 @@
-# PlumeSQL 0.28.1
+# PlumeSQL 0.29.0
 
 Two queries written alike are two queries: the lines above one no longer
 reach the other.
