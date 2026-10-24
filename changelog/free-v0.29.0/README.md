@@ -1,7 +1,45 @@
 # PlumeSQL 0.29.0
 
-Two queries written alike are two queries: the lines above one no longer
-reach the other.
+Write a join by walking a foreign key: type a dot after a key column and
+pick a column of the table it points to. And two queries written alike
+are two queries: the lines above one no longer reach the other.
+
+## Join through a foreign key
+
+In a SELECT, put a dot after a foreign key column, as if the key were the
+row it points to:
+
+```sql
+select o.order_id, o.customer_id.
+from orders o
+```
+
+The list offers the columns of `customer`. Pick `name`, and PlumeSQL
+writes it and adds the join in one step (one undo, too):
+
+```sql
+select o.order_id, c.name
+from orders o
+join customer c on c.customer_id = o.customer_id
+```
+
+The path goes on as far as the keys do: `o.customer_id.address_id.city`
+adds a join per step.
+
+The join is written so the query returns the same rows as before:
+
+- a key that cannot be NULL gets a `JOIN`: every row has its customer;
+- a key that can be NULL gets a `LEFT JOIN`, so the rows without one stay;
+- once a step is a `LEFT JOIN`, every step after it is one too.
+
+If the query already joins that table over the same key, its alias is
+used, with no second join. Anything else you want (another join type, a
+condition of your own) you change in the text, like any SQL. The alias
+follows your Refactors setting, and **Settings > Refactors > Join through
+a foreign key column** turns it off.
+
+When you type `o.`, a key column now shows where it leads on its row,
+such as `→ customer`, so you can see which columns a dot can follow.
 
 ## Fixed
 
