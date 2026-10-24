@@ -102,6 +102,13 @@ what can be proven is said: a view, a subquery or a condition other than
 equalities is left unread. **Settings > Editor > Joins that may repeat
 rows** chooses all, warnings only, or off.
 
+## Also in this release
+
+- **A quick fix for "must appear in the GROUP BY clause".** On PostgreSQL's
+  42803, the problem's **Quick Fix** (and the lightbulb) offers **Add
+  c.customer_id to GROUP BY**, the very column the server names, or writes
+  the `GROUP BY` when the query has none.
+
 ## Fixed
 
 - **The lines above a query belong to that query alone.** A script can
