@@ -42,7 +42,9 @@ When you type `o.`, a key column now shows where it leads on its row,
 such as `→ customer`, so you can see which columns a dot can follow.
 
 Prefer `USING`? A join written with `USING (customer_id)` is recognized
-too: the path reuses it instead of joining the table again.
+too: the path reuses it instead of joining the table again. And when you
+write the join yourself, `join customer c using ` offers
+`(customer_id)` right away: the key is known.
 
 ### Rewrite a join as USING, or as ON
 
