@@ -31,6 +31,20 @@ reach the other.
   one the result came from, and **Move to an extension** took the other
   copy's lines along. They now work on the query you ran.
 
+## Also in this release
+
+- **The Problems tab says why a note is a note.** When a query uses a
+  table or function that an earlier statement of the same script creates,
+  the server has not got it yet, so the parser's check fails, though the
+  run will work. PlumeSQL shows that as a muted note, not an error, and
+  now says so plainly: a **Note** column beside the line reads
+  "created on line 132". Click it to jump to that line; the row's right
+  click menu has **Go to Line 132, Where It Is Created** too.
+- **More of what a script makes is recognized.** A schema, a procedure,
+  a table made by `SELECT ... INTO` and a column added by
+  `ALTER TABLE ... ADD COLUMN` were shown as errors when a later statement
+  used them. They are notes now, like a created table or function.
+
 ## Tell us what you think
 
 Questions and ideas go to
