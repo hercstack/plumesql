@@ -104,10 +104,26 @@ rows** chooses all, warnings only, or off.
 
 ## Also in this release
 
-- **A quick fix for "must appear in the GROUP BY clause".** On PostgreSQL's
-  42803, the problem's **Quick Fix** (and the lightbulb) offers **Add
-  c.customer_id to GROUP BY**, the very column the server names, or writes
-  the `GROUP BY` when the query has none.
+- **Quick fixes from what PostgreSQL says.** Hover a problem and pick
+  **Quick Fix**, or open the lightbulb, and the fix the server's own words
+  settle is one click away:
+  - "must appear in the GROUP BY clause": **Add c.customer_id to GROUP
+    BY**, or the whole `GROUP BY` when the query has none;
+  - "Perhaps you meant to reference the column "c.customer_id"" (or the
+    table alias): **Change to c.customer_id**;
+  - a `CREATE` of something that already exists: **Add IF NOT EXISTS**, or
+    `CREATE OR REPLACE` for a view or a function;
+  - a `DROP` of something that does not: **Add IF EXISTS**;
+  - "cannot change return type of existing function": the `DROP FUNCTION`
+    the server asks for, written above;
+  - "column is of type integer but expression is of type text": **Cast to
+    integer**;
+  - a table named twice in a query: an alias for the second one.
+
+  The **Problems** tab offers the same: a **Fix** column next to the line,
+  one click applies it, and the row's right click menu lists every fix. A
+  hover over a problem is short now: the problem, and its Quick Fix right
+  under it.
 
 ## Fixed
 
