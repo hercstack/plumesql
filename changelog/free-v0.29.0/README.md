@@ -143,6 +143,17 @@ rows** chooses all, warnings only, or off.
   syntax error, gets **Insert ','** too. **Settings > Editor > Flag
   aliases that read like a missing comma** turns it off.
 
+- **Desktop 95, three new themes.** Desktops of three eras. **Desktop 95**
+  draws the grey nineties in relief: raised buttons, sunken fields, the
+  editor's tabs a taskbar whose active button is pressed in, checkered
+  scroll bars, a results grid with raised headers and row numbers over
+  white cells, and a form designer's code colors. **Studio Classic** is a
+  database studio of the next decade, its beige in soft relief, blue
+  keywords, red strings and magenta functions in Courier New and a pale
+  yellow status bar; **Studio Modern** the same studio today, flat and
+  light blue. Install them from the **Extensions** tab. Themes can now
+  draw the window's controls in relief; these are the first to use it.
+
 ## Fixed
 
 - **The lines above a query belong to that query alone.** A script can
