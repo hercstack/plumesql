@@ -124,6 +124,24 @@ rows** chooses all, warnings only, or off.
   one click applies it, and the row's right click menu lists every fix. A
   hover over a problem is short now: the problem, and its Quick Fix right
   under it.
+- **A missing comma is caught.** In
+
+  ```sql
+  select
+      first_name
+      last_name,
+      email
+  from customer;
+  ```
+
+  `last_name` is no column: it is a name PostgreSQL gives `first_name`,
+  and the query runs with one column fewer. PlumeSQL now warns where an
+  alias written without `AS` looks like a forgotten comma (it stands on
+  the next line, or it names another column of the same table) and the
+  quick fix inserts the comma, or writes the `AS` when the alias is
+  meant. `c.first_name c.last_name`, which the server refuses with a
+  syntax error, gets **Insert ','** too. **Settings > Editor > Flag
+  aliases that read like a missing comma** turns it off.
 
 ## Fixed
 
