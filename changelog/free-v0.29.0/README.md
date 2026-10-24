@@ -41,6 +41,29 @@ a foreign key column** turns it off.
 When you type `o.`, a key column now shows where it leads on its row,
 such as `→ customer`, so you can see which columns a dot can follow.
 
+Prefer `USING`? A join written with `USING (customer_id)` is recognized
+too: the path reuses it instead of joining the table again.
+
+### Rewrite a join as USING, or as ON
+
+Open the lightbulb (Ctrl+. or Cmd+.) on a query whose join is on one
+shared column:
+
+```sql
+join customer c on c.customer_id = r.customer_id
+-- Rewrite join customer as USING (customer_id):
+join customer c using (customer_id)
+```
+
+and on a `USING` join, **Rewrite join customer as ON** goes back. With
+the caret in a join, that join is offered; anywhere else in the query,
+every join that can be rewritten. It is offered only
+where the two read the same: when just one table left of the join has the
+column (with two, `USING` would fail), and when the query does not select
+a bare `*` (`USING` merges the two columns into one). Going back to `ON`,
+a column the query reads without a table name gets the right one, so it
+does not turn ambiguous.
+
 ## Fixed
 
 - **The lines above a query belong to that query alone.** A script can
