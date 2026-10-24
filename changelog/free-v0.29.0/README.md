@@ -143,6 +143,17 @@ rows** chooses all, warnings only, or off.
   syntax error, gets **Insert ','** too. **Settings > Editor > Flag
   aliases that read like a missing comma** turns it off.
 
+- **NULL traps are caught.** `where return_date = null` returns nothing,
+  ever: a comparison with NULL is never true. PlumeSQL now warns about it
+  and offers **Use IS NULL**. The same for the classic: `NOT IN (select
+  ...)` over a column that can hold NULL returns no rows the moment one
+  comes, and the warning's Quick Fix rewrites it as `NOT EXISTS`. Two
+  columns that can both be NULL compared with `<>` miss the rows where one
+  is NULL; the fix writes `IS DISTINCT FROM`. Which columns can hold NULL
+  comes from your database's own definitions, so a `NOT NULL` column never
+  raises a warning. **Settings > Editor > Comparisons NULL defeats** turns
+  it down or off.
+
 - **Desktop 95, three new themes.** Desktops of three eras. **Desktop 95**
   draws the grey nineties in relief: raised buttons, sunken fields, the
   editor's tabs a taskbar whose active button is pressed in, checkered
