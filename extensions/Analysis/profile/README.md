@@ -18,6 +18,8 @@ One row per column of the result: its **type**, how many values are missing (**n
 
 A column with as many distinct values as rows is an identifier or free text; one with two or three is a category; one with nulls everywhere may be unused.
 
+The **column** names stay at the left while you scroll sideways through the rest.
+
 ## Try it
 
 **The film table**, in the dvdrental sample database, the table above (its long text columns left out, so the picture fits; `select * from film` profiles them all):

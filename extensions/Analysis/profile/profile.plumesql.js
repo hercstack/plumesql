@@ -118,7 +118,10 @@ export default {
             { name: 'length', type: 'text' },
             { name: 'distribution', type: 'text' }
           ],
-          rows: out
+          rows: out,
+          // The column names stay in view while the rest scroll sideways,
+          // as Data quality's do.
+          frozenColumns: { start: ['column'] }
         }
       }
     }
