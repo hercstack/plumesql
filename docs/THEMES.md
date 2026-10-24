@@ -193,8 +193,11 @@ shadows. A theme's `text` SHOULD read at 4.5:1 or better on its
   shortcut; VS Code's command) lists Dark and Light and every installed
   theme, light themes first, then dark, each with its extension's name.
   The window repaints as the highlight moves; Enter keeps the theme,
-  Escape puts the previous one back. The Settings page lists the same
-  themes under Appearance.
+  Escape puts the previous one back. A page's Preview still showing ends
+  as the picker opens, so the highlight's preview is what the window
+  shows and the theme marked current is the one in use; the theme that
+  was previewed leads the list as a Use row. The Settings page lists the
+  same themes under Appearance.
 - **Applying.** The page keeps the base's `data-theme` (so everything
   written for "both themes" still holds) and lays the theme's tokens
   over it as custom properties on the document root; its faces go ahead
@@ -222,7 +225,8 @@ shadows. A theme's `text` SHOULD read at 4.5:1 or better on its
   Cancel beside it, so the choice can be made wherever you went to look:
   it stays while you move between tabs, to see a script, a grid or the
   trees in the theme; its Use keeps the theme exactly like a card's Use,
-  and Cancel, Escape, the card's Stop or quitting ends it), and **Use** switches the window to it, installing the
+  and Cancel, Escape, the card's Stop, opening Select Color Theme or
+  quitting ends it), and **Use** switches the window to it, installing the
   extension first when it is not installed (that install opens no
   picker, and one that does not land changes nothing). The theme in use
   says "in use" instead of the buttons. The row's menu has Preview… too
