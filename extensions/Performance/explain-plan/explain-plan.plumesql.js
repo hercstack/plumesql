@@ -387,7 +387,15 @@ export default {
         { label: 'Copy summary', run: (ctx) => ctx.copy(copySummary) }
       ],
       render: async (root, data, ctx) => {
-        const rows = await loadRows(data, ctx, 200000)
+        // The whole plan is usually in hand already: ask the host for more
+        // rows only when the result holds more than it handed over, and
+        // never wait on that answer for good (a plan drawn from what came
+        // is better than a pane that never draws).
+        const have = data.rows || []
+        const rows =
+          ctx.rowCount && have.length >= ctx.rowCount
+            ? have
+            : await Promise.race([loadRows(data, ctx, 200000), new Promise((done) => setTimeout(() => done(have), 10000))])
         const plan = readPlan(rows)
         const pal = ctx.palette
         const dark = ctx.theme !== 'light'
