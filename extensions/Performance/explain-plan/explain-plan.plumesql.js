@@ -265,13 +265,20 @@ export function measure(root) {
 }
 
 // What stands out: facts, each on the node it is about, the plan's own
-// numbers and nothing guessed. The free face says WHAT; advice with a
-// weight is PlumeSQL's paid one.
-/** @param {any[]} all @param {number} total @param {boolean} analyzed */
-export function findings(all, total, analyzed) {
-  /** @type {{ node: any, level: 'red'|'amber'|'muted', text: string, weight: number }[]} */
+// numbers and the server's parameters it ran under, nothing guessed; and
+// beside a fact whose numbers point at a change, that change (advice):
+// the statement to run and what it should do.
+/** @typedef {{ sql?: string, text: string }} Advice */
+/** @param {any[]} all @param {number} total @param {boolean} analyzed @param {RunSettings} [set] the server's parameters it ran under (runSettings) */
+export function findings(all, total, analyzed, set = {}) {
+  /** @type {{ node: any, level: 'red'|'amber'|'muted', text: string, weight: number, advice?: Advice }[]} */
   const out = []
   const fmt = (/** @type {number} */ x) => Math.round(x).toLocaleString()
+  // The memory a sort or a hash had before it spilled, beside the spill.
+  const wm = set.work_mem ? ' · work_mem ' + set.work_mem.shown : ''
+  const mult = Number(set.hash_mem_multiplier?.value)
+  const hashMem = wm && set.work_mem?.bytes && mult > 0 && mult !== 1 ? wm + ' × hash_mem_multiplier ' + set.hash_mem_multiplier?.shown + ' = ' + bytes((set.work_mem.bytes * mult) / 8192) : wm
+  const offSwitches = switchesOff(set)
   for (const n of all) {
     if (analyzed && total > 0 && n.excl / total >= 0.2) out.push({ node: n, level: n.excl / total >= 0.5 ? 'red' : 'amber', text: pct(n.excl / total) + ' of the time is spent here', weight: 10 + n.excl / total })
     if (n.factor !== null && !n.limited && Math.abs(n.factor) >= 10 && Math.max(n.outRows, n.estRows) >= 100) {
@@ -282,10 +289,33 @@ export function findings(all, total, analyzed) {
     if (/Seq Scan/.test(n.type) && n.outRows !== null && n.outRows + removed >= 100000 && !(removed >= 1000 && removed / (removed + n.outRows) >= 0.9)) out.push({ node: n, level: 'muted', text: 'reads the whole table, ' + fmt(n.outRows + removed) + ' rows', weight: 2 })
     const space = prop(n, 'Sort Space Type'), method = String(prop(n, 'Sort Method') || '').split(/\s{2,}/)[0]
     const sortSpill = space === 'Disk' || /external/.test(method)
-    if (sortSpill) out.push({ node: n, level: 'red', text: 'the sort spilled to disk (' + (space === 'Disk' && prop(n, 'Sort Space Used') ? Math.round(Number(prop(n, 'Sort Space Used')) / 1024) + ' MB, ' : '') + (method || 'external') + ')', weight: 6 })
+    // What a sort wrote to disk, in kB: the JSON form's own key, or the
+    // text form's "Sort Method: external merge  Disk: 23456kB".
+    const diskKb = space === 'Disk' && prop(n, 'Sort Space Used') ? Number(prop(n, 'Sort Space Used')) : Number(/Disk:\s*(\d+)kB/.exec(String(prop(n, 'Sort Method') || ''))?.[1] || 0)
+    // In memory a sort takes more than it wrote out: twice the disk.
+    if (sortSpill) out.push({ node: n, level: 'red', text: 'the sort spilled to disk (' + (diskKb ? Math.round(diskKb / 1024) + ' MB, ' : '') + (method || 'external') + ')' + wm, weight: 6, advice: memAdvice(diskKb * 2048, set, 1, 'should let it sort in memory') })
     const batches = packed(n, 'Batches') || packed(n, 'Hash Batches') || packed(n, 'HashAgg Batches')
-    if (/Hash|Aggregate/.test(n.type) && batches > 1) out.push({ node: n, level: 'amber', text: (/Aggregate/.test(n.type) ? 'the aggregate' : 'the hash') + ' spilled to disk in ' + batches + ' batches', weight: 5 })
-    else if (n.tempExcl > 0 && !sortSpill) out.push({ node: n, level: 'amber', text: bytes(n.tempExcl) + ' written to temporary files', weight: 4 })
+    // A hash in batches held one batch's worth at a time: all of them is
+    // what it needed, and a hash may take work_mem times the multiplier.
+    const peakKb = Number(prop(n, 'Peak Memory Usage') || 0) || packed(n, 'Memory Usage')
+    if (/Hash|Aggregate/.test(n.type) && batches > 1) out.push({ node: n, level: 'amber', text: (/Aggregate/.test(n.type) ? 'the aggregate' : 'the hash') + ' spilled to disk in ' + batches + ' batches' + hashMem, weight: 5, advice: memAdvice(peakKb * 1024 * batches, set, mult > 0 ? mult : 1, 'should keep it in memory, in one batch') })
+    else if (n.tempExcl > 0 && !sortSpill) out.push({ node: n, level: 'amber', text: bytes(n.tempExcl) + ' written to temporary files' + wm, weight: 4, advice: memAdvice(n.tempExcl * 8192 * 2, set, 1, 'should keep it in memory') })
+    // A Gather that got fewer workers than it planned for: the server's
+    // limits were taken by other work at the time.
+    const planned = Number(prop(n, 'Workers Planned') ?? 0), launched = prop(n, 'Workers Launched')
+    if (planned > 0 && launched !== undefined && Number(launched) < planned) {
+      const limits = ['max_parallel_workers', 'max_worker_processes'].filter((k) => set[k]).map((k) => k + ' ' + set[k].shown).join(', ')
+      const most = Number(set.max_parallel_workers?.value)
+      out.push({
+        node: n, level: 'amber', text: 'launched ' + Number(launched) + ' of ' + planned + ' planned workers' + (limits ? ' · ' + limits : ''), weight: 4,
+        // Below what it planned, the session's own limit can rise (up to
+        // max_worker_processes); at or above it, other queries held the
+        // workers when it ran.
+        advice: set.max_parallel_workers && most < planned
+          ? { sql: 'SET max_parallel_workers = ' + planned, text: 'for this session lets it start them, within max_worker_processes' }
+          : set.max_parallel_workers ? { text: "other queries held the server's workers when it ran; if it happens often, more of them takes a larger max_worker_processes and max_parallel_workers (a restart)" } : undefined
+      })
+    }
     if (analyzed && (n.loops || 0) >= 1000 && n.parent && /Nested Loop/.test(n.parent.type)) out.push({ node: n, level: 'amber', text: 'runs ' + fmt(n.loops) + ' times inside a nested loop', weight: 4 })
     // A SubPlan runs once for every row of the step it belongs to: a
     // correlated subquery, whose time is its run times that count.
@@ -294,10 +324,98 @@ export function findings(all, total, analyzed) {
     if (/Index Only Scan/.test(n.type) && fetches > 0 && n.outRows && fetches / n.outRows >= 0.1) out.push({ node: n, level: 'muted', text: fmt(fetches) + ' heap fetches in an index only scan', weight: 2 })
     // PostgreSQL 17 marks a step the planner was told to avoid (an
     // enable_* setting off) and used anyway, having no other way.
-    if (prop(n, 'Disabled') === true || prop(n, 'Disabled') === 'true') out.push({ node: n, level: 'amber', text: 'a step the planner was told to avoid (an enable_ setting is off) and used anyway', weight: 3 })
+    if (prop(n, 'Disabled') === true || prop(n, 'Disabled') === 'true') out.push({ node: n, level: 'amber', text: 'a step the planner was told to avoid (' + (offSwitches.length ? offSwitches.join(', ') + ' off' : 'an enable_ setting is off') + ') and used anyway', weight: 3, advice: switchesAdvice(offSwitches, set) })
     if (Number(prop(n, 'Lossy Heap Blocks') || 0) > 0) out.push({ node: n, level: 'muted', text: 'the bitmap went lossy (' + fmt(Number(prop(n, 'Lossy Heap Blocks'))) + ' blocks rechecked)', weight: 2 })
   }
   return out.sort((a, b) => b.weight - a.weight)
+}
+
+// ----- the server's parameters -------------------------------------------------------
+
+// What a plan is read against, from the server (ctx.settings, PlumeSQL
+// 0.29.0 and later): the memory a sort or a hash may take before it
+// spills, the JIT thresholds, the parallel worker limits, whether reads
+// are timed, and the planner's enable_ switches. Facts beside the plan's
+// own numbers, never advice.
+const ENABLES = ['async_append', 'bitmapscan', 'distinct_reordering', 'gathermerge', 'group_by_reordering', 'hashagg', 'hashjoin', 'incremental_sort', 'indexonlyscan', 'indexscan', 'material', 'memoize', 'mergejoin', 'nestloop', 'parallel_append', 'parallel_hash', 'partition_pruning', 'partitionwise_aggregate', 'partitionwise_join', 'presorted_aggregate', 'self_join_elimination', 'seqscan', 'sort', 'tidscan'].map((k) => 'enable_' + k)
+export const SETTING_NAMES = ['work_mem', 'hash_mem_multiplier', 'jit', 'jit_above_cost', 'jit_inline_above_cost', 'jit_optimize_above_cost', 'max_parallel_workers', 'max_parallel_workers_per_gather', 'max_worker_processes', 'track_io_timing', ...ENABLES]
+
+/** @typedef {Record<string, { shown: string, value: string, bytes?: number, boot?: string, reset?: string }>} RunSettings */
+
+// The planner's switches that were off for the run and are on out of the
+// box (a few, the partitionwise ones, start off: those are no news).
+/** @param {RunSettings} set */
+const switchesOff = (set) => ENABLES.filter((k) => set[k]?.value === 'off' && set[k]?.boot !== 'off')
+
+// The work_mem that keeps `need` bytes in memory (a hash may take it
+// times `mult`), rounded up to a power of two, as people set it, and
+// always above what it had. Past a gigabyte no session should take it:
+// the query is the thing to change.
+/** @param {number} need @param {RunSettings} set @param {number} mult @param {string} what @returns {Advice} */
+function memAdvice(need, set, mult, what) {
+  const had = set.work_mem?.bytes || 0
+  let b = 1048576
+  while (b * mult < need) b *= 2
+  if (b <= had) b = had * 2
+  if (b > 1073741824) return { text: 'that is more memory than a session should take; a query that keeps fewer rows here (a narrower filter, a LIMIT the step can stop at, an index already in order) is the way out' }
+  const size = b >= 1073741824 ? b / 1073741824 + 'GB' : b / 1048576 + 'MB'
+  return { sql: "SET work_mem = '" + size + "'", text: 'for this session ' + what + ' (it counts for each sort and hash, so keep it to the session)' }
+}
+
+// Switches off in the session that are on for the server: RESET gives the
+// planner its choice back. One the server itself has off stays off.
+/** @param {string[]} off @param {RunSettings} set @returns {Advice | undefined} */
+function switchesAdvice(off, set) {
+  const back = off.filter((k) => set[k]?.reset !== 'off')
+  return back.length ? { sql: back.map((k) => 'RESET ' + k).join('; '), text: 'gives the planner its choice back' } : undefined
+}
+
+/** @type {Record<string, number>} */
+const MEM_UNITS = { B: 1, kB: 1024, MB: 1048576, GB: 1073741824, TB: 1099511627776 }
+// A memory amount as EXPLAIN SETTINGS writes it ('64MB'), in bytes.
+/** @param {string} v */
+const memBytes = (v) => { const m = /^(\d+(?:\.\d+)?)\s*(B|kB|MB|GB|TB)$/.exec(v.trim()); return m ? Number(m[1]) * MEM_UNITS[m[2]] : undefined }
+
+// The parameters a plan ran under: the server's (the session's own, or
+// what a new session starts with), and over them the plan's own word,
+// EXPLAIN SETTINGS' list of what differed from the defaults, which alone
+// knows a SET LOCAL inside the transaction it ran in.
+/** @param {Record<string, any>} facts @param {string} planSettings @returns {RunSettings} */
+export function runSettings(facts, planSettings) {
+  /** @type {RunSettings} */
+  const out = {}
+  for (const [k, f] of Object.entries(facts || {})) {
+    if (f && typeof f.shown === 'string') out[k] = { shown: f.shown, value: String(f.value ?? ''), ...(typeof f.bytes === 'number' ? { bytes: f.bytes } : {}), ...(typeof f.boot === 'string' ? { boot: f.boot } : {}), ...(typeof f.reset === 'string' ? { reset: f.reset } : {}) }
+  }
+  for (const m of String(planSettings || '').matchAll(/([A-Za-z_][\w.]*) = '([^']*)'/g)) {
+    const b = memBytes(m[2])
+    out[m[1].toLowerCase()] = { shown: m[2], value: m[2], ...(b !== undefined ? { bytes: b } : {}) }
+  }
+  return out
+}
+
+// The run's facts that take the server's parameters to read: the share
+// JIT took and the thresholds the plan's cost crossed to get it, reads
+// that are not timed, the planner's switches that were off (unless the
+// plan's own Settings line already says so). Label and text, plain.
+/** @param {any} plan @param {any[]} all @param {boolean} analyzed @param {RunSettings} set @returns {[string, string, Advice?][]} */
+export function runFacts(plan, all, analyzed, set) {
+  /** @type {[string, string, Advice?][]} */
+  const out = []
+  const jit = plan.extra.find((/** @type {[string, any]} */ e) => e[0] === 'JIT')
+  const jitMs = Number(jit?.[1]?.Timing?.Total ?? 0)
+  if (jitMs > 0 && plan.execution && jitMs / plan.execution >= 0.1) {
+    const cost = plan.node.cost || 0
+    const crossed = ['jit_above_cost', 'jit_inline_above_cost', 'jit_optimize_above_cost'].filter((k) => set[k] && Number(set[k].value) >= 0 && cost > Number(set[k].value))
+    // Compiling pays off on a long run; a fifth of the run or more spent
+    // on it is a query too short for it.
+    out.push(['JIT', pct(jitMs / plan.execution) + ' of the run (' + time(jitMs) + ')' + (crossed.length ? ", the plan's cost " + Math.round(cost).toLocaleString() + ' past ' + crossed.map((k) => k + ' ' + Number(set[k].value).toLocaleString()).join(', ') : ''), jitMs / plan.execution >= 0.2 ? { sql: 'SET jit = off', text: 'for this session spares the compile on a query this short' } : undefined])
+  }
+  const timed = all.some((n) => n.props.some((/** @type {[string, unknown]} */ p) => /I\/O (?:Read )?Tim/.test(p[0])))
+  if (analyzed && !timed && set.track_io_timing?.value === 'off' && all.some((n) => n.buf.read > 0)) out.push(['Reads', 'not timed: track_io_timing is off', { sql: 'SET track_io_timing = on', text: "times them in the next EXPLAIN (ANALYZE, BUFFERS); a superuser's session, or a role granted it" }])
+  const off = switchesOff(set).filter((k) => !String(plan.run.settings || '').includes(k))
+  if (off.length) out.push(['Off', off.join(', '), switchesAdvice(off, set)])
+  return out
 }
 
 /** @param {number} f */
@@ -311,6 +429,15 @@ const count = (n) => (n === null ? '' : n >= 999.95e6 ? (n / 1e9).toFixed(1) + '
 const bytes = (blocks) => { const b = blocks * 8192; return b >= 1073741824 ? (b / 1073741824).toFixed(1) + ' GB' : b >= 1048576 ? (b / 1048576).toFixed(1) + ' MB' : b >= 1024 ? Math.round(b / 1024) + ' kB' : b + ' B' }
 
 // ----- drawing ------------------------------------------------------------------------
+
+// A piece of advice, under its fact (block) or after a line of the run:
+// its statement as a chip that copies itself, then what it should do.
+/** @param {Advice | undefined} a @param {boolean} block */
+const adviceHtml = (a, block) =>
+  !a ? '' : '<span class="adv' + (block ? ' blk' : '') + '">→ ' + (a.sql ? '<code class="cp" tabindex="0" role="button" title="Copy the statement" data-copy="' + escapeHtml(a.sql + ';') + '">' + escapeHtml(a.sql) + '</code> ' : '') + escapeHtml(a.text) + '</span>'
+// The same for the copied summary, as text.
+/** @param {Advice | undefined} a */
+const adviceText = (a) => (!a ? '' : ' → ' + (a.sql ? a.sql + '; ' : '') + a.text)
 
 // The property rows worth reading first on the detail panel, the conditions
 // and keys a plan hangs on; the rest follow as they came.
@@ -392,10 +519,14 @@ export default {
         // never wait on that answer for good (a plan drawn from what came
         // is better than a pane that never draws).
         const have = data.rows || []
+        // The server's parameters, asked beside the rows (an older PlumeSQL
+        // has no ctx.settings), and never waited on for long either.
+        const asked = typeof ctx.settings === 'function' ? Promise.race([ctx.settings(SETTING_NAMES).catch(() => ({})), new Promise((done) => setTimeout(() => done({}), 3000))]) : Promise.resolve({})
         const rows =
           ctx.rowCount && have.length >= ctx.rowCount
             ? have
             : await Promise.race([loadRows(data, ctx, 200000), new Promise((done) => setTimeout(() => done(have), 10000))])
+        const known = /** @type {Record<string, any>} */ (await asked)
         const plan = readPlan(rows)
         const pal = ctx.palette
         const dark = ctx.theme !== 'light'
@@ -411,14 +542,17 @@ export default {
         }
         const { all, analyzed } = measure(plan.node)
         const total = analyzed ? (plan.execution ?? plan.node.incl) : plan.node.cost || 0
-        const facts = findings(all, analyzed ? (plan.execution ?? plan.node.incl) : 0, analyzed)
+        const set = runSettings(known, plan.run.settings)
+        const facts = findings(all, analyzed ? (plan.execution ?? plan.node.incl) : 0, analyzed, set)
+        const more = runFacts(plan, all, analyzed, set)
         copyText = plan.text
         const totBuf = plan.node.buf
         copySummary = [
           analyzed ? 'Execution time: ' + time(plan.execution ?? plan.node.incl) : 'Total cost: ' + (plan.node.cost ?? 0).toFixed(2),
           plan.planning !== null ? 'Planning time: ' + time(plan.planning) : '',
           analyzed ? 'Rows: ' + count(plan.node.outRows) : 'Estimated rows: ' + count(plan.node.estRows),
-          ...facts.slice(0, 8).map((f) => '- ' + f.node.label + (whereOf(f.node) ? ' ' + whereOf(f.node) : '') + ': ' + f.text)
+          ...more.map(([k, v, a]) => k + ': ' + v + adviceText(a)),
+          ...facts.slice(0, 8).map((f) => '- ' + f.node.label + (whereOf(f.node) ? ' ' + whereOf(f.node) : '') + ': ' + f.text + adviceText(f.advice))
         ].filter(Boolean).join('\n')
 
         // The metric the bars, the boxes and the diagram measure; the user
@@ -459,6 +593,11 @@ export default {
           .fact .on{color:${c.mut}}
           .fact.cur{background:color-mix(in srgb, ${c.acc} 12%, transparent);border-color:color-mix(in srgb, ${c.acc} 45%, transparent)}
           .fact .go{margin-left:auto;color:${c.mut};font-size:11px;white-space:nowrap;opacity:0}
+          .adv{color:${c.mut};font-size:12px;margin-left:6px}
+          .adv.blk{display:block;margin:3px 0 0}
+          .cp{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;background:${c.ground};color:${c.fg};border:1px solid ${c.bd};border-radius:4px;padding:0 4px;cursor:copy}
+          .cp:hover,.cp:focus-visible{border-color:${c.acc};outline:none}
+          .cp.copied{border-color:${c.green}}
           .fact:hover .go,.fact:focus-visible .go{opacity:1}
           @keyframes epflash{from{background:color-mix(in srgb, ${c.acc} 45%, transparent)}to{background:color-mix(in srgb, ${c.acc} 16%, transparent)}}
           @keyframes epflashside{from{box-shadow:0 0 0 2px ${c.acc}}to{box-shadow:0 0 0 0 transparent}}
@@ -574,6 +713,7 @@ export default {
           if (plan.run.settings) runLines.push('<b>Settings</b> ' + escapeHtml(plan.run.settings))
           for (const tr of plan.run.triggers) runLines.push('<b>Trigger</b> ' + escapeHtml(tr.name) + ': ' + escapeHtml(time(tr.time)) + ' in ' + tr.calls.toLocaleString() + ' call' + (tr.calls === 1 ? '' : 's'))
           if (plan.run.serialization) runLines.push('<b>Serialization</b> ' + escapeHtml(plan.run.serialization))
+          for (const [k, v, a] of more) runLines.push('<b>' + escapeHtml(k) + '</b> ' + escapeHtml(v) + adviceHtml(a, false))
           if (runLines.length) html += '<div class="run">' + runLines.map((l) => '<div>' + l + '</div>').join('') + '</div>'
 
           // What stands out.
@@ -581,7 +721,7 @@ export default {
             html += '<h3>What stands out</h3><div class="facts">'
             for (const f of facts.slice(0, 7)) {
               html += '<div class="fact' + (f.node.id === selected ? ' cur' : '') + '" tabindex="0" title="Show this step in Steps" data-id="' + f.node.id + '"><span class="dot" style="background:' + (f.level === 'red' ? c.red : f.level === 'amber' ? c.amber : c.mut) + '"></span><span><b>' + escapeHtml(f.node.label) + '</b>' +
-                (whereOf(f.node) ? ' <span class="on">' + escapeHtml(clip(whereOf(f.node), 60)) + '</span>' : '') + ': ' + escapeHtml(f.text) + '</span><span class="go">Show step ↓</span></div>'
+                (whereOf(f.node) ? ' <span class="on">' + escapeHtml(clip(whereOf(f.node), 60)) + '</span>' : '') + ': ' + escapeHtml(f.text) + adviceHtml(f.advice, true) + '</span><span class="go">Show step ↓</span></div>'
             }
             html += '</div>'
           } else if (analyzed) html += '<h3>What stands out</h3><div class="mut" style="padding:4px 8px">Nothing: no step dominates, no estimate is far off, nothing spilled.</div>'
@@ -867,9 +1007,17 @@ export default {
           dg?.focus({ preventScroll: true })
         }
         let dragged = false
+        // A piece of advice's statement copies itself, and says so a beat.
+        const copyChip = (/** @type {Element} */ el) => {
+          ctx.copy(String(el.getAttribute('data-copy') || ''))
+          el.classList.add('copied')
+          setTimeout(() => el.classList.remove('copied'), 1200)
+        }
         root.onclick = (e) => {
           const t = /** @type {HTMLElement} */ (e.target)
           if (dragged) { dragged = false; return }
+          const chip = t.closest('[data-copy]')
+          if (chip) { copyChip(chip); return }
           const metricBtn = t.closest('[data-metric]')
           if (metricBtn) { metric = String(metricBtn.getAttribute('data-metric')); draw(); return }
           const faceBtn = t.closest('[data-face]')
@@ -929,6 +1077,7 @@ export default {
         // Enter on a fact goes to its step.
         root.onkeydown = (e) => {
           const t = /** @type {HTMLElement} */ (e.target)
+          if (t.classList.contains('cp') && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); copyChip(t); return }
           if (t.classList.contains('fact') && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); choose(Number(t.getAttribute('data-id')), true, true); return }
           // The diagram: Up to the step that uses this one's rows, Down to
           // its first input, Left and Right to the card beside it on the
