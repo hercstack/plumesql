@@ -1,0 +1,45 @@
+{
+  "format": 1,
+  "id": "migration-safety",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.29.0",
+  "name": "Migration safety",
+  "description": "A schema change that cannot hold the database up: a lock wait with an end, and the memory an index build needs",
+  "categories": [
+    "Objects"
+  ],
+  "tags": [
+    "migrations",
+    "schema changes",
+    "locks",
+    "lock_timeout",
+    "alter table",
+    "create index",
+    "maintenance_work_mem",
+    "refactor"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "migration-safety.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 0,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

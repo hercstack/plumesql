@@ -1,0 +1,44 @@
+{
+  "format": 1,
+  "id": "autovacuum-forecast",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.29.0",
+  "name": "Autovacuum forecast",
+  "description": "A table statistics result as how near each table is to its next autovacuum and autoanalyze, by the server's own thresholds",
+  "categories": [
+    "Storage and Maintenance"
+  ],
+  "tags": [
+    "autovacuum",
+    "vacuum",
+    "analyze",
+    "dead rows",
+    "bloat",
+    "pg_stat_user_tables",
+    "maintenance"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "autovacuum-forecast.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 0,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

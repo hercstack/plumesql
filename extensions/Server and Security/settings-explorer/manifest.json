@@ -1,0 +1,44 @@
+{
+  "format": 1,
+  "id": "settings-explorer",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.29.0",
+  "name": "Settings explorer",
+  "description": "SHOW ALL as what matters: what your session changed with its RESET, what the server sets, what waits for a restart",
+  "categories": [
+    "Server and Security"
+  ],
+  "tags": [
+    "settings",
+    "configuration",
+    "show all",
+    "pg_settings",
+    "postgresql.conf",
+    "tuning",
+    "reset"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "settings-explorer.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 0,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}
