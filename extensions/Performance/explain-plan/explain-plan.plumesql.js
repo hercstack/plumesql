@@ -432,6 +432,8 @@ export default {
         let lastLayout = null
         const collapsed = new Set()
         let selected = facts.length ? facts[0].node.id : 0
+        // The step the detail beside showed at the last draw.
+        let sideOf = -1
         // A step's colour is its own share: red from half, amber from a
         // fifth, the accent from a twentieth, a quiet tint of it below.
         const heat = (/** @type {number} */ f) => (f >= 0.5 ? c.red : f >= 0.2 ? c.amber : f >= 0.05 ? c.acc : 'color-mix(in srgb, ' + c.acc + ' 45%, ' + c.bg + ')')
@@ -751,13 +753,24 @@ export default {
             (sel.buf.hit + sel.buf.read > 0 ? '<span class="k">Buffers</span><span class="v">' + bytes(sel.buf.hit) + ' cached, ' + bytes(sel.buf.read) + ' read' + (sel.buf.tempWritten ? ', ' + bytes(sel.buf.tempWritten) + ' temp' : '') + '</span>' : '') +
             lead.concat(rest).map((p) => '<span class="k">' + escapeHtml(p[0] || '·') + '</span><span class="v">' + val(String(p[0]), p[1]) + '</span>').join('') +
             '</div></div></div></div>'
-          // The diagram's own scroll and focus outlive the redraw: a click
-          // on a card must not throw the view back to its corner.
+          // The view's scroll, the diagram's own and its focus outlive the
+          // redraw: a click must not throw the view back to its top (WebKit,
+          // the desktop app's engine, puts a scroller whose content is
+          // replaced back at its start), nor the diagram to its corner. The
+          // detail beside keeps its scroll while it shows the same step.
+          const view = { left: root.scrollLeft, top: root.scrollTop }
+          const oldSide = /** @type {HTMLElement|null} */ (root.querySelector('.side'))
+          const sideTop = oldSide && sideOf === sel.id ? oldSide.scrollTop : 0
           const oldDg = /** @type {HTMLElement|null} */ (root.querySelector('.dgv'))
           const dgScroll = oldDg ? { left: oldDg.scrollLeft, top: oldDg.scrollTop } : null
           const hadDgFocus = !!oldDg && root.ownerDocument.activeElement === oldDg
           const hadFind = !!root.ownerDocument.activeElement?.classList?.contains('q')
           root.innerHTML = html
+          root.scrollLeft = view.left
+          root.scrollTop = view.top
+          sideOf = sel.id
+          const side = root.querySelector('.side')
+          if (side && sideTop) side.scrollTop = sideTop
           const dg = /** @type {HTMLElement|null} */ (root.querySelector('.dgv'))
           if (dg && dgScroll) { dg.scrollLeft = dgScroll.left; dg.scrollTop = dgScroll.top }
           if (dg && hadDgFocus) dg.focus({ preventScroll: true })
