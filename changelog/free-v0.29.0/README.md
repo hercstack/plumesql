@@ -1,29 +1,54 @@
 # PlumeSQL 0.29.0
 
-Write a join by walking a foreign key: type a dot after a key column and
-pick a column of the table it points to. And two queries written alike
-are two queries: the lines above one no longer reach the other.
+Write a join by walking a foreign key, catch the mistakes that run
+without an error before you run them, and compare any two files,
+objects, schemas or results side by side.
 
-## Join through a foreign key
+## Highlights
+
+- **Join through a foreign key:** type a dot after a key column, pick a
+  column of the table it points to, and the join is written for you.
+- **Mistakes caught before you run:** joins that repeat rows, a
+  forgotten comma and comparisons NULL defeats are warned about, each
+  with its fix or quieted where it is meant (`-- @allow`), and the fix
+  PostgreSQL's own error settles is one click away.
+- **Compare two files, objects or schemas** side by side, and compared
+  results show where they differ, however deep in the rows.
+- **The Objects tree:** Browse Data and Open DDL on every row, a click
+  that knows what it is clicking, and scripts that name their
+  parameters and pick a foreign key from its table.
+- **[Explain plan](https://github.com/hercstack/plumesql/tree/main/extensions/Performance/explain-plan)
+  draws the plan as a diagram**, and
+  **[Desktop 95](https://github.com/hercstack/plumesql/tree/main/extensions/Themes/desktop-95)**
+  brings three themes drawn in relief.
+
+## Write joins faster
+
+### Join through a foreign key
 
 In a SELECT, put a dot after a foreign key column, as if the key were the
 row it points to:
 
 ```sql
-select o.order_id, o.customer_id.
-from orders o
+select r.rental_id, r.rental_date, r.customer_id.
+from rental r
 ```
 
-The list offers the columns of `customer`. Pick `name`, and PlumeSQL
-writes it and adds the join in one step (one undo, too):
+The list offers the columns of `customer`, and the side panel shows the
+join that comes with each.
+
+![The completion list after r.customer_id. on dvdrental: the columns of customer with their types, address_id marked → address, and first_name's details saying it adds join customer c on c.customer_id = r.customer_id](media/fk-dot.webp)
+
+Pick `first_name`, and PlumeSQL writes it and adds the join in one step
+(one undo, too):
 
 ```sql
-select o.order_id, c.name
-from orders o
-join customer c on c.customer_id = o.customer_id
+select r.rental_id, r.rental_date, c.first_name
+from rental r
+join customer c on c.customer_id = r.customer_id
 ```
 
-The path goes on as far as the keys do: `o.customer_id.address_id.city`
+The path goes on as far as the keys do: `r.customer_id.address_id.city`
 adds a join per step.
 
 The join is written so the query returns the same rows as before:
@@ -38,12 +63,14 @@ condition of your own) you change in the text, like any SQL. The alias
 follows your Refactors setting, and **Settings > Refactors > Join through
 a foreign key column** turns it off.
 
-When you type `o.`, a key column now shows where it leads on its row,
-such as `→ customer`, so you can see which columns a dot can follow.
+When you type `r.`, a key column shows where it leads on its row, such
+as `→ customer`, so you can see which columns a dot can follow.
+
+### USING completes its key
 
 Prefer `USING`? A join written with `USING (customer_id)` is recognized
-too: the path reuses it instead of joining the table again. And when you
-write the join yourself, `join customer c using ` offers
+too: a key path reuses it instead of joining the table again. And when
+you write the join yourself, `join customer c using ` offers
 `(customer_id)` right away: the key is known.
 
 ### Rewrite a join as USING, or as ON
@@ -59,14 +86,16 @@ join customer c using (customer_id)
 
 and on a `USING` join, **Rewrite join customer as ON** goes back. With
 the caret in a join, that join is offered; anywhere else in the query,
-every join that can be rewritten. It is offered only
-where the two read the same: when just one table left of the join has the
-column (with two, `USING` would fail), and when the query does not select
-a bare `*` (`USING` merges the two columns into one). Going back to `ON`,
-a column the query reads without a table name gets the right one, so it
-does not turn ambiguous.
+every join that can be rewritten. It is offered only where the two read
+the same: when just one table left of the join has the column (with two,
+`USING` would fail), and when the query does not select a bare `*`
+(`USING` merges the two columns into one). Going back to `ON`, a column
+the query reads without a table name gets the right one, so it does not
+turn ambiguous.
 
-## Joins that may repeat rows
+## Mistakes caught before you run
+
+### Joins that may repeat rows
 
 This query runs, and it is wrong:
 
@@ -89,84 +118,453 @@ table (its primary key, a unique index) keeps every row before it exactly
 once. Any other join may repeat them:
 
 - a quiet dotted hint under such a join says so on hover ("This join may
-  repeat rows: each customer row once per matching rental row"). A
-  customer joined to their rentals is often what you mean, so it stays
-  quiet;
+  repeat rows: each customer row once per matching rental row"), and the
+  Problems tab lists it as a muted **HINT** row that never counts as a
+  problem. A customer joined to their rentals is often what you mean, so
+  it stays quiet;
 - a **warning**, in the Problems tab too, where it is most likely a
   mistake: a `sum`, `avg`, `count` of a column or `string_agg` over a
   table whose rows a join repeats, and two one-to-many joins multiplying
   each other, as above.
 
+![The query above on dvdrental: count(r.rental_id) and sum(p.amount) underlined, dots under rental, the hover saying count(r.rental_id) may count each rental row more than once because the join of payment repeats rental rows, and the Problems tab saying 3 problems, 2 hints: three warnings and two muted HINT rows, each coded plumesql.join-repeats](media/join-repeats.webp)
+
 The fix is usually to aggregate each child in a subquery first. Only
 what can be proven is said: a view, a subquery or a condition other than
 equalities is left unread. **Settings > Editor > Joins that may repeat
-rows** chooses all, warnings only, or off.
+rows** chooses all, the hints only, the warnings only, or off.
 
-## Also in this release
+### A missing comma
 
-- **Quick fixes from what PostgreSQL says.** Hover a problem and pick
-  **Quick Fix**, or open the lightbulb, and the fix the server's own words
-  settle is one click away:
-  - "must appear in the GROUP BY clause": **Add c.customer_id to GROUP
-    BY**, or the whole `GROUP BY` when the query has none;
-  - "Perhaps you meant to reference the column "c.customer_id"" (or the
-    table alias): **Change to c.customer_id**;
-  - a `CREATE` of something that already exists: **Add IF NOT EXISTS**, or
-    `CREATE OR REPLACE` for a view or a function;
-  - a `DROP` of something that does not: **Add IF EXISTS**;
-  - "cannot change return type of existing function": the `DROP FUNCTION`
-    the server asks for, written above;
-  - "column is of type integer but expression is of type text": **Cast to
-    integer**;
-  - a table named twice in a query: an alias for the second one.
+In
 
-  The **Problems** tab offers the same: a **Fix** column next to the line,
-  one click applies it, and the row's right click menu lists every fix. A
-  hover over a problem is short now: the problem, and its Quick Fix right
-  under it.
-- **A missing comma is caught.** In
+```sql
+select
+    first_name
+    last_name,
+    email
+from customer;
+```
 
-  ```sql
-  select
-      first_name
-      last_name,
-      email
-  from customer;
-  ```
+`last_name` is no column: it is a name PostgreSQL gives `first_name`,
+and the query runs with one column fewer. PlumeSQL now warns where an
+alias written without `AS` looks like a forgotten comma (it stands on
+the next line, or it names another column of the same table) and the
+quick fix inserts the comma, or writes the `AS` when the alias is
+meant. `c.first_name c.last_name`, which the server refuses with a
+syntax error, gets **Insert ','** too. **Settings > Editor > Flag
+aliases that read like a missing comma** turns it off.
 
-  `last_name` is no column: it is a name PostgreSQL gives `first_name`,
-  and the query runs with one column fewer. PlumeSQL now warns where an
-  alias written without `AS` looks like a forgotten comma (it stands on
-  the next line, or it names another column of the same table) and the
-  quick fix inserts the comma, or writes the `AS` when the alias is
-  meant. `c.first_name c.last_name`, which the server refuses with a
-  syntax error, gets **Insert ','** too. **Settings > Editor > Flag
-  aliases that read like a missing comma** turns it off.
+### NULL traps
 
-- **NULL traps are caught.** `where return_date = null` returns nothing,
-  ever: a comparison with NULL is never true. PlumeSQL now warns about it
-  and offers **Use IS NULL**. The same for the classic: `NOT IN (select
-  ...)` over a column that can hold NULL returns no rows the moment one
-  comes, and the warning's Quick Fix rewrites it as `NOT EXISTS`. Two
-  columns that can both be NULL compared with `<>` miss the rows where one
-  is NULL; the fix writes `IS DISTINCT FROM`. Which columns can hold NULL
-  comes from your database's own definitions, so a `NOT NULL` column never
-  raises a warning. **Settings > Editor > Comparisons NULL defeats** turns
-  it down or off.
+`where return_date = null` returns nothing, ever: a comparison with NULL
+is never true. PlumeSQL now warns about it and offers **Use IS NULL**.
+The same for the classic: `NOT IN (select ...)` over a column that can
+hold NULL returns no rows the moment one comes, and the warning's Quick
+Fix rewrites it as `NOT EXISTS`. Two columns that can both be NULL
+compared with `<>` miss the rows where one is NULL; the fix writes
+`IS DISTINCT FROM`. And `a = b` over two such columns, where two NULLs
+never match, gets a quiet hint whose fix writes `IS NOT DISTINCT FROM`.
+Which columns can hold NULL comes from your database's own definitions,
+so a `NOT NULL` column never raises a warning. **Settings > Editor >
+Comparisons NULL defeats** chooses all, the hints only, the warnings
+only, or off.
 
-- **Desktop 95, three new themes.** Desktops of three eras. **Desktop 95**
-  draws the grey nineties in relief: raised buttons, sunken fields, the
-  editor's tabs a taskbar whose active button is pressed in, checkered
-  scroll bars, a results grid with raised headers and row numbers over
-  white cells, and a form designer's code colors. **Studio Classic** is a
-  database studio of the next decade, its beige in soft relief, blue
-  keywords, red strings and magenta functions in Courier New and a pale
-  yellow status bar; **Studio Modern** the same studio today, flat and
-  light blue. Install them from the **Extensions** tab. Themes can now
-  draw the window's controls in relief; these are the first to use it.
+### Quiet a check where it is wrong
+
+A customer joined to their rentals is often exactly what you mean. Each
+hint and warning of these checks offers, after its fixes, in the Quick
+Fix and in the Problems row's menu:
+
+- **Hide in This Statement**: gone for you, until the statement changes
+  (the Log has Restore);
+- **Allow join-repeats in This Query**: writes `-- @allow join-repeats`
+  above the query, so everyone who reads the file sees it is meant;
+- **Allow join-repeats in This File**: the same line in the file's header;
+- the check's settings, for the workspace or everywhere.
+
+![The Problems row menu of a join hint: Hide in This Statement, Allow join-repeats in This Query, Allow join-repeats in This File, Go to Problem, Copy Message and Joins That May Repeat Rows Settings](media/quiet-ladder.webp)
+
+```sql
+-- @allow join-repeats
+select c.first_name, r.rental_date
+from customer c
+join rental r on r.customer_id = c.customer_id;
+```
+
+The checks are `join-repeats`, `null-comparison`, `missing-comma` and
+`missing-semicolon`, the Code column of the Problems tab shows them, and
+the editor completes them after `-- @allow `.
+
+### Fix it from the Problems tab
+
+Every warning above, and every fix below, is in the **Problems** tab
+too: a **Fix** column next to the line, where one click applies it, and
+the row's right click menu lists every fix. The quiet hints are there as
+well, as muted **HINT** rows: listed with their fixes, never counted as
+problems.
+
+![The Problems tab of a script on dvdrental saying 6 problems, 2 hints: a missing comma with Insert ',', a comparison with NULL with Use IS NULL, a NOT IN over staff.email with Rewrite NOT IN, three warnings about joins that repeat rows and two muted HINT rows](media/problems-fix.webp)
+
+### Quick fixes from what PostgreSQL says
+
+Hover a problem and pick **Quick Fix**, or open the lightbulb, and the
+fix the server's own words settle is one click away:
+
+- "must appear in the GROUP BY clause": **Add c.customer_id to GROUP
+  BY**, or the whole `GROUP BY` when the query has none;
+- "Perhaps you meant to reference the column "c.customer_id"" (or the
+  table alias): **Change to c.customer_id**;
+- a `CREATE` of something that already exists: **Add IF NOT EXISTS**, or
+  `CREATE OR REPLACE` for a view or a function;
+- a `DROP` of something that does not: **Add IF EXISTS**;
+- "cannot change return type of existing function": the `DROP FUNCTION`
+  the server asks for, written above;
+- "column is of type integer but expression is of type text": **Cast to
+  integer**;
+- a table named twice in a query: an alias for the second one.
+
+![A query without GROUP BY run on dvdrental: the error 42803 in Messages, and the lightbulb's Quick Fix offering Add GROUP BY c.first_name](media/quick-fix.webp)
+
+A hover over a problem is short now: the problem, and its Quick Fix
+right under it.
+
+### A misspelled annotation says so
+
+A plain SQL file reads an unknown `-- @name` as an ordinary comment, so
+`-- @fromat upper` did nothing and said nothing. Now a name one slip from
+a real one wears a dotted hint naming it, and **Change to @format** is
+its quick fix. Other tools' words, such as NpgsqlRest's annotations or
+`@param` and `@todo`, are left alone.
+
+## Compare anything side by side
+
+### Compare two files, objects or schemas
+
+Right-click a file in the Explorer, an object or a schema in the Objects
+tree, or any tab, and pick **Select for Compare**. The middle of the
+title bar says what waits, with the tab you are on as the other side in
+one click, and Cancel. The row and its tab wear a small mark, and
+**Esc** ends it from anywhere.
+
+![The title bar saying Compare report-2025.sql with... with report-2026.sql, Cancel and Esc, and the Explorer's report-2025.sql row marked](media/compare-waiting.webp)
+
+Then right-click the other one and pick **Compare with Selected**. With
+two files selected in the Explorer, **Compare Selected** does it at once.
+
+![Two versions of a report side by side: the changed comment line, and the added count of rentals and WHERE line marked](media/compare-files.webp)
+
+The two open side by side in a tab of their own, the changes marked. A
+file open in a tab is compared as it is in the tab, unsaved edits and
+all, and the comparison follows as you type. An object compares its
+DDL, and a schema or a folder of the tree its whole document, so the
+same table or the same schema on two servers is two clicks apart.
+
+**Alt+F5** and **Shift+Alt+F5** step through the changes, as in VS Code.
+The header switches to one inline text, folds away the unchanged lines,
+swaps the sides and opens either side at the line you are on.
+
+### Compared results show where they differ
+
+Results compared side by side (**Compare With** in a result's menu) now
+show where they differ as you scroll: a cell that is not the same as the
+cell beside it turns amber on both sides, and rows only the longer result
+has are tinted. The bar above them names the first difference, or says
+the two are identical, and **Alt+F5** and **Shift+Alt+F5** jump to the
+next and the previous one, however deep in the rows it is.
+
+![Two results of dvdrental's films compared: the bar says First difference at row 4, 43 and 40 rows, and the rental_rate of rows 4 and 9 is amber on both sides](media/compare-results.webp)
+
+The rows pair by their position, so give both queries the same
+`ORDER BY`.
+
+## The Objects tree
+
+### Browse Data and Open DDL on an object's row
+
+Hover a table in the Objects tree and two small buttons on the right
+open its rows or its DDL, each in a tab of its own; every other object
+gets Open DDL.
+
+![The Objects tree on dvdrental, the pointer on TABLE film: two buttons on its right, Browse Data and Open DDL](media/object-row-acts.webp)
+
+### A click knows what it is clicking
+
+Tables and views have their own On Click (Browse Data, Open DDL or
+Nothing), every other object its own (Open DDL or Nothing), so a
+function no longer offers Browse Data. The arrow keys browse a table too
+once you stop on it, so gliding past fifty tables runs nothing; on
+Production connections they show the DDL and run nothing at all.
+
+### Generated scripts name their parameters
+
+A script the Objects tree writes still uses PostgreSQL's own `$1` and
+`$2`, and a `-- @var` line above names each one, so the run form asks for
+**Customer id** and **Effective date**, not `$1` and `$2`. A column's
+comment is the field's help.
+
+![The select script of get_customer_balance with its two @var lines, and the Run with parameters form asking for Customer id and Effective date](media/script-params.webp)
+
+**Extract value into a parameter** keeps the value it took out as the
+field's default.
+
+### Pick a value from a table
+
+`-- @pick` takes a table now, beside a query, written the way a foreign
+key's `REFERENCES` names it:
+
+```sql
+-- @var $3 "Customer id"
+-- @pick $3 public.customer (customer_id)
+```
+
+The scripts the Objects tree writes carry the line on their own: every
+foreign key column of an insert, an update or a merge picks from the
+table it references, and the key of the row an update or a delete
+changes picks from the table itself.
+
+![The update script of dvdrental's rental and its Run with parameters form: Inventory id, Customer id, Staff id and Rental id each with pick from inventory, customer, staff and rental](media/pick-form.webp)
+
+The pick button beside the field opens the table in the same picker the
+row editor uses for a foreign key: every column, its filters and sort,
+and a missing row can be added right there. Select a row, click
+**Select**, and the form comes back with the value and everything you
+typed.
+
+![The customer table open in pick mode: Pick customer_id for Customer id in the Run with parameters form, Elizabeth Brown's row selected and the Select 5 button](media/pick-table.webp)
+
+Leave the column out (`-- @pick $3 customer`) and the table's primary
+key is used. No `-- @var` is needed either: `-- @pick $1 address
+(address_id)` right above `select $1;` is enough, and the field is named
+`$1` until a `@var` gives it a label. The same holds for `@choices` and
+`@help`. The editor completes the line: the parameters right after
+`@pick`, then the tables, each with its key (type a schema and a dot for
+that schema's tables), then a table's columns inside the parentheses. Problems warns about a table or a column the
+connection does not have.
+
+### Parameter lines, completed and checked
+
+Type `-- @var ` above a statement and the editor offers its parameters
+that have no line yet, each with a label taken from the column it stands
+for: above `where customer_id = $1` it writes `-- @var $1 "Customer id"`,
+the label selected so you can type over it. After `-- @pick `,
+`-- @choices ` and `-- @help ` it offers the statement's parameters,
+declared or not.
+
+And a line that does nothing now says so. A `@choices` with a single
+value or a second list for the same field used to be skipped in silence;
+each is a warning in Problems now, underlined where it stands.
+
+## Extensions and themes
+
+### Explain plan draws a diagram
+
+The [Explain plan](https://github.com/hercstack/plumesql/tree/main/extensions/Performance/explain-plan)
+extension draws the plan as a **diagram**: every step a card under the
+step that uses its rows, with what it took itself, the rows it returned
+and how far the estimate was off. The bar along a card's foot is its own
+share, the line up to its parent is as thick as the rows it passes, and
+the selected card's way to the result is lit.
+
+![The plan of a query with a subquery in its select list: the summary, What stands out naming the Seq Scan on rental r at 87% and a subquery run once per row, 49 times, and the diagram with the red Seq Scan under SubPlan 1](media/explain-plan.webp)
+
+- **What stands out** names a join or a sort by its condition or key, so
+  two Hash Joins are told apart, and finds a subquery run once per row
+  and a step the planner was told to avoid (PostgreSQL 17).
+- The summary shows what `SETTINGS`, triggers and `SERIALIZE` add, and
+  what planning read.
+- **Steps** has a search: a table, an index or anything in a condition.
+- **Time**, **Rows**, **Cost** and **Buffers** stay one click apart, and
+  one the plan cannot give says which EXPLAIN option brings it.
+- Zoom, fit and drag the diagram, or walk it with the arrow keys. The
+  boxes are still there, one click away.
+
+It updates from the Extensions tab, on earlier versions of PlumeSQL too.
+
+### Desktop 95, three new themes
+
+Desktops of three eras, in
+[Desktop 95](https://github.com/hercstack/plumesql/tree/main/extensions/Themes/desktop-95).
+**Desktop 95** draws the grey nineties in relief: raised buttons, sunken
+fields, the editor's tabs a taskbar whose active button is pressed in,
+checkered scroll bars, a results grid with raised headers and row numbers
+over white cells, and a form designer's code colors.
+
+![The PlumeSQL window in the Desktop 95 theme: grey raised buttons and tabs, sunken fields and a results grid with raised headers](media/desktop-95.webp)
+
+**Studio Classic** is a database studio of the next decade, its beige in
+soft relief, blue keywords, red strings and magenta functions in Courier
+New and a pale yellow status bar; **Studio Modern** the same studio
+today, flat and light blue. Themes can now draw the window's controls in
+relief; these are the first to use it.
+
+[Retro](https://github.com/hercstack/plumesql/tree/main/extensions/Themes/retro)
+has three more themes too: Phosphor Blue, Breadbin 64 Ready and Blue IDE.
+
+### The Extensions tab by category
+
+The Extensions tab can now list the extensions by category instead of by
+where they stand. Click the new button in the tab's header (or **Group
+By > Category** in its ⋯ menu): every category is a section of its own,
+from Activity and Locks and Performance down to Themes and Extension
+Authoring, in the order of who they are for. Pinned and Updates stay on
+top.
+
+![The Extensions tab grouped by category: Activity and Locks open, Activity chart marked Installed, the other categories folded with their counts](media/extensions-by-category.webp)
+
+- Each row says where it stands: **Installed**, **Yours** for one of
+  your own, **New**, the version an update brings, and why it is
+  recommended.
+- The first time, the first category opens and the rest fold, so you see
+  them all at a glance. The heading of the category you are reading stays
+  at the top as you scroll.
+- The funnel's **Status** rows narrow the list, to what you have
+  installed for example, still by category.
+- The same button takes you back to the sections by status. The choice
+  is a setting, **Settings > Extensions > Group the Extensions list by**.
+- A copy button beside an extension's name, on the row under the mouse,
+  copies its id, the name `-- @extension` lines use.
+
+### Extensions from the annotation list
+
+Type `-- @piv` and the list offers **@extension pivot** beside the
+annotations, so attaching an extension no longer starts with typing the
+keyword.
+
+## Settings and files
+
+### Settings you can read
+
+Every setting on the Settings page now says what it does in a sentence
+or two, then each of its values on a line of its own with what it
+shows, then the fine print. Descriptions that no longer matched what a
+setting does were corrected on the way.
+
+![A setting with its values one per line: Joins that may repeat rows, with all, hints, warnings and off](media/setting-values.webp)
+
+- **The map goes a level deeper.** The category you are reading lists
+  its subsections under it on the left (Editor's Run, Text, Display,
+  Hovers ...), the one on screen lit, and a click takes you there.
+  Keyboard, Files and Objects are in subsections now, Refactors lists
+  its groups (Quick Fix, Extract, Inline ...), and a small category
+  lists its settings.
+- **Favorite fonts** lists your favorites, each in its own face, and
+  **Add font** opens the same font picker every font setting has.
+- **Update extensions automatically**, once Update grid extensions
+  automatically: refactor and theme extensions update too.
+
+### Markdown side by side
+
+A Markdown file's switch has a third face, **Split**: the text on the
+left to edit, the document on the right, redrawn as you type and
+scrolling with the text both ways.
+
+![A Markdown file on Split: the text with its line numbers on the left, the rendered document at the same place on the right](media/markdown-split.webp)
+
+A double click on a part of the rendered document opens the source at
+that line: from Preview it switches to Source, in Split it puts the
+cursor there. **Settings > Files > Markdown files open as** can open
+every file on Split.
+
+### New File and New Folder from the Explorer's empty area
+
+A right click below the rows offers them first, in the workspace folder,
+as in VS Code.
+
+## What changed
+
+### The window's modes say so in the title bar
+
+Previewing a theme used to be said in the status bar. It is said in the
+middle of the title bar now, in the same bar as a comparison that waits
+for its other side, each with its buttons and Cancel. **Esc** ends them
+from anywhere.
+
+### The Markdown switch stays put
+
+The Preview and Source switch stood at the left of the toolbar on the
+source and at the right of a header on the preview, so it jumped with
+every switch. Every face now has the same toolbar, with the switch in
+the same place.
+
+### The editor's gutter ends on a hairline
+
+The gutter faded into the editor over its right half, which left the
+fold arrows and the lightbulb on a smear between two colors. It keeps
+one shade now, parted from the code by a thin line, in every theme.
+
+### Warnings read as warnings in the light theme
+
+The light theme's warning color was an orange that beside the red read
+as a second error. It is a golden amber now, in the Problems tab, the
+badges and everywhere else, and the editor's squiggles take the theme's
+own colors, so a theme recolors them too. The command palette's rows
+take the theme's text color as well.
+
+### The Extensions tab comes back online by itself
+
+Started without the network, the Extensions tab stayed offline (Install
+and Update off) until a restart. It now tries again on its own, and at
+once when the network returns.
+
+### Select Color Theme ends a page's Preview
+
+A theme still previewed from its page stood over the picker, so moving
+through the list repainted nothing. The preview now ends as the picker
+opens, and the theme that was previewed leads the list.
+
+### The Problems tab says why a note is a note
+
+When a query uses a table or function that an earlier statement of the
+same script creates, the server has not got it yet, so the parser's
+check fails, though the run will work. PlumeSQL shows that as a muted
+note, not an error, and now says so plainly: a **Note** column beside
+the line reads "created on line 132". Click it to jump to that line; the
+row's right click menu has **Go to Line 132, Where It Is Created** too.
+
+### More of what a script makes is recognized
+
+A schema, a procedure, a table made by `SELECT ... INTO` and a column
+added by `ALTER TABLE ... ADD COLUMN` were shown as errors when a later
+statement used them. They are notes now, like a created table or
+function.
+
+### Profile keeps the column names in view
+
+In [Profile](https://github.com/hercstack/plumesql/tree/main/extensions/Analysis/profile),
+the column names stay at the left while you scroll sideways through the
+rest.
 
 ## Fixed
 
+- **A tree keeps its place.** A click on a pinned folder heading at the
+  top of the Explorer or the Objects tree jumped to the start of the
+  tree instead of that folder, and opening an object could throw the
+  tree back to its top. Both stay where they are now.
+- **An extension's functions have their scripts.** Script and Copy
+  Script now work on functions an extension brought, too.
+- **Tabs on Multiple Rows sit on their lines.** With several rows of
+  tabs, each row drifted a little further from the line under it, so
+  the active tab crossed it. The rows and their lines now line up, for
+  small tabs too.
+- **Get a server with the terminal off.** It started its script anyway,
+  where you could not see it, and no connection came of it. Its buttons
+  now stand disabled and say the terminal is off.
+- **Check availability automatically, per connection.** With the global
+  setting off (the default), a connection or group set to On in its
+  editor was checked only when saved. It is now checked at startup, when
+  you come back to the window and on the interval.
+- **Hiding PostgreSQL's catalogs.** The PostgreSQL system and Information
+  schema groups of a connection's Snapshot settings left `pg_catalog` and
+  `information_schema` in the Objects tab. They leave it now, and the
+  editor's completion and hovers still know them.
+- **Problems show as a file opens.** A missing semicolon, a missing
+  comma and a NULL trap were found only after the first edit when the
+  file opened before the editor's parser had loaded. They show at once
+  now.
+- **Use on a theme an update adds.** On an extension's page, Use on a
+  theme that only a newer version of the extension has did nothing. It
+  now updates the extension first, then switches to the theme.
 - **The lines above a query belong to that query alone.** A script can
   hold the same query twice, say a copy pasted further down to try a
   different extension on it. The `-- @extension`, `-- @inputs`, `-- @ask`,
@@ -192,20 +590,6 @@ rows** chooses all, warnings only, or off.
   grid wrote their line above the FIRST query with the same text, not the
   one the result came from, and **Move to an extension** took the other
   copy's lines along. They now work on the query you ran.
-
-## Also in this release
-
-- **The Problems tab says why a note is a note.** When a query uses a
-  table or function that an earlier statement of the same script creates,
-  the server has not got it yet, so the parser's check fails, though the
-  run will work. PlumeSQL shows that as a muted note, not an error, and
-  now says so plainly: a **Note** column beside the line reads
-  "created on line 132". Click it to jump to that line; the row's right
-  click menu has **Go to Line 132, Where It Is Created** too.
-- **More of what a script makes is recognized.** A schema, a procedure,
-  a table made by `SELECT ... INTO` and a column added by
-  `ALTER TABLE ... ADD COLUMN` were shown as errors when a later statement
-  used them. They are notes now, like a created table or function.
 
 ## Tell us what you think
 
