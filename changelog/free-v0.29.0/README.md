@@ -17,6 +17,10 @@ objects, schemas or results side by side.
 - **The Objects tree:** Browse Data and Open DDL on every row, a click
   that knows what it is clicking, and scripts that name their
   parameters and pick a foreign key from its table.
+- **Extensions read the server's settings:** Explain plan says which
+  `SET` keeps a spill in memory, new extensions show what your session
+  changed and when autovacuum comes, and a schema change gets a lock wait
+  with an end.
 - **[Explain plan](https://github.com/hercstack/plumesql/tree/main/extensions/Performance/explain-plan)
   draws the plan as a diagram**, and
   **[Desktop 95](https://github.com/hercstack/plumesql/tree/main/extensions/Themes/desktop-95)**
@@ -168,7 +172,9 @@ never match, gets a quiet hint whose fix writes `IS NOT DISTINCT FROM`.
 Which columns can hold NULL comes from your database's own definitions,
 so a `NOT NULL` column never raises a warning. **Settings > Editor >
 Comparisons NULL defeats** chooses all, the hints only, the warnings
-only, or off.
+only, or off. Where your session has `transform_null_equals` on, `= NULL`
+does read as IS NULL there, and the warning becomes a quiet note that
+says so.
 
 ### Quiet a check where it is wrong
 
@@ -408,6 +414,43 @@ the selected card's way to the result is lit.
   boxes are still there, one click away.
 
 It updates from the Extensions tab, on earlier versions of PlumeSQL too.
+
+### Extensions read the server's settings
+
+An extension now reads the server's configuration parameters, the values
+your session runs with (a `SET` earlier in the script counts), and each
+one that does tells you something it could not before:
+
+![Explain plan on a sort that spilled to disk: beside the fact, work_mem 64kB, and under it the chip SET work_mem = '16MB' with "for this session should let it sort in memory"; under a Gather Merge that launched 0 of 2 planned workers, SET max_parallel_workers = 2; above, Off enable_hashjoin with RESET enable_hashjoin](media/explain-advice.webp)
+
+- **[Explain plan](https://github.com/hercstack/plumesql/tree/main/extensions/Performance/explain-plan)**
+  puts the memory a spill had beside it (`work_mem`), the server's
+  limits beside a Gather short of workers, the share JIT took and the
+  planner's switches that were off, and under each the change its numbers
+  point at, a statement to copy: the `work_mem` that keeps it in memory,
+  `RESET` for a switch, `jit = off` for a query too short for it.
+- **[Settings explorer](https://github.com/hercstack/plumesql/tree/main/extensions/Server%20and%20Security/settings-explorer)**
+  (new) turns `SHOW ALL` into what your session changed, each with its
+  `RESET`, and what the server sets apart from the built-in values.
+- **[Autovacuum forecast](https://github.com/hercstack/plumesql/tree/main/extensions/Storage%20and%20Maintenance/autovacuum-forecast)**
+  (new) shows, on `pg_stat_user_tables`, how near each table is to its
+  next autovacuum and autoanalyze by your server's thresholds.
+- **[Migration safety](https://github.com/hercstack/plumesql/tree/main/extensions/Objects/migration-safety)**
+  (new) writes a `lock_timeout` above an `ALTER TABLE` or a `CREATE
+  INDEX`, so a change waiting for its lock never queues the table behind
+  it, and more memory for an index build.
+- **pgvector refactors** say when a `LIMIT` asks for more rows than an
+  HNSW index looks at (`hnsw.ef_search`), **correctness refactors** write
+  a date like `'01/02/2026'` the way your `DateStyle` reads it, **duration**
+  reads an interval in any `IntervalStyle`, **currency** shows a `money`
+  column in the server's own currency, the time charts read dates in any
+  `DateStyle`, and the activity chart shows the server's `max_connections`.
+
+Nothing that can hold a secret (a standby's connection string, an
+archive command) is ever handed to an extension, and the install review
+says which ones read the settings. The extensions you already have keep
+installing on an earlier PlumeSQL, without what the settings add; the
+three new ones need 0.29.0.
 
 ### Desktop 95, three new themes
 
