@@ -58,7 +58,7 @@ limit 8;
 ## Good to know
 
 - Hovering a cell shows the server's own value. Copying cells from the grid copies them as they read (`$211.55`); **Save As** writes the server's own values to the file.
-- A `money` column is read in the server's own shape first (`$1,234.50`, `1.234,50 €`, whatever the server's `lc_monetary` says), then written your way.
+- A `money` column is read in the server's own shape first (`$1,234.50`, `1.234,50 €`, whatever the server's `lc_monetary` says), then written your way. It is in the currency of that `lc_monetary` too (`en_US` is dollars, `de_DE` euros), so a `money` column shows that currency whatever **Currency** says, which is for the plain number columns; from PlumeSQL 0.29.0, which hands the extension the session's `lc_monetary`. The `C` locale names no currency, and the setting holds there.
 - The currency's own number of decimals is used: yen have none, euros and dollars two.
 - An empty cell and a NULL stay as they are. A value that is not a number is left alone.
 - PlumeSQL sizes a column by the server's text, and the symbol makes the formatted text a little wider. If a value is cut, double-click the right edge of the column's header to fit it.

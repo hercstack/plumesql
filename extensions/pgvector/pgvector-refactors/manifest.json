@@ -2,7 +2,7 @@
   "format": 1,
   "id": "pgvector-refactors",
   "kind": "refactor",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "plumesql": ">=0.24.0",
   "name": "pgvector refactors",
   "description": "The nearest neighbour query a lightbulb away in the editor, to a vector you paste or to a row you have, and the HNSW index it needs",

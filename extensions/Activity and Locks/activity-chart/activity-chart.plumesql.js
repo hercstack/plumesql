@@ -4,7 +4,8 @@
 
 /** @typedef {{ t: number, counts: number[] }} Sample */
 /** @typedef {{ hasState: boolean, hasWait: boolean }} Shape */
-/** @typedef {{ samples: Sample[], lastKey: string, lastAt: number, hidden: Set<number>, root: HTMLElement | null, ctx: RenderContext | null, shape: Shape, hover: number }} Store */
+/** @typedef {{ max: number, reserved: number }} Limits */
+/** @typedef {{ samples: Sample[], lastKey: string, lastAt: number, hidden: Set<number>, root: HTMLElement | null, ctx: RenderContext | null, shape: Shape, hover: number, limits?: Limits | null }} Store */
 
 const SERIES = ['Total', 'Active', 'Idle', 'In transaction', 'Waiting']
 const COLORS = {
@@ -90,9 +91,14 @@ function draw(root, ctx, shape) {
   }
   const note = document.createElement('span')
   note.style.cssText = 'margin-left:auto;color:' + mut + ';font-size:11px'
-  note.textContent = samples.length < 2
+  // The server's ceiling, a fact beside the counts (PlumeSQL 0.29.0 and
+  // later): the rows may hold background workers, which it does not count.
+  const lim = store.limits
+  const usable = lim ? lim.max - lim.reserved : 0
+  note.textContent = (samples.length < 2
     ? 'one sample; the graph moves with every refresh'
-    : samples.length + ' samples · ' + clock(samples[0].t) + ' to ' + clock(last.t)
+    : samples.length + ' samples · ' + clock(samples[0].t) + ' to ' + clock(last.t)) +
+    (lim ? ' · max_connections ' + lim.max + (lim.reserved ? ', ' + usable + ' for other than superusers' : '') : '')
   legend.appendChild(note)
   wrap.appendChild(legend)
 
@@ -102,7 +108,10 @@ function draw(root, ctx, shape) {
   const W = Math.max(120, plot.clientWidth || root.clientWidth - 28), H = Math.max(60, plot.clientHeight || root.clientHeight - 60)
   const L = 34, R = 10, T = 8, B = 22
   const pw = W - L - R, ph = H - T - B
-  const maxVal = Math.max(1, ...samples.flatMap((s) => shown.filter((i) => !store.hidden.has(i)).map((i) => s.counts[i])))
+  const seen = Math.max(1, ...samples.flatMap((s) => shown.filter((i) => !store.hidden.has(i)).map((i) => s.counts[i])))
+  // Near the ceiling (four fifths of it or more), the ceiling is drawn.
+  const ceiling = usable > 0 && seen >= usable * 0.8 ? usable : 0
+  const maxVal = Math.max(seen, ceiling)
   const ys = ticks(Math.max(5, maxVal), Math.max(2, Math.floor(ph / 32)))
   const yMax = ys[ys.length - 1]
   const t0 = samples.length ? samples[0].t : Date.now(), t1 = samples.length ? last.t : t0
@@ -117,6 +126,12 @@ function draw(root, ctx, shape) {
     svg += '<text x="' + (L - 6) + '" y="' + y + '" dy="4" text-anchor="end" fill="' + mut + '" font-size="11" font-family="system-ui,sans-serif">' + v + '</text>'
   }
   svg += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + (T + ph) + '" y2="' + (T + ph) + '" stroke="' + axis + '"/>'
+  if (ceiling) {
+    const red = pal ? pal.red : light ? '#d1495b' : '#f7768e'
+    const y = Y(ceiling).toFixed(1)
+    svg += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y + '" y2="' + y + '" stroke="' + red + '" stroke-dasharray="6 4"/>'
+    svg += '<text x="' + (W - R) + '" y="' + y + '" dy="-4" text-anchor="end" fill="' + red + '" font-size="11" font-family="system-ui,sans-serif">' + (lim && lim.reserved ? 'max_connections less the reserved, ' : 'max_connections, ') + ceiling + '</text>'
+  }
   if (samples.length >= 2) {
     const n = Math.max(2, Math.min(8, Math.floor(pw / 90)))
     for (let k = 0; k <= n; k++) {
@@ -190,6 +205,16 @@ export default {
         store.ctx = ctx
         store.shape = { hasState: c.hasState, hasWait: c.hasWait }
         draw(root, ctx, store.shape)
+        // The server's connection limits, once (PlumeSQL 0.29.0 and later).
+        if (store.limits === undefined && typeof ctx.settings === 'function') {
+          store.limits = null
+          ctx.settings(['max_connections', 'superuser_reserved_connections', 'reserved_connections']).then((s) => {
+            const max = Number(s.max_connections?.value)
+            if (!max) return
+            store.limits = { max, reserved: Number(s.superuser_reserved_connections?.value || 0) + Number(s.reserved_connections?.value || 0) }
+            if (store.root && store.ctx) draw(store.root, store.ctx, store.shape)
+          }).catch(() => {})
+        }
       },
       resize: (root, _size, ctx) => {
         store.root = root

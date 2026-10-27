@@ -699,7 +699,7 @@ export default {
           // Summary cards: the whole run at a glance.
           const cards = []
           if (analyzed) cards.push(['Execution time', time(plan.execution ?? plan.node.incl)])
-          const planBufBlocks = (plan.run.planBuf.match(/\d+/g) || []).reduce((a, x) => a + Number(x), 0)
+          const planBufBlocks = (plan.run.planBuf.match(/\d+/g) || /** @type {string[]} */ ([])).reduce((a, x) => a + Number(x), 0)
           if (plan.planning !== null) cards.push(['Planning time', time(plan.planning) + (planBufBlocks ? '<span> · ' + bytes(planBufBlocks) + ' of buffers</span>' : '')])
           if (!analyzed) cards.push(['Total cost', (plan.node.cost ?? 0).toLocaleString(undefined, { maximumFractionDigits: 2 })])
           cards.push([analyzed ? 'Rows returned' : 'Rows estimated', count(analyzed ? plan.node.outRows : plan.node.estRows)])

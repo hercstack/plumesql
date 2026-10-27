@@ -22,7 +22,7 @@ Every refresh of the result adds one point to each line:
 - **In transaction** (amber): inside an open transaction but not running anything (`idle in transaction`, and the aborted kind).
 - **Waiting** (red): active sessions that are waiting for something (a lock, I/O, another process).
 
-The legend shows the newest point's numbers; hover the chart to read any earlier point. Click a name in the legend to hide or show its line. The line in the corner says how many samples it holds and from when to when.
+The legend shows the newest point's numbers; hover the chart to read any earlier point. Click a name in the legend to hide or show its line. The line in the corner says how many samples it holds and from when to when, and the server's ceiling: `max_connections`, and how many of them are left for other than superusers once the reserved ones are set aside (PlumeSQL 0.29.0 and newer). When the lines reach four fifths of that, the ceiling is drawn across the chart as a dashed red line. The sessions the result lists may include the server's own background workers, which `max_connections` does not count, so read the line as how near you are, not to the session.
 
 The chart only counts. The grid a click away (the result's first tab) lists the sessions behind the newest point: who, how long, waiting on what, and the query.
 

@@ -65,6 +65,7 @@ export const contrast = (hex) => {
 // through ctx.rows, in PAGES, up to the result's own stored cap. A page is
 // bounded so one transfer across the sandbox bridge stays small.
 export const loadRows = async (data, ctx, top) => {
+  await useDateStyle(ctx)
   let rows = data.rows || []
   if (top > rows.length && typeof ctx.rows === 'function') {
     try {
@@ -108,6 +109,47 @@ export const extent = (arr, key) => { let lo = Infinity, hi = -Infinity; for (co
 // (parsed to a Date), a number column numeric, anything else ordinal (a
 // category); no column at all means the row order.
 export const xKind = (col) => (!col ? 'index' : /timestamp|date/i.test(col.type) ? 'temporal' : /int|numeric|decimal|real|double|float|serial/i.test(col.type) ? 'numeric' : 'ordinal')
+// The server's DateStyle shapes how a date or a timestamp reads as text:
+// ISO (2026-10-27 13:00:00, the default) unless a role, a database or a SET
+// says SQL, German or Postgres. loadRows reads it once from ctx.settings
+// (PlumeSQL 0.29.0 and later; an older one leaves the default): the SQL and
+// Postgres forms put the day first when it says DMY.
+let dayFirst = false
+export const useDateStyle = async (/** @type {any} */ ctx) => {
+  if (!ctx || typeof ctx.settings !== 'function') return
+  try {
+    const s = /** @type {any} */ (await Promise.race([ctx.settings(['DateStyle']), new Promise((done) => setTimeout(() => done({}), 2000))]))
+    if (typeof s?.DateStyle?.value === 'string') dayFirst = /\bDMY\b/i.test(s.DateStyle.value)
+  } catch {}
+}
+/** @type {Record<string, number>} */
+const MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 }
+// A date or a timestamp in a DateStyle other than ISO, to epoch ms of the
+// wall clock it shows (a numeric offset applied when `offset`; a zone's
+// abbreviation, CET, is left as the clock reads): SQL 10/27/2026 13:00:00
+// CET (27/10/2026 with DMY), German 27.10.2026 13:00:00 CET, Postgres Tue
+// Oct 27 13:00:00 2026 CET (Tue 27 Oct with DMY) and its date alone,
+// 10-27-2026. Anything else is null.
+const otherTime = (/** @type {string} */ s, /** @type {boolean} */ offset) => {
+  let y = 0, mo = 0, d = 0, rest = ''
+  let m = /^(\d{1,2})([/.-])(\d{1,2})\2(\d{4,})(.*)$/.exec(s)
+  if (m) {
+    // German is day first always, SQL and Postgres when DMY says so.
+    const df = m[2] === '.' || dayFirst
+    d = Number(df ? m[1] : m[3]); mo = Number(df ? m[3] : m[1]) - 1; y = Number(m[4]); rest = m[5]
+  } else if ((m = /^(?:[A-Za-z]{3}\s+)?(?:([A-Za-z]{3})\s+(\d{1,2})|(\d{1,2})\s+([A-Za-z]{3}))\s+(\d{1,2}:\d{2}(?::\d{2}(?:\.\d+)?)?)\s+(\d{4,})(.*)$/.exec(s))) {
+    const mon = MONTHS[(m[1] || m[4]).toLowerCase()]
+    if (mon === undefined) return null
+    mo = mon; d = Number(m[2] || m[3]); y = Number(m[6]); rest = ' ' + m[5] + m[7]
+  } else return null
+  const t = /^\s+(\d{1,2}):(\d{2})(?::(\d{2})(?:\.(\d+))?)?(.*)$/.exec(rest)
+  const zone = (t ? t[5] : rest).trim()
+  const z = /^([+-])(\d{2})(?::?(\d{2}))?$/.exec(zone)
+  const off = offset && z ? (z[1] === '-' ? -1 : 1) * (Number(z[2]) * 60 + Number(z[3] || 0)) * 60000 : 0
+  if (mo < 0 || mo > 11 || d < 1 || d > 31) return null
+  const v = Date.UTC(y, mo, d, t ? Number(t[1]) : 0, t ? Number(t[2]) : 0, t && t[3] ? Number(t[3]) : 0, t && t[4] ? Math.round(Number('0.' + t[4]) * 1000) : 0) - off
+  return Number.isFinite(v) ? v : null
+}
 // The server's text for a date or a timestamp, read as the wall clock it
 // shows: Plot draws a time axis in UTC, so a naive timestamp, a date and a
 // timestamptz (its offset dropped: the server already wrote it in the
@@ -116,6 +158,7 @@ export const xKind = (col) => (!col ? 'index' : /timestamp|date/i.test(col.type)
 // BC date) is no time on the axis.
 export const parseTime = (v) => {
   if (v == null || v === '') return null
+  if (!/^\d{4}-\d{2}-\d{2}/.test(String(v).trim())) { const t = otherTime(String(v).trim(), false); return t === null ? null : new Date(t) }
   const m = /^(\d{4}-\d{2}-\d{2})(?:[ T](\d{2}:\d{2})(:\d{2}(?:\.\d{1,3})?)?\d*)?(?:\s*(?:[+-]\d{2}(?::?\d{2})?|Z))?$/.exec(String(v).trim())
   if (!m) return null
   const d = new Date(m[1] + 'T' + (m[2] || '00:00') + (m[3] || ':00') + 'Z')

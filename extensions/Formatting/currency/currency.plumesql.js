@@ -1,5 +1,5 @@
 // @ts-check
-// @description Amount columns read as money: the currency, the way of writing it and the columns are yours to pick, negatives in parentheses if you like
+// @description Amount columns read as money: the currency, the way of writing it and the columns are yours to pick, negatives in parentheses if you like; a money column in the server's own currency
 // @color green
 // money arrives in the server's lc_monetary shape ($1,234.50, -$5.00,
 // 1.234,50 €): the separator before the last one or two digits is the
@@ -11,6 +11,29 @@ const money = (/** @type {string} */ s) => {
   const t = m ? m[1].replace(/[.,]/g, '') + '.' + m[2] : d.replace(/[.,]/g, '')
   return t === '' ? NaN : (neg ? -1 : 1) * Number(t)
 }
+// money is written in the currency of the server's lc_monetary (en_US.UTF-8
+// is dollars, de_DE euros), read through ctx.settings from PlumeSQL 0.29.0:
+// a money column shows that one, whatever the Currency setting says, which
+// is for the plain number columns. The C and POSIX locales name no
+// currency (their $ is a placeholder), and neither does a territory this
+// table does not know: the setting holds then.
+/** @type {Record<string, string>} */
+const TERRITORY = {
+  US: 'USD', GB: 'GBP', CH: 'CHF', LI: 'CHF', JP: 'JPY', CN: 'CNY', IN: 'INR', CA: 'CAD', AU: 'AUD', NZ: 'NZD', BR: 'BRL', MX: 'MXN',
+  SE: 'SEK', NO: 'NOK', DK: 'DKK', IS: 'ISK', PL: 'PLN', CZ: 'CZK', HU: 'HUF', RO: 'RON', BG: 'BGN', RS: 'RSD', BA: 'BAM', MK: 'MKD',
+  RU: 'RUB', UA: 'UAH', TR: 'TRY', IL: 'ILS', ZA: 'ZAR', KR: 'KRW', SG: 'SGD', HK: 'HKD', TW: 'TWD', TH: 'THB', ID: 'IDR', MY: 'MYR',
+  PH: 'PHP', AR: 'ARS', CL: 'CLP', CO: 'COP', PE: 'PEN', AE: 'AED', SA: 'SAR', EG: 'EGP',
+  DE: 'EUR', AT: 'EUR', FR: 'EUR', IT: 'EUR', ES: 'EUR', PT: 'EUR', NL: 'EUR', BE: 'EUR', LU: 'EUR', IE: 'EUR', FI: 'EUR', GR: 'EUR',
+  SK: 'EUR', SI: 'EUR', EE: 'EUR', LV: 'EUR', LT: 'EUR', HR: 'EUR', MT: 'EUR', CY: 'EUR'
+}
+/** @param {GridContext} ctx */
+const moneyCurrency = (ctx) => {
+  if (typeof ctx.settings !== 'function') return undefined
+  const lc = ctx.settings(['lc_monetary']).lc_monetary?.value ?? ''
+  const t = /^[a-z]{2,3}[_-]([A-Z]{2})\b/.exec(lc)?.[1]
+  return t ? TERRITORY[t] : undefined
+}
+
 /** @type {Record<string, string | undefined>} */
 const LOCALES = { 'Your locale': undefined, 'European, 1.234,56 €': 'de-DE', 'English, €1,234.56': 'en-US', 'Swiss, 1’234.56': 'de-CH', 'French, 1 234,56 €': 'fr-FR' }
 
@@ -27,11 +50,12 @@ export default {
       match: { input: 'columns' },
       fn: (value, row, prevRow, ctx) => {
         if (value == null || value === '') return value
-        const n = /^money/.test(ctx.column.type) ? money(String(value)) : Number(value)
+        const isMoney = /^money/.test(ctx.column.type)
+        const n = isMoney ? money(String(value)) : Number(value)
         if (!Number.isFinite(n)) return value
         const o = ctx.inputs
         const title = String(value)
-        const code = (o.currency ?? '').trim().toUpperCase()
+        const code = (isMoney ? moneyCurrency(ctx) : undefined) ?? (o.currency ?? '').trim().toUpperCase()
         const locale = LOCALES[o.locale ?? ''] ?? undefined
         /** @type {Intl.NumberFormatOptions} */
         const opts = /^[A-Z]{3}$/.test(code) ? { style: 'currency', currency: code } : { minimumFractionDigits: 2, maximumFractionDigits: 2 }

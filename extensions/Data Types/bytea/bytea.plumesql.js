@@ -3,7 +3,8 @@
 // @color gray
 
 // The server sends bytea as hex (bytea_output = 'hex', the default since
-// PostgreSQL 9.0): \x followed by two digits a byte. Bytes are read straight
+// PostgreSQL 9.0): \x followed by two digits a byte; the older escape form
+// is read into it first (fromEscape). Bytes are read straight
 // out of that text, never decoded whole, so a large value costs nothing.
 /** @param {string} s */
 const reader = (s) => {
@@ -91,6 +92,25 @@ const reading = (/** @type {string} */ s) => {
   return { r, id, line: parts.join(' · ') }
 }
 const isHex = (/** @type {unknown} */ v) => typeof v === 'string' && v.startsWith('\\x') && /^\\x[0-9a-fA-F]*$/.test(v.slice(0, 66))
+// The escape form (bytea_output = 'escape'): printable bytes as themselves,
+// a backslash doubled, every other byte as \ooo in octal. It never starts
+// with a lone \x (a backslash is doubled), so it tells itself from hex with
+// no word from the server. Read into the hex form the rest reads.
+const fromEscape = (/** @type {string} */ v) => {
+  let hex = '\\x'
+  for (let i = 0; i < v.length; i++) {
+    let b = v.charCodeAt(i)
+    if (v[i] === '\\') {
+      if (v[i + 1] === '\\') i++
+      else if (/^[0-3][0-7]{2}$/.test(v.slice(i + 1, i + 4))) { b = parseInt(v.slice(i + 1, i + 4), 8); i += 3 }
+    }
+    if (b > 255) return null
+    hex += (b < 16 ? '0' : '') + b.toString(16)
+  }
+  return hex
+}
+// A value as the hex form, whichever form the server sent.
+const asHex = (/** @type {unknown} */ v) => (typeof v !== 'string' ? null : isHex(v) ? v : v.startsWith('\\x') ? null : fromEscape(v))
 
 /** @type {PlumeSQLExtension} */
 export default {
@@ -98,8 +118,8 @@ export default {
     {
       match: { type: /^bytea$/ },
       fn: (value) => {
-        if (!isHex(value)) return value
-        const s = String(value)
+        const s = asHex(value)
+        if (!s) return value
         const { r, id, line } = reading(s)
         const peek = id && id.kind === 'text' ? '\n\n' + textPreview(r, 400) : ''
         return { value: line, title: hexPreview(s, 48) + (r.n > 48 ? ' …' : '') + peek, class: 'fmt-muted' }
@@ -111,8 +131,8 @@ export default {
       match: { type: 'bytea' },
       label: 'as base64',
       inspect: (value, ctx) => {
-        if (!isHex(value)) return null
-        const s = String(value)
+        const s = asHex(value)
+        if (!s) return null
         const { r, id, line } = reading(s)
         if (ctx.surface !== 'value') return { line }
         const facts = [id ? id.kind : 'binary data', size(r.n)]

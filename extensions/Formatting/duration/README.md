@@ -47,7 +47,7 @@ order by total_time desc;
 
 ## Settings
 
-None. A column is picked by its name: it must end in `_ms`, `_time`, `duration`, `elapsed` or `latency` (any case) and hold a number of **milliseconds**.
+None. A number column is picked by its name: it must end in `_ms`, `_time`, `duration`, `elapsed` or `latency` (any case) and hold a number of **milliseconds**. An `interval` column is picked by its type, whatever its name.
 
 ## How it reads
 
@@ -58,6 +58,8 @@ None. A column is picked by its name: it must end in `_ms`, `_time`, `duration`,
 | under an hour | `2m 12s` |
 | under a day | `1h 30m` |
 | a day or more | `1d 23h` |
+
+An `interval` reads the same way (`r.return_date - r.rental_date` needs no `extract` then), and one with months or days in it by its two largest parts: `1y 2mo`, `3d 4h`, the exact value on hover. PostgreSQL writes an interval in the session's `IntervalStyle` (`postgres` by default, `1 day 02:03:04`; `sql_standard`, `1 2:03:04`; `iso_8601`, `P1DT2H3M4S`; `postgres_verbose`); the extension reads it from PlumeSQL 0.29.0 and newer, and an older PlumeSQL reads the default.
 
 A negative duration keeps its minus sign.
 

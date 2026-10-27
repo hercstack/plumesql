@@ -13,6 +13,8 @@ The lightbulb on a LEFT JOIN whose WHERE filters the joined table. The first off
 - **A count that says 1 where it should say 0**, counting a LEFT JOIN with `count(*)`.
 - **A date range that loses its last day** on a timestamp column.
 - **AND and OR without parentheses**, where PostgreSQL groups the condition differently than it reads.
+- **A date written day and month**, `'01/02/2026'`, which one server reads as 2 January and another as 1 February.
+- **A backslash in a string** where `standard_conforming_strings` is off, so `'C:\new'` holds a line break.
 
 ## Before and after
 
@@ -87,10 +89,37 @@ where (status = 'paid' and region = 'EU') or vip
 where status = 'paid' and (region = 'EU' or vip)
 ```
 
+### A date written day and month
+
+```sql
+-- before: month first here (DateStyle ISO, MDY), so 2 January
+select * from rental where rental_date >= '01/02/2006';
+
+-- Write '01/02/2006' as '2006-01-02' (DateStyle ISO, MDY reads it month first, another may not)
+select * from rental where rental_date >= '2006-01-02';
+```
+
+The order is the server's `DateStyle`, which a role, a database or a `SET` can change (`SQL, DMY` reads the day first). The offer writes the date the way this session reads it, as ISO, which reads the same everywhere; a date its order refuses (`'13/02/2006'` month first) is written the way it can only mean. Offered on a date compared with a `date` or `timestamp` column, or cast to one.
+
+### A backslash with standard_conforming_strings off
+
+```sql
+-- before: with standard_conforming_strings off, \n here is a line break
+where path = 'C:\new'
+
+-- Keep the backslash: E'' with it doubled
+where path = E'C:\\new'
+
+-- Keep the escape: E'' reads it the same on every server
+where path = E'C:\new'
+```
+
+`standard_conforming_strings` is on by default (PostgreSQL 9.1 and later); the offer appears only where your session has it off.
+
 ## How it decides
 
 It reads what PostgreSQL's own parser reads in the query: its joins, its WHERE and its select list, handed over by PlumeSQL. A LEFT JOIN is offered as a JOIN only when a top-level WHERE condition is certain to drop a row without a match (a comparison, BETWEEN, IN, LIKE or IS NOT NULL on the joined table's columns), never for IS NULL, IS DISTINCT FROM, COALESCE or a condition inside an OR, and never when the query has a RIGHT or FULL JOIN. count(*) is offered only in a grouped query not grouped by the joined table.
 
 ## Requirements
 
-PlumeSQL 0.26.2 or later. Any PostgreSQL from 13; nothing is asked of the server.
+PlumeSQL 0.26.2 or later. Any PostgreSQL from 13; nothing is asked of the server. The date and backslash offers read your session's `DateStyle` and `standard_conforming_strings`, which PlumeSQL already holds (0.29.0 and later; an older PlumeSQL leaves those two out).

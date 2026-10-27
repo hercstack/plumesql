@@ -47,9 +47,18 @@ select id, name from products order by embedding <=> '[0.9,0.1,0.2]' limit 5;
 
 Run the `create index` once; building it on a large table takes a while. The offer reads the table's indexes from PlumeSQL's dictionary, and stays quiet until the dictionary knows them (it does from PlumeSQL 0.24.0, after the connection's tables are read once more).
 
+**Search deep enough.** An HNSW index does not look at every row: it walks `hnsw.ef_search` candidates (40 by default) and returns the nearest of those. A query that asks for more (`limit 100`) quietly gets at most 40 rows back, and a `where` on top of the distance keeps fewer still, because the filter runs on the candidates the index found. When your query is served by an HNSW index and its `limit` is above your session's `hnsw.ef_search`, the lightbulb writes the `set` above it that returns every row asked for; with a filter, and pgvector 0.8 or newer, it also offers to let the index keep scanning past the filter (`hnsw.iterative_scan`, in the distance order). An IVFFlat index searches `ivfflat.probes` of its lists (1 by default): the lightbulb offers ten.
+
+```sql
+set hnsw.ef_search = 100;
+select id, name from products order by embedding <=> '[0.9,0.1,0.2]' limit 100;
+```
+
+A `set` holds for the rest of your session; `set local` inside a transaction holds until it ends. A larger `ef_search` reads more of the index, so it is a little slower: that is the price of the rows you asked for.
+
 ## What it reads
 
-The statement and its tables' columns, from PlumeSQL's dictionary of the connection. For **Add an HNSW index**, the table's indexes, from the same dictionary. For **Order by nearest to the first row's**, also the first row of the query's last run in this tab, which PlumeSQL already has. Nothing is asked of the server until you run the query.
+The statement and its tables' columns, from PlumeSQL's dictionary of the connection. For **Add an HNSW index** and **Search deep enough**, the table's indexes, from the same dictionary, and for the latter your session's `hnsw.ef_search`, `ivfflat.probes` and iterative scan settings, which PlumeSQL already holds (0.29.0 and newer; an older PlumeSQL leaves that offer out). For **Order by nearest to the first row's**, also the first row of the query's last run in this tab, which PlumeSQL already has. Nothing is asked of the server until you run the query.
 
 ## Where it applies
 

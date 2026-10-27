@@ -2,7 +2,7 @@
   "format": 1,
   "id": "stats-core",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "plumesql": ">=0.21.0",
   "name": "Stats core",
   "description": "Shared helpers the analysis extensions import: paging, folds, quantiles, correlation, bins, time buckets, forecasting",

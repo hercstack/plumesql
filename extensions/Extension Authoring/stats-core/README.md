@@ -11,7 +11,7 @@ Import it from `$ext/stats-core/stats-core.plumesql.js` and list `stats-core` in
 - **Folds**: `fold(agg, values)` for `count`, `sum`, `mean`, `median`, `min`, `max`, `stdev`, `p90` and `distinct` (`FOLDS` lists them); `sum`, `mean`, `variance`, `stdev`, `sorted`, `quantile`, `median` on their own.
 - **Ranks and links**: `ranks`, `pearson`, `spearman`, `linearFit` (least squares).
 - **Bins**: `niceWidth`, `binEdges` (round edges), `binOf`, `edgeText`.
-- **Time**: `parseTime`, `truncTime`, `stepTime`, `timeText`, `guessUnit` over `UNITS` (minute to year).
+- **Time**: `parseTime`, `truncTime`, `stepTime`, `timeText`, `guessUnit` over `UNITS` (minute to year). `parseTime` reads every form the server's `DateStyle` writes (ISO, SQL, German and Postgres, the day first when it says DMY); `loadRows` reads the `DateStyle` from PlumeSQL 0.29.0 and later (`useDateStyle(ctx)` does it alone), and an older PlumeSQL leaves the default, month first.
 - **Forecasts**: `holt` (trend-aware smoothing) and `linearForecast`.
 - **Sampling and colour**: `random(seed)`, a repeatable sampler; `tint(token, percent)`, a cell colour from the theme; `escapeHtml`.
 

@@ -9,7 +9,7 @@ Import it from `$ext/plot-core/plot-core.plumesql.js` and list `plot-core` in yo
 - **Plot itself**: `P`, Observable Plot with `P.plot` wrapped so a figure's text, its legend included, takes its style's colour (`baseStyle` gives the theme's).
 - **Rows**: `loadRows(data, ctx, top)` pages a whole result in; `colIndex`, `seriesIdxs`, `asNum`.
 - **Many points**: `thin`, `bucketMean` and `sample` bring a million points down to what the pixels can show, keeping peaks; `extent`, `sortByX`, `lowerBound`, `upperBound`.
-- **Axes**: `xKind` (time, number or category), `parseTime` (the server's wall clock, as UTC: Plot's time axis is UTC, so a chart never shifts a time by this machine's zone), `timeText`, `xValue`, `fmtX`, `fmtTick`, `fmtNum`, `anchorZero`, `leftMargin`, `sparse`.
+- **Axes**: `xKind` (time, number or category), `parseTime` (the server's wall clock, as UTC: Plot's time axis is UTC, so a chart never shifts a time by this machine's zone; every form the server's `DateStyle` writes, ISO, SQL, German and Postgres, the day first when it says DMY, which `loadRows` reads from PlumeSQL 0.29.0 and later), `timeText`, `xValue`, `fmtX`, `fmtTick`, `fmtNum`, `anchorZero`, `leftMargin`, `sparse`.
 - **Colour and style**: `palettes` (Vivid, Cool, Warm, Mono), `ramps`, `usePalette(ctx)` (call it first in a draw: it follows the app's theme or a theme extension), `inkOf`, `paperOf`, `mutedOf`, `accentOf`, `baseStyle`, `contrast`.
 - **Extras**: `pointerMarks` (a hover read-out), `edgeBadges` (value badges at the line ends), `areaGradients` (gradient fills), `note(root, message)` for a calm message in place of a chart.
 

@@ -38,7 +38,7 @@ from pg_catalog.pg_largeobject_metadata;
 
 ## Requirements
 
-PostgreSQL 13 or newer, with `bytea_output` at `hex`, its default since PostgreSQL 9.0 (a value in the old `escape` form is left as it is). Nothing runs on the server: the values are read from what the grid already holds.
+PostgreSQL 13 or newer, with `bytea_output` at `hex` (its default since PostgreSQL 9.0) or at the older `escape`, which reads the same. Nothing runs on the server: the values are read from what the grid already holds.
 
 ## Notes
 

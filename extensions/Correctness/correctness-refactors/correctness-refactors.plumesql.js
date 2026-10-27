@@ -10,8 +10,10 @@
 // It reads only what the editor hands it: the statement's tables with their
 // columns, and what PostgreSQL's own parser read in the query (its joins,
 // its WHERE and its items' expressions, statement.query.joins, .where and
-// items[].expr, PlumeSQL 0.26.2 and later). It carries no SQL parser and
-// asks nothing of the server.
+// items[].expr, PlumeSQL 0.26.2 and later), and for two of them the
+// session's DateStyle and standard_conforming_strings (ctx.settings,
+// PlumeSQL 0.29.0 and later). It carries no SQL parser and asks nothing of
+// the server.
 
 /**
  * @typedef {{ from: number, to: number, text: string }} Edit
@@ -380,6 +382,113 @@ function lastDay(st) {
 }
 
 // ---------------------------------------------------------------------------
+// A date written with its day and month (DateStyle).
+
+const DAY_MONTH = /^(\d{1,2})([/.-])(\d{1,2})\2(\d{4})(\s+\d{1,2}:\d{2}(?::\d{2}(?:\.\d+)?)?)?$/
+const DATE_TYPE = /^(?:date|timestamp)/
+
+/** @param {RefactorExpr | undefined} e */
+const stringConstant = (e) => !!e && e.kind === 'constant' && e.type === 'string'
+
+/**
+ * The expressions a refactor here reads: the conditions, and the select
+ * list's items.
+ * @param {RefactorStatement} st
+ */
+function expressions(st) {
+  /** @type {RefactorExpr[]} */
+  const items = []
+  for (const it of st.query?.items ?? []) if (it.expr) items.push(it.expr)
+  return [...conditions(st), ...items]
+}
+
+/**
+ * A date written with its day and month ('01/02/2026', '01.02.2026'),
+ * compared with a date or timestamp column or cast to one, reads the way
+ * the server's DateStyle orders them: the month first unless it says DMY.
+ * The session's own DateStyle (ctx.settings, PlumeSQL 0.29.0 and later;
+ * nothing is offered without it) says which; the date written as ISO
+ * ('2026-02-01') reads the same on every server. A date the server's order
+ * refuses (13/02/2026 month first) is written the way it can only mean.
+ * @param {RefactorStatement} st
+ * @param {RefactorContext} ctx
+ * @returns {Offer[]}
+ */
+function dateOrder(st, ctx) {
+  if (typeof ctx.settings !== 'function') return []
+  const style = ctx.settings(['DateStyle']).DateStyle?.value
+  if (!style) return []
+  const dayFirst = /\bDMY\b/i.test(style)
+  const pad = (/** @type {number} */ n) => String(n).padStart(2, '0')
+  const valid = (/** @type {number} */ d, /** @type {number} */ m) => m >= 1 && m <= 12 && d >= 1 && d <= 31
+  /** @type {Offer[]} */
+  const offers = []
+  const seen = new Set()
+  const offer = (/** @type {RefactorExpr} */ e) => {
+    const m = DAY_MONTH.exec(e.value ?? '')
+    if (!m || seen.has(e.from)) return
+    seen.add(e.from)
+    const a = Number(m[1]), b = Number(m[3])
+    const [d, mo] = dayFirst ? [a, b] : [b, a]
+    const said = `'${m[0]}'`
+    if (valid(d, mo)) {
+      const iso = `${m[4]}-${pad(mo)}-${pad(d)}${m[5] ?? ''}`
+      // Read either way, the order decides, and another server's may not.
+      const both = a !== b && valid(a, b) && valid(b, a)
+      offers.push({ title: `Write ${said} as '${iso}' (DateStyle ${style} reads it ${dayFirst ? 'day' : 'month'} first${both ? ', another may not' : ''})`, edits: [{ from: e.from, to: e.to, text: `'${iso}'` }] })
+    } else if (valid(mo, d)) {
+      const iso = `${m[4]}-${pad(d)}-${pad(mo)}${m[5] ?? ''}`
+      offers.push({ title: `Write ${said} as '${iso}' (DateStyle ${style} refuses it as written)`, edits: [{ from: e.from, to: e.to, text: `'${iso}'` }] })
+    }
+  }
+  for (const c of expressions(st)) {
+    walk(c, (e) => {
+      const a = e.args
+      if (e.kind === 'cast' && DATE_TYPE.test(e.name ?? '') && a?.length === 1 && stringConstant(a[0])) offer(a[0])
+      if ((e.kind === 'operator' || e.kind === 'between' || e.kind === 'not between' || e.kind === 'in' || e.kind === 'not in') && a?.[0]?.kind === 'column' && a[0].column && DATE_TYPE.test(typeOf(st, a[0].column) ?? '')) {
+        for (const x of a.slice(1)) if (stringConstant(x)) offer(x)
+      }
+    })
+  }
+  return offers
+}
+
+// ---------------------------------------------------------------------------
+// A backslash in a string, standard_conforming_strings off.
+
+/**
+ * With standard_conforming_strings off (on by default since PostgreSQL
+ * 9.1), a backslash in a plain string starts an escape: 'C:\new' holds a
+ * line break, not \n. The session's own setting (ctx.settings, PlumeSQL
+ * 0.29.0 and later) says when; an E'' string reads the same on every server,
+ * so both readings are offered as one: the backslash kept, or the escape.
+ * @param {RefactorStatement} st
+ * @param {RefactorContext} ctx
+ * @returns {Offer[]}
+ */
+function backslashEscape(st, ctx) {
+  if (typeof ctx.settings !== 'function') return []
+  if (ctx.settings(['standard_conforming_strings']).standard_conforming_strings?.value !== 'off') return []
+  /** @type {Offer[]} */
+  const offers = []
+  const seen = new Set()
+  for (const c of expressions(st)) {
+    walk(c, (e) => {
+      if (!stringConstant(e) || seen.has(e.from)) return
+      const raw = textOf(st, e)
+      if (!raw.startsWith("'") || !raw.includes('\\')) return
+      seen.add(e.from)
+      const inner = raw.slice(1, -1)
+      offers.push(
+        { title: `Keep the backslash in ${brief(st, e)}: E'' with it doubled`, edits: [{ from: e.from, to: e.to, text: `E'${inner.replace(/\\/g, '\\\\')}'` }] },
+        { title: `Keep the escape in ${brief(st, e)}: E''`, edits: [{ from: e.from, to: e.to, text: `E${raw}` }] }
+      )
+    })
+  }
+  return offers
+}
+
+// ---------------------------------------------------------------------------
 // AND and OR without parentheses.
 
 /**
@@ -450,6 +559,22 @@ export default {
         "On a timestamp, BETWEEN '2025-06-01' AND '2025-06-30' (and <= '2025-06-30') stops at June 30 00:00, so the rest of the last day is left out. The end becomes the next day, excluded. PlumeSQL 0.26.2 and later.",
       example: "created_at >= '2025-06-01' and created_at < '2025-07-01'",
       refactor: lastDay
+    },
+    {
+      id: 'date-order',
+      label: 'A date written day and month',
+      description:
+        "'01/02/2026' compared with a date or timestamp column, or cast to one, reads the way the server's DateStyle orders day and month: 2 January month first, 1 February with DMY. Written as ISO ('2026-02-01'), the way this server reads it, it reads the same everywhere. Reads the session's DateStyle, PlumeSQL 0.29.0 and later.",
+      example: "where created_at >= '2026-02-01'",
+      refactor: dateOrder
+    },
+    {
+      id: 'backslash-escape',
+      label: 'A backslash with standard_conforming_strings off',
+      description:
+        "With standard_conforming_strings off, a backslash in a plain string starts an escape ('C:\\new' holds a line break). E'' says which is meant on every server: the backslash doubled to keep it, or the escape as it is. Offered only where the session has it off, PlumeSQL 0.29.0 and later.",
+      example: "E'C:\\\\new'",
+      refactor: backslashEscape
     },
     {
       id: 'and-or',
