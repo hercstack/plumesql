@@ -1478,6 +1478,7 @@ version names, each a check an implementation MAY offer:
 | `null-comparison` | a comparison NULL defeats: `= NULL`, `<> NULL`, `NOT IN` over a list or a subquery that can hold NULL, `<>` or `=` between two columns that can both be NULL |
 | `missing-comma` | a select list item whose alias, written without `AS`, reads like a forgotten comma |
 | `missing-semicolon` | two statements with no semicolon between them |
+| `setting` | a configuration parameter the server does not have, or one that cannot be changed where the statement changes it (`SET` of a parameter that takes a restart) |
 
 Requirements:
 
