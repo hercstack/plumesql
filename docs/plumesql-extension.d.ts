@@ -267,6 +267,44 @@ interface ViewPalette {
   func: string;
 }
 
+/** One configuration parameter of the server a result came from
+ * (RenderContext.settings): facts PlumeSQL read, for the view to judge. */
+interface ServerSetting {
+  name: string;
+  /** PostgreSQL's own text in the parameter's base unit, as pg_settings
+   * holds it: '4096' for a work_mem of 4MB (unit 'kB'), 'on', 'off'. */
+  value: string;
+  /** Whose value it is: 'session' when PlumeSQL read the session the
+   * statement ran in (a SET earlier in the script counts), 'default' when it
+   * did not (a result in a tab of its own), which is what a new session
+   * starts with (RESET's value). A plan run inside a transaction after a
+   * SET LOCAL ran under a value read only after it ends: the plan's own
+   * Settings (EXPLAIN SETTINGS) are the stronger word for what they name. */
+  from: 'session' | 'default';
+  /** The value as SHOW writes it: '4MB', '30s', 'on'. */
+  shown: string;
+  /** The base unit ('kB', '8kB', 'MB', 'ms', 's', 'min'); absent for a
+   * parameter without one. */
+  unit?: string;
+  /** A memory parameter's value in bytes. */
+  bytes?: number;
+  /** A time parameter's value in milliseconds. */
+  ms?: number;
+  /** 'bool', 'integer', 'real', 'string' or 'enum'. */
+  type: string;
+  /** What RESET gives in a session (the role's, the database's, the
+   * configuration file's or the built-in default), and the built-in one. */
+  reset?: string;
+  boot?: string;
+  min?: string;
+  max?: string;
+  /** An enum's values. */
+  enum?: string[];
+  /** Where it may change: 'user' (any session), 'superuser', 'sighup' (the
+   * configuration file and a reload), 'postmaster' (a restart) ... */
+  context: string;
+}
+
 /** The context a view's render receives. */
 interface RenderContext {
   /** The app theme's BASE; paint for both (a hard rule). A theme extension
@@ -317,6 +355,15 @@ interface RenderContext {
    * draws again when it is). A map library's own requests go through it with
    * a custom protocol (MapLibre's addProtocol). */
   fetchMap(url: string): Promise<ArrayBuffer>;
+  /** The server's configuration parameters the result's statement ran
+   * under, by name: ctx.settings(['work_mem', 'jit_above_cost']) resolves to
+   * { work_mem: {...}, jit_above_cost: {...} }. A name the server does not
+   * have is absent, and so is every parameter that can hold a secret or
+   * names the server's files (a standby's primary_conninfo, the archive and
+   * restore commands, the SSL key files, the data directory). Resolves to
+   * {} when PlumeSQL knows no parameters for the connection yet. Absent
+   * before PlumeSQL 0.29.0: check it is there before calling it. */
+  settings?(names: string[]): Promise<Record<string, ServerSetting>>;
 }
 
 /** A button PlumeSQL renders in the view's header (its label and an optional icon
