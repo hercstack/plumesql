@@ -42,6 +42,12 @@ interface GridContext {
    * rest. A formula written on a script's -- @format or -- @computed line
    * reaches the same helpers as plain fmt. */
   fmt: GridFmt;
+  /** The server's configuration parameters the result's statement ran under,
+   * by name, at once: ctx.settings(['DateStyle', 'IntervalStyle']). What
+   * shapes the server's text a formula reads (DateStyle, IntervalStyle,
+   * bytea_output, lc_monetary) is here. Absent before PlumeSQL 0.29.0:
+   * check it is there. */
+  settings?(names: string[]): Record<string, ServerSetting>;
 }
 
 /** The formatting helpers a formula reaches as ctx.fmt (and as fmt on a
@@ -281,6 +287,11 @@ interface ServerSetting {
    * SET LOCAL ran under a value read only after it ends: the plan's own
    * Settings (EXPLAIN SETTINGS) are the stronger word for what they name. */
   from: 'session' | 'default';
+  /** Where the session's value came from (pg_settings.source), when PlumeSQL
+   * read the session: 'session' is a SET of the session's own, 'client' its
+   * startup, 'configuration file', 'database', 'user' ..., 'default' the
+   * built-in. PlumeSQL 0.29.0 and later. */
+  source?: string;
   /** The value as SHOW writes it: '4MB', '30s', 'on'. */
   shown: string;
   /** The base unit ('kB', '8kB', 'MB', 'ms', 's', 'min'); absent for a
@@ -296,6 +307,9 @@ interface ServerSetting {
    * configuration file's or the built-in default), and the built-in one. */
   reset?: string;
   boot?: string;
+  /** RESET's value and the built-in one as SHOW writes them: '4MB'. */
+  resetShown?: string;
+  bootShown?: string;
   min?: string;
   max?: string;
   /** An enum's values. */
@@ -842,6 +856,15 @@ interface RefactorContext {
    * unchanged since): absent before a run and after an edit. Offer what
    * depends on the data only when it is here. */
   result?: RefactorResult;
+  /** The server's configuration parameters the statement would run under,
+   * by name, at once: ctx.settings(['DateStyle', 'hnsw.ef_search']). The tab
+   * session's own values when it has a session on the statement's
+   * connection, else what a new session starts with. A name the server does
+   * not have is absent, and so is every parameter that can hold a secret or
+   * names the server's files. A library's parameter the session loaded and
+   * the kept list lacks (hnsw.ef_search) carries its value alone. Absent
+   * before PlumeSQL 0.29.0: check it is there. */
+  settings?(names: string[]): Record<string, ServerSetting>;
   /** Write a line to PlumeSQL's Log. */
   log(...args: unknown[]): void;
 }

@@ -287,7 +287,38 @@ export interface RefactorContext {
   // NULL), cut at 4096 characters. Absent before a run, after an edit, or
   // when the statement returned no rows' shape.
   result?: RefactorResult
+  // spec: the server's configuration parameters the statement would run
+  // under, by name (ServerSetting below); absent before PlumeSQL 0.29.0.
+  settings?: (names: string[]) => Record<string, ServerSetting>
   log: (...args: unknown[]) => void
+}
+
+// spec: one configuration parameter as an extension reads it
+// (RefactorContext.settings, GridContext.settings, a result view's
+// ctx.settings): facts, never a verdict.
+export interface ServerSetting {
+  name: string
+  // PostgreSQL's own text in the parameter's base unit (pg_settings.setting).
+  value: string
+  // 'session': the session's own value; 'default': what a new session
+  // starts with (RESET's value).
+  from: 'session' | 'default'
+  // Where the session's value came from (pg_settings.source) when it was
+  // read: 'session' is a SET of the session's own; absent otherwise.
+  source?: string
+  shown: string // as SHOW writes it: '4MB', '30s'
+  unit?: string
+  bytes?: number // a memory parameter's value in bytes
+  ms?: number // a time parameter's value in milliseconds
+  type: string // 'bool', 'integer', 'real', 'string', 'enum'; '' for a library's the kept list lacks
+  reset?: string
+  boot?: string
+  resetShown?: string // RESET's value as SHOW writes it
+  bootShown?: string // the built-in one, likewise
+  min?: string
+  max?: string
+  enum?: string[]
+  context: string // 'user', 'superuser', 'sighup', 'postmaster' ...
 }
 
 // spec: the sample a refactor is handed (RefactorContext.result).
@@ -522,6 +553,13 @@ export interface GridContext {
   // The formatting helpers (gridfmt.ts): ctx.fmt.number(value) and the rest,
   // the same object a formula written as text reaches as plain `fmt`.
   fmt: GridFmt
+  // The server's configuration parameters the result's statement ran under,
+  // by name, at once (ServerSetting, beside RefactorContext): the session's
+  // own values when PlumeSQL read them, else what a new session starts
+  // with. What shapes the server's text a formula reads (DateStyle,
+  // IntervalStyle, bytea_output, lc_monetary) is here. Absent before
+  // PlumeSQL 0.29.0: a formula that reads it MUST check that it is there.
+  settings?: (names: string[]) => Record<string, ServerSetting>
 }
 
 // spec: what a formula returns. A plain value shows as text; a descriptor also
@@ -701,7 +739,14 @@ ctx)`:
   `inputs` (the answers to the module's inputs, section 10, every one a string;
   an empty object when the module declares none), and
   `log` (a function that writes a line to the host's log, like `console.log`),
-  and `fmt`, the formatting helpers (below).
+  `fmt`, the formatting helpers (below), and `settings(names)`, the server's
+  configuration parameters the result's statement ran under, by name (each a
+  `ServerSetting`, the same facts and the same rules as a refactor's
+  `ctx.settings`, section 14): what shapes the server's text a formula reads
+  (`DateStyle` the order of a date's day and month, `IntervalStyle` an
+  interval's form, `bytea_output` hex or escape, `lc_monetary` a money
+  value's symbol and separators). A host computes them only when a rule's
+  code asks. `settings` is absent before PlumeSQL 0.29.0.
   - `prev` threads over the rows the host computes together. When the result is
     small enough to compute at once, that is the WHOLE result, so a value that
     accumulates down the rows (a running total) is correct end to end. On a large
@@ -1279,8 +1324,8 @@ quick and MUST answer from what it is given; it cannot ask the server.
   refactor's to decide.
 
 `ctx` carries `serverVersion` (the connected server's major version, when
-known), `options` (below), `queryPlace`, `paramStyle`, `result` and `log`
-(a line to PlumeSQL's Log, as for a formula). `paramStyle` is how the user
+known), `options` (below), `queryPlace`, `paramStyle`, `result`, `settings`
+and `log` (a line to PlumeSQL's Log, as for a formula). `paramStyle` is how the user
 writes a run parameter, `$name` or `:name` (the Refactors settings): a
 refactor that writes one follows it. `queryPlace` is where the user wants a
 NEW statement a refactor writes (a count over the query, a preview of the
@@ -1298,6 +1343,22 @@ a value longer than 4096 characters cut there. A refactor that depends on
 the data (a key the JSON holds, the reference system a geometry is in, the
 span of a time column) SHOULD offer it only when `result` is there, and
 MUST NOT take the sample for the whole result: it is the start of it.
+
+`settings(names)` answers, at once, the server's configuration parameters
+the statement would run under, by name: the tab session's own values when
+it has a session on the statement's connection (a SET it ran counts), else
+what a new session starts with, each a `ServerSetting` (above). A name the
+server does not have is absent, and so is every parameter that can hold a
+secret or names the server's files (a standby's `primary_conninfo`, the
+archive and restore commands, the SSL key and certificate files, the data
+directory); a library's parameter the session loaded (pgvector's
+`hnsw.ef_search`) carries its value alone, `type` and `context` empty.
+It answers `{}` when PlumeSQL knows no parameters for the connection.
+`settings` is absent before PlumeSQL 0.29.0: a refactor that reads it
+MUST check that it is there and offer the rest without it (the extension
+keeps installing on an older app). The parameters are facts: what they
+mean for the statement (a LIMIT above `hnsw.ef_search`, a literal date
+under a `DateStyle` that reads it day first) is the refactor's to judge.
 
 **Options.** A module MAY declare `options` beside its `refactors`: the
 settings its refactors read, which the user sets and the module never asks
