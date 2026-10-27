@@ -62,6 +62,13 @@ function fromText(lines) {
   /** @type {Record<string, number>} */
   const times = {}
   let pendingSub = ''
+  // The node a SubPlan, InitPlan or CTE line belongs to: psql prints that
+  // line at the indent of its OWNER's children, so the step that follows
+  // it is the owner's, never the sibling printed just above it.
+  /** @type {any} */
+  let pendingOwner = null
+  /** @type {{ planning: boolean, planBuf: string, settings: string, triggers: { name: string, time: number, calls: number }[], serialization: string }} */
+  const runText = { planning: false, planBuf: '', settings: '', triggers: [], serialization: '' }
   // After the tree, psql prints the run's own lines at the left edge
   // (Planning:, Planning Time, Triggers, JIT); nothing there is a step's.
   let trailer = false
@@ -72,15 +79,25 @@ function fromText(lines) {
     if (m) {
       const indent = m[1].length + (m[2] ? m[2].length : 0)
       const text = m[3].trim()
-      const onAt = text.search(/ (on|using) /)
+      // "Index Scan using idx on tbl t" names the index and the table;
+      // "Bitmap Index Scan on idx" names the index alone; "Seq Scan on
+      // tbl t" the table.
+      const used = /^(.+?) using (\S+) on (.+)$/.exec(text)
+      const onAt = text.search(/ on /)
+      const head = used ? used[1] : onAt > 0 ? text.slice(0, onAt) : text
+      const on = used ? used[3] : onAt > 0 ? text.slice(onAt + 4) : ''
+      const indexOnly = !used && /Index Scan$/.test(head)
       const node = {
-        type: text.replace(/ (on|using) .*$/, ''), label: onAt > 0 ? text.slice(0, onAt) : text, target: onAt > 0 ? text.slice(onAt).replace(/^ (on|using) /, '') : '', index: '',
+        type: head, label: head, target: indexOnly ? '' : on, index: used ? used[2] : indexOnly ? on : '',
         startup: Number(m[4]), cost: Number(m[5]), rows: Number(m[6]), width: Number(m[7]),
         aStart: m[8] ? Number(m[8]) : null, aTotal: m[9] ? Number(m[9]) : null, aRows: m[10] ? Number(m[10]) : null, loops: m[11] ? Number(m[11]) : m[12] ? 0 : null,
         never: !!m[12], props: [], rel: '', sub: pendingSub, parallel: false, children: []
       }
       pendingSub = ''
-      while (stack.length && stack[stack.length - 1].indent >= indent) stack.pop()
+      if (pendingOwner) {
+        while (stack.length && stack[stack.length - 1].node !== pendingOwner) stack.pop()
+        pendingOwner = null
+      } else while (stack.length && stack[stack.length - 1].indent >= indent) stack.pop()
       const parent = stack.length ? stack[stack.length - 1].node : null
       if (parent) {
         parent.children.push(node)
@@ -92,14 +109,32 @@ function fromText(lines) {
     const t = line.trim()
     if (root && !/^\s/.test(line)) trailer = true
     const sub = /^(InitPlan|SubPlan|CTE)\s+(.+)$/.exec(t)
-    if (sub) { pendingSub = t; continue }
+    if (sub && !trailer) {
+      pendingSub = t
+      const at = line.length - line.trimStart().length
+      pendingOwner = null
+      for (let i = stack.length - 1; i >= 0; i--) if (stack[i].indent < at) { pendingOwner = stack[i].node; break }
+      continue
+    }
     const top = /^(Planning Time|Execution Time|Planning time|Execution time):\s*([\d.]+)\s*ms/.exec(t)
     if (top) { times[top[1].toLowerCase().startsWith('planning') ? 'Planning Time' : 'Execution Time'] = Number(top[2]); continue }
     // JIT's own block closes the text form: its Timing line's Total is
     // the figure the summary shows, as the JSON form's JIT.Timing.Total.
+    // The other lines at the left edge are the run's own: the settings
+    // EXPLAIN (SETTINGS) names, the triggers that fired, the cost of
+    // sending the rows (SERIALIZE) and what planning read.
     if (trailer) {
       const jit = /^Timing:.*\bTotal\s+([\d.]+)\s*ms/.exec(t)
       if (jit) times.jit = Number(jit[1])
+      if (/^Planning:$/.test(t)) runText.planning = true
+      else if (/^Buffers:/.test(t) && runText.planning) runText.planBuf = t.replace(/^Buffers:\s*/, '')
+      else if (!/^\s/.test(line)) runText.planning = false
+      const set = /^Settings:\s*(.+)$/.exec(t)
+      if (set) runText.settings = set[1]
+      const trg = /^Trigger (.+?): time=([\d.]+) calls=(\d+)/.exec(t)
+      if (trg) runText.triggers.push({ name: trg[1], time: Number(trg[2]), calls: Number(trg[3]) })
+      const ser = /^Serialization: (.+)$/.exec(t)
+      if (ser) runText.serialization = ser[1]
       continue
     }
     const kv = /^([A-Za-z][A-Za-z0-9 /-]*?):\s+(.*)$/.exec(t)
@@ -110,11 +145,26 @@ function fromText(lines) {
     if (kv) owner.props.push([kv[1], kv[2]])
     else owner.props.push(['', t])
   }
-  return root ? [{ Plan: null, node: root, 'Planning Time': times['Planning Time'], 'Execution Time': times['Execution Time'], jit: times.jit }] : null
+  return root ? [{ Plan: null, node: root, 'Planning Time': times['Planning Time'], 'Execution Time': times['Execution Time'], jit: times.jit, run: runText }] : null
 }
 
 // The document from the result: a JSON cell, or the text lines.
-/** @param {any[][]} rows @returns {{ node: any, planning: number|null, execution: number|null, extra: [string, unknown][], text: string } | null} */
+// The run's own facts beside the tree, one shape for both forms: the
+// settings that differ from the defaults (EXPLAIN SETTINGS), the triggers
+// that fired and their time, the cost of sending the rows (SERIALIZE),
+// and the buffers planning read.
+/** @typedef {{ settings: string, triggers: { name: string, time: number, calls: number }[], serialization: string, planBuf: string }} RunFacts */
+/** @param {any} top @returns {RunFacts} */
+function runOfJson(top) {
+  const set = top.Settings && typeof top.Settings === 'object' ? Object.entries(top.Settings).map(([k, v]) => k + ' = ' + JSON.stringify(v).replace(/^"|"$/g, "'")).join(', ') : ''
+  const triggers = Array.isArray(top.Triggers) ? top.Triggers.map((/** @type {any} */ t) => ({ name: String(t['Trigger Name'] ?? '') + (t.Relation ? ' on ' + t.Relation : ''), time: Number(t.Time ?? 0), calls: Number(t.Calls ?? 0) })) : []
+  const ser = top.Serialization && typeof top.Serialization === 'object' ? 'time=' + (top.Serialization.Time ?? '?') + ' ms  output=' + (top.Serialization['Output Volume'] ?? '?') + 'kB  format=' + (top.Serialization.Format ?? '') : ''
+  const pb = top.Planning && typeof top.Planning === 'object' ? top.Planning : null
+  const planBuf = pb && (pb['Shared Hit Blocks'] || pb['Shared Read Blocks']) ? 'shared hit=' + (pb['Shared Hit Blocks'] || 0) + ' read=' + (pb['Shared Read Blocks'] || 0) : ''
+  return { settings: set, triggers, serialization: ser, planBuf }
+}
+
+/** @param {any[][]} rows @returns {{ node: any, planning: number|null, execution: number|null, extra: [string, unknown][], text: string, run: RunFacts } | null} */
 export function readPlan(rows) {
   if (!rows.length) return null
   const first = rows[0]?.[0]
@@ -128,12 +178,13 @@ export function readPlan(rows) {
     /** @type {[string, unknown][]} */
     const extra = []
     for (const k of Object.keys(top)) if (k !== 'Plan' && k !== 'Planning Time' && k !== 'Execution Time') extra.push([k, top[k]])
-    return { node: fromJson(top.Plan, false), planning: num(top['Planning Time']), execution: num(top['Execution Time']), extra, text: typeof first === 'string' ? first : JSON.stringify(doc, null, 2) }
+    return { node: fromJson(top.Plan, false), planning: num(top['Planning Time']), execution: num(top['Execution Time']), extra, text: typeof first === 'string' ? first : JSON.stringify(doc, null, 2), run: runOfJson(top) }
   }
   const lines = rows.map((r) => String(r[0] ?? ''))
   const t = fromText(lines)
   if (!t) return null
-  return { node: t[0].node, planning: t[0]['Planning Time'] ?? null, execution: t[0]['Execution Time'] ?? null, extra: t[0].jit ? [['JIT', { Timing: { Total: t[0].jit } }]] : [], text: lines.join('\n') }
+  const r = t[0].run
+  return { node: t[0].node, planning: t[0]['Planning Time'] ?? null, execution: t[0]['Execution Time'] ?? null, extra: t[0].jit ? [['JIT', { Timing: { Total: t[0].jit } }]] : [], text: lines.join('\n'), run: { settings: r.settings, triggers: r.triggers, serialization: r.serialization, planBuf: r.planBuf } }
 }
 
 // ----- measuring ----------------------------------------------------------------------
@@ -236,8 +287,14 @@ export function findings(all, total, analyzed) {
     if (/Hash|Aggregate/.test(n.type) && batches > 1) out.push({ node: n, level: 'amber', text: (/Aggregate/.test(n.type) ? 'the aggregate' : 'the hash') + ' spilled to disk in ' + batches + ' batches', weight: 5 })
     else if (n.tempExcl > 0 && !sortSpill) out.push({ node: n, level: 'amber', text: bytes(n.tempExcl) + ' written to temporary files', weight: 4 })
     if (analyzed && (n.loops || 0) >= 1000 && n.parent && /Nested Loop/.test(n.parent.type)) out.push({ node: n, level: 'amber', text: 'runs ' + fmt(n.loops) + ' times inside a nested loop', weight: 4 })
+    // A SubPlan runs once for every row of the step it belongs to: a
+    // correlated subquery, whose time is its run times that count.
+    if (analyzed && /^SubPlan/.test(n.sub) && (n.loops || 0) >= 10) out.push({ node: n, level: total > 0 && n.incl / total >= 0.2 ? 'amber' : 'muted', text: 'a subquery run once per row, ' + fmt(n.loops) + ' times' + (total > 0 ? ', ' + pct(n.incl / total) + ' of the time with what it reads' : ''), weight: 3 + (total > 0 ? n.incl / total : 0) })
     const fetches = Number(prop(n, 'Heap Fetches') || 0)
     if (/Index Only Scan/.test(n.type) && fetches > 0 && n.outRows && fetches / n.outRows >= 0.1) out.push({ node: n, level: 'muted', text: fmt(fetches) + ' heap fetches in an index only scan', weight: 2 })
+    // PostgreSQL 17 marks a step the planner was told to avoid (an
+    // enable_* setting off) and used anyway, having no other way.
+    if (prop(n, 'Disabled') === true || prop(n, 'Disabled') === 'true') out.push({ node: n, level: 'amber', text: 'a step the planner was told to avoid (an enable_ setting is off) and used anyway', weight: 3 })
     if (Number(prop(n, 'Lossy Heap Blocks') || 0) > 0) out.push({ node: n, level: 'muted', text: 'the bitmap went lossy (' + fmt(Number(prop(n, 'Lossy Heap Blocks'))) + ' blocks rechecked)', weight: 2 })
   }
   return out.sort((a, b) => b.weight - a.weight)
@@ -248,7 +305,8 @@ const pct = (f) => (f >= 0.995 ? '100' : f < 0.001 ? '<0.1' : (f * 100).toFixed(
 /** @param {number|null} ms */
 const time = (ms) => (ms === null ? '' : ms >= 60000 ? (ms / 60000).toFixed(1) + ' min' : ms >= 1000 ? (ms / 1000).toFixed(2) + ' s' : ms >= 10 ? ms.toFixed(0) + ' ms' : ms >= 1 ? ms.toFixed(1) + ' ms' : ms.toFixed(3) + ' ms')
 /** @param {number|null} n */
-const count = (n) => (n === null ? '' : n >= 1e9 ? (n / 1e9).toFixed(1) + 'B' : n >= 1e6 ? (n / 1e6).toFixed(1) + 'M' : n >= 1e4 ? (n / 1e3).toFixed(1) + 'k' : Math.round(n).toLocaleString())
+// Rounded where the unit rolls over, so 999,995 reads 1.0M, never 1000.0k.
+const count = (n) => (n === null ? '' : n >= 999.95e6 ? (n / 1e9).toFixed(1) + 'B' : n >= 999.95e3 ? (n / 1e6).toFixed(1) + 'M' : n >= 1e4 ? (n / 1e3).toFixed(1) + 'k' : Math.round(n).toLocaleString())
 /** @param {number} blocks */
 const bytes = (blocks) => { const b = blocks * 8192; return b >= 1073741824 ? (b / 1073741824).toFixed(1) + ' GB' : b >= 1048576 ? (b / 1048576).toFixed(1) + ' MB' : b >= 1024 ? Math.round(b / 1024) + ' kB' : b + ' B' }
 
@@ -261,6 +319,58 @@ const CODE_KEYS = /Cond|Filter$|Key$|^Output$/
 
 let copyText = ''
 let copySummary = ''
+// How "Where it goes" draws, kept while the extension is loaded: the plan
+// as a DIAGRAM (each step a card, the rows it passes up a line as thick
+// as their number) or as BOXES (each step as wide as its share).
+let face = 'diagram'
+
+// A glyph per kind of step, drawn in the diagram's cards: what a step
+// does at a glance, before its name is read.
+/** @type {Record<string, string>} */
+const ICON = {
+  scan: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18"/>',
+  index: '<path d="M4 6h9M4 12h6M4 18h3"/><path d="M17 4v16m0 0-3-3m3 3 3-3"/>',
+  join: '<path d="M5 4v5a5 5 0 0 0 5 5h4a5 5 0 0 0 5-5V4"/><path d="M12 14v6"/>',
+  hash: '<path d="M10 3 8 21M16 3l-2 18M4 9h16M3 15h16"/>',
+  sort: '<path d="M7 4v16m0 0-3-3m3 3 3-3"/><path d="M17 20V4m0 0-3 3m3-3 3 3"/>',
+  agg: '<path d="M18 5H6l6 7-6 7h12"/>',
+  limit: '<path d="M4 12h11"/><path d="M19 5v14"/><path d="M12 9l3 3-3 3"/>',
+  gather: '<path d="M4 5l7 7-7 7"/><path d="M11 12h9"/>',
+  mat: '<rect x="4" y="4" width="16" height="5" rx="1"/><rect x="4" y="11" width="16" height="4" rx="1"/><rect x="4" y="17" width="16" height="3" rx="1"/>',
+  sub: '<path d="M8 4c-3 1-3 5-3 8s0 7 3 8M16 4c3 1 3 5 3 8s0 7-3 8"/>',
+  modify: '<path d="M4 20h4L19 9l-4-4L4 16z"/>',
+  other: '<circle cx="12" cy="12" r="7"/>'
+}
+/** @param {any} n */
+const iconOf = (n) => {
+  const t = String(n.type)
+  if (/Index|Bitmap/.test(t)) return 'index'
+  if (/(CTE|Subquery|Function|Values|Table Function|WorkTable|Named Tuplestore) Scan/.test(t)) return 'sub'
+  if (/Scan/.test(t)) return 'scan'
+  if (/Join|Nested Loop/.test(t)) return 'join'
+  if (/^Hash$/.test(t)) return 'hash'
+  if (/Sort/.test(t)) return 'sort'
+  if (/Aggregate|Group|WindowAgg|Unique|SetOp/.test(t)) return 'agg'
+  if (/Limit/.test(t)) return 'limit'
+  if (/Gather/.test(t)) return 'gather'
+  if (/Materialize|Memoize/.test(t)) return 'mat'
+  if (/ModifyTable|^Insert|^Update|^Delete|^Merge/.test(t)) return 'modify'
+  return 'other'
+}
+/** @param {string} s @param {number} max */
+const clip = (s, max) => (s.length > max ? s.slice(0, Math.max(1, max - 1)) + '…' : s)
+// What tells a step from another of its kind: its table (and index), else
+// what it works by, its condition or its key ("Hash Join (r.id = c.id)").
+/** @param {any} n */
+const whereOf = (n) => {
+  if (n.target) return 'on ' + n.target + (n.index ? ' using ' + n.index : '')
+  if (n.index) return 'using ' + n.index
+  for (const k of ['Hash Cond', 'Merge Cond', 'Join Filter', 'Index Cond', 'Recheck Cond', 'Sort Key', 'Group Key', 'Presorted Key', 'Filter']) {
+    const hit = n.props.find((/** @type {[string, unknown]} */ p) => p[0] === k)
+    if (hit) return Array.isArray(hit[1]) ? hit[1].join(', ') : String(hit[1])
+  }
+  return ''
+}
 
 /** @type {PlumeSQLExtension} */
 export default {
@@ -300,11 +410,18 @@ export default {
           analyzed ? 'Execution time: ' + time(plan.execution ?? plan.node.incl) : 'Total cost: ' + (plan.node.cost ?? 0).toFixed(2),
           plan.planning !== null ? 'Planning time: ' + time(plan.planning) : '',
           analyzed ? 'Rows: ' + count(plan.node.outRows) : 'Estimated rows: ' + count(plan.node.estRows),
-          ...facts.slice(0, 8).map((f) => '- ' + f.node.label + (f.node.target ? ' on ' + f.node.target : '') + ': ' + f.text)
+          ...facts.slice(0, 8).map((f) => '- ' + f.node.label + (whereOf(f.node) ? ' ' + whereOf(f.node) : '') + ': ' + f.text)
         ].filter(Boolean).join('\n')
 
-        // The metric the bars and the icicle measure; the user switches it.
+        // The metric the bars, the boxes and the diagram measure; the user
+        // switches it.
         let metric = analyzed ? 'time' : 'cost'
+        // The diagram's zoom (0 until the first draw fits it to the pane)
+        // and where its cards were last laid out, for the keyboard walk and
+        // the reveal of a selected card.
+        let zoom = 0
+        /** @type {{ W: number, H: number, pos: Map<number, { x: number, y: number }>, NW: number, NH: number } | null} */
+        let lastLayout = null
         const collapsed = new Set()
         let selected = facts.length ? facts[0].node.id : 0
         // A step's colour is its own share: red from half, amber from a
@@ -312,7 +429,9 @@ export default {
         const heat = (/** @type {number} */ f) => (f >= 0.5 ? c.red : f >= 0.2 ? c.amber : f >= 0.05 ? c.acc : 'color-mix(in srgb, ' + c.acc + ' 45%, ' + c.bg + ')')
         const metricOf = (/** @type {any} */ n) => (metric === 'time' ? n.excl : metric === 'rows' ? n.outRows ?? n.estRows : metric === 'buffers' ? n.bufExcl : n.costExcl)
         const inclOf = (/** @type {any} */ n) => (metric === 'time' ? n.incl : metric === 'cost' ? n.cost || 0 : metricOf(n))
-        const metricTotal = () => { const t = all.reduce((s, n) => s + (metricOf(n) || 0), 0); return t || 1 }
+        // One denominator for every share of the time, the run's own (so a
+        // step's share reads the same in the facts, the boxes and Steps).
+        const metricTotal = () => { if (metric === 'time' && analyzed && total > 0) return total; const t = all.reduce((s, n) => s + (metricOf(n) || 0), 0); return t || 1 }
         const flagsOf = (/** @type {any} */ n) => facts.filter((f) => f.node === n)
 
         const css = `
@@ -371,9 +490,59 @@ export default {
           .kv .v{word-break:break-word}
           .kv code{font:11.5px ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;color:${c.fg}}
           .ep{container-type:inline-size}
-          @container (max-width: 900px){.main{flex-direction:column}.side{width:100%;position:static;max-height:none}.tg{max-width:160px}}
+          .run{display:flex;flex-direction:column;gap:3px;margin:-4px 0 6px;font-size:12px;color:${c.mut}}
+          .run b{color:${c.fg};font-weight:600;margin-right:4px}
+          .find{display:flex;align-items:center;gap:8px;margin:0 0 8px}
+          .find input{flex:1;max-width:340px;background:${c.ground};border:1px solid ${c.bd};border-radius:6px;color:${c.fg};font:inherit;font-size:12.5px;padding:4px 8px}
+          .find input:focus{outline:2px solid ${c.acc};outline-offset:-1px}
+          .seg button:disabled{opacity:.4;cursor:default}
+          tr.dim td{opacity:.45}
+          .col{flex:1;min-width:0}
+          .zoom{display:inline-flex;gap:2px;margin-left:auto;text-transform:none;letter-spacing:0;font-weight:500}
+          .zoom button{background:none;border:1px solid ${c.bd};border-radius:5px;color:${c.mut};font:inherit;font-size:11.5px;min-width:24px;padding:1px 6px;cursor:pointer}
+          .zoom button:hover{color:${c.fg}}
+          .dgv{border:1px solid ${c.bd};border-radius:8px;background:${c.ground};overflow:auto;max-height:68vh;cursor:grab;position:relative}
+          .dgv.panning{cursor:grabbing}
+          .dgv:focus-visible{outline:2px solid ${c.acc};outline-offset:-2px}
+          .dgv svg{display:block;margin:0 auto}
+          .dn{cursor:pointer}
+          .dn .box{fill:${c.bg};stroke:${c.bd}}
+          .dn:hover .box{stroke:${c.mut}}
+          .dn.sel .box{stroke:${c.acc};stroke-width:2}
+          .dn.never{opacity:.45}
+          .dl{font:600 12.5px system-ui,-apple-system,sans-serif;fill:${c.fg}}
+          .dt{font:11.5px system-ui,-apple-system,sans-serif;fill:${c.mut}}
+          .dm{font:11.5px system-ui,-apple-system,sans-serif;fill:${c.fg};font-variant-numeric:tabular-nums}
+          .dp{font:600 11.5px system-ui,-apple-system,sans-serif;font-variant-numeric:tabular-nums}
+          .ds{font:600 10px system-ui,-apple-system,sans-serif;fill:${c.violet};letter-spacing:.02em}
+          .el{font:10.5px system-ui,-apple-system,sans-serif;fill:${c.mut};paint-order:stroke;stroke:${c.ground};stroke-width:4px;stroke-linejoin:round;font-variant-numeric:tabular-nums}
+          .dtog{cursor:pointer}
+          .dtog circle{fill:${c.bg};stroke:${c.bd}}
+          .dtog text{font:600 11px system-ui,-apple-system,sans-serif;fill:${c.mut}}
+          @keyframes epnode{from{stroke-width:5}to{stroke-width:2}}
+          .dn.flash .box{animation:epnode 1.2s ease-out}
+          @media (prefers-reduced-motion: reduce){.dn.flash .box{animation:none}}
+          @container (max-width: 900px){.main{flex-direction:column;align-items:stretch}.side{width:100%;position:static;max-height:none}.tg{max-width:160px}}
         `
 
+        // The Steps search: what a step's row matches, its name, table,
+        // index, subplan and every property (conditions, keys, output).
+        let query = ''
+        /** @type {Set<number>} */
+        let hits = new Set()
+        /** @type {Set<number>} */
+        let kin = new Set()
+        const search = (/** @type {string} */ q) => {
+          query = q
+          hits = new Set()
+          kin = new Set()
+          const w = q.trim().toLowerCase()
+          if (!w) return
+          for (const n of all) {
+            const text = [n.label, n.target, n.index, n.sub, n.rel, ...n.props.map((/** @type {[string, unknown]} */ p) => p[0] + ' ' + (typeof p[1] === 'object' ? JSON.stringify(p[1]) : String(p[1])))].join(' ').toLowerCase()
+            if (text.includes(w)) { hits.add(n.id); for (let p = n.parent; p; p = p.parent) kin.add(p.id) }
+          }
+        }
         const draw = () => {
           const hadRowFocus = !!root.ownerDocument.activeElement?.classList?.contains('row')
           const mt = metricTotal()
@@ -381,7 +550,8 @@ export default {
           // Summary cards: the whole run at a glance.
           const cards = []
           if (analyzed) cards.push(['Execution time', time(plan.execution ?? plan.node.incl)])
-          if (plan.planning !== null) cards.push(['Planning time', time(plan.planning)])
+          const planBufBlocks = (plan.run.planBuf.match(/\d+/g) || []).reduce((a, x) => a + Number(x), 0)
+          if (plan.planning !== null) cards.push(['Planning time', time(plan.planning) + (planBufBlocks ? '<span> · ' + bytes(planBufBlocks) + ' of buffers</span>' : '')])
           if (!analyzed) cards.push(['Total cost', (plan.node.cost ?? 0).toLocaleString(undefined, { maximumFractionDigits: 2 })])
           cards.push([analyzed ? 'Rows returned' : 'Rows estimated', count(analyzed ? plan.node.outRows : plan.node.estRows)])
           if (totBuf.hit + totBuf.read > 0) cards.push(['Buffers', bytes(totBuf.hit + totBuf.read) + '<span> · ' + pct(totBuf.hit / (totBuf.hit + totBuf.read)) + ' cached</span>'])
@@ -389,21 +559,118 @@ export default {
           const jit = plan.extra.find((e) => e[0] === 'JIT')
           if (jit && jit[1] && typeof jit[1] === 'object') { const t = /** @type {any} */ (jit[1]).Timing?.Total; if (t) cards.push(['JIT', time(Number(t))]) }
           let html = '<style>' + css + '</style><div class="ep"><div class="sum">' + cards.map(([k, v]) => '<div class="card"><span>' + escapeHtml(k) + '</span><b>' + v + '</b></div>').join('') + '</div>'
+          // The run's own facts, when the EXPLAIN carried them.
+          const runLines = []
+          if (plan.run.settings) runLines.push('<b>Settings</b> ' + escapeHtml(plan.run.settings))
+          for (const tr of plan.run.triggers) runLines.push('<b>Trigger</b> ' + escapeHtml(tr.name) + ': ' + escapeHtml(time(tr.time)) + ' in ' + tr.calls.toLocaleString() + ' call' + (tr.calls === 1 ? '' : 's'))
+          if (plan.run.serialization) runLines.push('<b>Serialization</b> ' + escapeHtml(plan.run.serialization))
+          if (runLines.length) html += '<div class="run">' + runLines.map((l) => '<div>' + l + '</div>').join('') + '</div>'
 
           // What stands out.
           if (facts.length) {
             html += '<h3>What stands out</h3><div class="facts">'
             for (const f of facts.slice(0, 7)) {
               html += '<div class="fact' + (f.node.id === selected ? ' cur' : '') + '" tabindex="0" title="Show this step in Steps" data-id="' + f.node.id + '"><span class="dot" style="background:' + (f.level === 'red' ? c.red : f.level === 'amber' ? c.amber : c.mut) + '"></span><span><b>' + escapeHtml(f.node.label) + '</b>' +
-                (f.node.target ? ' <span class="on">on ' + escapeHtml(f.node.target) + '</span>' : '') + ': ' + escapeHtml(f.text) + '</span><span class="go">Show step ↓</span></div>'
+                (whereOf(f.node) ? ' <span class="on">' + escapeHtml(clip(whereOf(f.node), 60)) + '</span>' : '') + ': ' + escapeHtml(f.text) + '</span><span class="go">Show step ↓</span></div>'
             }
             html += '</div>'
           } else if (analyzed) html += '<h3>What stands out</h3><div class="mut" style="padding:4px 8px">Nothing: no step dominates, no estimate is far off, nothing spilled.</div>'
 
+          // The diagram: every step a card under the step that uses its
+          // rows, the line between them as thick as the rows it carries (the
+          // lines up to the selected card in the accent, its way to the
+          // result); a card's bar and percentage are its OWN share, its
+          // numbers what it did itself, and under its name what it is on or
+          // what it works by (its table and index, else its condition or
+          // key).
+          const diagram = () => {
+            const NW = 236, NH = 80, GX = 28, GY = 60, PAD = 18
+            const kidsOf = (/** @type {any} */ n) => (collapsed.has(n.id) ? [] : n.children)
+            /** @type {Map<number, number>} */
+            const wOf = new Map()
+            const span = (/** @type {any} */ n) => {
+              const ks = kidsOf(n)
+              const v = Math.max(NW, ks.reduce((/** @type {number} */ a, /** @type {any} */ k) => a + span(k), 0) + Math.max(0, ks.length - 1) * GX)
+              wOf.set(n.id, v)
+              return v
+            }
+            const W = span(plan.node) + PAD * 2
+            /** @type {Map<number, { x: number, y: number }>} */
+            const pos = new Map()
+            let H = 0
+            const put = (/** @type {any} */ n, /** @type {number} */ left, /** @type {number} */ y) => {
+              const ww = wOf.get(n.id) || NW
+              pos.set(n.id, { x: left + (ww - NW) / 2, y })
+              H = Math.max(H, y + NH)
+              const ks = kidsOf(n)
+              const kw = ks.reduce((/** @type {number} */ a, /** @type {any} */ k) => a + (wOf.get(k.id) || NW), 0) + Math.max(0, ks.length - 1) * GX
+              let cx = left + (ww - kw) / 2
+              for (const k of ks) { put(k, cx, y + NH + GY); cx += (wOf.get(k.id) || NW) + GX }
+            }
+            put(plan.node, PAD, PAD + 12)
+            H += PAD + 8
+            lastLayout = { W, H, pos, NW, NH }
+            const z = zoom || 1
+            const maxRows = Math.max(1, ...all.map((n) => n.outRows ?? n.estRows ?? 0))
+            // The selected card's way up to the result.
+            const lineage = new Set()
+            for (let q = all[selected]; q; q = q.parent) lineage.add(q.id)
+            let edges = ''
+            let cards = ''
+            for (const n of all) {
+              const p = pos.get(n.id)
+              if (!p) continue
+              const share = (metricOf(n) || 0) / mt
+              if (n.parent && pos.get(n.parent.id)) {
+                const q = /** @type {{ x: number, y: number }} */ (pos.get(n.parent.id))
+                const x1 = q.x + NW / 2, y1 = q.y + NH, x2 = p.x + NW / 2, y2 = p.y, my = (y1 + y2) / 2
+                const r = n.outRows ?? n.estRows ?? 0
+                const sw = 1.5 + (8 * Math.log10(1 + r)) / Math.log10(1 + maxRows)
+                const lit = lineage.has(n.id)
+                const col = n.never ? c.bd : lit ? c.acc : c.mut
+                edges += '<path d="M' + x1 + ' ' + y1 + ' C' + x1 + ' ' + my + ' ' + x2 + ' ' + my + ' ' + x2 + ' ' + y2 + '" fill="none" stroke="' + col + '" stroke-opacity="' + (n.never ? 0.5 : lit ? 0.9 : 0.55) + '" stroke-width="' + sw.toFixed(1) + '"><title>' + escapeHtml(count(r) + ' rows' + (n.outRows === null ? ' planned' : '') + ' from ' + n.label + ' up to ' + n.parent.label) + '</title></path>'
+                edges += '<text class="el" x="' + (x2 + sw / 2 + 5).toFixed(1) + '" y="' + (y2 - 9).toFixed(1) + '">' + escapeHtml(n.never ? 'never ran' : count(r) + (n.outRows === null ? ' est.' : '') + ' rows') + '</text>'
+              }
+              const fl = flagsOf(n)
+              const worst = fl.some((f) => f.level === 'red') ? c.red : fl.some((f) => f.level === 'amber') ? c.amber : fl.length ? c.mut : ''
+              const tag = n.sub || (n.rel && !['Outer', 'Inner', 'Member'].includes(n.rel) ? n.rel : '')
+              const where = whereOf(n)
+              const own = metric === 'time' ? (analyzed ? time(n.excl) + ' own' : '') : metric === 'buffers' ? bytes(n.bufExcl) + ' own' : metric === 'rows' ? '' : (n.costExcl || 0).toFixed(1) + ' own cost'
+              const rowsTxt = (analyzed ? count(n.outRows) : count(n.estRows) + ' est.') + ' rows'
+              const est = n.factor !== null && !n.limited && Math.abs(n.factor) >= 10
+              const estCol = est && Math.abs(n.factor) >= 100 ? c.red : c.amber
+              const loops = analyzed && (n.loops || 0) > 1 ? ' · ×' + count(n.loops) : ''
+              const pctCol = share >= 0.05 ? heat(share) : c.mut
+              cards += '<g class="dn' + (n.id === selected ? ' sel' : '') + (n.never ? ' never' : '') + '" data-id="' + n.id + '">' +
+                '<title>' + escapeHtml(n.label + (where ? ' ' + where : '') + (fl.length ? '\n' + fl.map((f) => '• ' + f.text).join('\n') : '')) + '</title>' +
+                (tag ? '<text class="ds" x="' + (p.x + 4) + '" y="' + (p.y - 6) + '">' + escapeHtml(clip(tag, 34)) + '</text>' : '') +
+                '<rect class="box" x="' + p.x + '" y="' + p.y + '" width="' + NW + '" height="' + NH + '" rx="9"/>' +
+                '<rect x="' + (p.x + 1) + '" y="' + (p.y + NH - 5) + '" width="' + Math.max(share > 0 ? 3 : 0, (NW - 2) * Math.min(1, share)).toFixed(1) + '" height="4" rx="2" fill="' + heat(share) + '"/>' +
+                '<svg x="' + (p.x + 11) + '" y="' + (p.y + 10) + '" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="' + (share >= 0.05 ? heat(share) : c.acc) + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICON[iconOf(n)] + '</svg>' +
+                '<text class="dl" x="' + (p.x + 34) + '" y="' + (p.y + 23) + '">' + escapeHtml(clip(n.label, 22)) + '</text>' +
+                '<text class="dp" text-anchor="end" x="' + (p.x + NW - 11) + '" y="' + (p.y + 23) + '" fill="' + pctCol + '">' + (metric === 'rows' ? '' : pct(share)) + '</text>' +
+                '<text class="dt" x="' + (p.x + 12) + '" y="' + (p.y + 43) + '">' + escapeHtml(clip(where || (n.never ? 'never ran' : ''), 34)) + '</text>' +
+                '<text class="dm" x="' + (p.x + 12) + '" y="' + (p.y + 63) + '">' + escapeHtml(own ? own + ' · ' : '') + escapeHtml(rowsTxt) +
+                (est ? '<tspan fill="' + estCol + '" font-weight="600"> ×' + escapeHtml(count(Math.abs(n.factor))) + (n.factor > 0 ? '↑' : '↓') + '</tspan>' : '') + escapeHtml(loops) + '</text>' +
+                (worst ? '<circle cx="' + (p.x + NW - 12) + '" cy="' + (p.y + 59) + '" r="4" fill="' + worst + '"><title>' + escapeHtml(fl.map((f) => f.text).join('\n')) + '</title></circle>' : '') +
+                (n.children.length ? '<g class="dtog" data-toggle="' + n.id + '"><title>' + (collapsed.has(n.id) ? 'Show the ' + n.children.length + ' step' + (n.children.length === 1 ? '' : 's') + ' under it' : 'Fold the steps under it') + '</title><circle cx="' + (p.x + NW / 2) + '" cy="' + (p.y + NH) + '" r="8"/><text text-anchor="middle" x="' + (p.x + NW / 2) + '" y="' + (p.y + NH + 4) + '">' + (collapsed.has(n.id) ? '+' : '−') + '</text></g>' : '') +
+                '</g>'
+            }
+            return '<div class="dgv" tabindex="0" aria-label="The plan as a diagram: arrows walk the steps, Enter shows the step in Steps, + and − zoom, 0 fits">' +
+              '<svg width="' + Math.ceil(W * z) + '" height="' + Math.ceil(H * z) + '" viewBox="0 0 ' + W + ' ' + H + '">' + edges + cards + '</svg></div>'
+          }
           // The icicle: every step as a box as wide as its share, children
           // under their parent, coloured by its own share.
-          const seg = (analyzed ? ['time', 'rows', 'cost', 'buffers'] : ['cost', 'rows']).map((m) => '<button data-metric="' + m + '" class="' + (m === metric ? 'on' : '') + '">' + m[0].toUpperCase() + m.slice(1) + '</button>').join('')
-          html += '<h3>Where it goes <span class="seg">' + seg + '</span></h3>'
+          // Every metric is offered; one the plan cannot give says which
+          // EXPLAIN option brings it.
+          const hasBuf = all.some((n) => n.buf.hit + n.buf.read + n.buf.tempWritten > 0)
+          const why = (/** @type {string} */ m) => (m === 'time' && !analyzed ? 'Needs EXPLAIN ANALYZE: a plain EXPLAIN does not run the query' : m === 'buffers' && !hasBuf ? 'Needs EXPLAIN (ANALYZE, BUFFERS)' : '')
+          const seg = ['time', 'rows', 'cost', 'buffers'].map((m) => '<button data-metric="' + m + '" class="' + (m === metric ? 'on' : '') + '"' + (why(m) ? ' disabled title="' + escapeHtml(why(m)) + '"' : '') + '>' + m[0].toUpperCase() + m.slice(1) + '</button>').join('')
+          const faceSeg = [['diagram', 'Diagram'], ['boxes', 'Boxes']].map(([k, l]) => '<button data-face="' + k + '" class="' + (k === face ? 'on' : '') + '" title="' + (k === 'diagram' ? 'Each step a card, the rows it passes up a line as thick as their number' : 'Each step as wide as its share, under the step that uses its rows') + '">' + l + '</button>').join('')
+          html += '<div class="main"><div class="col"><h3>Where it goes <span class="seg">' + faceSeg + '</span><span class="seg">' + seg + '</span>' +
+            (face === 'diagram' ? '<span class="zoom"><button data-zoom="out" title="Zoom out (−)" aria-label="Zoom out">−</button><button data-zoom="fit" title="Fit the plan in view (0)">Fit</button><button data-zoom="in" title="Zoom in (+)" aria-label="Zoom in">+</button></span>' : '') + '</h3>'
+          if (face === 'diagram') html += diagram()
+          else {
           const maxDepth = all.reduce((d, n) => Math.max(d, n.depth), 0)
           let ice = '<div class="ice" style="height:' + ((maxDepth + 1) * 22 + 4) + 'px">'
           /** @param {any} n @param {number} x @param {number} w */
@@ -428,31 +695,43 @@ export default {
             }
           } else place(plan.node, 0, 100)
           html += ice + '</div>'
+          }
 
           // The tree: every step in plan order, with its numbers.
-          html += '<h3>Steps</h3><div class="main"><div class="tree"><table><thead><tr><th>Step</th><th>' + (metric === 'time' ? 'Own time' : metric === 'buffers' ? 'Own buffers' : metric === 'rows' ? 'Rows' : 'Own cost') + '</th>' +
+          html += '<h3>Steps</h3><div class="find"><input type="search" class="q" placeholder="Find a step: its name, table, index or condition" value="' + escapeHtml(query) + '" aria-label="Find a step">' + (query ? '<span class="mut">' + hits.size + ' of ' + all.length + '</span>' : '') + '</div><div class="tree"><table><thead><tr><th>Step</th><th>' + (metric === 'time' ? 'Own time' : metric === 'buffers' ? 'Own buffers' : metric === 'rows' ? 'Rows' : 'Own cost') + '</th>' +
             (analyzed ? '<th class="num">In all</th>' : '') + '<th class="num">Rows</th>' + (analyzed ? '<th class="num">Loops</th>' : '') + '<th>Notes</th></tr></thead><tbody>'
           /** @param {any} n */
           const rowOf = (n) => {
             const share = (metricOf(n) || 0) / mt
             const hidden = (() => { for (let p = n.parent; p; p = p.parent) if (collapsed.has(p.id)) return true; return false })()
             if (hidden) return ''
+            // A search keeps the matches and the steps above them (dimmed),
+            // so a match is still read in its place.
+            if (query && !hits.has(n.id) && !kin.has(n.id)) return ''
             const chev = n.children.length ? (collapsed.has(n.id) ? '▸' : '▾') : ''
             const est = n.factor !== null && !n.limited && Math.abs(n.factor) >= 10 ? '<span class="est" style="background:color-mix(in srgb, ' + (Math.abs(n.factor) >= 100 ? c.red : c.amber) + ' 22%, transparent);color:' + (Math.abs(n.factor) >= 100 ? c.red : c.amber) + '" title="' + (n.factor > 0 ? 'under' : 'over') + 'estimated: ' + count(n.estRows) + ' planned">×' + count(Math.abs(n.factor)) + (n.factor > 0 ? '↑' : '↓') + '</span>' : ''
             const chips = flagsOf(n).filter((f) => !/of the time is spent here|estimated/.test(f.text)).map((f) => { const col = f.level === 'red' ? c.red : f.level === 'amber' ? c.amber : c.mut; return '<span class="chip" style="color:' + col + ';border-color:' + col + '" title="' + escapeHtml(f.text) + '">' + escapeHtml(f.text.split(/[(,]/)[0].replace(/^the /, '').trim()) + '</span>' }).join('')
-            return '<tr class="row' + (n.id === selected ? ' sel' : '') + (n.never ? ' never' : '') + '" tabindex="' + (n.id === selected ? '0' : '-1') + '" data-id="' + n.id + '"><td><div class="nm" style="padding-left:' + n.depth * 16 + 'px"><span class="chev" data-toggle="' + n.id + '">' + chev + '</span>' +
+            return '<tr class="row' + (n.id === selected ? ' sel' : '') + (n.never ? ' never' : '') + (query && !hits.has(n.id) ? ' dim' : '') + '" tabindex="' + (n.id === selected ? '0' : '-1') + '" data-id="' + n.id + '"><td><div class="nm" style="padding-left:' + n.depth * 16 + 'px"><span class="chev" data-toggle="' + n.id + '">' + chev + '</span>' +
               (n.sub ? '<span class="sub">' + escapeHtml(n.sub) + '</span>' : n.rel && n.rel !== 'Outer' && n.rel !== 'Inner' && n.rel !== 'Member' ? '<span class="sub">' + escapeHtml(n.rel) + '</span>' : '') +
               '<span class="ty">' + escapeHtml(n.label) + '</span>' + (n.target ? '<span class="tg">&nbsp;on ' + escapeHtml(n.target) + (n.index ? ' using ' + escapeHtml(n.index) : '') + '</span>' : n.index ? '<span class="tg">&nbsp;using ' + escapeHtml(n.index) + '</span>' : '') + '</div></td>' +
               '<td><div class="bar"><div class="track"><div class="fill" style="width:' + Math.max(share > 0 ? 1.5 : 0, share * 100).toFixed(1) + '%;background:' + heat(share) + '"></div></div><span class="num" style="min-width:64px">' + (metric === 'time' ? time(n.excl) : metric === 'buffers' ? bytes(n.bufExcl) : metric === 'rows' ? count(n.outRows ?? n.estRows) : (n.costExcl || 0).toFixed(1)) + '</span><span class="mut" style="min-width:40px;text-align:right">' + pct(share) + '</span></div></td>' +
               (analyzed ? '<td class="num">' + (n.never ? '<span class="mut">never ran</span>' : time(n.incl)) + '</td>' : '') +
               '<td class="num">' + (analyzed ? count(n.outRows) : count(n.estRows)) + est + '</td>' + (analyzed ? '<td class="num">' + (n.loops ?? '') + '</td>' : '') + '<td>' + chips + '</td></tr>'
           }
-          html += all.map(rowOf).join('') + '</tbody></table></div>'
+          html += all.map(rowOf).join('') + '</tbody></table></div></div>'
 
           // The detail of the selected step.
           const lead = LEAD.map((k) => [k, prop(sel, k)]).filter((p) => p[1] !== undefined)
           const rest = sel.props.filter((/** @type {[string, unknown]} */ p) => !LEAD.includes(p[0]))
-          const val = (/** @type {string} */ k, /** @type {unknown} */ v) => { const s = Array.isArray(v) ? v.join(', ') : v && typeof v === 'object' ? JSON.stringify(v) : String(v); return CODE_KEYS.test(k) ? '<code>' + escapeHtml(s) + '</code>' : escapeHtml(s) }
+          const val = (/** @type {string} */ k, /** @type {unknown} */ v) => {
+            const s = Array.isArray(v) ? v.join(', ') : v && typeof v === 'object' ? JSON.stringify(v) : String(v)
+            // What a removal count means: its share of the rows the step read.
+            if (/^Rows Removed by/.test(k) && sel.aRows !== null && sel.aRows !== undefined) {
+              const r = Number(v) || 0
+              return escapeHtml(s) + (r + sel.aRows > 0 ? ' <span class="mut">(' + pct(r / (r + sel.aRows)) + ' of the rows read)</span>' : '')
+            }
+            return CODE_KEYS.test(k) ? '<code>' + escapeHtml(s) + '</code>' : escapeHtml(s)
+          }
           const facts2 = flagsOf(sel)
           html += '<div class="side"><h4>' + escapeHtml(sel.label) + '</h4>' + (sel.target ? '<div class="mut">on ' + escapeHtml(sel.target) + (sel.index ? ' using ' + escapeHtml(sel.index) : '') + '</div>' : '') +
             (facts2.length ? '<div style="margin-top:8px">' + facts2.map((f) => '<div style="display:flex;gap:6px;align-items:baseline"><span class="dot" style="background:' + (f.level === 'red' ? c.red : f.level === 'amber' ? c.amber : c.mut) + '"></span>' + escapeHtml(f.text) + '</div>').join('') + '</div>' : '') +
@@ -464,12 +743,71 @@ export default {
             (sel.buf.hit + sel.buf.read > 0 ? '<span class="k">Buffers</span><span class="v">' + bytes(sel.buf.hit) + ' cached, ' + bytes(sel.buf.read) + ' read' + (sel.buf.tempWritten ? ', ' + bytes(sel.buf.tempWritten) + ' temp' : '') + '</span>' : '') +
             lead.concat(rest).map((p) => '<span class="k">' + escapeHtml(p[0] || '·') + '</span><span class="v">' + val(String(p[0]), p[1]) + '</span>').join('') +
             '</div></div></div></div>'
+          // The diagram's own scroll and focus outlive the redraw: a click
+          // on a card must not throw the view back to its corner.
+          const oldDg = /** @type {HTMLElement|null} */ (root.querySelector('.dgv'))
+          const dgScroll = oldDg ? { left: oldDg.scrollLeft, top: oldDg.scrollTop } : null
+          const hadDgFocus = !!oldDg && root.ownerDocument.activeElement === oldDg
+          const hadFind = !!root.ownerDocument.activeElement?.classList?.contains('q')
           root.innerHTML = html
+          const dg = /** @type {HTMLElement|null} */ (root.querySelector('.dgv'))
+          if (dg && dgScroll) { dg.scrollLeft = dgScroll.left; dg.scrollTop = dgScroll.top }
+          if (dg && hadDgFocus) dg.focus({ preventScroll: true })
+          // The first diagram fits the pane: the whole plan at a glance, never
+          // larger than life and never so small that a card cannot be read.
+          if (dg && zoom === 0 && lastLayout) {
+            zoom = Math.max(0.6, Math.min(1, (dg.clientWidth - 4) / lastLayout.W, (root.clientHeight * 0.68 - 4) / lastLayout.H))
+            draw()
+            return
+          }
+          if (hadFind) {
+            const q = /** @type {HTMLInputElement|null} */ (root.querySelector('input.q'))
+            if (q) { q.focus({ preventScroll: true }); q.setSelectionRange(q.value.length, q.value.length) }
+          }
           // A redraw keeps the keyboard where it was: on the selected step
           // when a step had it, nowhere new otherwise.
           const active = root.ownerDocument.activeElement
           const row = /** @type {HTMLElement|null} */ (root.querySelector('tr.row.sel'))
           if (row && hadRowFocus && active !== row) row.focus({ preventScroll: true })
+        }
+
+        // revealCard brings a card into the diagram's view, scrolling the
+        // diagram alone (never the page under it), centred when `center`.
+        const revealCard = (/** @type {number} */ id, center = false) => {
+          const dg = /** @type {HTMLElement|null} */ (root.querySelector('.dgv'))
+          const p = lastLayout?.pos.get(id)
+          if (!dg || !p || !lastLayout) return
+          const z = zoom || 1
+          const x = p.x * z, y = p.y * z, w = lastLayout.NW * z, h = lastLayout.NH * z
+          if (center) {
+            dg.scrollLeft = x + w / 2 - dg.clientWidth / 2
+            dg.scrollTop = y + h / 2 - dg.clientHeight / 2
+            return
+          }
+          if (x < dg.scrollLeft) dg.scrollLeft = x - 12
+          else if (x + w > dg.scrollLeft + dg.clientWidth) dg.scrollLeft = x + w - dg.clientWidth + 12
+          if (y < dg.scrollTop) dg.scrollTop = y - 24
+          else if (y + h > dg.scrollTop + dg.clientHeight) dg.scrollTop = y + h - dg.clientHeight + 24
+        }
+        // setZoom zooms around the diagram's middle, so what was in view
+        // stays in view.
+        const setZoom = (/** @type {number} */ next) => {
+          const dg = /** @type {HTMLElement|null} */ (root.querySelector('.dgv'))
+          const old = zoom || 1
+          const z = Math.max(0.3, Math.min(2.5, next))
+          if (!dg) { zoom = z; draw(); return }
+          const cx = (dg.scrollLeft + dg.clientWidth / 2) / old, cy = (dg.scrollTop + dg.clientHeight / 2) / old
+          zoom = z
+          draw()
+          const nd = /** @type {HTMLElement|null} */ (root.querySelector('.dgv'))
+          if (nd) { nd.scrollLeft = cx * z - nd.clientWidth / 2; nd.scrollTop = cy * z - nd.clientHeight / 2 }
+        }
+        const fit = () => {
+          const dg = /** @type {HTMLElement|null} */ (root.querySelector('.dgv'))
+          if (!dg || !lastLayout) return
+          setZoom(Math.max(0.3, Math.min(1, (dg.clientWidth - 4) / lastLayout.W, (Math.max(dg.clientHeight, 240) - 4) / lastLayout.H)))
+          const nd = /** @type {HTMLElement|null} */ (root.querySelector('.dgv'))
+          if (nd) { nd.scrollLeft = 0; nd.scrollTop = 0 }
         }
 
         // choose selects a step. From the keyboard walk it only keeps the
@@ -482,6 +820,12 @@ export default {
           selected = id
           if (go) for (let p = all[id]?.parent; p; p = p.parent) collapsed.delete(p.id)
           draw()
+          // The diagram follows the selection, inside its own frame.
+          revealCard(id, go)
+          if (go) {
+            const card = root.querySelector('.dn[data-id="' + id + '"]')
+            if (card && !reduced) card.classList.add('flash')
+          }
           const row = /** @type {HTMLElement|null} */ (root.querySelector('tr.row[data-id="' + id + '"]'))
           if (!row) return
           if (go) {
@@ -490,21 +834,107 @@ export default {
           } else row.scrollIntoView({ block: 'nearest' })
           if (focus) row.focus({ preventScroll: go })
         }
+        // A card picked in the diagram is selected where it stands: the
+        // detail beside it changes and flashes, the page does not move.
+        const pick = (/** @type {number} */ id) => {
+          selected = id
+          draw()
+          revealCard(id)
+          const side = root.querySelector('.side')
+          if (side && !reduced) side.classList.add('flash')
+          const dg = /** @type {HTMLElement|null} */ (root.querySelector('.dgv'))
+          dg?.focus({ preventScroll: true })
+        }
+        let dragged = false
         root.onclick = (e) => {
           const t = /** @type {HTMLElement} */ (e.target)
+          if (dragged) { dragged = false; return }
           const metricBtn = t.closest('[data-metric]')
           if (metricBtn) { metric = String(metricBtn.getAttribute('data-metric')); draw(); return }
+          const faceBtn = t.closest('[data-face]')
+          if (faceBtn) { face = String(faceBtn.getAttribute('data-face')); draw(); if (face === 'diagram') revealCard(selected); return }
+          const zoomBtn = t.closest('[data-zoom]')
+          if (zoomBtn) { const k = zoomBtn.getAttribute('data-zoom'); if (k === 'fit') fit(); else setZoom((zoom || 1) * (k === 'in' ? 1.25 : 0.8)); return }
           const tog = t.closest('[data-toggle]')
           if (tog && tog.textContent) { const id = Number(tog.getAttribute('data-toggle')); if (collapsed.has(id)) collapsed.delete(id); else collapsed.add(id); draw(); return }
           const hit = t.closest('[data-id]')
-          if (hit) choose(Number(hit.getAttribute('data-id')), true, !hit.classList.contains('row'))
+          if (!hit) return
+          if (hit.classList.contains('dn')) { pick(Number(hit.getAttribute('data-id'))); return }
+          choose(Number(hit.getAttribute('data-id')), true, !hit.classList.contains('row'))
         }
+        // Dragging the diagram's background pans it, as a map does; the
+        // wheel keeps scrolling (the page, or the diagram's own bars), and
+        // Ctrl or Cmd with the wheel zooms.
+        /** @type {{ x: number, y: number, left: number, top: number } | null} */
+        let pan = null
+        root.onpointerdown = (e) => {
+          const t = /** @type {HTMLElement} */ (e.target)
+          const dg = /** @type {HTMLElement|null} */ (t.closest('.dgv'))
+          if (!dg || e.button !== 0 || t.closest('.dn, .dtog')) return
+          pan = { x: e.clientX, y: e.clientY, left: dg.scrollLeft, top: dg.scrollTop }
+          dragged = false
+        }
+        root.onpointermove = (e) => {
+          if (!pan) return
+          const dg = /** @type {HTMLElement|null} */ (root.querySelector('.dgv'))
+          if (!dg) return
+          const dx = e.clientX - pan.x, dy = e.clientY - pan.y
+          if (!dragged && Math.abs(dx) + Math.abs(dy) < 4) return
+          dragged = true
+          dg.classList.add('panning')
+          dg.scrollLeft = pan.left - dx
+          dg.scrollTop = pan.top - dy
+        }
+        root.onpointerup = () => {
+          pan = null
+          root.querySelector('.dgv')?.classList.remove('panning')
+        }
+        root.oninput = (e) => {
+          const t = /** @type {HTMLInputElement} */ (e.target)
+          if (!t.classList.contains('q')) return
+          search(t.value)
+          // The first match is selected, so its detail shows beside.
+          const first = all.find((n) => hits.has(n.id))
+          if (first) selected = first.id
+          draw()
+        }
+        root.addEventListener('wheel', (e) => {
+          if (!(e.ctrlKey || e.metaKey) || !(/** @type {HTMLElement} */ (e.target)).closest('.dgv')) return
+          e.preventDefault()
+          setZoom((zoom || 1) * (e.deltaY < 0 ? 1.1 : 0.9))
+        }, { passive: false })
         // The keyboard: Up and Down walk the visible steps, Left folds or
         // goes to the parent, Right unfolds or goes to the first child, and
         // Enter on a fact goes to its step.
         root.onkeydown = (e) => {
           const t = /** @type {HTMLElement} */ (e.target)
           if (t.classList.contains('fact') && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); choose(Number(t.getAttribute('data-id')), true, true); return }
+          // The diagram: Up to the step that uses this one's rows, Down to
+          // its first input, Left and Right to the card beside it on the
+          // same level; Enter shows the step in Steps; + and − zoom, 0 fits.
+          if (t.classList.contains('dgv')) {
+            const n = all[selected]
+            const lay = lastLayout
+            if (e.key === '+' || e.key === '=') { e.preventDefault(); setZoom((zoom || 1) * 1.25); return }
+            if (e.key === '-') { e.preventDefault(); setZoom((zoom || 1) * 0.8); return }
+            if (e.key === '0') { e.preventDefault(); fit(); return }
+            if (e.key === 'Enter') { e.preventDefault(); choose(selected, true, true); return }
+            if (!n || !lay) return
+            let next = -1
+            if (e.key === 'ArrowUp' && n.parent) next = n.parent.id
+            else if (e.key === 'ArrowDown' && n.children.length && !collapsed.has(n.id)) next = n.children[0].id
+            else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+              const me = lay.pos.get(n.id)
+              if (me) {
+                const row = all.filter((m) => lay.pos.get(m.id)?.y === me.y).sort((a, b) => (lay.pos.get(a.id)?.x ?? 0) - (lay.pos.get(b.id)?.x ?? 0))
+                const i = row.indexOf(n)
+                const m = row[i + (e.key === 'ArrowLeft' ? -1 : 1)]
+                if (m) next = m.id
+              }
+            }
+            if (next >= 0) { e.preventDefault(); pick(next) }
+            return
+          }
           if (!t.classList.contains('row')) return
           const visible = [...root.querySelectorAll('tr.row')].map((r) => Number(r.getAttribute('data-id')))
           const at = visible.indexOf(selected)
