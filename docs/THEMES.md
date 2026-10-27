@@ -224,8 +224,9 @@ shadows. A theme's `text` SHOULD read at 4.5:1 or better on its
   carries as a small window in its own colors, each with two buttons,
   the same on every page that draws themes (an Open VSX or a VS Code
   package's too): **Preview** paints the whole window in the theme for a
-  look (never saved; the status bar says "Previewing <name>" with Use and
-  Cancel beside it, so the choice can be made wherever you went to look:
+  look (never saved; the title bar says "Previewing <name>" with Use and
+  Cancel beside it, in place of its middle controls, so the choice can be
+  made wherever you went to look:
   it stays while you move between tabs, to see a script, a grid or the
   trees in the theme; its Use keeps the theme exactly like a card's Use,
   and Cancel, Escape, the card's Stop, opening Select Color Theme or

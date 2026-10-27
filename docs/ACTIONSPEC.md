@@ -253,7 +253,10 @@ the canonical name only.
 - **Unknown names.** An `@name` in a header that this specification does
   not define MUST be diagnosed, naming the known annotations. It MUST NOT
   be silently ignored: silent typos are the failure mode this format is
-  designed against. (Outside a header the same text is prose; see 5.3.)
+  designed against. Where the name is one slip from a known one (a
+  letter missing, one too many or one wrong, two neighbours swapped, or
+  `_` written for `-`), the diagnostic SHOULD name that one first.
+  (Outside a header the same text is prose; see 5.3.)
 - **Wrong scope.** A known annotation in the other scope's header MUST
   be diagnosed, saying which header it wants (see section 9.1). It MUST
   NOT be silently applied to the header it sits in.
@@ -310,13 +313,14 @@ MUST behave exactly as described.
 | `@readonly` | | `@readonly` | action | query | the run guard follows the implementation's own configuration |
 | `@confirm-writes` | | `@confirm-writes` | action | query | as above |
 | `@parse` | | `@parse off\|markers\|outline\|both` | action | query | the implementation's own live validation configuration applies unchanged |
+| `@allow` | | `@allow <check> [, <check> ...]` | action | query | every check the implementation offers marks what it finds |
 | `@button` | `@row-action`, `@action` | `@button <label>` | button | query | the command is not a button, which is why a second command without it is reported |
 | `@open` | | `@open <label>` | button | query | the command ACTS (`@button`) rather than navigating |
 | `@on` | | `@on <column>` | button | query | the button gets a column of its own, placed by `@at` |
 | `@confirm` | | `@confirm <text> or "<title>", "<text>"` | action, button | query, command | no question: the action and its buttons run on the click |
 | `@at` | | `@at start\|end\|before <column>\|after <column>` | button | query | `start` |
 | `@inline` | | `@inline <name> literal\|identifier\|list` | action, button | query | every value travels bound; a utility statement then refuses to run |
-| `@pick` | | `@pick <name> <query>` | action, button | query, command | the field is typed: no list of values is offered |
+| `@pick` | | `@pick <name> <query> or @pick <name> <table> [(<column>)]` | action, button | query, command | the field is typed: no list of values is offered |
 | `@choices` | | `@choices <name> <value> [= <description>] [, ...]` | action, button | query, command | the field is typed: any value is accepted and the server judges it |
 | `@help` | | `@help <name> <text>` | action, button | query, command | the field carries its prompt alone |
 
@@ -861,7 +865,7 @@ where it was left), and ends them all together on the user's gesture.
 An action (a query or a command extension) runs on one connection: in
 one, only the header's line is read.
 
-### 8.26 `@pick <name> <query>`
+### 8.26 `@pick <name> <query>` or `@pick <name> <table> [(<column>)]`
 
 Offer the values an asked `@var` (8.9) may take: the query's rows are
 the choices, shown in the implementation's row picker (the reference
@@ -911,15 +915,48 @@ statement (11.3); a hand-written `$1` is diagnosed as in a button (10).
 
 Requirements:
 
-- The name MUST be an asked `@var` of the same header. A name nothing
-  asks for, a `@file` or `@dir` (which have their own picker) or a
-  declared `@var <name>=<value>` MUST be diagnosed and the line ignored.
+- The name is an asked `@var` of the same header. A name no line of the
+  header declares is declared by the `@pick` itself, exactly as a bare
+  `@var <name>` would (8.9): asked, its prompt the name, required. A
+  `@file` or `@dir` (which have their own picker) or a declared
+  `@var <name>=<value>` (which never asks) MUST be diagnosed and the line
+  ignored.
 - One list per input: a second `@pick` for the same name MUST be
   diagnosed and ignored.
 - A `@pick` with no query MUST be diagnosed and ignored.
 - A command action (3) MAY carry `@pick` in its one scope; the query
   runs on the connection whose values the command spends, and the
   chosen value travels as the command's other inputs do (12.1).
+
+**The table form.** The rest of the line MAY instead name a table and
+its column, written as a foreign key's `REFERENCES` names them:
+`@pick $2 customer (customer_id)`, `@pick $2 sales.customer (id)`. The
+two forms are told apart by the text alone: a query begins with
+`SELECT`, `WITH`, `VALUES`, `TABLE` or an opening parenthesis, and a
+table reference never does. The reference is `[schema.]table`, then the
+column in parentheses; each name is an identifier as PostgreSQL reads
+one (double quoted exactly, otherwise folded to lower case).
+
+- The choices are the table's rows (a view, a materialized view or a
+  foreign table is accepted alike), every column shown, and the value a
+  chosen row puts in the field is the named column. With no column, the
+  value is the table's primary key when that key is ONE column;
+  otherwise the rule above applies (the column named like the input,
+  else the first).
+- A table named without a schema resolves by the connection's search
+  path, as an unqualified name in a query would.
+- The table is read when the picker opens and never before, on the
+  connection the action runs on, as the query form's query is; nothing
+  is bound (there is nothing to bind).
+- An implementation SHOULD open the table in the picker it uses for a
+  foreign key value (the reference implementation: the row editor's
+  foreign key picker, the table's own rows, where a missing row may be
+  added and then picked).
+- A reference that is neither a query nor a table MUST be diagnosed and
+  ignored, the field then plain. An implementation that knows the
+  connection's tables SHOULD diagnose a table or a column the
+  connection does not have; a picker that cannot open MUST leave the
+  field as it was and report where the action's failures are.
 
 ### 8.27 `@inline <name> literal|identifier|list`
 
@@ -1275,9 +1312,10 @@ it).
 
 Requirements:
 
-- The name MUST be an asked `@var` of the same header. A name nothing
-  asks for, a `@file` or `@dir`, or a declared `@var <name>=<value>`
-  MUST be diagnosed and the line ignored.
+- The name is an asked `@var` of the same header. A name no line of the
+  header declares is declared by the `@choices` itself, exactly as a bare
+  `@var <name>` would (8.9). A `@file` or `@dir`, or a declared
+  `@var <name>=<value>`, MUST be diagnosed and the line ignored.
 - One list per input: a second `@choices`, or a `@choices` beside a
   `@pick` for the same name, MUST be diagnosed and ignored.
 - The list MUST hold two or more values, each non-empty and each once;
@@ -1315,9 +1353,10 @@ or Enter opening the text under the field and a second one closing it).
 
 Requirements:
 
-- The name MUST be an input this header asks for. A name nothing asks
-  for, or a declared `@var <name>=<value>` (asked of no one), MUST be
-  diagnosed and the line ignored.
+- The name is an input this header asks for. A name no line of the
+  header declares is declared by the `@help` itself, exactly as a bare
+  `@var <name>` would (8.9). A declared `@var <name>=<value>` (asked of
+  no one) MUST be diagnosed and the line ignored.
 - A line with a name and no text MUST be diagnosed and ignored.
 - `{password}` never enters a message (11.3); a help text is one.
 
@@ -1413,6 +1452,48 @@ lines ADD UP, each column placed in the order written. The same
 requirements hold, with the head's place words: a placement that is not
 one of the four MUST be diagnosed and the line ignored. Query kind only.
 
+### 8.37 `@allow <check> [, <check> ...]`
+
+Quiets an implementation's own static checks where what they flag is
+meant. An implementation MAY read a statement's text for likely
+mistakes, without running it, and mark what it finds beside the text,
+in a list of problems, or both. It names each such check by an
+identifier. This annotation names the checks the file's author has
+judged, and wants left unmarked:
+
+```sql
+-- @allow join-repeats
+select c.first_name, r.rental_date
+from customer c join rental r on r.customer_id = c.customer_id;
+```
+
+In the file's header (7) it reaches every statement of the file; in the
+comment run above a statement, that statement alone. Several lines add
+up, and an identifier may repeat harmlessly. The identifiers this
+version names, each a check an implementation MAY offer:
+
+| Check | What it marks |
+|---|---|
+| `join-repeats` | a join that may repeat the rows before it (the joined table matched on no unique key), an aggregate over the rows a join repeats, and two one-to-many joins multiplying each other |
+| `null-comparison` | a comparison NULL defeats: `= NULL`, `<> NULL`, `NOT IN` over a list or a subquery that can hold NULL, `<>` or `=` between two columns that can both be NULL |
+| `missing-comma` | a select list item whose alias, written without `AS`, reads like a forgotten comma |
+| `missing-semicolon` | two statements with no semicolon between them |
+
+Requirements:
+
+- A quieted check MUST NOT mark anything in the statements the line
+  reaches, on any surface where the implementation reports that check.
+  Nothing else changes: what runs, and how, never depends on this
+  annotation.
+- It quiets the implementation's OWN checks only. A server's verdict
+  (an error or a warning the server reports for the statement, live or
+  at a run) MUST NOT be quieted by it.
+- An identifier the implementation does not know MUST be diagnosed and
+  ignored; the other identifiers on the line still apply. A line naming
+  nothing MUST be diagnosed.
+- An implementation that offers none of these checks MUST accept and
+  ignore the annotation.
+
 ## 9. Dependencies between annotations
 
 Several annotations exist only in relation to another, and several
@@ -1436,12 +1517,12 @@ their own sections):
   command action has only that scope).
 - The declarations (`@file`, `@dir`, `@var`): both kinds, both scopes
   (8.7); a command action has only the action scope.
-- `@pick`: both kinds, both scopes (8.26), and only beside an asked
-  `@var` of the same header (9.7).
-- `@choices`: both kinds, both scopes (8.33), and only beside an asked
-  `@var` of the same header that has no `@pick`.
-- `@help`: both kinds, both scopes (8.34), and only naming an input the
-  same header asks for.
+- `@pick`: both kinds, both scopes (8.26), naming an asked `@var` of the
+  same header or declaring one (9.7).
+- `@choices`: both kinds, both scopes (8.33), naming an asked `@var` of
+  the same header that has no `@pick`, or declaring one.
+- `@help`: both kinds, both scopes (8.34), naming an input the same
+  header asks for, or declaring one.
 - `@inline`: query kind, both scopes (8.27), and only naming a value the
   same header's command binds (9.9).
 - `@button`, `@open`, `@on`, `@at`: query kind, button scope only.
@@ -1554,9 +1635,11 @@ bare `@var`) ask in written order whichever annotation declared them,
 a declared `@var` value asks for nothing, and every question precedes
 `@confirm`, so a confirmation MAY name the very value that was given.
 A `@pick` (8.26) depends on such a declaration the other way round: it
-names an asked `@var` of its own header, wherever that line stands,
-and is diagnosed and dropped when no such `@var` is asked for; its
-query reads the row and the registry, never the header's own names.
+names an asked `@var` of its own header, wherever that line stands, and
+declares one (as a bare `@var <name>`) when no line does; it is
+diagnosed and dropped when the name is a declared value; its query
+reads the row and the registry, never the header's own names. `@choices`
+and `@help` declare a name no line declares the same way.
 
 ### 9.8 Buttons and the columns they name
 
@@ -1803,7 +1886,10 @@ not actions may declare a presentation profile (`@description`,
 grammar and values) in their first header, where an unknown name is
 prose rather than a diagnostic, because such files routinely carry
 other tools'
-annotations. A future revision of this specification is intended to
+annotations; there it MAY hint a name one slip from one it reads (as
+section 7 counts slips), offering the correction, provided the hint is
+never a diagnostic and leaves alone the names of the other vocabularies
+it knows. A future revision of this specification is intended to
 host both vocabularies over ONE syntax; a vocabulary carried over this
 syntax SHOULD keep the three commitments of section 1.
 
