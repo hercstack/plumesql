@@ -245,7 +245,10 @@ SHOW client_min_messages;
 
 `RESET`, `SHOW`, `ALTER SYSTEM SET`, `ALTER ROLE ... SET` and the name
 inside `set_config('...')` and `current_setting('...')` complete the same
-way, and a hover on a parameter's name shows its documentation. A
+way, and a hover on a parameter's name shows its two values first: the
+current one in this tab's session (`64MB, changed from the default`, read
+again after every `SET` or `RESET` you run) and the default `RESET` gives
+(`4MB`), then its documentation. A
 misspelled one (`SET wrok_mem`) is a warning whose quick fix writes the
 right name, and so is one a session cannot change (`SET shared_buffers`
 takes a server restart).
