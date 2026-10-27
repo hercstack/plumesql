@@ -192,8 +192,8 @@ from customer c
 join rental r on r.customer_id = c.customer_id;
 ```
 
-The checks are `join-repeats`, `null-comparison`, `missing-comma` and
-`missing-semicolon`, the Code column of the Problems tab shows them, and
+The checks are `join-repeats`, `null-comparison`, `missing-comma`,
+`missing-semicolon` and `setting`, the Code column of the Problems tab shows them, and
 the editor completes them after `-- @allow `.
 
 ### Fix it from the Problems tab
@@ -228,6 +228,31 @@ fix the server's own words settle is one click away:
 
 A hover over a problem is short now: the problem, and its Quick Fix
 right under it.
+
+### SET knows the server's parameters
+
+Type `SET ` and the editor offers `SESSION`, `LOCAL`, `TIME ZONE` and
+every parameter your server lets a session change, each with its type,
+its unit and what it does. After the name come `TO` and `=`, and after
+them the parameter's own values (`notice`, `warning` ... for
+`client_min_messages`, `on` and `off` for a switch) and `DEFAULT`.
+
+```sql
+SET work_mem TO '64MB';
+SET LOCAL statement_timeout = '5s';
+SHOW client_min_messages;
+```
+
+`RESET`, `SHOW`, `ALTER SYSTEM SET`, `ALTER ROLE ... SET` and the name
+inside `set_config('...')` and `current_setting('...')` complete the same
+way, and a hover on a parameter's name shows its documentation. A
+misspelled one (`SET wrok_mem`) is a warning whose quick fix writes the
+right name, and so is one a session cannot change (`SET shared_buffers`
+takes a server restart).
+
+The list is your server's own, extensions' parameters included, read
+together with the Objects tree's snapshot and kept with it, so it works
+before you connect and never asks the server while you type.
 
 ### A misspelled annotation says so
 
