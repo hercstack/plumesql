@@ -8,6 +8,12 @@ objects, schemas or results side by side.
 
 - **Join through a foreign key:** type a dot after a key column, pick a
   column of the table it points to, and the join is written for you.
+- **Completion that knows what comes next:** after a table its joins and
+  alias, after a column its comparisons, after `create`, `alter table t`
+  or `grant` the words they take, and the list opens on its own.
+- **FROM-first queries (experimental):** write `from customer select
+  first_name` and the columns are offered as you type; the editor writes
+  it as SQL when you run it.
 - **Mistakes caught before you run:** joins that repeat rows, a
   forgotten comma and comparisons NULL defeats are warned about, each
   with its fix or quieted where it is meant (`-- @allow`), and the fix
@@ -53,7 +59,9 @@ join customer c on c.customer_id = r.customer_id
 ```
 
 The path goes on as far as the keys do: `r.customer_id.address_id.city`
-adds a join per step.
+adds a join per step. The column alone works too, when one table of the
+query has it as a key: `select address, city_id.` from `address` offers
+the columns of `city`.
 
 The join is written so the query returns the same rows as before:
 
@@ -96,6 +104,56 @@ the same: when just one table left of the join has the column (with two,
 (`USING` merges the two columns into one). Going back to `ON`, a column
 the query reads without a table name gets the right one, so it does not
 turn ambiguous.
+
+## Completion that knows what comes next
+
+### What follows a table
+
+Type a space after a table in FROM or JOIN, and the list opens with what
+can follow it, never another table (that comes after a comma):
+
+- the joins its foreign keys make, with the condition written:
+  `join address a on a.address_id = c.address_id`;
+- its alias, `c` for `customer` (your Refactors alias style), and `as`;
+- `where`, `join`, `left join`, `group by`, `order by`, `limit`, then every
+  other join (`inner`, `right`, `full`, `cross`, `natural`, `lateral`) and
+  the rest (`offset`, `fetch first`, `for update`, `union` ...), each a
+  few letters away: `cr` finds `cross join`.
+
+A join half written finishes too: after `left ` come `join`, `outer
+join` and `join lateral`. After a JOIN's table its `on` condition from
+the key leads, with `using (...)`.
+
+### The words a statement takes
+
+Where SQL decides the next word, the list starts with it, instead of
+every table in the database:
+
+- `create ` offers `table`, `view`, `index`, `materialized view`,
+  `function` ...; `create index on ` the tables, then `(` and the index
+  methods; a column definition its constraints (`primary key`, `not
+  null`, `default`, `references` ...);
+- `alter table customer ` offers `add column`, `drop column`, `alter
+  column`, `rename column` ..., and after `drop column` or `alter column`
+  the table's own columns;
+- `drop `, `truncate`, `grant` and `revoke`, `comment on`, `explain`,
+  `vacuum`, `begin`, `insert`, `with x as `, a window's `over (` ... each
+  offers its own words;
+- `update customer ` offers `set` and its alias, `delete from customer `
+  `where`, `using` and `returning`.
+
+### After a column, its comparisons
+
+Once a phrase is complete, the space opens the list with what can follow
+it: after `where c.email ` the comparisons (`=`, `is null`, `in`, `like`,
+`between` ...), after `where c.active = 1 ` `and`, `or` and the clauses
+still to come, after `limit 10 ` `offset`, after `select first_name `
+`from` and `as`, after a list's comma the next column. After `exists `
+come the subqueries your foreign keys make. Typing an operator closes
+the list again.
+
+The list also opens with ⌃Space, and on a Mac with ⌘I or ⌥Esc (⌃Space
+often switches the keyboard's input source there).
 
 ## Mistakes caught before you run
 
@@ -469,6 +527,22 @@ says which ones read the settings. The extensions you already have keep
 installing on an earlier PlumeSQL, without what the settings add; the
 three new ones need 0.29.0.
 
+Install the new ones and update the ones you have, right here:
+
+```extensions
+explain-plan
+settings-explorer
+autovacuum-forecast
+migration-safety
+pgvector-refactors
+correctness-refactors
+duration
+currency
+activity-chart
+bytea
+profile
+```
+
 ### Desktop 95, three new themes
 
 Desktops of three eras, in
@@ -488,6 +562,10 @@ relief; these are the first to use it.
 
 [Retro](https://github.com/hercstack/plumesql/tree/main/extensions/Themes/retro)
 has three more themes too: Phosphor Blue, Breadbin 64 Ready and Blue IDE.
+
+```extensions
+desktop-95
+```
 
 ### The Extensions tab by category
 
@@ -559,6 +637,40 @@ every file on Split.
 A right click below the rows offers them first, in the workspace folder,
 as in VS Code.
 
+## Experimental: FROM-first queries
+
+### FROM first, SELECT after
+
+Turn on **Settings > Experimental > FROM-first queries** and write a query
+in the order it runs:
+
+```sql
+from customer c
+join rental r on r.customer_id = c.customer_id
+where c.active = 1
+select c.first_name, count(*)
+group by c.first_name
+```
+
+![PlumeSQL with FROM-first queries on: after from customer c the list offers select on top, the joins its foreign keys make and its alias; the select list completes first_name and last_name; the semicolon writes it as select c.first_name, c.last_name from customer c where c.active = 1, and the run shows the customers](media/from-first.webp)
+
+Because the FROM comes first, the list after `select ` already knows the
+columns, and a dot after a key column joins through it as anywhere else.
+While you write, the statement is not marked as an error. When you type
+its `;`, run it or explain it, the editor writes it in SQL's order (one
+undo gives your order back), so the server only ever sees SQL. `from
+customer` alone becomes `select * from customer`.
+
+It works wherever a query stands: subqueries at any depth, the bodies of
+a WITH, each branch of a UNION, and the query of an INSERT, a CREATE VIEW
+or an EXPLAIN. PostgreSQL has no query that starts with FROM, so nothing
+you write today changes meaning. It is off until you turn it on; tell us
+how it feels. Turn it on right here:
+
+```setting
+editor.fromFirst
+```
+
 ## What changed
 
 ### The window's modes say so in the title bar
@@ -625,6 +737,9 @@ rest.
 
 ## Fixed
 
+- **Typing a bare `with` breaks nothing.** A statement that was only
+  `with`, still being typed, raised an error from the Inline the CTE
+  refactor; it now waits for a CTE.
 - **An explained statement is still found in the editor.** After
   Explain, the result's name said the text had changed since and
   selected nothing, because what ran had EXPLAIN in front of it. It
