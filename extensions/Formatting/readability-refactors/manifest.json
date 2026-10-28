@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "readability-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.29.0",
+  "name": "Readability refactors",
+  "description": "Aliases for a query's tables from the lightbulb: one table's or every table's, each qualifier rewritten to read through it",
+  "categories": [
+    "Formatting"
+  ],
+  "tags": [
+    "alias",
+    "aliases",
+    "readability",
+    "qualify",
+    "refactor"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "readability-refactors.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 0,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

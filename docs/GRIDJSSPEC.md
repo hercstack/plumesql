@@ -240,6 +240,15 @@ export interface RefactorTable {
   // opened); absent before, and for a table never analyzed.
   rows?: number
   constraints?: string[]
+  // spec: where the statement names it (`written`: the relation's name as
+  // the text spells it, schema included) and every qualifier that reads as
+  // it (`qualifiers`: its alias's, or for a table without one its name's,
+  // `customer.` or `public.customer.`), resolved through the statement's
+  // scopes, never an inner query's own same-named relation, a string or a
+  // comment; absent until PostgreSQL's parser has loaded and for a
+  // statement that does not parse (PlumeSQL 0.29.0 and later).
+  written?: { from: number; to: number }
+  qualifiers?: { from: number; to: number }[]
 }
 
 // spec: one index. `method` the access method ('btree', 'gin', 'hnsw');

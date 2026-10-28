@@ -8,6 +8,10 @@ objects, schemas or results side by side.
 
 - **Join through a foreign key:** type a dot after a key column, pick a
   column of the table it points to, and the join is written for you.
+- **Rename with F2:** an alias or a CTE everywhere the query reads it,
+  and on a table or a column its `ALTER ... RENAME` in a new script to
+  run; once it ran, the scripts that still use the old name are one click
+  from updated, and the lightbulb gives every table an alias in one step.
 - **Completion that knows what comes next:** after a table its joins and
   alias, after a column its comparisons, after `create`, `alter table t`
   or `grant` the words they take, and the list opens on its own.
@@ -104,6 +108,78 @@ the same: when just one table left of the join has the column (with two,
 (`USING` merges the two columns into one). Going back to `ON`, a column
 the query reads without a table name gets the right one, so it does not
 turn ambiguous.
+
+### Rename an alias with F2
+
+Put the caret on an alias, where it is written or on any `c.` that reads
+it, and press **F2**: the new name is written everywhere the query reads
+it, in one edit that one undo takes back.
+
+- A **CTE's name** renames the same way, with every `from` and every
+  qualifier that names it.
+- An inner query that names its own `c` keeps it, and a string or a
+  comment is never touched.
+- A name the query already uses is refused at the caret, and a keyword
+  as the new name is quoted for you.
+- **Shift+F12** lists the places first.
+
+### F2 on a table writes its rename
+
+F2 on a table, a column, a function or any other object of the
+database changes nothing in your query: the rename opens in a new
+unsaved script, on the same connection, for you to read and run.
+
+```sql
+select c.first_name from customer c;
+-- F2 on first_name, type given_name, Enter:
+alter table public.customer
+    rename column first_name to given_name;
+```
+
+- A column is found through its table or its alias, a function brings
+  every overload (run the one you mean), and a schema, a type, an index,
+  a trigger or a constraint rename the same way.
+- Nothing runs until you run it.
+- PostgreSQL's own objects are not offered.
+- Right-click says it too: **Rename Column first_name**, **Rename Alias
+  c**, only where there is something to rename.
+
+### Your scripts follow the rename
+
+Once the `ALTER ... RENAME` has run (and been committed, in a
+transaction), the Log opens and says which of your scripts still use the
+old name, with **Update usages** beside it (**Settings > Log > New
+decision** can make it a notification or a pulse instead):
+
+- Every place is listed under its script. The ones that surely mean the
+  renamed column or table are ticked: `c.first_name` through the alias,
+  `first_name` where that table is the one with the column, an INSERT's
+  column list.
+- The others wait unticked, each with its reason: a `CREATE INDEX` an old
+  migration ran with, a column two tables share, a script that runs on
+  another connection.
+- Another table's column of the same name, a string and a comment are
+  never touched.
+- **Update** writes the ticked places: an open script in its editor (one
+  undo takes it back), a closed file on disk.
+
+### Aliases in one step
+
+The new
+[Readability refactors](https://github.com/hercstack/plumesql/tree/main/extensions/Formatting/readability-refactors)
+extension gives a query's tables their aliases from the lightbulb:
+**Add aliases to every table** names each one (`customer c`,
+`address a`) and rewrites every `customer.` and `address.` to it, and
+**Add the alias c to customer** does it for one table.
+
+![A query over customer and address without aliases; the lightbulb offers Add the alias c to customer, Add the alias a to address and Add aliases to every table (customer c, address a); after the last one the query reads select c.first_name, a.city_id from customer c join address a on a.address_id = c.address_id where c.active = 1](media/aliases.webp)
+
+It needs 0.29.0, which tells an extension where each table and each
+qualifier is written.
+
+```extensions
+readability-refactors
+```
 
 ## Completion that knows what comes next
 

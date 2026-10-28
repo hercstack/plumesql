@@ -637,6 +637,13 @@ interface RefactorTable {
   rows?: number;
   /** Its constraints' names (keys, foreign keys, checks, exclusions), when it has any. PlumeSQL 0.26.0 and later. */
   constraints?: string[];
+  /** Where the statement names it: the relation's name as the text spells it, schema included.
+   * Absent until PostgreSQL's parser has loaded and for a statement that does not parse. PlumeSQL 0.29.0 and later. */
+  written?: { from: number; to: number };
+  /** Every qualifier that reads as it: its alias's, or for a table without one its name's
+   * ("customer." or "public.customer."), resolved through the statement's scopes, never an inner
+   * query's own same-named relation, a string or a comment. Same absences as "written". PlumeSQL 0.29.0 and later. */
+  qualifiers?: { from: number; to: number }[];
 }
 
 /** One index of a relation. */
