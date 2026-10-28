@@ -259,6 +259,17 @@ misspelled one (`SET wrok_mem`) is a warning whose quick fix writes the
 right name, and so is one a session cannot change (`SET shared_buffers`
 takes a server restart).
 
+A `SET` holds for your session only, and the Log says so after the run,
+with the two answers as buttons: **RESET** puts the session back, and
+**ALTER SYSTEM SET** writes the value for every new session and reloads
+the configuration so it counts. When you run an `ALTER SYSTEM` yourself
+and no reload follows, the Log offers **Reload configuration**, and names
+the parameters that wait for a server restart instead. A `SET` that a
+session cannot apply has a quick fix that writes it as `ALTER SYSTEM SET`
+(with the reload where one is enough), and the hover on an `ALTER SYSTEM`
+says what it takes and runs the reload. The results you are looking at
+stay where they are.
+
 The list is your server's own, extensions' parameters included, read
 together with the Objects tree's snapshot and kept with it, so it works
 before you connect and never asks the server while you type.
@@ -608,6 +619,14 @@ rest.
 
 ## Fixed
 
+- **An explained statement is still found in the editor.** After
+  Explain, the result's name said the text had changed since and
+  selected nothing, because what ran had EXPLAIN in front of it. It
+  selects the statement again, and its messages keep their lines.
+- **A view nobody can see is not called hung.** A Plan or a chart in a
+  tab in the background, or in a window covered by another, was reported
+  in the Log as not finishing after 90 seconds. Only the time it could
+  draw counts now.
 - **A tree keeps its place.** A click on a pinned folder heading at the
   top of the Explorer or the Objects tree jumped to the start of the
   tree instead of that folder, and opening an object could throw the
