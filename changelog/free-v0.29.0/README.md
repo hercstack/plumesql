@@ -262,12 +262,18 @@ takes a server restart).
 A `SET` holds for your session only, and the Log says so after the run,
 with the two answers as buttons: **RESET** puts the session back, and
 **ALTER SYSTEM SET** writes the value for every new session and reloads
-the configuration so it counts. When you run an `ALTER SYSTEM` yourself
-and no reload follows, the Log offers **Reload configuration**, and names
-the parameters that wait for a server restart instead. A `SET` that a
-session cannot apply has a quick fix that writes it as `ALTER SYSTEM SET`
-(with the reload where one is enough), and the hover on an `ALTER SYSTEM`
-says what it takes and runs the reload. The results you are looking at
+the configuration so it counts.
+
+`ALTER SYSTEM` only writes `postgresql.auto.conf`, so one that no
+`pg_reload_conf()` follows in the script is a warning, with a quick fix
+that adds the reload; a parameter the server reads only at start says it
+takes a restart instead. Run it that way anyway and the Log says what the
+server now holds but has not read yet, with **Reload configuration** one
+click away. A `SET` that a session cannot apply has a quick
+fix that writes it as `ALTER SYSTEM SET`. The hover on a `SET`'s parameter
+runs **ALTER SYSTEM SET and reload**, which keeps that value for every
+new session, and **RESET** while your session still holds it; the hover
+on an `ALTER SYSTEM`'s runs the reload. The results you are looking at
 stay where they are.
 
 The list is your server's own, extensions' parameters included, read
