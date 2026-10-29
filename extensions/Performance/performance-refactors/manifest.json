@@ -2,10 +2,10 @@
   "format": 1,
   "id": "performance-refactors",
   "kind": "refactor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "plumesql": ">=0.25.0",
   "name": "Performance refactors",
-  "description": "Faster queries from the lightbulb: conditions an index can read, keyset pages, STABLE functions, constraints that keep writes going",
+  "description": "Faster queries from the lightbulb: index-friendly conditions, keyset pages, STABLE functions, NOT VALID constraints, missing indexes",
   "categories": [
     "Performance"
   ],
@@ -17,6 +17,7 @@
     "offset",
     "stable",
     "not valid",
+    "create index",
     "refactor"
   ],
   "requires": {
@@ -37,7 +38,6 @@
   },
   "discussion": 224,
   "externals": [],
-  "featured": true,
   "author": {
     "name": "PlumeSQL",
     "url": "https://plumesql.com"

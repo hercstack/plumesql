@@ -1,5 +1,5 @@
 // @ts-check
-// @description Statistics in the editor's lightbulb: describe a number column, its correlation, trend, histogram and outliers, computed by PostgreSQL
+// @description Statistics in the editor's lightbulb: describe a number column, its correlation, trend, histogram and outliers, computed by PostgreSQL; count by a column's values, cast a text column
 
 // This extension REFACTORS (docs: GRIDJSSPEC, Refactors): on a SELECT, the
 // editor's lightbulb (Ctrl+. or Cmd+.) offers PostgreSQL's statistical
@@ -481,6 +481,120 @@ function zScore(statement, ctx) {
   return [{ title: `Z-score of ${x.name}`, edits: appendColumn(statement, m.q, col, null) }]
 }
 
+// ── Count by a column's values, and Cast a text column ─────────────────────
+// Both read the rows the query returned (ctx.result): a column holding a
+// few categories, counted per value; a text column whose every value reads
+// as a date, a moment, a number or a boolean, cast to it. They were the
+// editor's own before PlumeSQL 0.29.0, which still offers them itself, so
+// they answer only where ctx.settings (new in 0.29.0) is there.
+
+const ID_LIKE = /^id$|_id$|^uuid$|_uuid$/i
+const TEXT_TYPE = /^(text|character varying|character|varchar|name|citext)\b/i
+// Types whose values are measurements, moments or payloads, never a
+// handful of categories.
+const NOT_CATEGORY = /^(smallint|integer|bigint|real|double precision|numeric|money|date|time|timestamp|interval|json|jsonb|bytea|uuid|xml|tsvector|geometry|geography|vector|halfvec|sparsevec)\b|\[\]$/i
+// A column NAMED like a code (a postal code, a phone, an account number)
+// keeps its digits text: they are not a quantity, whatever they look like.
+const CODE_WORDS = new Set(['zip', 'zipcode', 'postal', 'postcode', 'phone', 'mobile', 'fax', 'code', 'account', 'iban', 'sku', 'ean', 'isbn', 'ssn', 'pin', 'nr', 'number', 'no'])
+const VALUE_CAP = 4096
+
+/**
+ * Count by a column's values: a column of a few repeating values (two up to
+ * the option's most, each value repeating), counted per value over the
+ * query, as a query above it or in a new tab.
+ * @param {RefactorStatement} statement
+ * @param {RefactorContext} ctx
+ */
+function countByValue(statement, ctx) {
+  const q = statement.query
+  const r = ctx.result
+  if (!ctx.settings || !r || !q || !/^(select|with)$/.test(statement.keyword)) return []
+  if (q.distinct || q.clauses.groupBy || q.items.some((i) => i.aggregate) || r.rows.length < 6) return []
+  const most = count(ctx.options.count_by_max, 2, 1000, 20)
+  /** @type {Map<string, number>} */
+  const seen = new Map()
+  for (const c of r.columns) seen.set(c.name, (seen.get(c.name) ?? 0) + 1)
+  /** @type {{ name: string, repeat: number }[]} */
+  const picks = []
+  r.columns.forEach((c, i) => {
+    if ((seen.get(c.name) ?? 0) > 1 || ID_LIKE.test(c.name) || NOT_CATEGORY.test(c.type)) return
+    const values = r.rows.map((row) => row[i]).filter((v) => v !== null)
+    if (values.length < 6 || values.some((v) => String(v).length >= 200)) return
+    const distinct = new Set(values).size
+    if (distinct < 2 || distinct > most || distinct * 2 > values.length) return
+    picks.push({ name: c.name, repeat: values.length / distinct })
+  })
+  const body = statement.text.slice(0, q.end).trim()
+  return picks
+    .sort((a, b) => b.repeat - a.repeat)
+    .slice(0, 3)
+    .map((p) => {
+      const col = ident(p.name)
+      const sql = `select ${col}, count(*)\nfrom (${body}) q\ngroup by ${col}\norder by count(*) desc;`
+      if (ctx.queryPlace === 'tab') return { title: `Count by ${p.name} (in a new tab)`, edits: [], tab: sql + '\n' }
+      return { title: `Count by ${p.name} (a query above)`, edits: [{ from: 0, to: 0, text: sql + '\n' }] }
+    })
+}
+
+/**
+ * The type every value reads as, or null: a date, a moment (with or
+ * without a zone), a whole or a decimal number, a boolean. Leading zeros
+ * keep a number text, and so does a column named like a code.
+ * @param {string[]} values
+ * @param {boolean} codeLike
+ */
+function castFor(values, codeLike) {
+  const v = values.map((x) => x.trim())
+  const all = (/** @type {RegExp} */ re) => v.every((x) => re.test(x))
+  if (all(/^\d{4}-\d{2}-\d{2}$/) && v.every((x) => !Number.isNaN(Date.parse(x)))) return 'date'
+  if (all(/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|[+-]\d{2}(:?\d{2})?)$/i)) return 'timestamptz'
+  if (all(/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$/)) return 'timestamp'
+  const leadingZero = v.some((x) => /^[+-]?0\d/.test(x)) || codeLike
+  if (!leadingZero && all(/^[+-]?\d{1,18}$/)) return v.every((x) => Math.abs(Number(x)) <= 2147483647) ? 'integer' : 'bigint'
+  if (!leadingZero && all(/^[+-]?(\d+\.\d+|\d+|\.\d+)$/) && v.some((x) => x.includes('.'))) return 'numeric'
+  if (all(/^(true|false|t|f|yes|no)$/i)) return 'boolean'
+  return null
+}
+
+const COLUMN_REF = /^(?:"(?:[^"]|"")+"|[A-Za-z_][\w$]*)(?:\s*\.\s*(?:"(?:[^"]|"")+"|[A-Za-z_][\w$]*))*$/
+
+/**
+ * Cast a text column: a column of the select list, text in the result,
+ * whose every value (three at least) reads as another type, cast to it
+ * under its own name.
+ * @param {RefactorStatement} statement
+ * @param {RefactorContext} ctx
+ */
+function castText(statement, ctx) {
+  const q = statement.query
+  const r = ctx.result
+  if (!ctx.settings || !r || !q || !/^(select|with)$/.test(statement.keyword) || r.rows.length < 3) return []
+  /** @type {RefactorOffer[]} */
+  const out = []
+  for (const it of q.items) {
+    if (out.length >= 3) break
+    if (it.star) continue
+    // The column reference alone: the item up to its alias.
+    let end = it.to
+    if (it.alias) {
+      const m = new RegExp(String.raw`\s+(?:as\s+)?(?:"${it.alias.replace(/"/g, '""')}"|${it.alias.replace(/[^\w$]/g, '\\$&')})\s*$`, 'i').exec(statement.text.slice(it.from, it.to))
+      if (!m) continue
+      end = it.from + m.index
+    }
+    const ref = statement.text.slice(it.from, end)
+    if (!COLUMN_REF.test(ref.trim())) continue
+    const i = r.columns.findIndex((c) => c.name === it.name)
+    if (i < 0 || !TEXT_TYPE.test(r.columns[i].type)) continue
+    const values = /** @type {string[]} */ (r.rows.map((row) => row[i]).filter((v) => v !== null))
+    // An empty string casts to no date, number or boolean: the cast would fail on its row.
+    if (values.length < 3 || values.some((x) => x === '' || x.length >= VALUE_CAP)) continue
+    const to = castFor(values, it.name.toLowerCase().split(/[^a-z0-9]+/).some((w) => CODE_WORDS.has(w)))
+    if (!to) continue
+    out.push({ title: `Cast ${it.name} to ${to} (all its values fit)`, edits: [{ from: it.from, to: end, text: `${ref}::${to}${it.alias ? '' : ' as ' + ident(it.name)}` }] })
+  }
+  return out
+}
+
 /** @type {PlumeSQLExtension} */
 export default {
   refactors: [
@@ -489,12 +603,15 @@ export default {
     { id: 'trend', label: 'Trend over time', description: 'The slope of a straight line through a number column over a date column, per day, with its r squared, as a query above yours.', example: 'regr_slope(amount, extract(epoch from placed_at)) * 86400 as change_per_day', refactor: trend },
     { id: 'histogram', label: 'Histogram', description: 'A number column counted in evenly wide bins, with each bin\'s range and share, as a query above yours.', example: 'width_bucket(amount, lo, hi, 10) as bin', refactor: histogram },
     { id: 'outliers', label: 'Outliers', description: 'The rows whose number lies outside the IQR fences, or past a z-score, as a query above yours.', example: 'where amount > q3 + 1.5 * (q3 - q1)', refactor: outliers },
-    { id: 'z-score', label: 'Z-score', description: 'How many standard deviations a row lies from the mean, as a column of the query.', example: '(amount - avg(amount) over ()) / stddev_samp(amount) over ()', refactor: zScore }
+    { id: 'z-score', label: 'Z-score', description: 'How many standard deviations a row lies from the mean, as a column of the query.', example: '(amount - avg(amount) over ()) / stddev_samp(amount) over ()', refactor: zScore },
+    { id: 'count-by-value', label: "Count by a column's values", description: 'Once the query has run: a column holding a few categories (from 2 values up to the most the option below allows, each repeating) is counted per value, in a query above or a new tab. PlumeSQL 0.29.0 and later.', example: 'select status, count(*) from (...) q group by status order by count(*) desc', refactor: countByValue },
+    { id: 'cast-text', label: 'Cast a text column', description: 'Once the query has run: a text column whose values all read as dates, moments, numbers or booleans is cast to that type, under its own name. PlumeSQL 0.29.0 and later.', example: 'created::date as created', refactor: castText }
   ],
   options: [
     { key: 'bins', kind: 'number', label: 'Bins', default: 10, refactor: 'histogram' },
     { key: 'method', kind: 'choice', label: 'Method', options: ['IQR fences', 'z-score'], default: 'IQR fences', description: 'IQR fences read the quartiles and hold for skewed data; a z-score reads the mean and the standard deviation.', refactor: 'outliers' },
     { key: 'factor', kind: 'number', label: 'IQR factor', default: 1.5, description: 'How many interquartile ranges beyond the quartiles a value is an outlier: 1.5 is Tukey\'s, 3 the far ones.', refactor: 'outliers' },
-    { key: 'threshold', kind: 'number', label: 'Z-score threshold', default: 3, refactor: 'outliers' }
+    { key: 'threshold', kind: 'number', label: 'Z-score threshold', default: 3, refactor: 'outliers' },
+    { key: 'count_by_max', kind: 'number', label: 'Most values to count by', default: 20, description: 'The most distinct values a column may hold in the sample and still count as categories.', refactor: 'count-by-value' }
   ]
 }

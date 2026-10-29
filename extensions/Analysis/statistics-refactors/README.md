@@ -11,6 +11,8 @@ A query over orders with the caret on `amount`, and the lightbulb open. Each off
 - **The numbers behind a column**: what is a typical order, how much do orders vary, what are the smallest and largest, overall or for each customer, in one click.
 - **Does it go with something?** Do bigger orders have more items; does spend rise with the number of visits?
 - **Is it growing?** How much an amount changes per day over the period the query covers, and how steady that change is.
+- **How many of each?** Once the query has run, the rows counted per value of a column that holds a few categories, a status or a type.
+- **A column that should not be text?** Once the query has run, a text column whose every value reads as a date, a moment, a number or a boolean, cast to it.
 - **Sharing the answer**: the Analysis views (Profile, Correlation, Histogram, Outliers) compute in the grid over the rows a query returned; these write a query PostgreSQL computes over every row, one you can keep in a file and send to a colleague.
 
 ## How to read it
@@ -25,6 +27,13 @@ Every offer writes a statement that reads your query as a CTE named `q` and asks
 | Histogram | the values counted in 10 equal ranges between the smallest and the largest |
 | Outliers | the rows whose value is far from the rest |
 | Z-score | for every row, how far its value is from the average, in standard deviations, written into your query as a new column |
+
+Two more read the rows your query returned the last time it ran as written, so they appear after a run:
+
+| Offer | Does |
+|---|---|
+| Count by | counts the rows per value of a column holding 2 up to 20 values (the option below) that repeat, never an id, a number, a date or a JSON column: `select status, count(*) from (...) q group by status order by count(*) desc`, above your query or in a new tab, as your Refactors settings say |
+| Cast | casts a text column whose every value reads as a date, a moment, a whole or a decimal number, or a boolean, under its own name: `created::date as created`. A value with a leading zero (`00123`), a column named like a code (zip, phone, account, sku) or an empty value keeps it text |
 
 ## Try it
 
@@ -73,6 +82,7 @@ On the extension's page and in the Refactors settings:
 | Outliers method | IQR fences | `IQR fences`: far from the middle half of the values; `z-score`: far from the average in standard deviations |
 | IQR factor | 1.5 | How far beyond the middle half counts as unusual; 3 flags only the extreme |
 | Z-score threshold | 3 | How many standard deviations from the average count as unusual |
+| Most values to count by | 20 | The most distinct values a column may hold and still count as categories for Count by |
 
 ## Good to know
 
@@ -84,4 +94,4 @@ What it reads: the statement's shape and its tables' columns from PlumeSQL's dic
 
 ## Requirements
 
-PostgreSQL 13 or newer, and PlumeSQL 0.24.0 or newer.
+PostgreSQL 13 or newer, and PlumeSQL 0.24.0 or newer. Count by and Cast need PlumeSQL 0.29.0 or newer: before it they were the editor's own, and there they still are, so they are never offered twice.

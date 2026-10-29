@@ -1,0 +1,50 @@
+{
+  "format": 1,
+  "id": "json-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.24.0",
+  "name": "JSON refactors",
+  "description": "JSON from the lightbulb: list a column's keys, expand arrays and objects into rows, keys as columns, @> containment, #>> paths",
+  "categories": [
+    "Data Types"
+  ],
+  "tags": [
+    "json",
+    "jsonb",
+    "keys",
+    "jsonb_each",
+    "jsonb_array_elements",
+    "containment",
+    "gin",
+    "jsonb_pretty",
+    "refactor"
+  ],
+  "types": [
+    "json",
+    "jsonb"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "json-refactors.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 0,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

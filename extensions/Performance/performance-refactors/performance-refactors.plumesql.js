@@ -1,5 +1,5 @@
 // @ts-check
-// @description Faster queries from the lightbulb: a condition an index can read, keyset pages instead of OFFSET, STABLE for read-only functions, constraints added without holding writes
+// @description Faster queries from the lightbulb: a condition an index can read, keyset pages instead of OFFSET, STABLE for read-only functions, constraints added without holding writes, an index for a filter
 
 // This extension REFACTORS (docs: GRIDJSSPEC, Refactors). Each one fixes a
 // common reason PostgreSQL works much harder than it has to, returns the
@@ -11,6 +11,7 @@
 //   order by id limit 50 offset 2000000      77-88 ms   ->  0.04 ms
 //   where user_id = user_of(123), VOLATILE   356-403 ms ->  0.033-0.036 ms
 //   add foreign key on 30 million rows       writes held 1.6 s -> an INSERT 1.1 ms
+//   where user_id = 123, no index on it      29.5-30.7 ms -> 0.04 ms, its index added
 //
 // It reads only what the editor hands it (the statement, its tables with
 // their columns, indexes, constraints and row estimates, and for a CREATE
@@ -18,6 +19,8 @@
 // asked of the server. Declare the function STABLE and Add the constraint
 // NOT VALID need PlumeSQL 0.26.0 or later (statement.routine, and an ALTER
 // TABLE's table in statement.tables); an older PlumeSQL offers the first two.
+// Add an index for a filter needs 0.29.0 (the parser's WHERE of an UPDATE or
+// a DELETE, and each table's kind), where it left the editor's own refactors.
 
 /**
  * @typedef {{ from: number, to: number, text: string }} Edit
@@ -706,6 +709,76 @@ function notValid(statement, ctx) {
   return { title: `Add the constraint NOT VALID, then VALIDATE it (writes to ${t.name} go on while it is checked)`, edits }
 }
 
+/**
+ * The columns a condition filters on: a comparison's, a BETWEEN's, an IN's
+ * or a LIKE's operand that is a column, through AND, OR and NOT; never a
+ * subquery's, whose columns are its own tables'.
+ * @param {RefactorExpr | undefined} e
+ * @param {string[][]} out
+ */
+function filterColumns(e, out) {
+  if (!e?.args) return out
+  if (e.kind === 'and' || e.kind === 'or' || e.kind === 'not') {
+    for (const a of e.args) filterColumns(a, out)
+    return out
+  }
+  const compares = e.kind === 'operator' && ['=', '<>', '<', '>', '<=', '>='].includes(e.op ?? '')
+  if (compares) {
+    for (const a of e.args) if (a.kind === 'column' && a.column) out.push(a.column)
+  } else if (['between', 'not between', 'in', 'not in', 'like', 'ilike', 'not like', 'not ilike'].includes(e.kind)) {
+    const v = e.args[0]
+    if (v?.kind === 'column' && v.column) out.push(v.column)
+  }
+  return out
+}
+
+/**
+ * Add an index for a filter: a column the statement compares in its WHERE
+ * or a join's ON, of a table at least `index_min_rows` large by the
+ * statistics' estimate, that no index starts with: CREATE INDEX above the
+ * statement. Reads the parser's facts (query.where, the joins' ON, and an
+ * UPDATE's or a DELETE's statement.where) and each table's kind, indexes
+ * and rows, so it offers nothing on a PlumeSQL before 0.29.0, which still
+ * offers its own.
+ * @param {RefactorStatement} statement
+ * @param {RefactorContext} ctx
+ * @returns {Offer[]}
+ */
+function addIndex(statement, ctx) {
+  if (!['select', 'with', 'update', 'delete'].includes(statement.keyword)) return []
+  const conds = [statement.query?.where, ...(statement.query?.joins ?? []).map((j) => j.on), statement.where]
+  /** @type {string[][]} */
+  const cols = []
+  for (const c of conds) filterColumns(c, cols)
+  if (!cols.length) return []
+  const least = Number(ctx.options.index_min_rows ?? 10000)
+  const concurrently = ctx.options.index_concurrently === 'on'
+  /** @type {Offer[]} */
+  const out = []
+  const done = new Set()
+  for (const parts of cols) {
+    if (out.length >= 2) break
+    const col = parts[parts.length - 1]
+    const qual = parts.length > 1 ? parts[parts.length - 2] : null
+    const owners = statement.tables.filter((t) => (qual ? (t.alias ?? t.name) === qual || t.name === qual : true) && t.columns.some((c) => c.name === col))
+    if (owners.length !== 1) continue
+    const t = owners[0]
+    if (t.kind !== 'table' || /^(pg_catalog|information_schema|pg_toast)$|^pg_temp/.test(t.schema)) continue
+    const key = `${t.schema}.${t.name}.${col}`
+    if (done.has(key)) continue
+    done.add(key)
+    // Indexes the dictionary does not know (an older snapshot): say nothing.
+    if (!t.indexes || t.indexes.some((ix) => ix.keys[0] === col)) continue
+    if (t.rows === undefined || t.rows < least) continue
+    const name = t.ref.replace(/\s+/g, '')
+    out.push({
+      title: `Add an index on ${t.name} (${col}) above`,
+      edits: [{ from: 0, to: 0, text: `create index ${concurrently ? 'concurrently ' : ''}on ${name} (${quote(col)});\n` }]
+    })
+  }
+  return out
+}
+
 /** @type {PlumeSQLExtension} */
 export default {
   refactors: [
@@ -731,6 +804,13 @@ export default {
       refactor: declareStable
     },
     {
+      id: 'add-index',
+      label: 'Add an index for a filter',
+      description: "A column the query filters or joins on, of a table at least as large as the option below says (the statistics' row estimate), that no index starts with: create index above the statement. PlumeSQL 0.29.0 and later.",
+      example: 'create index on orders (customer_id);',
+      refactor: addIndex
+    },
+    {
       id: 'not-valid',
       label: 'Add the constraint NOT VALID, then VALIDATE it',
       description: 'ADD FOREIGN KEY or CHECK holds every write to the table until all its rows are checked (1.6 s on 30 million rows); NOT VALID adds it at once and VALIDATE checks while writes go on (an INSERT meanwhile: 1.1 ms). PlumeSQL 0.26.0 and later.',
@@ -740,6 +820,8 @@ export default {
   ],
   options: [
     { key: 'keyset_min_offset', kind: 'number', label: 'Smallest OFFSET to page by key', default: 10000, description: 'A written OFFSET below this is left alone: the rows it skips cost under a millisecond. A parameter is always offered.', refactor: 'keyset-page' },
-    { key: 'not_valid_min_rows', kind: 'number', label: 'Smallest table', default: 1000000, description: "The statistics' row estimate a table needs: checking a constraint holds writes about 60 ms per million rows.", refactor: 'not-valid' }
+    { key: 'not_valid_min_rows', kind: 'number', label: 'Smallest table', default: 1000000, description: "The statistics' row estimate a table needs: checking a constraint holds writes about 60 ms per million rows.", refactor: 'not-valid' },
+    { key: 'index_min_rows', kind: 'number', label: 'Smallest table to index', default: 10000, description: "Add an index for a filter is offered only for a table with at least this many rows, by the statistics' row estimate. A smaller table is read whole faster than through an index; one with no estimate yet gets no offer.", refactor: 'add-index' },
+    { key: 'index_concurrently', kind: 'choice', label: 'Build the index concurrently', default: 'off', options: ['off', 'on'], description: 'On writes create index concurrently, which builds without blocking writes to the table (the right choice for a server in use; it cannot run inside a transaction). Off writes a plain create index, faster but blocking writes until it is done.', refactor: 'add-index' }
   ]
 }

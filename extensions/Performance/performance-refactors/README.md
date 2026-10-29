@@ -1,6 +1,6 @@
 # Performance refactors
 
-Four rewrites that make slow queries fast, offered in the editor's lightbulb (Ctrl+. or ⌘.) where they help. Each fixes a common reason PostgreSQL works much harder than it has to, and returns the same rows as before.
+Five rewrites that make slow queries fast, offered in the editor's lightbulb (Ctrl+. or ⌘.) where they help. Each fixes a common reason PostgreSQL works much harder than it has to, and returns the same rows as before.
 
 ![The lightbulb on a count of one day's events, where created_at::date = '2025-06-01': Compare created_at itself, so the index on events serves it, beside the editor's own refactors](media/offers.webp)
 
@@ -9,6 +9,7 @@ The lightbulb on `created_at::date = '2025-06-01'`. The cast hides `created_at` 
 ## What it is for
 
 - **A query that reads the whole table** although the column it filters has an index.
+- **A filter no index serves** on a big table.
 - **Paging that gets slower page by page**, the deeper you go with OFFSET.
 - **Your own function in a WHERE** that is called for every row.
 - **A foreign key or a CHECK to add** to a big table that takes writes.
@@ -54,6 +55,19 @@ create function user_of(x int) returns int language plpgsql stable as $$ begin r
 
 A PL/pgSQL function that does not say otherwise is VOLATILE. The offer comes only when PostgreSQL's own parser finds that the body writes nothing, runs no dynamic SQL, locks no rows and calls only IMMUTABLE or STABLE functions.
 
+### Add an index for a filter
+
+```sql
+-- before: 29.5 to 30.7 ms, every row read
+select * from events where user_id = 123;
+
+-- after: create index above it, then the same query in 0.04 ms (0.22 ms the first time)
+create index on events (user_id);
+select * from events where user_id = 123;
+```
+
+Offered for a column the query compares in its WHERE or a join's ON (an UPDATE's and a DELETE's WHERE too), on a table no index starts with that column. The option below can write `create index concurrently`.
+
 ### Add the constraint NOT VALID, then VALIDATE it
 
 ```sql
@@ -74,6 +88,7 @@ An unnamed constraint gets the name PostgreSQL would give it, so VALIDATE can na
 | Compare the indexed column itself | A btree index of the table starts with the column, and the rewrite returns the same rows (a `date_trunc` day off its unit's boundary, or `coalesce(col, 0) = 0`, is left alone). |
 | Page by the last key | The query reads one table, orders it by a unique NOT NULL key that an index reads in that order, and its OFFSET is a parameter or at least the option below. |
 | Declare the function STABLE | A PL/pgSQL function declares no volatility, returns something (not void, not a trigger) and its body only reads. |
+| Add an index for a filter | The table (a table, not a view) has at least the option below's rows, and none of its indexes starts with the column. PlumeSQL 0.29.0 or newer, which hands it what the query filters on. |
 | NOT VALID, then VALIDATE | The table has at least the option below's rows (the statistics' estimate, read when the lightbulb's list opens). |
 
 ## Try it
@@ -105,6 +120,8 @@ In the Refactors settings, under Performance refactors:
 |---|---|---|
 | Smallest OFFSET to page by key | 10000 | A written OFFSET below this is left alone; the rows it skips cost under a millisecond. A parameter is always offered. |
 | Smallest table | 1000000 | The rows a table needs before NOT VALID is offered: checking a constraint holds writes about 60 ms per million rows. |
+| Smallest table to index | 10000 | The rows a table needs before Add an index is offered: a smaller one is read whole faster than through an index. |
+| Build the index concurrently | off | On writes `create index concurrently`, which does not block writes to the table (it cannot run inside a transaction). |
 
 ## Good to know
 
@@ -116,4 +133,4 @@ In the Refactors settings, under Performance refactors:
 
 ## Requirements
 
-PostgreSQL 13 or newer. PlumeSQL 0.25.0 or newer for the first two; Declare the function STABLE and NOT VALID need PlumeSQL 0.26.0 or newer, which hands a refactor what they read.
+PostgreSQL 13 or newer. PlumeSQL 0.25.0 or newer for the first two; Declare the function STABLE and NOT VALID need PlumeSQL 0.26.0 or newer, and Add an index for a filter PlumeSQL 0.29.0 or newer (it was the editor's own before), which hand a refactor what they read.
