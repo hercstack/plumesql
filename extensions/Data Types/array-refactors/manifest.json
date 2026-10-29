@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "id": "array-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.29.0",
+  "name": "Array refactors",
+  "description": "Arrays from the lightbulb: expand into rows, count the elements, elements as columns, @> containment a GIN index serves, as text",
+  "categories": [
+    "Data Types"
+  ],
+  "tags": [
+    "array",
+    "unnest",
+    "any",
+    "containment",
+    "gin",
+    "array_to_string",
+    "cardinality",
+    "refactor"
+  ],
+  "suggest": [
+    "arrays"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "array-refactors.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 0,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

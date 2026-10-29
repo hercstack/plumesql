@@ -99,10 +99,11 @@ const SCOPE_FOR_WORDS = new Set(['global', 'workspace'])
 const RECOMMEND_SIGNALS = new Set(['my-extensions'])
 // rule 8i: the statement signals a refactor extension's `suggest` may name,
 // which offer its install in the editor's lightbulb: `numbers`, a query
-// returning a number column that is no key. A new signal is a new word here
+// returning a number column that is no key; `arrays`, a query over an
+// array column. A new signal is a new word here
 // and in the app. Maintainers set the field, like `featured` (the review
 // grants it; the validator checks only its shape).
-const SUGGEST_SIGNALS = new Set(['numbers'])
+const SUGGEST_SIGNALS = new Set(['numbers', 'arrays'])
 // rule 8h: the data types a grid extension reads (or a refactor extension
 // rewrites), bare lowercase names as
 // format_type spells them without a schema or a modifier (geometry,

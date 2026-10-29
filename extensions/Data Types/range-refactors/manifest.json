@@ -1,0 +1,60 @@
+{
+  "format": 1,
+  "id": "range-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.29.0",
+  "name": "Range refactors",
+  "description": "Ranges from the lightbulb: bounds and length as columns, @> for a bounds check, one row per day or number, a multirange's ranges as rows",
+  "categories": [
+    "Data Types"
+  ],
+  "tags": [
+    "range",
+    "tstzrange",
+    "daterange",
+    "multirange",
+    "lower",
+    "upper",
+    "gist",
+    "generate_series",
+    "refactor"
+  ],
+  "types": [
+    "int4range",
+    "int8range",
+    "numrange",
+    "tsrange",
+    "tstzrange",
+    "daterange",
+    "int4multirange",
+    "int8multirange",
+    "nummultirange",
+    "tsmultirange",
+    "tstzmultirange",
+    "datemultirange"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "range-refactors.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "scope": {
+    "for": [
+      "global"
+    ]
+  },
+  "discussion": 0,
+  "externals": [],
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}
