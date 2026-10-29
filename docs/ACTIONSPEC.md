@@ -1224,12 +1224,15 @@ from them with no prompt), a grid extension's RULES' (the inputs a
 module declares beside its rules, a threshold or the column to watch,
 so its formatting applies with no prompt) and the query's own PARAMETERS (so the run
 binds them with no prompt). Each pair names an input by its key, as the
-view declares it, or a parameter by its name (`$1` as `1` or `$1`;
-`$name`, `{name}` and `:name` as `name` or `$name`), and gives its
-value as text; a pair runs to the next `<key>=` that
-starts the line or follows a comma outside quotes, so a value that is
-itself a comma-separated list needs no quoting, and a value holding a
-comma before an `=`, or an `=`, is written in double quotes. Several
+view declares it, or a parameter by its SPELLING in the query: `$1`,
+`$name`, `:name` (for psql's `:name`, `:'name'` and `:"name"` alike) or
+`{name}`. Any spelling of a parameter answers it, so a name spelled
+`$since` in one statement and `:since` in another is answered by either
+key, and the bare forms `1` and `name` MUST be read as well, as the key
+of `$1` and of a named parameter. An implementation that WRITES the
+line (from its input form) MUST write a parameter's key as the query
+spells it, and SHOULD take out a key for the same parameter in another
+spelling, so the line answers it once. Several
 lines ADD UP, a later line overriding a key it repeats. The values are
 the view's DEFAULTS for that result: an answer the user gives the view
 directly MUST still win, and a reset of the view's inputs MUST restore
@@ -1238,9 +1241,36 @@ its reach as for `@extension` (8.29). A key no view opened on the result declare
 applied extension's rules declare and no
 parameter of the query carries is ignored. Query kind only.
 
-An empty answer is written quoted, `key=""`. A pair with nothing after
-its `=` and a line that holds no pair at all are UNFINISHED: such a line
-answers nothing. An implementation that reads the file while it is
+A VALUE is written the SQL way. Where the value starts (after the `=`
+and any spaces) it is one of:
+
+- a string literal, `'text'`: a quote inside is doubled (`'it''s'`), and
+  commas, `=` and spaces inside belong to the value, so the next pair
+  begins only after the closing quote;
+- an escape string literal, `E'text'` (or `e'`): a backslash introduces
+  `\n` (line break), `\r`, `\t`, `\\` and `\'`, so a value holding a line
+  break stays on the line's one comment line;
+- `NULL`, unquoted, in any case: no value at all. A parameter answered
+  `NULL` MUST be bound as the null value; a view or a rule input answered
+  `NULL` is unanswered and takes its own default. The text `NULL` is
+  written `'NULL'`;
+- a double-quoted value, `"text"`, read for lines written before string
+  literals were the form: a double quote inside is doubled;
+- otherwise an UNQUOTED value: the text up to the next `<key>=` that
+  follows a comma, with spaces at its ends removed, so a number and a
+  value that is itself a comma-separated list need no quoting
+  (`top=60`, `series=a,b`). A quote inside an unquoted value is an
+  ordinary character (`who=O'Brien`).
+
+A literal that never closes, or one followed by anything but spaces
+before the next comma, is read as an unquoted value from its first
+character. An implementation that WRITES a value MUST write what reads
+back the same, and SHOULD write a parameter's value as a SQL literal: a
+number or `true` / `false` unquoted, other text as a string literal, a
+value holding a line break, a carriage return or a tab as an escape
+string literal, and the null value as `NULL`. An empty answer is
+written `key=''`. A pair with nothing after its `=` and a line that
+holds no pair at all are UNFINISHED: such a line answers nothing. An implementation that reads the file while it is
 being edited SHOULD keep what the line answered before it became
 unfinished, so a line being typed never takes away answers in force.
 
@@ -1259,7 +1289,8 @@ parameters and before a result view draws: the implementation MUST
 present its input form even when every input has an answer, with the
 answers it has (`@inputs`, 8.30, the inputs' own defaults, an answer
 kept from before) filled in, so the user confirms or changes them each
-time. With keys, only the inputs named are asked; the rest take their
+time. With keys, only the inputs named are asked, a parameter by any
+of its spellings as in `@inputs` (8.30); the rest take their
 `@inputs` values or defaults, and an input named by no view and no
 parameter is ignored (an implementation SHOULD report it as a problem).
 The header the line sits in sets its reach as for `@inputs`; a query's

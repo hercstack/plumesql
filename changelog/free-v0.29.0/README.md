@@ -8,6 +8,8 @@ objects, schemas or results side by side.
 
 - **Join through a foreign key:** type a dot after a key column, pick a
   column of the table it points to, and the join is written for you.
+- **Where is it used:** Shift+F12 on a table or a column shows every place
+  your scripts use it, Shift+Alt+F12 lists them in the Search tab.
 - **Rename with F2:** an alias or a CTE everywhere the query reads it,
   and on a table or a column its `ALTER ... RENAME` in a new script to
   run; once it ran, the scripts that still use the old name are one click
@@ -15,9 +17,6 @@ objects, schemas or results side by side.
 - **Completion that knows what comes next:** after a table its joins and
   alias, after a column its comparisons, after `create`, `alter table t`
   or `grant` the words they take, and the list opens on its own.
-- **FROM-first queries (experimental):** write `from customer select
-  first_name` and the columns are offered as you type; the editor writes
-  it as SQL when you run it.
 - **Mistakes caught before you run:** joins that repeat rows, a
   forgotten comma and comparisons NULL defeats are warned about, each
   with its fix or quieted where it is meant (`-- @allow`), and the fix
@@ -35,6 +34,9 @@ objects, schemas or results side by side.
   draws the plan as a diagram**, and
   **[Desktop 95](https://github.com/hercstack/plumesql/tree/main/extensions/Themes/desktop-95)**
   brings three themes drawn in relief.
+- **FROM-first queries (experimental):** write `from customer select
+  first_name` and the columns are offered as you type; the editor writes
+  it as SQL when you run it.
 
 ## Write joins faster
 
@@ -109,6 +111,37 @@ the same: when just one table left of the join has the column (with two,
 the query reads without a table name gets the right one, so it does not
 turn ambiguous.
 
+## Where is it used, and rename it
+
+### Where is it used?
+
+**Shift+F12** on a table, a column, a function, a type or a schema shows
+every place your SQL scripts use it, right under the line: this script,
+the workspace's files and your scripts, read the way PostgreSQL reads them
+(`c.first_name` through its alias counts, another table's `first_name`
+does not). A double click opens the script at that place.
+
+![Shift+F12 on c.first_name in a query over dvdrental's customer: References (5), this script's place, the place in the customer_list view of the database, its CREATE VIEW shown beside the list, and the places in active-customers.sql and names.sql](media/references.webp)
+
+**Shift+Alt+F12** (Find All References, also in the editor's right-click
+menu, as the list button beside the peek's X and on a row of the Objects
+tab) lists the same places in the Search tab, to work through them one by
+one. Its new **References** switch, beside Aa, ab and .*, takes a name
+instead of text (`customer.first_name`), completed as you type.
+
+![The Search tab with References on: the field completing customer. with the table's columns](media/references-complete.webp)
+
+![The list for public.customer.first_name on dvdrental: 5 references in 4 scripts, active-customers.sql, names.sql, the script in the editor, and the customer_list view's DDL](media/references-list.webp)
+
+- Inside functions too: a SQL function's statements, a PL/pgSQL
+  function's body, a DO block.
+- What in the database uses it: views, functions, triggers and constraints,
+  read from the Objects snapshot.
+- Types as well: `'G'::mpaa_rating`, a column's type.
+- Where it is defined counts too: a column in its table's `CREATE TABLE`,
+  an index or a key on it, a function's own `CREATE FUNCTION`, the trigger
+  that runs it.
+
 ### Rename an alias with F2
 
 Put the caret on an alias, where it is written or on any `c.` that reads
@@ -139,7 +172,8 @@ alter table public.customer
 - A column is found through its table or its alias, a function brings
   every overload (run the one you mean), and a schema, a type, an index,
   a trigger or a constraint rename the same way.
-- Nothing runs until you run it.
+- Nothing runs until you run it. A line above the `ALTER` says how many
+  places in your scripts use the name, for after the run.
 - PostgreSQL's own objects are not offered.
 - Right-click says it too: **Rename Column first_name**, **Rename Alias
   c**, only where there is something to rename.
@@ -151,6 +185,8 @@ transaction), the Log opens and says which of your scripts still use the
 old name, with **Update usages** beside it (**Settings > Log > New
 decision** can make it a notification or a pulse instead):
 
+![Update the usages of public.customer.first_name: names.sql's three places and active-customers.sql's one ticked, the CREATE INDEX of a migration unticked as a schema change, and Update 4 places](media/update-usages.webp)
+
 - Every place is listed under its script. The ones that surely mean the
   renamed column or table are ticked: `c.first_name` through the alias,
   `first_name` where that table is the one with the column, an INSERT's
@@ -160,6 +196,10 @@ decision** can make it a notification or a pulse instead):
   another connection.
 - Another table's column of the same name, a string and a comment are
   never touched.
+- A function's body is listed unticked: the function keeps what it was
+  created with until you create it again.
+- A renamed type follows in its casts; a function that has overloads is
+  told apart by how many arguments a call passes.
 - **Update** writes the ticked places: an open script in its editor (one
   undo takes it back), a closed file on disk.
 
@@ -667,13 +707,44 @@ top.
 - A copy button beside an extension's name, on the row under the mouse,
   copies its id, the name `-- @extension` lines use.
 
+### An extension's refactors under its name
+
+The more refactor extensions you install, the longer the lightbulb's
+list. Now an extension with three or more offers for a statement is one
+row under its name, with how many it has: **Window function (7)**,
+**Statistics (4)**. The rest of the list stays as short as it was.
+
+![The lightbulb on a query over customer, rental and payment: Rewrite lists Add LIMIT 100, the USING rewrites and the joins, then one row Window function (7) with its cube and a chevron; Write a Statement lists Count the rows and Statistics (4); More Actions ends with Search Refactor Extensions and Refactor Settings. Window function is under the mouse, and its submenu beside it lists Running total of rentals, Moving average of rentals over 7 rows, Change of rentals from the previous row, rentals as a percent of the total, Rank by rentals, Quartile of rentals and Row numbers by customer_id](media/refactor-groups.webp)
+
+Point at the row and its refactors open beside it, as Refactor
+Settings opens its scopes (the right arrow or Enter opens them from the
+keyboard); one of them applies as ever. The cube on the row still opens
+the extension's page.
+
+- The editor's right click menu does the same: under **Refactorings**,
+  the extension's name opens a submenu with its refactors.
+- One or two offers of an extension stay in the list itself.
+- **More Actions > Search Refactor Extensions**, in the lightbulb and in
+  the menu, shows the Extensions tab with the refactor extensions alone,
+  to find more.
+- To list every offer as before, set **Settings > Refactors > Group an
+  extension's offers** to off.
+
 ### Extensions from the annotation list
 
 Type `-- @piv` and the list offers **@extension pivot** beside the
 annotations, so attaching an extension no longer starts with typing the
 keyword.
 
-## Settings and files
+## Settings, files and connections
+
+### A script without a connection takes the one you click
+
+Open a script that has no connection yet and click a connection in the
+Connections tree: the script takes it (it connects on its first run), and
+the click shows its objects as before. To move the open script onto a
+connection from the tree any time, right-click the connection and pick
+**Assign to** your script.
 
 ### Settings you can read
 
@@ -713,6 +784,15 @@ every file on Split.
 A right click below the rows offers them first, in the workspace folder,
 as in VS Code.
 
+
+### Release notes you can act on
+
+A setting these notes talk about is drawn as its card: what it does and
+its own switch, so you can turn it on right here (FROM-first queries
+below has one), with **Open in Settings** beside it. A list of
+extensions shows where each one stands, with **Install** and **Update**,
+and **Install all** or **Update all** for the whole list (Extensions and
+themes above has two). On GitHub the same lines read as plain lists.
 ## Experimental: FROM-first queries
 
 ### FROM first, SELECT after
@@ -748,6 +828,39 @@ editor.fromFirst
 ```
 
 ## What changed
+
+### A DDL view's statistics are in its header
+
+An object's statistics stood as a comment block above its DDL. They are a
+line in the view's header now, under its name, and the hover shows them
+all:
+
+![The DDL view of dvdrental's customer: under public.customer TABLE, the line 599 rows · 224 KB · 337 sequential and 2,324 index scans · 100 dead rows, and the DDL starting at line 1 with CREATE TABLE](media/ddl-stats-header.webp)
+
+The DDL below is exactly what the server rendered: its line 1 is line 1,
+a search result or a reference lands where it is, and a copy is the DDL
+alone. **Settings > Objects > Statistics** still chooses which numbers show.
+
+### `-- @inputs` reads like SQL
+
+Run `select public._group_concat($1, $2);`, fill in the values and tick
+**Save in the script**: the line above it reads `-- @inputs $1='a', $2='b'`,
+the parameters as the query writes them and the values as SQL literals,
+where it used to read `1=a, 2=b`. psql's `:since` is saved as `:since=`
+and `{tag}` as `{tag}=`, and each field's tooltip names its key.
+
+The values follow SQL's rules:
+
+- `'text'` is a string, `''` a quote inside it, and commas, `=` and
+  spaces inside are fine: `$1='it''s, here'`.
+- A number or `true` stays as it is: `$2=42`.
+- `NULL` is no value: the parameter is sent as NULL, and the form's NULL
+  switch saves it that way. `'NULL'` is the text.
+- `E'line1\nline2'` is a value with a line break, kept on its line.
+
+Hover a key or press Ctrl+Space after `$1=` and the editor says the same.
+Lines you saved before still work, and saving over one tidies it to the
+new form.
 
 ### The window's modes say so in the title bar
 
@@ -813,6 +926,10 @@ rest.
 
 ## Fixed
 
+- **A search result in an object's DDL is selected where it is.** With
+  Objects ticked in the Search tab, a match in an object's DDL opened the
+  object with a wrong piece of text selected, a few lines above the match,
+  as many as the statistics on top took. It lands on the match now.
 - **Typing a bare `with` breaks nothing.** A statement that was only
   `with`, still being typed, raised an error from the Inline the CTE
   refactor; it now waits for a CTE.
