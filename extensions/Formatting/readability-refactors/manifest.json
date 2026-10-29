@@ -2,10 +2,10 @@
   "format": 1,
   "id": "readability-refactors",
   "kind": "refactor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "plumesql": ">=0.29.0",
   "name": "Readability refactors",
-  "description": "Aliases for a query's tables from the lightbulb: one table's or every table's, each qualifier rewritten to read through it",
+  "description": "Aliases for a query's tables, one or all at once, and a query wrapped in a CTE or a subquery and unwrapped, from the lightbulb",
   "categories": [
     "Formatting"
   ],
@@ -14,6 +14,9 @@
     "aliases",
     "readability",
     "qualify",
+    "cte",
+    "subquery",
+    "wrap",
     "refactor"
   ],
   "requires": {
