@@ -138,6 +138,9 @@ export interface RefactorStatement {
   tables: RefactorTable[]
   // A query's main SELECT, absent for anything else and for a set operation.
   query?: RefactorQuery
+  // An UPDATE's or a DELETE's WHERE as PostgreSQL's parser reads it
+  // (PlumeSQL 0.29.0 and later); a SELECT's is query.where.
+  where?: RefactorExpr
   routine?: RefactorRoutine
 }
 
@@ -229,6 +232,9 @@ export interface RefactorTable {
   alias?: string
   schema: string
   name: string
+  // What the relation is, as the dictionary names it ('table', 'view',
+  // 'materialized view', 'foreign table' ...; PlumeSQL 0.29.0 and later).
+  kind?: string
   columns: RefactorColumn[]
   // TimescaleDB's hypertable facts, when the table is one.
   timescale?: { timeColumn?: string }
@@ -1242,7 +1248,10 @@ quick and MUST answer from what it is given; it cannot ask the server.
   ALTER TABLE's table),
   resolved in the connection's dictionary; one the dictionary does not know
   is left out, a subquery's own tables are not listed. Each carries `ref`
-  (how the statement names it), `alias`, the exact `schema` and `name`, its
+  (how the statement names it), `alias`, the exact `schema` and `name`,
+  `kind`, what the relation is as the dictionary names it (`table`, `view`,
+  `materialized view`, `foreign table`, `hypertable` and the like; from
+  PlumeSQL 0.29.0), its
   `columns` (`name`, the declared `type` as PostgreSQL prints it, `pk` its
   place in the primary key, `notNull` true when it can hold no NULL (NOT
   NULL, or in the primary key), `identity` (`always` or `by default`) for
@@ -1311,6 +1320,13 @@ quick and MUST answer from what it is given; it cannot ask the server.
   and place and has no `args`: offer nothing about it. On an older
   PlumeSQL these are absent; an extension that reads them offers the rest
   and keeps installing there.
+- `where`: an UPDATE's or a DELETE's WHERE, read by PostgreSQL's own
+  parser once it has loaded and when the statement parses, as an
+  expression of the shape `query.where` has (`RefactorExpr`, above), from
+  after the keyword to RETURNING or the statement's end; absent for any
+  other statement (a SELECT's is `query.where`), for one without a WHERE
+  and for WHERE CURRENT OF. From PlumeSQL 0.29.0; on an older one it is
+  absent, and an extension that reads it offers the rest.
 - `routine`: a CREATE FUNCTION's or CREATE PROCEDURE's facts, read by
   PostgreSQL's own parser, so a refactor that rewrites a routine carries
   no parser either; absent for any other statement and until the parser
@@ -1411,9 +1427,12 @@ statement (at most 1,000,000 characters): choosing it opens that statement
 in a new tab and leaves the script as it is; its `edits` are then ignored
 and may be empty. (PlumeSQL: the tab is an unsaved script named after the
 offer's title, without a trailing "(new tab)"; Save asks where and under
-which name.) A host lists an offer that writes a new statement (a
+which name.) A host may tell an offer that writes a new statement (a
 `tab`, or edits that only insert whole statements before or after this one)
-with its own such refactors (PlumeSQL: Write a Statement). An insertion at offset 0 that
+from one that rewrites this statement (PlumeSQL: every offer of an
+extension stands in the lightbulb's Extensions group, its rewrites before
+the statements it writes, and two or more fold into one row under the
+extension's name whose submenu heads them Rewrite and Write a Statement). An insertion at offset 0 that
 writes whole statements is placed ABOVE the comment lines right over the
 statement's code (its docstring and its annotations, up to a blank line),
 so they stay with the statement they describe; the offer writes it at 0

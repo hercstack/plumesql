@@ -626,6 +626,10 @@ interface RefactorTable {
   alias?: string;
   schema: string;
   name: string;
+  /** What the relation is, as the dictionary names it: 'table', 'view',
+   * 'materialized view', 'foreign table', 'hypertable' ... PlumeSQL 0.29.0
+   * and later. */
+  kind?: string;
   columns: RefactorColumn[];
   /** TimescaleDB's hypertable facts, when the table is one. */
   timescale?: { timeColumn?: string };
@@ -675,6 +679,11 @@ interface RefactorStatement {
    * parser: absent for anything but a SELECT (or a WITH over one) and for
    * a set operation (UNION, INTERSECT, EXCEPT). */
   query?: RefactorQuery;
+  /** An UPDATE's or a DELETE's WHERE, read by PostgreSQL's own parser, in
+   * the shape of query.where: absent for any other statement, for one
+   * without a WHERE, and until the parser has loaded. PlumeSQL 0.29.0 and
+   * later. */
+  where?: RefactorExpr;
   /** A CREATE FUNCTION's or CREATE PROCEDURE's facts and what its body
    * does, read by PostgreSQL's own parser: absent for anything else and
    * until the parser has loaded. PlumeSQL 0.26.0 and later. */

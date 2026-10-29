@@ -735,28 +735,58 @@ top.
 - A copy button beside an extension's name, on the row under the mouse,
   copies its id, the name `-- @extension` lines use.
 
+### Some refactors moved to extensions
+
+Ten of the editor's own refactors are extensions now, each beside the ones
+of its kind, so the lightbulb lists what you chose to have:
+
+- **JSON refactors** (new): list a column's keys, expand an array or an
+  object into rows, add its keys as columns, `@>` containment, `#>>`
+  paths and pretty print. Adding the keys as columns no longer asks which
+  keys: one offer adds them all, and the first ones are offered one by one.
+- **Performance refactors**: Add an index for a filter, which now also
+  reads an UPDATE's and a DELETE's WHERE.
+- **Statistics refactors**: Count by a column's values, and Cast a text
+  column.
+
+They work as before once installed, and the lightbulb suggests the JSON
+ones on a query over a json column. Install them here, or every everyday
+refactor extension at once with **Refactor essentials**, which the
+Extensions tab recommends:
+
+```extensions
+refactor-essentials
+json-refactors
+performance-refactors
+statistics-refactors
+```
+
 ### An extension's refactors under its name
 
 The more refactor extensions you install, the longer the lightbulb's
-list. Now an extension with three or more offers for a statement is one
-row under its name, with how many it has: **Window function (7)**,
-**Statistics (4)**. The rest of the list stays as short as it was.
+list. Now every installed extension's offers stand together in their own
+**Extensions** group, after PlumeSQL's own, and an extension with two or
+more offers for a statement is one row under its name, with how many it
+has: **Window function (12)**, **Statistics (7)**. The rest of the list
+stays as short as it was.
 
-![The lightbulb on a query over customer, rental and payment: Rewrite lists Add LIMIT 100, the USING rewrites and the joins, then one row Window function (7) with its cube and a chevron; Write a Statement lists Count the rows and Statistics (4); More Actions ends with Search Refactor Extensions and Refactor Settings. Window function is under the mouse, and its submenu beside it lists Running total of rentals, Moving average of rentals over 7 rows, Change of rentals from the previous row, rentals as a percent of the total, Rank by rentals, Quartile of rentals and Row numbers by customer_id](media/refactor-groups.webp)
+![The lightbulb on select * from customer: Rewrite lists Expand * to columns, Add LIMIT 100, Add ORDER BY the primary key and three joins; Write a Statement lists Count the rows; Extensions lists Readability (3), Write 100 rows of sample data for customer (new tab) by Sample data, Statistics (7) and Window function (12), each with its cube in one column. Statistics is under the mouse, and its submenu beside it lists Z-score of active under Rewrite, then Describe active, Trend of active over create_date, Histogram of active and Outliers of active under Write a Statement](media/refactor-groups.webp)
 
 Point at the row and its refactors open beside it, as Refactor
 Settings opens its scopes (the right arrow or Enter opens them from the
-keyboard); one of them applies as ever. The cube on the row still opens
-the extension's page.
+keyboard), headed Rewrite and Write a Statement when it has both; one of
+them applies as ever. The cube on the row still opens the extension's
+page.
 
 - The editor's right click menu does the same: under **Refactorings**,
   the extension's name opens a submenu with its refactors.
-- One or two offers of an extension stay in the list itself.
+- An extension with a single offer keeps it as a row of its own in the
+  Extensions group, its name beside it.
 - **More Actions > Search Refactor Extensions**, in the lightbulb and in
   the menu, shows the Extensions tab with the refactor extensions alone,
   to find more.
-- To list every offer as before, set **Settings > Refactors > Group an
-  extension's offers** to off.
+- To list every offer on a row of its own, set **Settings > Refactors >
+  Group an extension's offers** to off.
 
 ### Extensions from the annotation list
 

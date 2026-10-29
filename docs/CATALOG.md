@@ -71,7 +71,7 @@ One JSON object per extension, UTF-8, no comments. Fields:
 | `license` | yes | An SPDX identifier. The repository's own license applies to what is contributed; the field makes it explicit per extension. |
 | `featured` | no | `true` for the curated few the panel shows first under Recommended when nothing else recommends them. Maintainers set it. |
 | `recommend` | no | App-side signals that put the extension under Recommended (4.3), a list of known words: `my-extensions` (the user has extensions of their own). The validator refuses an unknown word. |
-| `suggest` | no | A refactor extension alone: the statement signals on which the editor's lightbulb offers its install (4.3), a list of known words, each once: `numbers` (a query returning a number column that is no key). The validator refuses an unknown word (rule 8i). Maintainers set it, as they set `featured`: a signal puts the extension in the lightbulb of every matching query, so it is granted to an extension whose refactors genuinely fit such queries, never asked for by declaring it. |
+| `suggest` | no | A refactor extension alone: the statement signals on which the editor's lightbulb offers its install (4.3), a list of known words, each once: `numbers` (a query returning a number column that is no key), `arrays` (a query over an array column). The validator refuses an unknown word (rule 8i). Maintainers set it, as they set `featured`: a signal puts the extension in the lightbulb of every matching query, so it is granted to an extension whose refactors genuinely fit such queries, never asked for by declaring it. |
 | `types` | no | A grid or a refactor extension alone: the PostgreSQL data types whose values a grid extension reads (its inspectors), or that a refactor extension's refactors rewrite, bare lowercase names as `format_type` spells them without a schema or a modifier (`geometry`, `vector`, `double precision`), 1 to 12, each once. For a grid extension, a result column declared one of them offers the extension while it is not installed, and a query returning one suggests it in the editor's lightbulb; for a refactor extension, a statement over a column of one of them suggests its install in the lightbulb (4.3). |
 | `forkedFrom` | no | The id the extension was copied from in the app, informational; the validator accepts an id. |
 | `externals` | when the code loads any | Every external library the extension loads at run time, as https URLs: a grid view's `scripts: [...]`, an `import` from a CDN. The validator checks the list against the code both ways (rule 8b of section 12), so a manifest never hides what the code fetches. The app shows them under Dependencies with their hosts, says which hosts the allowlist (`extensions.remoteScriptHosts`) has, and offers to allow the rest. |
@@ -211,8 +211,12 @@ returns is its last run's columns when the statement ran as written,
 else what its select list says (a column of its tables, typed by the
 dictionary, and a star's tables' columns). Such a statement offers
 "Install <name> (from the Marketplace)" exactly as a type does, under
-the same rules. A word a later catalog brings and the app does not know
-offers nothing, never a reason to refuse the catalog.
+the same rules. `arrays` is on for a query whose result (its last run's
+columns, else what its select list says) or whose tables have a column
+of an array type (`text[]`, `integer[]`): the type a `types` entry
+cannot name, since an array of a type is not the type. A word a later
+catalog brings and the app does not know offers nothing, never a reason
+to refuse the catalog.
 
 Every install the lightbulb offers is a suggestion the user may decline
 for good. The install's question (2.1), asked from a suggestion, has
@@ -488,7 +492,8 @@ when:
    `[]` in it);
 8i. `suggest` is present on an extension that is not a refactor
    extension, is not a non-empty list of strings, lists one twice, or
-   lists a word the validator does not know (`numbers` today);
+   lists a word the validator does not know (`numbers` and `arrays`
+   today);
 9. `permissions` has an unknown key;
 10. reserved;
 11. a `.plumesql.sql` or `.plumesql.run` does not parse under the action
