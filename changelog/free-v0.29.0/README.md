@@ -925,8 +925,9 @@ new form.
 The statement lens shows the extensions that apply to a statement as one
 item, `⧉ Extensions (3) ▾`, each extension in its menu, so a statement
 with several no longer gets a row of them. A statement with one extension
-still shows its name, and **Extensions in the Lens** in the lens cog's
-menu switches back to one item each.
+still shows its name. The menu ends with **Extensions…**, the same picker
+the editor's and the grid's right click open: apply another extension to
+the statement, or make one.
 
 ### The window's modes say so in the title bar
 
