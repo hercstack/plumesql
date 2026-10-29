@@ -1,0 +1,44 @@
+{
+  "format": 1,
+  "id": "refactor-essentials",
+  "kind": "pack",
+  "version": "1.0.0",
+  "plumesql": ">=0.29.0",
+  "name": "Refactor essentials",
+  "description": "The everyday refactor extensions in one: correct, fast and readable queries, JSON, arrays, ranges, statistics, window functions, sample rows",
+  "categories": [
+    "Packs"
+  ],
+  "tags": [
+    "refactor",
+    "lightbulb",
+    "starter",
+    "correctness",
+    "performance",
+    "readability",
+    "json",
+    "range",
+    "array",
+    "statistics",
+    "window functions",
+    "sample data"
+  ],
+  "requires": {
+    "pgExtensions": []
+  },
+  "files": [
+    "refactor-essentials.plumesql-pack.json"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 0,
+  "externals": [],
+  "featured": true,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

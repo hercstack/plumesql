@@ -1,0 +1,14 @@
+{
+  "members": [
+    "correctness-refactors",
+    "performance-refactors",
+    "readability-refactors",
+    "json-refactors",
+    "array-refactors",
+    "range-refactors",
+    "statistics-refactors",
+    "window-refactors",
+    "sample-data",
+    "migration-safety"
+  ]
+}

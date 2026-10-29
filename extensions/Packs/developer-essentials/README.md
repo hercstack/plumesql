@@ -14,6 +14,7 @@ The everyday set for someone writing an application against PostgreSQL: find whe
 - **JSON to columns**: a JSON column's keys as columns of their own, right beside it.
 - **JSON to rows**: a JSON column as a table of its own, arrays opened into rows.
 - **Json**: JSON reads compact on one line, the indented value on hover.
+- **JSON refactors**: the lightbulb lists a JSON column's keys, expands an array into rows, adds its keys as columns and turns a `->>` comparison into `@>`, which an index can serve.
 
 **Fixtures and migrations**
 

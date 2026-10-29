@@ -3,6 +3,7 @@
     "search-data",
     "json-to-columns",
     "json-to-rows",
+    "json-refactors",
     "rows-as-sql",
     "explain-plan",
     "performance-refactors",
