@@ -1485,12 +1485,14 @@ one of the four MUST be diagnosed and the line ignored. Query kind only.
 
 ### 8.37 `@allow <check> [, <check> ...]`
 
-Quiets an implementation's own static checks where what they flag is
-meant. An implementation MAY read a statement's text for likely
-mistakes, without running it, and mark what it finds beside the text,
-in a list of problems, or both. It names each such check by an
-identifier. This annotation names the checks the file's author has
-judged, and wants left unmarked:
+Quiets what an implementation marks before a statement runs, where what
+it flags is meant. An implementation MAY read a statement's text for
+likely mistakes, without running it, and mark what it finds beside the
+text, in a list of problems, or both; it names each such check by an
+identifier. It MAY also ask a server to check a statement without
+running it (a parse, a describe) and mark the server's verdict the same
+way. This annotation names the checks, and the verdicts by their
+SQLSTATE, that the file's author has judged and wants left unmarked:
 
 ```sql
 -- @allow join-repeats
@@ -1498,10 +1500,18 @@ select c.first_name, r.rental_date
 from customer c join rental r on r.customer_id = c.customer_id;
 ```
 
+```sql
+-- @allow 42P01
+select * from staging_orders;  -- created by another script before this one runs
+```
+
 In the file's header (7) it reaches every statement of the file; in the
 comment run above a statement, that statement alone. Several lines add
-up, and an identifier may repeat harmlessly. The identifiers this
-version names, each a check an implementation MAY offer:
+up, and an identifier may repeat harmlessly. An identifier is a check
+or a SQLSTATE: five letters or digits (`42P01`, `42703`), compared in
+any case, naming the verdicts of that code a server returns when it is
+asked to check the statement without running it. The checks this
+version names, each one an implementation MAY offer:
 
 | Check | What it marks |
 |---|---|
@@ -1517,12 +1527,17 @@ Requirements:
   reaches, on any surface where the implementation reports that check.
   Nothing else changes: what runs, and how, never depends on this
   annotation.
-- It quiets the implementation's OWN checks only. A server's verdict
-  (an error or a warning the server reports for the statement, live or
-  at a run) MUST NOT be quieted by it.
-- An identifier the implementation does not know MUST be diagnosed and
-  ignored; the other identifiers on the line still apply. A line naming
-  nothing MUST be diagnosed.
+- A SQLSTATE quiets the server's verdicts of that code that the
+  implementation obtained by checking the statement WITHOUT running it,
+  and nothing else: what a RUN reports (an error or a warning the server
+  returns for executing the statement) MUST NOT be quieted by it, and a
+  verdict of another code still marks.
+- An implementation MUST NOT quiet a mark by any record kept outside the
+  file (a dismissal stored for one user or one session): what is
+  quieted is what the file says, for everyone who reads it.
+- An identifier that is neither a check the implementation knows nor a
+  SQLSTATE MUST be diagnosed and ignored; the other identifiers on the
+  line still apply. A line naming nothing MUST be diagnosed.
 - An implementation that offers none of these checks MUST accept and
   ignore the annotation.
 

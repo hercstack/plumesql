@@ -356,14 +356,18 @@ A customer joined to their rentals is often exactly what you mean. Each
 hint and warning of these checks offers, after its fixes, in the Quick
 Fix and in the Problems row's menu:
 
-- **Hide in This Statement**: gone for you, until the statement changes
-  (the Log has Restore);
 - **Allow join-repeats in This Query**: writes `-- @allow join-repeats`
   above the query, so everyone who reads the file sees it is meant;
 - **Allow join-repeats in This File**: the same line in the file's header;
 - the check's settings, for the workspace or everywhere.
 
-![The Problems row menu of a join hint: Hide in This Statement, Allow join-repeats in This Query, Allow join-repeats in This File, Go to Problem, Copy Message and Joins That May Repeat Rows Settings](media/quiet-ladder.webp)
+![A query over customer, rental and payment with its join warnings in Problems, and a row's menu: Allow join-repeats in This Query, Allow join-repeats in This File, Go to Problem, Copy Message and Joins That May Repeat Rows Settings](media/quiet-ladder.webp)
+
+A check is quieted only by a line in the file, so whoever reads it later,
+you included, sees why a warning is gone. The same goes for what the
+dynamic parser reports: for a table another script creates first, the
+problem's Quick Fix writes `-- @allow 42P01`, its error code, above the
+query or in the file's header, and nothing is dismissed out of sight.
 
 ```sql
 -- @allow join-repeats
@@ -885,6 +889,14 @@ The values follow SQL's rules:
 Hover a key or press Ctrl+Space after `$1=` and the editor says the same.
 Lines you saved before still work, and saving over one tidies it to the
 new form.
+
+### One lens item for all extensions
+
+The statement lens shows the extensions that apply to a statement as one
+item, `⧉ Extensions (3) ▾`, each extension in its menu, so a statement
+with several no longer gets a row of them. A statement with one extension
+still shows its name, and **Extensions in the Lens** in the lens cog's
+menu switches back to one item each.
 
 ### The window's modes say so in the title bar
 
