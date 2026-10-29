@@ -992,6 +992,10 @@ rest.
 
 ## Fixed
 
+- **The lightbulb's list keeps its height when the editor is short.** With
+  the results pane dragged up, the list opened only three rows tall. It now
+  takes the room the window has, opening above the line when there is more
+  room there.
 - **A number or a date left empty is NULL.** In the form that asks for a
   script's parameters, an empty `$2` of `$2::int` was sent as an empty
   text, which PostgreSQL refuses. An empty field (or one holding spaces
