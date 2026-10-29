@@ -567,6 +567,30 @@ key is used. No `-- @var` is needed either: `-- @pick $1 address
 that schema's tables), then a table's columns inside the parentheses. Problems warns about a table or a column the
 connection does not have.
 
+### Dates and times from a picker
+
+A date, a timestamp or a time no longer has to be typed. In the form that
+asks for a script's parameters, and in the row editor, such a field has a
+calendar button beside it (**Alt+↓** in the field):
+
+![The Run with parameters form for a query on rental: the from field holds 2005-08-01 09:30:00 and its picker is open under it, August 2005 with the 1st chosen and the 3rd under the keyboard's focus, the hours, minutes and seconds below, Now and Done](media/date-picker.webp)
+
+- Pick a day, set the hours, minutes and seconds, or press **Now** or
+  **Today**. The field shows the value as it will be sent,
+  `2005-08-01 09:30:00`.
+- From the keyboard: the arrows move a day or a week, **PageUp** and
+  **PageDown** a month (with **Shift** a year), **Enter** chooses, and
+  **Esc** puts back what the field held.
+- The field stays yours to type in, and PostgreSQL's own words work in
+  it: `today`, `now`, `tomorrow`, `infinity`. The empty field says so.
+- A value that cannot be the field's type gets a red edge as you type,
+  and hovering the field says why: `not a timestamp`, `not a whole
+  number`, `not valid JSON`. The run is never held for it; the server has
+  the last word.
+- The form brings back your last answers only where the type is the same,
+  so a value you gave another query's text parameter stays out of a
+  timestamp field.
+
 ### Parameter lines, completed and checked
 
 Type `-- @var ` above a statement and the editor offers its parameters
@@ -926,6 +950,16 @@ rest.
 
 ## Fixed
 
+- **A number or a date left empty is NULL.** In the form that asks for a
+  script's parameters, an empty `$2` of `$2::int` was sent as an empty
+  text, which PostgreSQL refuses. An empty field (or one holding spaces
+  alone) of a number, a date or time, a UUID or JSON now means NULL: its
+  NULL switch shows lit while the box is empty, and goes out as soon as
+  you type. A text field still sends what you typed, the empty string
+  included. The row editor does the same.
+- **psql's `:"name"` is no error while you type.** The run turns it into
+  a name (`select 1 as :"col"`), but the editor underlined it as an error.
+  It reads as it runs now.
 - **A search result in an object's DDL is selected where it is.** With
   Objects ticked in the Search tab, a match in an object's DDL opened the
   object with a wrong piece of text selected, a few lines above the match,
