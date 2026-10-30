@@ -16,7 +16,8 @@ objects, schemas or results side by side.
   from updated, and the lightbulb gives every table an alias in one step.
 - **Completion that knows what comes next:** after a table its joins and
   alias, after a column its comparisons, after a JSON, array or range
-  column its operators and the keys its values hold, after `create`,
+  column its operators and the keys its values hold, in a string an
+  enum's values, at a key a pick from its table, after `create`,
   `alter table t` or `grant` the words they take, and the list opens on
   its own.
 - **Mistakes caught before you run:** joins that repeat rows, a
@@ -93,6 +94,8 @@ too: a key path reuses it instead of joining the table again. And when
 you write the join yourself, `join customer c using ` offers
 `(customer_id)` right away: the key is known.
 
+![The completion after join customer c using with rental r on the left: (customer_id) leads the list, its detail saying customer_id is named alike on both sides, so USING joins on it and returns it once](media/using-key.webp)
+
 ### Rewrite a join as USING, or as ON
 
 Open the lightbulb (Ctrl+. or Cmd+.) on a query whose join is on one
@@ -103,6 +106,8 @@ join customer c on c.customer_id = r.customer_id
 -- Rewrite join customer as USING (customer_id):
 join customer c using (customer_id)
 ```
+
+![The lightbulb's list with the caret on customer in join customer c on c.customer_id = r.customer_id: Rewrite join customer as USING (customer_id) among the rewrites, beside Add LIMIT 100 and the joins the keys make](media/join-using.webp)
 
 and on a `USING` join, **Rewrite join customer as ON** goes back. With
 the caret in a join, that join is offered; anywhere else in the query,
@@ -150,6 +155,8 @@ Put the caret on an alias, where it is written or on any `c.` that reads
 it, and press **F2**: the new name is written everywhere the query reads
 it, in one edit that one undo takes back.
 
+![F2 on the alias c of from customer c: every c of the query highlighted and the rename box open with cu typed](media/f2-alias.webp)
+
 - A **CTE's name** renames the same way, with every `from` and every
   qualifier that names it.
 - An inner query that names its own `c` keeps it, and a string or a
@@ -170,6 +177,8 @@ select c.first_name from customer c;
 alter table public.customer
     rename column first_name to given_name;
 ```
+
+![The new script F2 on first_name wrote: a comment saying 1 place in 1 script names it and the Log offers to update them once this has run, then alter table public.customer rename column first_name to given_name](media/f2-table.webp)
 
 - A column is found through its table or its alias, a function brings
   every overload (run the one you mean), and a schema, a type, an index,
@@ -238,6 +247,8 @@ can follow it, never another table (that comes after a comma):
   the rest (`offset`, `fetch first`, `for update`, `union` ...), each a
   few letters away: `cr` finds `cross join`.
 
+![The list after from customer c and a space: join address a on a.address_id = c.address_id first, with its detail saying address_id is NOT NULL so an inner JOIN loses nothing, then the left joins to payment and rental, where, join, left join, group by, order by and limit](media/follows-table.webp)
+
 A join half written finishes too: after `left ` come `join`, `outer
 join` and `join lateral`. After a JOIN's table its `on` condition from
 the key leads, with `using (...)`.
@@ -260,6 +271,8 @@ every table in the database:
 - `update customer ` offers `set` and its alias, `delete from customer `
   `where`, `using` and `returning`.
 
+![The list after alter table customer and a space: add column, add constraint, drop column, drop constraint, alter column, rename column, rename to, owner to and set schema](media/statement-words.webp)
+
 ### After a column, its comparisons
 
 Once a phrase is complete, the space opens the list with what can follow
@@ -269,6 +282,8 @@ still to come, after `limit 10 ` `offset`, after `select first_name `
 `from` and `as`, after a list's comma the next column. After `exists `
 come the subqueries your foreign keys make. Typing an operator closes
 the list again.
+
+![The list after where c.email and a space: =, <>, <, >, <=, >=, is null, is not null and in](media/comparisons.webp)
 
 The list also opens with ⌃Space, and on a Mac with ⌘I or ⌥Esc (⌃Space
 often switches the keyboard's input source there).
@@ -315,6 +330,30 @@ one color? Turn it off right here:
 
 ```setting
 editor.jsonStrings
+```
+
+### Enum values and keys, without looking them up
+
+Type the quote after an enum column (`where rating = '`) and the list
+offers the enum's values in their order: G, PG, PG-13, R, NC-17; with the
+caret in such a string, a list button right after it opens them too. A
+cast (`''::mpaa_rating`), a SET and an INSERT get them as well.
+
+![The list after where rating = ' on dvdrental's film: G, PG, PG-13, R and NC-17, each a public.mpaa_rating, and the list button right after the string](media/enum-values.webp)
+
+A key is picked from its table. After `customer_id = ` (or in an INSERT's
+VALUES, under `customer_id`) a small table button stands at the caret,
+**Ctrl+Space** offers **Pick from customer…**, and so do the Quick Fix
+list and the right click. The
+customer table opens in pick mode, as it does for a form's parameter;
+select a row, click **Select**, and the script gets its id. A table's own
+key works the same way: `delete from customer where customer_id = `.
+
+![where customer_id = on rental with the table button at the caret, and Ctrl+Space offering Pick from customer… first, customer_id → customer.customer_id, above the columns](media/key-pick.webp)
+
+```setting
+editor.enumValues
+editor.keyPicker
 ```
 
 ## Mistakes caught before you run
@@ -379,6 +418,8 @@ meant. `c.first_name c.last_name`, which the server refuses with a
 syntax error, gets **Insert ','** too. **Settings > Editor > Flag
 aliases that read like a missing comma** turns it off.
 
+![last_name underlined on its own line under first_name, and its hover: last_name is read as a column alias of first_name, not as a column of its own. Is a ',' missing after first_name? with Quick Fix](media/missing-comma.webp)
+
 ### NULL traps
 
 `where return_date = null` returns nothing, ever: a comparison with NULL
@@ -395,6 +436,8 @@ Comparisons NULL defeats** chooses all, the hints only, the warnings
 only, or off. Where your session has `transform_null_equals` on, `= NULL`
 does read as IS NULL there, and the warning becomes a quiet note that
 says so.
+
+![where return_date = null and the hover on its =: A comparison with NULL (= NULL) is never true: it yields NULL whatever the other side holds. IS NULL tests for it. with Quick Fix](media/null-trap.webp)
 
 ### Quiet a check where it is wrong
 
@@ -467,6 +510,8 @@ its unit and what it does. After the name come `TO` and `=`, and after
 them the parameter's own values (`notice`, `warning` ... for
 `client_min_messages`, `on` and `off` for a switch) and `DEFAULT`.
 
+![The list after set work_: work_mem with integer, kB, its default 4MB and what it sets, then maintenance_work_mem, logical_decoding_work_mem, recursive_worktable_factor and max_parallel_workers_per_gather](media/set-params.webp)
+
 ```sql
 SET work_mem TO '64MB';
 SET LOCAL statement_timeout = '5s';
@@ -511,6 +556,8 @@ A plain SQL file reads an unknown `-- @name` as an ordinary comment, so
 a real one wears a dotted hint naming it, and **Change to @format** is
 its quick fix. Other tools' words, such as NpgsqlRest's annotations or
 `@param` and `@todo`, are left alone.
+
+![The comment line @fromat upper with a dotted hint under @fromat, and its hover: "@fromat" is not an annotation PlumeSQL reads, so this line is an ordinary comment. Did you mean @format? with Quick Fix](media/annotation-typo.webp)
 
 ## Compare anything side by side
 
@@ -665,26 +712,6 @@ stays plain. Rather type them? Turn it off right here:
 editor.datePicker
 ```
 
-### Enum values and keys, without looking them up
-
-Type the quote after an enum column (`where rating = '`) and the list
-offers the enum's values in their order: G, PG, PG-13, R, NC-17; with the
-caret in such a string, a list button right after it opens them too. A
-cast (`''::mpaa_rating`), a SET and an INSERT get them as well.
-
-A key is picked from its table. After `customer_id = ` (or in an INSERT's
-VALUES, under `customer_id`) a small table button stands at the caret,
-**Ctrl+Space** offers **Pick from customer…**, and so do the Quick Fix
-list and the right click. The
-customer table opens in pick mode, as it does for a form's parameter;
-select a row, click **Select**, and the script gets its id. A table's own
-key works the same way: `delete from customer where customer_id = `.
-
-```setting
-editor.enumValues
-editor.keyPicker
-```
-
 ### Parameter lines, completed and checked
 
 Type `-- @var ` above a statement and the editor offers its parameters
@@ -693,6 +720,8 @@ for: above `where customer_id = $1` it writes `-- @var $1 "Customer id"`,
 the label selected so you can type over it. After `-- @pick `,
 `-- @choices ` and `-- @help ` it offers the statement's parameters,
 declared or not.
+
+![A comment line @var typed above a query that writes $customer and $since: the list offers both, and the detail of $customer shows the label "Customer id" it writes, declaring $customer for the run parameters form](media/param-lines.webp)
 
 Each line names its parameter the way the query writes it:
 `-- @var $since "Since"` for `$since`, `-- @pick :who ...` for psql's
