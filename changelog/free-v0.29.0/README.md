@@ -1356,15 +1356,15 @@ rest.
   reads only its own lines, and the file's header still reaches every
   query, as before.
 
-  ```sql
-  -- This one runs as a plain grid.
-  select '{"rentals": []}'::jsonb as doc;
+```sql
+-- This one runs as a plain grid.
+select '{"rentals": []}'::jsonb as doc;
 
-  -- This one opens as a table.
-  -- @extension json-to-rows open
-  -- @inputs column=doc, path=rentals
-  select '{"rentals": []}'::jsonb as doc;
-  ```
+-- This one opens as a table.
+-- @extension json-to-rows open
+-- @inputs column=doc, path=rentals
+select '{"rentals": []}'::jsonb as doc;
+```
 
 - **What a result writes into the script lands above its own query.**
   **Save in the script**, **For this query**, **Beside the Grid**, the
