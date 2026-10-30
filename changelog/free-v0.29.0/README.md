@@ -21,9 +21,14 @@ objects, schemas or results side by side.
   `alter table t` or `grant` the words they take, and the list opens on
   its own.
 - **Mistakes caught before you run:** joins that repeat rows, a
-  forgotten comma and comparisons NULL defeats are warned about, each
-  with its fix or quieted where it is meant (`-- @allow`), and the fix
-  PostgreSQL's own error settles is one click away.
+  forgotten comma, comparisons NULL defeats, a subquery that reads the
+  wrong table, tables nothing joins, an INSERT that matches columns by
+  position, a JSON key updated in place that copies the whole document
+  and a SECURITY DEFINER function that does not pin its search_path are
+  warned about, DDL that locks a table and a NULL that empties a string
+  get a hint, each with its fix or quieted where it is meant
+  (`-- @allow`), and the fix PostgreSQL's own error settles is one click
+  away.
 - **Compare two files, objects or schemas** side by side, and compared
   results show where they differ, however deep in the rows.
 - **The Objects tree:** Browse Data and Open DDL on every row, a click
@@ -439,6 +444,156 @@ says so.
 
 ![where return_date = null and the hover on its =: A comparison with NULL (= NULL) is never true: it yields NULL whatever the other side holds. IS NULL tests for it. with Quick Fix](media/null-trap.webp)
 
+### A key changed in a JSON document copies the whole document
+
+PostgreSQL has no partial update. This changes one key, and writes a new
+version of the row with a new copy of the whole document, its TOAST
+chunks too when the document is large:
+
+```sql
+update reviews
+set review = jsonb_set(review, '{likes}', to_jsonb((review->>'likes')::int + 1))
+where id = 18956;
+```
+
+PlumeSQL now marks a change of a part of a `json` or `jsonb` column
+(`jsonb_set`, `jsonb_insert`, `||`, `-`, `#-`, `doc['likes'] = ...`).
+How often a key changes is something only you know, so the mark is a
+quiet hint, and it becomes a warning where the cost is certain:
+
+- the new value is read from the document itself, a counter or a state
+  kept in it: each change copies the whole document again;
+- the column is in an index, so the UPDATE is never HOT and every index
+  of the table gets a new entry too.
+
+A key that changes often, a counter or a status, is better kept in a
+column of its own: an UPDATE of that column leaves the document where it
+is, and the new row version carries only a pointer to it. Two UPDATEs one
+after the other that change the same rows' document get a hint too: one
+UPDATE that makes both changes writes one new version instead of two.
+
+```setting
+editor.flagJsonUpdates
+```
+
+### SECURITY DEFINER functions pin their search_path
+
+A `SECURITY DEFINER` function runs with its owner's rights, but it finds
+the tables, functions and operators its body names through the caller's
+`search_path`. A caller who puts an object of their own first gets it run
+with those rights. PlumeSQL now warns about such a function with no `SET
+search_path`, and the quick fix writes one:
+
+```sql
+create function app.balance_of(acc int) returns numeric
+language sql
+security definer
+set search_path = app, pg_temp
+as $$ select balance from accounts where id = acc $$;
+```
+
+The schemas come from your database: the ones the body names objects of
+without a schema, or `pg_catalog, pg_temp` for a body that names every
+object with its schema. `pg_temp` goes last, because a temporary schema
+the path does not name is searched first: a `search_path` that ends with
+anything else is a warning too, and its fix names `pg_temp` last.
+
+A new function can be executed by every role (PUBLIC), so a quiet hint
+also offers **Revoke EXECUTE from PUBLIC**, which writes the `REVOKE`
+below the function; grant it to the roles that need it in the same
+transaction. A body written as `BEGIN ATOMIC` or `RETURN` binds its
+names when it is created and is left alone.
+
+```setting
+editor.flagSecurityDefiner
+```
+
+### A subquery that reads the wrong table
+
+```sql
+delete from orders where id in (select id from tmp_ids);
+```
+
+If `tmp_ids` has no `id` column, this is not an error: PostgreSQL takes
+`orders.id` from the outer query, the subquery returns each order's own
+id, and every order is deleted. PlumeSQL now warns where a subquery's
+select list names a column its own tables do not have, and the quick fix
+writes the column you most likely meant (`tmp_ids.order_id`), or names
+the outer table when the outer value is what you want.
+
+```setting
+editor.flagOuterColumns
+```
+
+### Tables nothing joins
+
+```sql
+select * from orders o, items i where o.placed > now();
+```
+
+pairs every order with every item. PlumeSQL now warns about tables listed
+with commas that nothing in the WHERE ties together, a JOIN whose ON
+never reads the joined table (`join items i on o.id = o.id`), and an
+UPDATE ... FROM or DELETE ... USING whose WHERE never ties the extra
+table to the rows it changes, which updates every row from an arbitrary
+one, or deletes every row. Where a foreign key links the tables, the
+warning names the condition that joins them (`i.order_id = o.id`). When
+every pair is meant, the quick fix writes CROSS JOIN, which says so.
+
+```setting
+editor.flagJoinConditions
+```
+
+### INSERT matches columns by position
+
+```sql
+insert into person (first_name, last_name)
+select last_name, first_name from staging;
+```
+
+swaps the two names without an error: INSERT takes the SELECT's columns
+by position, never by name. PlumeSQL now warns where a SELECT item's name
+is another column than the one it lands in, and the quick fix orders the
+column list as the SELECT, or writes one where the INSERT has none.
+
+```setting
+editor.flagInsertOrder
+```
+
+### Schema changes that lock a table
+
+Some DDL blocks a table's readers or writers for as long as it works, and
+on a busy table that is an outage. PlumeSQL now puts a quiet hint on it,
+saying what it blocks and what does not:
+
+- `CREATE INDEX`, `DROP INDEX`, `REINDEX` and `REFRESH MATERIALIZED VIEW`
+  without `CONCURRENTLY`: the quick fix writes `CONCURRENTLY` (for a
+  materialized view only when it has the unique index that needs);
+- a foreign key or a `CHECK` added without `NOT VALID`: the quick fix
+  adds it `NOT VALID` and writes the `VALIDATE CONSTRAINT` that checks the
+  old rows later, while writes go on;
+- a primary key or a unique constraint added without `USING INDEX`, a
+  column's type changed, `SET NOT NULL`, a column added with a volatile
+  default, `VACUUM FULL` and `CLUSTER`, each with what to do instead.
+
+A table the same script creates first is new and empty, and gets no hint.
+
+```setting
+editor.flagDdlLocks
+```
+
+### A NULL that empties a whole string
+
+`first_name || ' ' || last_name` is NULL for every row where either name
+is NULL. A text column that can hold NULL, joined with `||`, now gets a
+quiet hint whose quick fix writes `coalesce(first_name, '')`; `concat()`
+skips NULLs too. Which columns can hold NULL comes from your tables, as
+for the NULL comparisons.
+
+```setting
+editor.flagNullConcat
+```
+
 ### Quiet a check where it is wrong
 
 A customer joined to their rentals is often exactly what you mean. Each
@@ -466,7 +621,9 @@ join rental r on r.customer_id = c.customer_id;
 ```
 
 The checks are `join-repeats`, `null-comparison`, `missing-comma`,
-`missing-semicolon` and `setting`, the Code column of the Problems tab shows them, and
+`missing-semicolon`, `setting`, `json-update`, `security-definer`,
+`outer-column`, `join-condition`, `insert-order`, `ddl-locks` and
+`null-concat`, the Code column of the Problems tab shows them, and
 the editor completes them after `-- @allow `.
 
 ### Fix it from the Problems tab
