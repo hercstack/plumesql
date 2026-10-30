@@ -15,8 +15,10 @@ objects, schemas or results side by side.
   run; once it ran, the scripts that still use the old name are one click
   from updated, and the lightbulb gives every table an alias in one step.
 - **Completion that knows what comes next:** after a table its joins and
-  alias, after a column its comparisons, after `create`, `alter table t`
-  or `grant` the words they take, and the list opens on its own.
+  alias, after a column its comparisons, after a JSON, array or range
+  column its operators and the keys its values hold, after `create`,
+  `alter table t` or `grant` the words they take, and the list opens on
+  its own.
 - **Mistakes caught before you run:** joins that repeat rows, a
   forgotten comma and comparisons NULL defeats are warned about, each
   with its fix or quieted where it is meant (`-- @allow`), and the fix
@@ -270,6 +272,44 @@ the list again.
 
 The list also opens with ⌃Space, and on a Mac with ⌘I or ⌥Esc (⌃Space
 often switches the keyboard's input source there).
+
+### After a JSON, array or range column, its operators and keys
+
+Nobody remembers `?|` against `?&`. Now a JSON column lists what you can
+write next, each operator with what it does and what it gives: `->>` a
+field as text, `@>` containment a GIN index serves, `#>>` a value at a
+path. Pick the column from the list (`q.` then `doc`) and its operators
+open right behind the name; behind a name you typed, press
+**Ctrl+Space** or start the operator (`-`, `#`, `@`). An arrow lands
+close to the name (`q.doc->'meta'`), containment with a space around
+it. A `json` column
+gets the four extractions it has, a `jsonb` column all of them, an array
+its containment, overlap and subscripts, a range its eleven operators.
+
+![The completion after o.payload, a jsonb column of a VALUES list: ->, ->>, #>, #>>, @>, <@, ?, ?|, ?&, ||, - and #-, each with what it gives (jsonb, text, boolean) and what it does, such as Field by key or index, as text](media/json-operators.webp)
+
+Once the query has run, the keys come too. Type `data->'` (or pick `->>`
+from the list) and the keys its values hold are offered, the most common
+first, each with its kind and in how many rows it stands. After
+`data->'meta'->'` come the keys inside `meta`, after `data #>> '{` whole
+paths, after `tags[` the positions the longest array has.
+
+![The completion after o.payload->>' lists total, status and customer, each in 2 of 2 rows, as a number, a string and an object, then items, an array in 1 of 2](media/json-keys.webp)
+
+- A subquery's or a CTE's column works too, typed by what it returned
+  last: `select q.c from (select '{"a": 1}'::json as c) q`, run once,
+  then `q.c->>'` offers `a`.
+- Nothing is asked of the server: the keys come from the last result's
+  rows, and a column the query did not return gets its operators alone.
+
+JSON written in a string reads as JSON too: in
+`'{"meta": {"age": 3}}'::jsonb` the keys, values and numbers take the
+JSON viewer's colors, and every brace finds its partner. Prefer strings in
+one color? Turn it off right here:
+
+```setting
+editor.jsonStrings
+```
 
 ## Mistakes caught before you run
 
@@ -603,6 +643,12 @@ for: above `where customer_id = $1` it writes `-- @var $1 "Customer id"`,
 the label selected so you can type over it. After `-- @pick `,
 `-- @choices ` and `-- @help ` it offers the statement's parameters,
 declared or not.
+
+Each line names its parameter the way the query writes it:
+`-- @var $since "Since"` for `$since`, `-- @pick :who ...` for psql's
+`:who`, `-- @var $1` for the positional one. A bare `since` above a
+query that writes `$since` is not read: Problems says so, and its Quick
+Fix writes `$since`.
 
 And a line that does nothing now says so. A `@choices` with a single
 value or a second list for the same field used to be skipped in silence;
