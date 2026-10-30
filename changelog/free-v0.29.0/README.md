@@ -1372,6 +1372,10 @@ select '{"rentals": []}'::jsonb as doc;
   grid wrote their line above the FIRST query with the same text, not the
   one the result came from, and **Move to an extension** took the other
   copy's lines along. They now work on the query you ran.
+- **A hover you switched off stays off.** With the object or the reference
+  hover off, or a statement left out with Don't Show for, the app could
+  forget it as it started and show them again, until the setting was
+  changed once more. What you saved now holds from the start.
 
 ## Tell us what you think
 
