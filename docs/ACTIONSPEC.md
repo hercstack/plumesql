@@ -1537,6 +1537,13 @@ version names, each one an implementation MAY offer:
 | `missing-comma` | a select list item whose alias, written without `AS`, reads like a forgotten comma |
 | `missing-semicolon` | two statements with no semicolon between them |
 | `setting` | a configuration parameter the server does not have, or one that cannot be changed where the statement changes it (`SET` of a parameter that takes a restart) |
+| `json-update` | a change of one part of a JSON document (`jsonb_set`, `||`, `-`, `#-`, a subscript) in an `UPDATE`, which writes a new copy of the whole document |
+| `security-definer` | a `SECURITY DEFINER` routine that does not pin `search_path` with `pg_temp` last, or whose `EXECUTE` the script never revokes from `PUBLIC` |
+| `outer-column` | a column in the select list of an `IN`, `ANY`, `ALL` or scalar subquery that the subquery's own tables do not have, so it reads the outer query's |
+| `join-condition` | tables a query pairs row by row with nothing tying them: comma separated tables no `WHERE` condition joins, a `JOIN` whose `ON` never reads the joined table or nothing before it, an `UPDATE ... FROM` or `DELETE ... USING` whose `WHERE` never ties the extra table to the target |
+| `insert-order` | an `INSERT ... SELECT` item whose name is another target column than the one it lands in by position |
+| `ddl-locks` | DDL that blocks a table's readers or writers while it works: `CREATE INDEX`, `DROP INDEX`, `REINDEX` or `REFRESH MATERIALIZED VIEW` without `CONCURRENTLY`, a foreign key or `CHECK` added without `NOT VALID`, a primary key or unique constraint added without `USING INDEX`, a column type change, `SET NOT NULL`, a column added with a volatile default, `VACUUM FULL`, `CLUSTER` |
+| `null-concat` | a text column that can hold NULL joined with `\|\|`, which makes the whole string NULL |
 
 Requirements:
 
