@@ -4,11 +4,12 @@
 > can become a monitor, a dashboard or a button.
 
 > [!NOTE]
-> **PlumeSQL 0.28.0 is here**: sort a result from a column's menu, a
-> font and a size for each part of the window (the interface, the pages,
-> the results, the code), pixel themes with their own fonts and square
-> corners, and Markdown files with Preview, Source and a toolbar.
-> [What's in it](changelog/free-v0.28.0/README.md).
+> **PlumeSQL 0.29.0 is here**: write a join by walking a foreign key,
+> rename with F2 and find where a name is used, completion that knows
+> what comes next, a dozen mistakes that run without an error caught
+> before you run them, and any two files, objects, schemas or results
+> compared side by side.
+> [What's in it](changelog/free-v0.29.0/README.md).
 >
 > PlumeSQL is still in beta: new releases come often, and features can
 > still change between them. The app updates itself. Something broken
