@@ -302,6 +302,12 @@ paths, after `tags[` the positions the longest array has.
 - Nothing is asked of the server: the keys come from the last result's
   rows, and a column the query did not return gets its operators alone.
 
+Rather write them yourself? Turn the operators off right here:
+
+```setting
+editor.typeOperators
+```
+
 JSON written in a string reads as JSON too: in
 `'{"meta": {"age": 3}}'::jsonb` the keys, values and numbers take the
 JSON viewer's colors, and every brace finds its partner. Prefer strings in
@@ -634,6 +640,50 @@ calendar button beside it (**Alt+↓** in the field):
 - The form brings back your last answers only where the type is the same,
   so a value you gave another query's text parameter stays out of a
   timestamp field.
+
+The same picker works in the editor. Put the caret in a string that holds
+a date, a timestamp or a time (`'2026-01-01'`, `'2026-01-01 10:30'`, a
+range's bound in `'[2026-01-01,2026-02-01)'`) and a calendar button
+appears right after it. A day you pick replaces the date in place, one
+undo takes it back, and **Esc** leaves the text as it was. From the
+keyboard, the Quick Fix list (**⌘.** or **Ctrl+.**) offers **Pick a
+date…**.
+
+![The editor with the caret in '2026-01-01' of a daterange call: a calendar button right after the string, and the picker open under it on January 2026 with the 1st chosen](media/date-picker-editor.webp)
+
+An empty string gets it too when the query says what it is: a cast
+(`''::date`), a typed literal (`timestamp ''`), `daterange('', '')`, or a
+date column it is compared with, set to or inserted into
+(`where rental_date >= ''`, `insert into rental (rental_date) values ('')`).
+The picker then opens on today, as a date or with its time, as the column
+is.
+
+Only the string under the caret gets the button, so a script full of dates
+stays plain. Rather type them? Turn it off right here:
+
+```setting
+editor.datePicker
+```
+
+### Enum values and keys, without looking them up
+
+Type the quote after an enum column (`where rating = '`) and the list
+offers the enum's values in their order: G, PG, PG-13, R, NC-17; with the
+caret in such a string, a list button right after it opens them too. A
+cast (`''::mpaa_rating`), a SET and an INSERT get them as well.
+
+A key is picked from its table. After `customer_id = ` (or in an INSERT's
+VALUES, under `customer_id`) a small table button stands at the caret,
+**Ctrl+Space** offers **Pick from customer…**, and so do the Quick Fix
+list and the right click. The
+customer table opens in pick mode, as it does for a form's parameter;
+select a row, click **Select**, and the script gets its id. A table's own
+key works the same way: `delete from customer where customer_id = `.
+
+```setting
+editor.enumValues
+editor.keyPicker
+```
 
 ### Parameter lines, completed and checked
 
