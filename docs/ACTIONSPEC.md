@@ -518,11 +518,28 @@ Open one more placeholder name for this file, like `@file` and `@dir`
 do, with the value coming from the file itself or from a typed answer.
 The name follows 8.7's grammar and rules unchanged (never a registry
 name, declared once, one name space with the other two), with one
-addition: a query action's positional parameter MAY be declared by its
-own spelling (`@var $1 "How many", "10"`), since it has no other name.
-The character directly after it decides the form: `=` DECLARES the
-value, whitespace or the end of the line ASKS for one. The reading is
-decided by the value's shape alone (6.4).
+addition: the name MAY be written the way a query writes a parameter
+(11.2), PostgreSQL's positional `$1`, `$name`, psql's `:name` or
+`{name}`. A positional one has no other name (`@var $1 "How many",
+"10"`); any other declares the same input as its bare name, so `@var
+$since` and `@var since` are one declaration of `since`, which every
+spelling binds. The same holds for every line that names an input it
+describes (`@file`, `@dir`, 8.26, 8.33, 8.34). The character directly
+after the name decides the form: `=` DECLARES the value, whitespace or
+the end of the line ASKS for one. The reading is decided by the value's
+shape alone (6.4).
+
+**In a file that is not an action.** An implementation that reads these
+lines in a plain SQL script, to describe the parameters its statements
+carry, MUST compare each line's name with the statements the line
+reaches (the statement it stands above, or every statement for the
+file's header): a line that names one of their parameters in any other
+way than they write it (the bare `since` for `$since`, `$who` for
+`:who`) MUST NOT be read, and SHOULD be diagnosed with the spelling to
+write, so a line reads as the query it describes. A name none of them
+writes is read as it stands. In an action the bare name stays the
+input's own and is never refused for it, and a file meant for
+implementations that predate this revision writes the bare name.
 
 **The declared form** (`@var <name>=<value>`) names a value the file
 builds itself: the value is the rest of the line after the first `=`,
