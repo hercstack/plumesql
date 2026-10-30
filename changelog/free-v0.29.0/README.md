@@ -25,15 +25,16 @@ objects, schemas or results side by side.
   wrong table, tables nothing joins, an INSERT that matches columns by
   position, a JSON key updated in place that copies the whole document
   and a SECURITY DEFINER function that does not pin its search_path are
-  warned about, DDL that locks a table and a NULL that empties a string
+  warned about, a NULL that empties a string and DDL that locks a table
   get a hint, each with its fix or quieted where it is meant
   (`-- @allow`), and the fix PostgreSQL's own error settles is one click
   away.
 - **Compare two files, objects or schemas** side by side, and compared
   results show where they differ, however deep in the rows.
-- **The Objects tree:** Browse Data and Open DDL on every row, a click
-  that knows what it is clicking, and scripts that name their
-  parameters and pick a foreign key from its table.
+- **The Objects tree and run parameters:** Browse Data and Open DDL on
+  every row, a click that knows what it is clicking, scripts that name
+  their parameters and pick a foreign key from its table, and dates
+  picked from a calendar, in the run form and in the editor.
 - **Extensions read the server's settings:** Explain plan says which
   `SET` keeps a spill in memory, new extensions show what your session
   changed and when autovacuum comes, and a schema change gets a lock wait
@@ -444,6 +445,78 @@ says so.
 
 ![where return_date = null and the hover on its =: A comparison with NULL (= NULL) is never true: it yields NULL whatever the other side holds. IS NULL tests for it. with Quick Fix](media/null-trap.webp)
 
+### A NULL that empties a whole string
+
+`first_name || ' ' || last_name` is NULL for every row where either name
+is NULL. A text column that can hold NULL, joined with `||`, now gets a
+quiet hint whose quick fix writes `coalesce(first_name, '')`; `concat()`
+skips NULLs too. Which columns can hold NULL comes from your tables, as
+for the NULL comparisons.
+
+![select address || ', ' || address2 from address on dvdrental, dots under address2, and its hover: address.address2 can hold NULL, and text || NULL is NULL: for a row where it is NULL the whole string is NULL. coalesce(address2, '') writes an empty string there, and concat() skips NULLs, with Quick Fix](media/check-null-concat.webp)
+
+```setting
+editor.flagNullConcat
+```
+
+### A subquery that reads the wrong table
+
+```sql
+delete from orders where id in (select id from tmp_ids);
+```
+
+If `tmp_ids` has no `id` column, this is not an error: PostgreSQL takes
+`orders.id` from the outer query, the subquery returns each order's own
+id, and every order is deleted. PlumeSQL now warns where a subquery's
+select list names a column its own tables do not have, and the quick fix
+writes the column you most likely meant (`tmp_ids.order_id`), or names
+the outer table when the outer value is what you want.
+
+![select title from film where film_id in (select film_id from rental) on dvdrental, the inner film_id underlined, and its hover: rental has no column film_id, so this reads film.film_id of the outer query: the subquery returns each outer row's own film_id, and the comparison holds for every row as soon as rental has one](media/check-outer-column.webp)
+
+```setting
+editor.flagOuterColumns
+```
+
+### Tables nothing joins
+
+```sql
+select * from orders o, items i where o.placed > now();
+```
+
+pairs every order with every item. PlumeSQL now warns about tables listed
+with commas that nothing in the WHERE ties together, a JOIN whose ON
+never reads the joined table (`join items i on o.id = o.id`), and an
+UPDATE ... FROM or DELETE ... USING whose WHERE never ties the extra
+table to the rows it changes, which updates every row from an arbitrary
+one, or deletes every row. Where a foreign key links the tables, the
+warning names the condition that joins them (`i.order_id = o.id`). When
+every pair is meant, the quick fix writes CROSS JOIN, which says so.
+
+![from customer c, rental r where r.return_date is null on dvdrental, rental underlined, and its hover: Nothing ties rental to customer: every row of one is paired with every row of the other, a cartesian product. r.customer_id = c.customer_id joins them on their foreign key. Write CROSS JOIN if every pair is meant](media/check-join-condition.webp)
+
+```setting
+editor.flagJoinConditions
+```
+
+### INSERT matches columns by position
+
+```sql
+insert into person (first_name, last_name)
+select last_name, first_name from staging;
+```
+
+swaps the two names without an error: INSERT takes the SELECT's columns
+by position, never by name. PlumeSQL now warns where a SELECT item's name
+is another column than the one it lands in, and the quick fix orders the
+column list as the SELECT, or writes one where the INSERT has none.
+
+![insert into actor (first_name, last_name) select last_name, first_name from customer, both names underlined, and the hover on last_name: last_name lands in first_name, not in last_name: INSERT takes the SELECT's columns by position, never by name, and last_name is number 2 in the column list](media/check-insert-order.webp)
+
+```setting
+editor.flagInsertOrder
+```
+
 ### A key changed in a JSON document copies the whole document
 
 PostgreSQL has no partial update. This changes one key, and writes a new
@@ -472,8 +545,34 @@ is, and the new row version carries only a pointer to it. Two UPDATEs one
 after the other that change the same rows' document get a hint too: one
 UPDATE that makes both changes writes one new version instead of two.
 
+![The UPDATE above, review underlined, and its hover: This changes the key likes of review, but PostgreSQL has no partial update, every UPDATE writes a new version of the row with a new copy of the whole document; the new value is read from review itself, a counter kept in the document, and in a column of its own it changes alone](media/check-json-update.webp)
+
 ```setting
 editor.flagJsonUpdates
+```
+
+### Schema changes that lock a table
+
+Some DDL blocks a table's readers or writers for as long as it works, and
+on a busy table that is an outage. PlumeSQL now puts a quiet hint on it,
+saying what it blocks and what does not:
+
+- `CREATE INDEX`, `DROP INDEX`, `REINDEX` and `REFRESH MATERIALIZED VIEW`
+  without `CONCURRENTLY`: the quick fix writes `CONCURRENTLY` (for a
+  materialized view only when it has the unique index that requires);
+- a foreign key or a `CHECK` added without `NOT VALID`: the quick fix
+  adds it `NOT VALID` and writes the `VALIDATE CONSTRAINT` that checks the
+  old rows later, while writes go on;
+- a primary key or a unique constraint added without `USING INDEX`, a
+  column's type changed, `SET NOT NULL`, a column added with a volatile
+  default, `VACUUM FULL` and `CLUSTER`, each with what to do instead.
+
+A table the same script creates first is new and empty, and gets no hint.
+
+![create index on rental (return_date) on dvdrental, dots under create, and its hover: CREATE INDEX blocks every insert, update and delete on rental until the index is built. CREATE INDEX CONCURRENTLY builds it while they go on: slower, and not inside a transaction block, with Quick Fix](media/check-ddl-locks.webp)
+
+```setting
+editor.flagDdlLocks
 ```
 
 ### SECURITY DEFINER functions pin their search_path
@@ -498,6 +597,8 @@ object with its schema. `pg_temp` goes last, because a temporary schema
 the path does not name is searched first: a `search_path` that ends with
 anything else is a warning too, and its fix names `pg_temp` last.
 
+![A SECURITY DEFINER function over dvdrental's payment, security definer underlined, and its hover: it runs with its owner's rights but resolves the names in its body through the caller's search_path; SET search_path pins the schemas, pg_temp last; the body names objects of public without a schema, so the path keeps it](media/check-security-definer.webp)
+
 A new function can be executed by every role (PUBLIC), so a quiet hint
 also offers **Revoke EXECUTE from PUBLIC**, which writes the `REVOKE`
 below the function; grant it to the roles that need it in the same
@@ -506,92 +607,6 @@ names when it is created and is left alone.
 
 ```setting
 editor.flagSecurityDefiner
-```
-
-### A subquery that reads the wrong table
-
-```sql
-delete from orders where id in (select id from tmp_ids);
-```
-
-If `tmp_ids` has no `id` column, this is not an error: PostgreSQL takes
-`orders.id` from the outer query, the subquery returns each order's own
-id, and every order is deleted. PlumeSQL now warns where a subquery's
-select list names a column its own tables do not have, and the quick fix
-writes the column you most likely meant (`tmp_ids.order_id`), or names
-the outer table when the outer value is what you want.
-
-```setting
-editor.flagOuterColumns
-```
-
-### Tables nothing joins
-
-```sql
-select * from orders o, items i where o.placed > now();
-```
-
-pairs every order with every item. PlumeSQL now warns about tables listed
-with commas that nothing in the WHERE ties together, a JOIN whose ON
-never reads the joined table (`join items i on o.id = o.id`), and an
-UPDATE ... FROM or DELETE ... USING whose WHERE never ties the extra
-table to the rows it changes, which updates every row from an arbitrary
-one, or deletes every row. Where a foreign key links the tables, the
-warning names the condition that joins them (`i.order_id = o.id`). When
-every pair is meant, the quick fix writes CROSS JOIN, which says so.
-
-```setting
-editor.flagJoinConditions
-```
-
-### INSERT matches columns by position
-
-```sql
-insert into person (first_name, last_name)
-select last_name, first_name from staging;
-```
-
-swaps the two names without an error: INSERT takes the SELECT's columns
-by position, never by name. PlumeSQL now warns where a SELECT item's name
-is another column than the one it lands in, and the quick fix orders the
-column list as the SELECT, or writes one where the INSERT has none.
-
-```setting
-editor.flagInsertOrder
-```
-
-### Schema changes that lock a table
-
-Some DDL blocks a table's readers or writers for as long as it works, and
-on a busy table that is an outage. PlumeSQL now puts a quiet hint on it,
-saying what it blocks and what does not:
-
-- `CREATE INDEX`, `DROP INDEX`, `REINDEX` and `REFRESH MATERIALIZED VIEW`
-  without `CONCURRENTLY`: the quick fix writes `CONCURRENTLY` (for a
-  materialized view only when it has the unique index that needs);
-- a foreign key or a `CHECK` added without `NOT VALID`: the quick fix
-  adds it `NOT VALID` and writes the `VALIDATE CONSTRAINT` that checks the
-  old rows later, while writes go on;
-- a primary key or a unique constraint added without `USING INDEX`, a
-  column's type changed, `SET NOT NULL`, a column added with a volatile
-  default, `VACUUM FULL` and `CLUSTER`, each with what to do instead.
-
-A table the same script creates first is new and empty, and gets no hint.
-
-```setting
-editor.flagDdlLocks
-```
-
-### A NULL that empties a whole string
-
-`first_name || ' ' || last_name` is NULL for every row where either name
-is NULL. A text column that can hold NULL, joined with `||`, now gets a
-quiet hint whose quick fix writes `coalesce(first_name, '')`; `concat()`
-skips NULLs too. Which columns can hold NULL comes from your tables, as
-for the NULL comparisons.
-
-```setting
-editor.flagNullConcat
 ```
 
 ### Quiet a check where it is wrong
@@ -757,7 +772,7 @@ next and the previous one, however deep in the rows it is.
 The rows pair by their position, so give both queries the same
 `ORDER BY`.
 
-## The Objects tree
+## The Objects tree and run parameters
 
 ### Browse Data and Open DDL on an object's row
 
@@ -1124,7 +1139,6 @@ every file on Split.
 A right click below the rows offers them first, in the workspace folder,
 as in VS Code.
 
-
 ### Release notes you can act on
 
 A setting these notes talk about is drawn as its card: what it does and
@@ -1133,6 +1147,7 @@ below has one), with **Open in Settings** beside it. A list of
 extensions shows where each one stands, with **Install** and **Update**,
 and **Install all** or **Update all** for the whole list (Extensions and
 themes above has two). On GitHub the same lines read as plain lists.
+
 ## Experimental: FROM-first queries
 
 ### FROM first, SELECT after
