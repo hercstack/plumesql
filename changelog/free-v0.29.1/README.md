@@ -1,7 +1,8 @@
 # PlumeSQL 0.29.1
 
-Completion that reads your query in any order you write it, a script
-that offers only what it uses, and updates that wait for your restart.
+Completion that reads your query in any order you write it, one more
+mistake caught before you run, a script that offers only what it uses,
+and updates that wait for your restart.
 
 ## Highlights
 
@@ -11,6 +12,8 @@ that offers only what it uses, and updates that wait for your restart.
   expression can hold, and a statement's first word what a statement
   starts with.
 - **Scripts without semicolons:** each statement completes on its own.
+- **Function volatility:** a function that only reads is offered STABLE
+  (or IMMUTABLE), and a word that claims too much gets a warning.
 - **Updates on your time:** the download runs in the background, and
   PlumeSQL restarts only when you say so.
 
@@ -43,6 +46,32 @@ In a script that runs its statements together without `;`, the first
 letters of a new statement below a blank line offered nothing, and a
 query could be offered the columns of the statement next to it. Each
 statement now completes on its own.
+
+## Mistakes caught before you run
+
+### A function's volatility
+
+The thirteenth check, joining the twelve of 0.29.0. A function that does
+not say how it behaves is VOLATILE: PostgreSQL calls it once for every
+row and never uses an index for its result. When its body only reads,
+the editor marks it and offers **Declare STABLE**, so it is called once
+per query. When it reads nothing but its arguments, **Declare IMMUTABLE**
+comes first.
+
+![create function rentals_of(c int) returns bigint, language sql, with no volatility: the hint says the function only reads and PostgreSQL takes VOLATILE, calling it once per row, and that STABLE lets it call it once per statement and use the index](media/volatility-hint.webp)
+
+The other way round is a warning. A function declared IMMUTABLE that
+reads a table, or reads `current_date`, can return a stale value:
+PostgreSQL may compute it once and keep the result. One declared STABLE
+that changes data, or calls `random()`, is really VOLATILE. The quick fix
+writes the word the body fits.
+
+![create function film_count declared immutable over select count(*) from film: the warning says it reads film, so its result can change while its arguments stay the same, and that STABLE is what this body is](media/volatility-warning.webp)
+
+It reads what each function the body calls is from your database, so it
+stays quiet about what it cannot check, such as SQL built with `EXECUTE`.
+Like every check, it has its own setting and an `-- @allow volatility`
+line.
 
 ## What changed
 
