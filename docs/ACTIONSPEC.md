@@ -540,6 +540,9 @@ write, so a line reads as the query it describes. A name none of them
 writes is read as it stands. In an action the bare name stays the
 input's own and is never refused for it, and a file meant for
 implementations that predate this revision writes the bare name.
+`@file` and `@dir` MUST NOT be read in such a file: its statements go
+to the server, to which a path picked where the file is edited means
+nothing. A line there that carries one is prose.
 
 **The declared form** (`@var <name>=<value>`) names a value the file
 builds itself: the value is the rest of the line after the first `=`,
@@ -1958,9 +1961,10 @@ grammar and values) in their first header, where an unknown name is
 prose rather than a diagnostic, because such files routinely carry
 other tools'
 annotations; there it MAY hint a name one slip from one it reads (as
-section 7 counts slips), offering the correction, provided the hint is
-never a diagnostic and leaves alone the names of the other vocabularies
-it knows. A future revision of this specification is intended to
+section 7 counts slips), offering the correction, and MAY hint a name
+of this vocabulary that only an action reads (`@refresh`, `@dir`), as a
+line such a file does not read, provided the hint is never a diagnostic
+and leaves alone the names of the other vocabularies it knows. A future revision of this specification is intended to
 host both vocabularies over ONE syntax; a vocabulary carried over this
 syntax SHOULD keep the three commitments of section 1.
 
