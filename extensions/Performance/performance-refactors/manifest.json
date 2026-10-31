@@ -2,7 +2,7 @@
   "format": 1,
   "id": "performance-refactors",
   "kind": "refactor",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "plumesql": ">=0.25.0",
   "name": "Performance refactors",
   "description": "Faster queries from the lightbulb: index-friendly conditions, keyset pages, STABLE functions, NOT VALID constraints, missing indexes",

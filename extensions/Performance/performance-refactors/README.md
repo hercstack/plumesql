@@ -55,6 +55,8 @@ create function user_of(x int) returns int language plpgsql stable as $$ begin r
 
 A PL/pgSQL function that does not say otherwise is VOLATILE. The offer comes only when PostgreSQL's own parser finds that the body writes nothing, runs no dynamic SQL, locks no rows and calls only IMMUTABLE or STABLE functions.
 
+From PlumeSQL 0.29.1 the editor checks every function's volatility itself (SQL functions too, IMMUTABLE where it fits, and a warning where the word claims too much), so there this refactor leaves the offer to it.
+
 ### Add an index for a filter
 
 ```sql

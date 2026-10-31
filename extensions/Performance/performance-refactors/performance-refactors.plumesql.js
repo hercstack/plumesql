@@ -585,6 +585,10 @@ function keysetPage(statement, ctx) {
 function declareStable(statement) {
   const r = statement.routine
   if (!r || r.kind !== 'function' || r.language !== 'plpgsql' || r.volatility || !r.languageClause || !r.body) return null
+  // From PlumeSQL 0.29.1 (the release whose routine facts carry `reads`)
+  // the editor's own volatility check marks such a function and offers
+  // Declare STABLE itself: one offer, not two.
+  if (r.body.reads) return null
   if (/^(setof )?(void|trigger|event_trigger)$/.test(r.returns ?? '')) return null
   const b = r.body
   if (b.writes || b.dynamic || b.transaction || b.locks) return null
