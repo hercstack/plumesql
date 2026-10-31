@@ -159,6 +159,10 @@ export interface RefactorRoutineBody {
   transaction: boolean
   locks: boolean
   calls: { name: string; volatility?: 'immutable' | 'stable' | 'volatile' }[]
+  // The tables, views and sequences the body names, each once in order, as
+  // written (PlumeSQL 0.29.1 and later, whose own volatility check offers
+  // Declare STABLE and IMMUTABLE for a function that names none).
+  reads?: string[]
 }
 
 // The main SELECT of a query, at the statement's own level (a CTE's body

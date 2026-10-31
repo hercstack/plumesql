@@ -1542,6 +1542,7 @@ version names, each one an implementation MAY offer:
 | `setting` | a configuration parameter the server does not have, or one that cannot be changed where the statement changes it (`SET` of a parameter that takes a restart) |
 | `json-update` | a change of one part of a JSON document (`jsonb_set`, `||`, `-`, `#-`, a subscript) in an `UPDATE`, which writes a new copy of the whole document |
 | `security-definer` | a `SECURITY DEFINER` routine that does not pin `search_path` with `pg_temp` last, or whose `EXECUTE` the script never revokes from `PUBLIC` |
+| `volatility` | a `CREATE FUNCTION` that declares no volatility although its body only reads (`STABLE`, or `IMMUTABLE` when it reads nothing but its arguments), or whose declared `IMMUTABLE` or `STABLE` claims more than the body keeps (it reads a table, reads the session, changes data or calls a volatile function) |
 | `outer-column` | a column in the select list of an `IN`, `ANY`, `ALL` or scalar subquery that the subquery's own tables do not have, so it reads the outer query's |
 | `join-condition` | tables a query pairs row by row with nothing tying them: comma separated tables no `WHERE` condition joins, a `JOIN` whose `ON` never reads the joined table or nothing before it, an `UPDATE ... FROM` or `DELETE ... USING` whose `WHERE` never ties the extra table to the target |
 | `insert-order` | an `INSERT ... SELECT` item whose name is another target column than the one it lands in by position |

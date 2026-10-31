@@ -719,6 +719,10 @@ interface RefactorRoutineBody {
    * its volatility from the dictionary (absent for a name the dictionary
    * does not know). */
   calls: { name: string; volatility?: 'immutable' | 'stable' | 'volatile' }[];
+  /** The tables, views and sequences the body names, each once in order, as
+   * written (schema.name when it writes one; a CTE's name too). PlumeSQL
+   * 0.29.1 and later, whose own volatility check also offers Declare STABLE. */
+  reads?: string[];
 }
 
 /** The main SELECT of a query, at the statement's own level (a CTE's body
