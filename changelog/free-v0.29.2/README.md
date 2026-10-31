@@ -1,14 +1,15 @@
 # PlumeSQL 0.29.2
 
-Two columns joined into one from the lightbulb, and a clearer install
-question.
+Two columns joined into one from the lightbulb, GROUP BY written whole,
+and a calmer completion list.
 
 ## Highlights
 
 - **Concatenate the selected columns:** select `first_name, last_name`
   and the lightbulb makes one column of them.
-- **Don't ask again, easier to read:** the choice under an install's
-  question now says what it is about, and fits its answer.
+- **GROUP BY in one go:** completion offers the whole clause, and the
+  fix for a missing GROUP BY column adds every column at once.
+- **A calmer completion list:** no more one-word pane beside it.
 
 ## Concatenate the selected columns
 
@@ -37,7 +38,32 @@ text, none is a `*` or an aggregate, and the query does not GROUP BY or
 ORDER BY by position. A GROUP BY of the two columns stays as it is. Like
 every refactor, it can be switched off in the Refactors settings.
 
+## GROUP BY in one go
+
+A query with `count(...)` or another aggregate needs every other column in
+its GROUP BY, and PostgreSQL names them one at a time:
+
+```sql
+select a.first_name || ' ' || a.last_name as first_last_name, count(film_id)
+from film_actor
+join actor a on a.actor_id = film_actor.actor_id
+```
+
+- **Completion writes the clause.** Type `g` on the next line and the list
+  starts with `group by a.first_name, a.last_name`.
+- **The fix adds all of them.** When PostgreSQL reports the missing
+  column, as you type or on a run, the quick fix (the red bulb, ⌘. or Ctrl+., or the Fix column of
+  Problems) now reads **Add GROUP BY a.first_name, a.last_name**, so one
+  click settles it. The fix for only the column PostgreSQL named stays
+  beside it.
+
 ## Fixed
+
+- **No more one-word pane beside the completion list.** A pane next to
+  the list showed a single word such as "next", "schema" or "an alias
+  follows". That word now stands on the row itself, and the pane opens
+  only where it has something to tell, such as a table's or a function's
+  card.
 
 - **The install question's Don't ask again reads clearly.** Installing an
   extension that asks first offers to skip the question next time. The
