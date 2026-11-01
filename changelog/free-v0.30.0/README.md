@@ -29,13 +29,14 @@ JOIN would.
 The editor now marks such a condition with a warning, also in Problems,
 and the lightbulb (⌘. or Ctrl+.) offers the fix:
 
-- **Move the condition into the ON:** `left join payment p on
+- **Move p.amount > 5 into the LEFT JOIN's ON:** `left join payment p on
   p.customer_id = c.customer_id and p.amount > 5` keeps every customer,
   with their payments over 5 when they have any. Most often what was
   meant.
-- **Write JOIN:** the same rows as now, but the query says so.
-- **IS DISTINCT FROM**, for a `<>`: `d.name is distinct from 'HR'` keeps
-  the rows without a match too.
+- **Change LEFT JOIN p to JOIN:** the same rows it returns now, but the
+  query says so.
+- **Write ... IS DISTINCT FROM ...**, for a `<>`: `d.name is distinct
+  from 'HR'` keeps the rows without a match too.
 
 What lets a NULL through on purpose is left alone: `where p.payment_id is
 null` (the customers without a payment), `is distinct from`, `coalesce`,
@@ -59,6 +60,18 @@ effect as before, and the next start opens in it.
 
 This works for the built-in Dark and Light and for every theme extension
 from the Marketplace.
+
+## What changed
+
+### Quick fixes say what they write
+
+The rewrite of a SQL function's string body now reads **Rewrite the body
+as SQL-standard RETURN a + b** and **Rewrite the body as SQL-standard
+BEGIN ATOMIC ... END**: `RETURN a + b` is the SQL-standard body of a
+`LANGUAGE sql` function, not PL/pgSQL's RETURN, and the title now says so.
+Concatenate the selected columns names each form and what it does with a
+NULL (`concat_ws` skips it, `||` gives NULL), and the LEFT JOIN fixes say
+which rows each one keeps.
 
 ## Tell us what you think
 
