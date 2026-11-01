@@ -1,11 +1,50 @@
 # PlumeSQL 0.30.0
 
-PlumeSQL now opens in your theme from the very first frame.
+A LEFT JOIN that quietly turns into a JOIN is caught, and PlumeSQL now
+opens in your theme from the very first frame.
 
 ## Highlights
 
+- **A LEFT JOIN its WHERE undoes:** a warning on the condition, and one
+  click moves it where it keeps the rows you meant.
 - **No more flash on start:** the window opens in the theme you chose,
   not in the default one for a moment first.
+
+## A LEFT JOIN its WHERE undoes
+
+One of the most common mistakes in SQL, and it gives no error:
+
+```sql
+select c.customer_id, c.last_name, p.amount
+from customer c
+left join payment p on p.customer_id = c.customer_id
+where p.amount > 5;
+```
+
+The LEFT JOIN keeps every customer, a customer without such a payment
+with every `p` column NULL. Then the WHERE runs, `NULL > 5` is never true,
+and those customers are gone again: the query returns exactly what a plain
+JOIN would.
+
+The editor now marks such a condition with a warning, also in Problems,
+and the lightbulb (⌘. or Ctrl+.) offers the fix:
+
+- **Move the condition into the ON:** `left join payment p on
+  p.customer_id = c.customer_id and p.amount > 5` keeps every customer,
+  with their payments over 5 when they have any. Most often what was
+  meant.
+- **Write JOIN:** the same rows as now, but the query says so.
+- **IS DISTINCT FROM**, for a `<>`: `d.name is distinct from 'HR'` keeps
+  the rows without a match too.
+
+What lets a NULL through on purpose is left alone: `where p.payment_id is
+null` (the customers without a payment), `is distinct from`, `coalesce`,
+a condition inside OR. It reads your query with PostgreSQL's own parser
+and sends nothing to the server.
+
+```setting
+editor.flagLeftJoinUndone
+```
 
 ## Your theme from the first frame
 

@@ -4,12 +4,10 @@
 > can become a monitor, a dashboard or a button.
 
 > [!NOTE]
-> **PlumeSQL 0.29.0 is here**: write a join by walking a foreign key,
-> rename with F2 and find where a name is used, completion that knows
-> what comes next, a dozen mistakes that run without an error caught
-> before you run them, and any two files, objects, schemas or results
-> compared side by side.
-> [What's in it](changelog/free-v0.29.0/README.md).
+> **PlumeSQL 0.30.0 is here**: a LEFT JOIN its WHERE quietly turns into
+> a JOIN is caught and fixed in one click, and PlumeSQL opens in your
+> theme from the very first frame.
+> [What's in it](changelog/free-v0.30.0/README.md).
 >
 > PlumeSQL is still in beta: new releases come often, and features can
 > still change between them. The app updates itself. Something broken
