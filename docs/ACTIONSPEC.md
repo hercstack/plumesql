@@ -1548,6 +1548,7 @@ version names, each one an implementation MAY offer:
 | `insert-order` | an `INSERT ... SELECT` item whose name is another target column than the one it lands in by position |
 | `ddl-locks` | DDL that blocks a table's readers or writers while it works: `CREATE INDEX`, `DROP INDEX`, `REINDEX` or `REFRESH MATERIALIZED VIEW` without `CONCURRENTLY`, a foreign key or `CHECK` added without `NOT VALID`, a primary key or unique constraint added without `USING INDEX`, a column type change, `SET NOT NULL`, a column added with a volatile default, `VACUUM FULL`, `CLUSTER` |
 | `null-concat` | a text column that can hold NULL joined with `\|\|`, which makes the whole string NULL |
+| `atomic-body` | a `LANGUAGE sql` function or procedure whose body is a string although it could be written as `BEGIN ATOMIC` (or `RETURN` an expression), parsed and bound when it is created |
 
 Requirements:
 
