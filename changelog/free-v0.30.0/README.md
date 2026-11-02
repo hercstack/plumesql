@@ -111,6 +111,20 @@ icons.
 
 ![The bar above the rows of bookings: SELECT bookings and its run time on the left; New row, Edit and Delete on the right, flat, beside the copy, open in tab and more buttons](media/row-actions-right.webp)
 
+### A calmer Search pane
+
+The Search pane's results read more easily, above all in a narrow pane:
+
+- **No indentation in front of a match:** the line starts with its code,
+  so the match and what follows it stay in sight.
+- **No workspace name on every file:** a file of the workspace shows only
+  its folder, and nothing at the top level. Scripts, Workspace Scripts and
+  Objects keep their names.
+- **Quieter counts:** a file's number of matches is a plain number, the
+  way the trees count, not a colored badge.
+- **References counted as what they are:** "in 20 scripts and 14
+  objects", where the objects' DDL used to count as scripts.
+
 ## Fixed
 
 - **Search matches wear the editor's find colors.** The Search pane, the
