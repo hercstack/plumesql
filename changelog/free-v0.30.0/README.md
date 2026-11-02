@@ -1,12 +1,15 @@
 # PlumeSQL 0.30.0
 
-A LEFT JOIN that quietly turns into a JOIN is caught, and PlumeSQL now
-opens in your theme from the very first frame.
+A LEFT JOIN that quietly turns into a JOIN is caught, the row editor
+shows the SQL it runs, and PlumeSQL now opens in your theme from the very
+first frame.
 
 ## Highlights
 
 - **A LEFT JOIN its WHERE undoes:** a warning on the condition, and one
   click moves it where it keeps the rows you meant.
+- **The SQL of a row edit:** the form shows the UPDATE or INSERT it will
+  run, to read, copy or open as a script.
 - **No more flash on start:** the window opens in the theme you chose,
   not in the default one for a moment first.
 
@@ -46,6 +49,21 @@ and sends nothing to the server.
 ```setting
 editor.flagLeftJoinUndone
 ```
+
+## The SQL of a row edit
+
+In the form that edits or inserts a row, **SQL** at the bottom shows the
+statement **Update** or **Insert** will run, and it follows as you type.
+**Copy** puts it on the clipboard. **Open as Script** opens it in a new
+script on the same connection, where it runs only when you run it.
+
+![The Edit row form for public.bookings with two fields changed and SQL open: a comment saying it changes nothing if the row changed since it was read, then update public.bookings set guest and details where id = 1 and xmin::text = 2909, with Concurrency check ticked beside Copy and Open as Script](media/row-edit-sql.webp)
+
+An update keeps the check PlumeSQL makes on every edit:
+`xmin::text = '...'` makes it change nothing if someone changed the row
+after the form read it, so a copied statement is as safe as the button.
+Untick **Concurrency check** to leave it out of the SQL. **Update** itself
+always checks, and the Log records each edit the same way, check included.
 
 ## Your theme from the first frame
 
