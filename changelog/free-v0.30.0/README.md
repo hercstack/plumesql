@@ -73,6 +73,17 @@ Concatenate the selected columns names each form and what it does with a
 NULL (`concat_ws` skips it, `||` gives NULL), and the LEFT JOIN fixes say
 which rows each one keeps.
 
+### New row, Edit and Delete beside the other actions
+
+Above the rows of a table you can edit, **New row**, **Edit** and
+**Delete** were an outlined group in the middle of the bar, the only
+control with a border there. They are now flat like the copy and save
+buttons and stand on the right beside them: the left of the bar tells what
+ran, the right holds what you can do. In a narrow pane they keep their
+icons.
+
+![The bar above the rows of bookings: SELECT bookings and its run time on the left; New row, Edit and Delete on the right, flat, beside the copy, open in tab and more buttons](media/row-actions-right.webp)
+
 ## Tell us what you think
 
 Questions and ideas go to
