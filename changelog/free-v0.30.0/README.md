@@ -91,6 +91,15 @@ Concatenate the selected columns names each form and what it does with a
 NULL (`concat_ws` skips it, `||` gives NULL), and the LEFT JOIN fixes say
 which rows each one keeps.
 
+### A refused edit leaves its line in the Log
+
+When the server refuses a row edit, a duplicate key for example, the form
+shows its error where you are looking and stays open for you to fix it.
+The Log now records it as well, with the statement that was tried, so a
+failed write leaves a trace like a successful one. The entry arrives
+already dismissed: you read it in the form, so the Log does not open for
+it.
+
 ### New row, Edit and Delete beside the other actions
 
 Above the rows of a table you can edit, **New row**, **Edit** and
