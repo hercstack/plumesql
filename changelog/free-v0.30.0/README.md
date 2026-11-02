@@ -111,6 +111,14 @@ icons.
 
 ![The bar above the rows of bookings: SELECT bookings and its run time on the left; New row, Edit and Delete on the right, flat, beside the copy, open in tab and more buttons](media/row-actions-right.webp)
 
+## Fixed
+
+- **Search matches wear the editor's find colors.** The Search pane, the
+  Log's filter and a page's find marked their matches in a color of their
+  own. They now use the editor's find colors, your theme's included, and
+  the file a search result opens shows its matches in them while the
+  Search pane is open, the one you clicked as the current match.
+
 ## Tell us what you think
 
 Questions and ideas go to

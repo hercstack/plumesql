@@ -102,7 +102,7 @@ the moment the system does.
 | `grid-line` | The result grid's cell lines. |
 | `grid-null` | NULL in the result grid. |
 | `grid-hl` | The result grid's crosshair and highlighted row. |
-| `find-match`, `find-match-hl` | The current find match and the other matches, in the editor and in the trees. Usually translucent. |
+| `find-match`, `find-match-hl` | The current find match and the other matches, wherever PlumeSQL marks what was searched for: the editor, the trees, a page's find, and (the other matches' color) the Search pane's results, the Log's filter and the result grid's. Usually translucent. |
 | `float-border` | The edge of floating windows (find bars, filters), a step brighter than `border`. |
 | `footer-bg`, `footer-text`, `footer-muted` | The status bar. |
 | `footer-conn`, `footer-conn-hover` | The status bar's connection segment. |
