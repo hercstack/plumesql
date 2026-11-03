@@ -1,17 +1,82 @@
 # PlumeSQL 0.30.0
 
-A LEFT JOIN that quietly turns into a JOIN is caught, the row editor
-shows the SQL it runs, and PlumeSQL now opens in your theme from the very
-first frame.
+Edit a table's rows right in the results grid, as in a spreadsheet. A
+LEFT JOIN that quietly turns into a JOIN is caught, the row editor shows
+the SQL it runs, and PlumeSQL now opens in your theme from the very first
+frame.
 
 ## Highlights
 
+- **Inline editing:** change cells, add and delete rows in the grid,
+  then save it all in one transaction. Or keep the form: you choose the
+  default.
 - **A LEFT JOIN its WHERE undoes:** a warning on the condition, and one
   click moves it where it keeps the rows you meant.
 - **The SQL of a row edit:** the form shows the UPDATE or INSERT it will
   run, to read, copy or open as a script.
 - **No more flash on start:** the window opens in the theme you chose,
   not in the default one for a moment first.
+
+## Edit rows right in the grid
+
+The rows of a table can now be edited where they stand, in the results
+grid, as in a spreadsheet. The row form stays, and you decide which of the
+two you want.
+
+![The results of select * from public.tour_film in Inline mode: a new row at the top with its language_id reading required in red, a changed title and rental_rate in amber, row 6 struck through for deletion, and the bar above the grid reading 4 changes not saved, 1 value required, with SQL, Revert and Save](media/inline-edit.webp)
+
+**One click to switch.** Above the rows of a table you can edit, the edit
+buttons start with the mode: **Form** or **Inline**. A click switches to
+the other. Its arrow holds the Edit Mode menu.
+
+![The arrow beside Inline opened: In the Form, Inline ticked, Save Each Change at Once, and Editing Settings](media/edit-mode-menu.webp)
+
+**Edit as in a spreadsheet:**
+
+- Type over a cell, or press Enter, F2 or double-click to edit it in place.
+- Enter commits and moves down, Tab moves right, Escape cancels.
+- ⌘Z or Ctrl+Z takes back the last change.
+- The cell's menu has Set NULL, Set DEFAULT and Revert Cell.
+- An enum's labels, a date's picker and a foreign key's table are one
+  Alt+Down away, as in the form.
+
+**Nothing is written until Save.** A changed cell turns amber and the bar
+above the grid counts it. **New row** opens a row at the top, a value it
+still needs in red. **Delete** strikes a row through. **Save** (or ⌘Enter,
+Ctrl+Enter in the grid) writes it all in one transaction, all or nothing,
+and **Revert** takes it back. **SQL** shows the script Save runs, to copy
+or open as a script.
+
+**Safe when someone else edits too.** Every row is checked from the moment
+you start editing. A Save that meets a row someone changed meanwhile
+writes nothing, and the row is marked.
+
+**A value the column refuses never gets in.** A word in a number, a month
+13, an enum label with the wrong case: the cell stays open and says why.
+
+![The rental_rate cell of row 9 open with cheap typed in it, and under it in red: rental_rate: not a number. Correct it, or press Escape](media/inline-refused.webp)
+
+**Or save each change at once.** With **Save Each Change at Once** in the
+Edit Mode menu, a cell is written as you finish it, a new row when you
+leave it, a deleted row once you confirm. On a connection whose production
+guard asks before data changes, everything still waits for Save.
+
+**From the form too.** **Edit inline** in the row form switches the tab to
+Inline and brings what you typed there along.
+
+Inline editing needs the table's primary key or a unique key among the
+result's columns. Without one, the form edits the rows as before.
+
+### Choose your default
+
+The Edit Mode menu changes one tab. These settings decide how every tab
+starts: in the form or inline, and when inline changes are written. To set
+them for one workspace only, use **Editing Settings** in the same menu.
+
+```setting
+results.editMode
+results.inlineSave
+```
 
 ## A LEFT JOIN its WHERE undoes
 
@@ -105,11 +170,59 @@ it.
 Above the rows of a table you can edit, **New row**, **Edit** and
 **Delete** were an outlined group in the middle of the bar, the only
 control with a border there. They are now flat like the copy and save
-buttons and stand on the right beside them: the left of the bar tells what
-ran, the right holds what you can do. In a narrow pane they keep their
-icons.
+buttons and stand on the right beside them, after the edit mode: the left
+of the bar tells what ran, the right holds what you can do. In a narrow
+pane they keep their icons.
 
-![The bar above the rows of bookings: SELECT bookings and its run time on the left; New row, Edit and Delete on the right, flat, beside the copy, open in tab and more buttons](media/row-actions-right.webp)
+![The bar above the rows of public.tour_film: SELECT public.tour_film and its run time on the left; Form with its arrow, New row, Edit and Delete on the right, flat, beside the copy, open in tab and more buttons](media/row-actions-right.webp)
+
+### Only a query that reads one table edits its rows
+
+A result used to be editable whenever its columns came from one table,
+even from a join: `select f.* from film f join film_actor fa ...` shows a
+film once for each of its actors. Editing one copy left the others showing
+the old value.
+
+Now a result is editable, in the form and inline alike, only when its
+query reads one table alone: no join, no UNION, DISTINCT or GROUP BY, no
+set-returning function such as `unnest` in the select list, no subquery or
+CTE in FROM. Where it is not, the bar says **Not editable** where the edit
+buttons stand, and its tooltip says why. To edit the films of that join,
+read the table alone and filter with a subquery, which stays free:
+
+```sql
+select f.*
+from film f
+where exists (select 1 from film_actor fa where fa.film_id = f.film_id and fa.actor_id = 1);
+```
+
+### A foreign key field has a pick button
+
+In the row form, a foreign key's box now has a pick button beside it, like
+an action form's pick. It opens the table the key references to pick the
+value from.
+
+### The Objects tree follows a result grid too
+
+With Follow the editor on, clicking into a script's result grid lights
+the table its rows come from in the Objects tab, the way the editor's
+cursor lights the object it stands on. Back in the editor, the tree
+follows the cursor again.
+
+### The editor's settings in four categories
+
+The Editor settings had grown to 74 in one list. They are now four
+categories:
+
+- **Editor:** text, display, running and comparing.
+- **Assistance:** completion, hovers and inlay hints.
+- **Toolbar and Lenses:** the lenses, the gutter buttons, the lightbulb
+  and the toolbar.
+- **Checks:** every check the Problems tab shows, the parser's included.
+  It takes over Parser, also in the connection and group editors.
+
+Every link into these settings opens where the setting now lives, and the
+keys are the same, so nothing you set is lost.
 
 ### A calmer Search pane
 
@@ -127,6 +240,14 @@ The Search pane's results read more easily, above all in a narrow pane:
 
 ## Fixed
 
+- **A range from a frozen row selects what you dragged over.** A selection
+  dragged from a row frozen at the top into the rows below took every row
+  whose number fell between the two ends, often far more than you saw. It
+  now takes the rows between them as shown, and Copy keeps that order.
+- **The row form checks a domain as its type.** A column of a domain over
+  a number, a `year` for example, took a word in the form, and only the
+  server refused it on Update. The form now marks it at once, as it does
+  for a plain number.
 - **Search matches wear the editor's find colors.** The Search pane, the
   Log's filter and a page's find marked their matches in a color of their
   own. They now use the editor's find colors, your theme's included, and
