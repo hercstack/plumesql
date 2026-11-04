@@ -240,7 +240,23 @@ buttons and stand on the right beside them, after the edit mode: the left
 of the bar tells what ran, the right holds what you can do. In a narrow
 pane they keep their icons.
 
-![The bar above the rows of public.tour_film: SELECT public.tour_film and its run time on the left; Form with its arrow, New row, Paste, Edit and Delete on the right, flat, beside the copy, open in tab and more buttons](media/row-actions-right.webp)
+![The bar above the rows of public.tour_film: SELECT public.tour_film on the left; Form with its arrow, New row, Paste, Edit and Delete on the right, flat, then a line, then Copy and Save with their arrows, open in tab and more](media/row-actions-right.webp)
+
+### Copy and Save have an arrow
+
+Choosing the format used to take the result's ... menu. **Copy** and **Save**
+above the rows now each have an arrow, as the edit mode has: it holds the
+format, whether it starts with the column names, and the settings behind them.
+A click on the button itself copies or saves as before, and its tooltip names
+the format. A line now sets them apart from the edit buttons.
+
+![The arrow of the Copy button opened above a result: Tab separated ticked, Comma separated, JSON array, JSON objects, Markdown table, Include Headers ticked, and Copy and Save Settings](media/copy-format-menu.webp)
+
+### A cell's tooltip only where it adds something
+
+Hovering a cell used to repeat its value in a tooltip, even a `1` shown in
+full. The tooltip now appears only where the cell cuts the value off or shows
+it as something else, a formatted number for example. NULL has none.
 
 ### Arrows scroll over whole rows and columns
 
@@ -260,9 +276,9 @@ the old value.
 Now a result is editable, in the form and inline alike, only when its
 query reads one table alone: no join, no UNION, DISTINCT or GROUP BY, no
 set-returning function such as `unnest` in the select list, no subquery or
-CTE in FROM. Where it is not, the bar says **Not editable** where the edit
-buttons stand, and its tooltip says why. To edit the films of that join,
-read the table alone and filter with a subquery, which stays free:
+CTE in FROM. Where it is not, the edit buttons do not show, and **Paste** in
+a cell's menu says why. To edit the films of that join, read the table alone
+and filter with a subquery, which stays free:
 
 ```sql
 select f.*
