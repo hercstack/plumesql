@@ -4,9 +4,10 @@
 > can become a monitor, a dashboard or a button.
 
 > [!NOTE]
-> **PlumeSQL 0.30.0 is here**: a LEFT JOIN its WHERE quietly turns into
-> a JOIN is caught and fixed in one click, and PlumeSQL opens in your
-> theme from the very first frame.
+> **PlumeSQL 0.30.0 is here**: edit rows right in the grid and paste them
+> in from a spreadsheet, a LEFT JOIN its WHERE quietly turns into a JOIN is
+> caught and fixed in one click, and PlumeSQL opens in your theme from the
+> very first frame.
 > [What's in it](changelog/free-v0.30.0/README.md).
 >
 > PlumeSQL is still in beta: new releases come often, and features can
@@ -69,8 +70,8 @@ Here's the short version. The rest of this page has the details.
 - The grid takes millions of rows without slowing down. Freeze rows and
   columns like in a spreadsheet, filter, or compare two results side by
   side.
-- You edit data right in the grid. Enums, jsonb and foreign keys each
-  get the right control.
+- You edit data right in the grid, or paste it in from a spreadsheet.
+  Enums, jsonb and foreign keys each get the right control.
 - There's a JavaScript console, and it reaches everything: your results,
   the open tab, the connection, the DDL snapshot.
 - A few comments turn a query into a small app you can send to your
@@ -183,12 +184,19 @@ could use one, the lightbulb offers to install it.
 
 ### The grid
 
-- **Edit rows.** A result from one table is editable, primary key or
-  not. Press F2 on a row and you get a form with the right control for
-  each type: an enum picks from its labels, a foreign key is picked from
-  the rows of the table it references, and jsonb opens in a full JSON
-  editor. Every change is logged with an Undo, and a row someone else
-  changed in the meantime is never overwritten.
+- **Edit rows.** A query that reads one table is editable, and you choose
+  how. Inline, you type over cells as in a spreadsheet, add and delete rows,
+  and Save writes it all in one transaction; this needs the table's key in
+  the result. In the form, primary key or not, press F2 on a row and you get
+  the right control for each type: an enum picks from its labels, a foreign
+  key is picked from the rows of the table it references, and jsonb opens in
+  a full JSON editor. Every change is logged with an Undo, and a row someone
+  else changed in the meantime is never overwritten.
+- **Paste into a table.** Copy from Excel, Sheets or another result and
+  press ⌘V or Ctrl+V. The format is detected (tab or comma separated, JSON,
+  a Markdown table), and a dialog shows old and new values before anything
+  is written. Update the cells from your selection or add new rows, all or
+  nothing, with one Undo.
 - **Follow foreign keys.** A foreign key value is a link. Click it and
   the row it points at opens. Keep clicking to walk through your data,
   with Back and Forward to retrace your steps.
