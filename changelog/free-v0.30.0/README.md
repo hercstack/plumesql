@@ -1,15 +1,17 @@
 # PlumeSQL 0.30.0
 
-Edit a table's rows right in the results grid, as in a spreadsheet. A
-LEFT JOIN that quietly turns into a JOIN is caught, the row editor shows
-the SQL it runs, and PlumeSQL now opens in your theme from the very first
-frame.
+Edit a table's rows right in the results grid, as in a spreadsheet, and
+paste rows into it from one. A LEFT JOIN that quietly turns into a JOIN is
+caught, the row editor shows the SQL it runs, and PlumeSQL now opens in your
+theme from the very first frame.
 
 ## Highlights
 
 - **Inline editing:** change cells, add and delete rows in the grid,
   then save it all in one transaction. Or keep the form: you choose the
   default.
+- **Paste into a table:** copy from Excel, a result or JSON, press ⌘V, see
+  what will change, then confirm. Update cells or add new rows.
 - **A LEFT JOIN its WHERE undoes:** a warning on the condition, and one
   click moves it where it keeps the rows you meant.
 - **The SQL of a row edit:** the form shows the UPDATE or INSERT it will
@@ -76,6 +78,70 @@ them for one workspace only, use **Editing Settings** in the same menu.
 ```setting
 results.editMode
 results.inlineSave
+```
+
+## Paste into a table
+
+Copy rows from Excel, Sheets or a PlumeSQL result, click a cell of a table's
+results and press ⌘V or Ctrl+V. **Paste** on the bar above the grid does the
+same. Nothing changes until you have seen what the paste will do.
+
+![The Paste dialog for public.tour_film: Update 6 cells in 2 rows, add 1 new row, with Update from the selection chosen, Tab separated detected, First column goes to title, Add 1 row past the end as new rows ticked, and a preview of two rows with old and new values such as Film 2 to Film II, and a new row marked with a plus, above SQL, Edit inline, Cancel and Paste](media/paste-dialog.webp)
+
+**You choose what it does.** With a selection, **Update from the selection**
+comes first and **Add as new rows** is one click away:
+
+- A block lands from the selection's first cell, right and down.
+- One value over a range fills the range.
+- Rows past the end of the result become new rows, unless you untick it.
+
+**The format is detected.** Tab separated (what a spreadsheet copies), comma
+separated, JSON and Markdown tables, the formats Copy writes. If the guess is
+wrong, pick another in the dialog.
+
+**Each value finds its column:**
+
+- JSON objects go by name.
+- Everything else goes by position, from the column you pick in **First column
+  goes to**.
+- A first row of column names is recognized, and then the values go by those
+  names, in any order.
+- A generated column takes no value: it is skipped, and the dialog says so.
+
+**An empty field is NULL** where the column allows it, so a copied NULL comes
+back as NULL. In a NOT NULL column, it is the empty string where the type has
+one.
+
+**What cannot be written holds the button.** A value the column refuses shows
+red with the reason, and **Paste** waits until it is put right. A number with
+a decimal comma, such as `1,5`, is refused for now.
+
+![The same dialog with cheap in the rental_rate column, in red, and below the preview: 1 value the columns cannot take, Row 2, rental_rate: not a number, with Paste disabled](media/paste-refused.webp)
+
+**When it is written follows the Edit Mode:**
+
+- **Form:** **Paste** writes it all in one transaction, all or nothing, and one
+  **Undo** in the Log takes the whole paste back. **Edit inline** in the dialog
+  makes it pending instead.
+- **Inline:** **Add as Pending Changes** writes nothing until Save, and one ⌘Z
+  or Ctrl+Z takes the whole paste back. New rows wait at the end of the result,
+  in the order you copied them.
+- **Save Each Change at Once:** **Paste and Save** writes it all in one
+  transaction.
+
+**SQL** in the dialog shows the statements, to copy or open as a script. A row
+someone changed since the dialog read it refuses the whole paste, and nothing
+is written.
+
+Paste works where editing does: a query that reads one table, with its key in
+the result. A table with no key takes new rows only. One paste holds up to
+10,000 rows.
+
+```setting
+results.pasteFormat
+results.pasteHeaders
+results.pasteEmpty
+results.pasteMaxRows
 ```
 
 ## A LEFT JOIN its WHERE undoes
@@ -174,7 +240,15 @@ buttons and stand on the right beside them, after the edit mode: the left
 of the bar tells what ran, the right holds what you can do. In a narrow
 pane they keep their icons.
 
-![The bar above the rows of public.tour_film: SELECT public.tour_film and its run time on the left; Form with its arrow, New row, Edit and Delete on the right, flat, beside the copy, open in tab and more buttons](media/row-actions-right.webp)
+![The bar above the rows of public.tour_film: SELECT public.tour_film and its run time on the left; Form with its arrow, New row, Paste, Edit and Delete on the right, flat, beside the copy, open in tab and more buttons](media/row-actions-right.webp)
+
+### Arrows scroll over whole rows and columns
+
+With whole rows selected in a result wider than its pane, ←, →, Home and End
+now scroll sideways and the selection stays. With whole columns selected, ↑,
+↓, PageUp and PageDown scroll. With everything selected, all of them do. The
+other direction still moves to a cell, and so does a range of cells, as in a
+spreadsheet.
 
 ### Only a query that reads one table edits its rows
 
@@ -240,6 +314,9 @@ The Search pane's results read more easily, above all in a narrow pane:
 
 ## Fixed
 
+- **A click on a scrollbar keeps the selection.** Pressing a results grid's
+  scrollbar counted as a click on empty space and dropped what you had
+  selected.
 - **A range from a frozen row selects what you dragged over.** A selection
   dragged from a row frozen at the top into the rows below took every row
   whose number fell between the two ends, often far more than you saw. It
