@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "performance-refactors",
+  "kind": "refactor",
+  "version": "1.1.1",
+  "plumesql": ">=0.25.0",
+  "commit": "3d9ac7479afa300768bf85bb03eff0783a2371a5",
+  "path": "Performance/performance-refactors",
+  "files": [
+    {
+      "path": "performance-refactors.plumesql.js",
+      "sha256": "4b52f887d8f6f78fcb7199fab18452a3deb1104575a02574f264975870a17711",
+      "bytes": 34098
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 224,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

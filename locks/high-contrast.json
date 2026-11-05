@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "high-contrast",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "3d9ac7479afa300768bf85bb03eff0783a2371a5",
+  "path": "Themes/high-contrast",
+  "files": [
+    {
+      "path": "high-contrast.plumesql-theme.json",
+      "sha256": "c84123f14bebc78615c51e32dca10c63581835cd54550114518224f98608266e",
+      "bytes": 1881
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/high-contrast.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 121,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

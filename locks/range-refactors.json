@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "range-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.29.0",
+  "commit": "3d9ac7479afa300768bf85bb03eff0783a2371a5",
+  "path": "Data Types/range-refactors",
+  "files": [
+    {
+      "path": "range-refactors.plumesql.js",
+      "sha256": "d1cf33def7ed73970637146e4dda06fd2e2b1067d351bbfd1ad030b8274b3f35",
+      "bytes": 28821
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 240,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "correctness-refactors",
+  "kind": "refactor",
+  "version": "1.1.0",
+  "plumesql": ">=0.26.2",
+  "commit": "3d9ac7479afa300768bf85bb03eff0783a2371a5",
+  "path": "Correctness/correctness-refactors",
+  "files": [
+    {
+      "path": "correctness-refactors.plumesql.js",
+      "sha256": "f42d333af906e125bd3667f48b49b924cf5e115130b6d539d89c5f0662b2c24a",
+      "bytes": 23294
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 229,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}
