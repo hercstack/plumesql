@@ -206,7 +206,11 @@ a tab, the table named after the file. **Open the File** opens it after all.
 a file is not, the dialog guesses its encoding from your system's language and
 shows **Encoding**, so `pocinčani` can be put right before anything is written.
 
-A dropped file holds up to 8 MiB and the 10,000 rows of a paste.
+**From the keyboard too.** **PlumeSQL: Import File as Table** in the palette picks
+a file for the same dialog. Asked for by name, it opens the dialog whatever the
+file looks like.
+
+A file holds up to 8 MiB and the 10,000 rows of a paste.
 
 ## A LEFT JOIN its WHERE undoes
 
