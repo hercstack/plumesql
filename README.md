@@ -4,10 +4,12 @@
 > can become a monitor, a dashboard or a button.
 
 > [!NOTE]
-> **PlumeSQL 0.30.0 is here**: edit rows right in the grid and paste them
-> in from a spreadsheet, a LEFT JOIN its WHERE quietly turns into a JOIN is
-> caught and fixed in one click, and PlumeSQL opens in your theme from the
-> very first frame.
+> **PlumeSQL 0.30.0 is here**: edit rows right in the grid, paste them in
+> from a spreadsheet or make a table of what you copied or of a file you drop
+> on the window, select columns or statements and the lightbulb offers what
+> comes next, a LEFT JOIN its WHERE quietly turns into a JOIN is caught and
+> fixed in one click, and PlumeSQL opens in your theme from the very first
+> frame.
 > [What's in it](changelog/free-v0.30.0/README.md).
 >
 > PlumeSQL is still in beta: new releases come often, and features can
@@ -70,7 +72,8 @@ Here's the short version. The rest of this page has the details.
 - The grid takes millions of rows without slowing down. Freeze rows and
   columns like in a spreadsheet, filter, or compare two results side by
   side.
-- You edit data right in the grid, or paste it in from a spreadsheet.
+- You edit data right in the grid, or paste it in from a spreadsheet, into
+  a table of its own if you like.
   Enums, jsonb and foreign keys each get the right control.
 - There's a JavaScript console, and it reaches everything: your results,
   the open tab, the connection, the DDL snapshot.
@@ -114,7 +117,8 @@ It's built on PostgreSQL's own parser, catalogs and sessions:
   against the real server without creating anything, so you see a
   missing table before the function ever runs. You also get
   plpgsql_check-style warnings (unused variables, unreachable code, a
-  missing RETURN) without installing plpgsql_check.
+  missing RETURN) without installing plpgsql_check. An unused variable goes
+  with one Quick Fix.
 - **Safe on production.** Put `-- @readonly` in a script and PostgreSQL
   itself refuses any write. An UPDATE or DELETE without WHERE turns red
   before you run it, and COMMIT can show you what the transaction
@@ -173,6 +177,11 @@ of them:
   per value.
 - **Indexes.** A column you filter on, in a big table no index starts
   with, gets the CREATE INDEX it's missing.
+- **From a selection.** Select columns in a query and it finds their
+  duplicates, profiles them, joins them into one, takes the first that is
+  not NULL or adds a filter. Select several statements and it wraps them in
+  a transaction, in one that rolls back so you can try them, or in a DO
+  block. A blue dot on the lightbulb tells you a selection brought something.
 
 Extensions add their own refactors.
 [Window functions](extensions/Calculations/window-refactors/) writes a
@@ -193,10 +202,16 @@ could use one, the lightbulb offers to install it.
   a full JSON editor. Every change is logged with an Undo, and a row someone
   else changed in the meantime is never overwritten.
 - **Paste into a table.** Copy from Excel, Sheets or another result and
-  press ⌘V or Ctrl+V. The format is detected (tab or comma separated, JSON,
-  a Markdown table), and a dialog shows old and new values before anything
-  is written. Update the cells from your selection or add new rows, all or
-  nothing, with one Undo.
+  press ⌘V or Ctrl+V. The format is detected (tab, comma or semicolon
+  separated, JSON, a Markdown table), a decimal comma and a day-first date
+  read as you meant them, and a dialog shows old and new values before
+  anything is written. Update the cells from your selection or add new rows,
+  all or nothing, with one Undo.
+- **Paste or drop a file as a table.** Rows you copied, or a CSV, TSV or JSON
+  file dropped on the window or picked from the palette, go into a temporary
+  table, a new one, an unlogged one or one that exists. The columns are named
+  and typed for you, and a file that is not UTF-8 lets you put its letters
+  right.
 - **Follow foreign keys.** A foreign key value is a link. Click it and
   the row it points at opens. Keep clicking to walk through your data,
   with Back and Forward to retrace your steps.

@@ -319,7 +319,8 @@ under the pointer, where its size was:
 - **A workspace folder:** **New File** and **Find in Folder**.
 - **A script folder:** **New Script** and **New Command**.
 
-Nothing that runs or deletes, since a click in passing lands here too.
+Nothing that runs or deletes, since a click in passing lands here too. In the menus of
+the Explorer and the Objects tab, these rows now wear the same icons as their buttons.
 
 ### Select columns, and the lightbulb offers what comes next
 
