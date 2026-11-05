@@ -1,7 +1,8 @@
 # PlumeSQL 0.30.0
 
 Edit a table's rows right in the results grid, as in a spreadsheet, and
-paste rows into it from one. A LEFT JOIN that quietly turns into a JOIN is
+paste rows into it from one, or make a table of what you copied or of a file
+you drop on the window. A LEFT JOIN that quietly turns into a JOIN is
 caught, the row editor shows the SQL it runs, and PlumeSQL now opens in your
 theme from the very first frame.
 
@@ -12,6 +13,9 @@ theme from the very first frame.
   default.
 - **Paste into a table:** copy from Excel, a result or JSON, press ⌘V, see
   what will change, then confirm. Update cells or add new rows.
+- **Paste or drop a file as a table:** rows from Excel, or a CSV, TSV or JSON
+  file, into a temporary table in a few clicks, its columns named and typed
+  for you.
 - **A LEFT JOIN its WHERE undoes:** a warning on the condition, and one
   click moves it where it keeps the rows you meant.
 - **The SQL of a row edit:** the form shows the UPDATE or INSERT it will
@@ -96,8 +100,15 @@ comes first and **Add as new rows** is one click away:
 - Rows past the end of the result become new rows, unless you untick it.
 
 **The format is detected.** Tab separated (what a spreadsheet copies), comma
-separated, JSON and Markdown tables, the formats Copy writes. If the guess is
-wrong, pick another in the dialog.
+separated, semicolon separated (what a spreadsheet saves as CSV where the comma
+is the decimal mark), JSON and Markdown tables. If the guess is wrong, pick
+another in the dialog.
+
+**A spreadsheet's numbers and dates read.** `1.234,56` becomes `1234.56` in a
+number's column and `31.12.2026.` becomes `2026-12-31` in a date's. The decimal
+mark and the date order are detected from the values, and the dialog shows them
+for you to change, for that one paste or in the settings for all of them. A text
+column keeps what you copied.
 
 **Each value finds its column:**
 
@@ -113,8 +124,7 @@ back as NULL. In a NOT NULL column, it is the empty string where the type has
 one.
 
 **What cannot be written holds the button.** A value the column refuses shows
-red with the reason, and **Paste** waits until it is put right. A number with
-a decimal comma, such as `1,5`, is refused for now.
+red with the reason, and **Paste** waits until it is put right.
 
 ![The same dialog with cheap in the rental_rate column, in red, and below the preview: 1 value the columns cannot take, Row 2, rental_rate: not a number, with Paste disabled](media/paste-refused.webp)
 
@@ -135,14 +145,68 @@ is written.
 
 Paste works where editing does: a query that reads one table, with its key in
 the result. A table with no key takes new rows only. One paste holds up to
-10,000 rows.
+10,000 rows. For rows that belong in a table of their own, **Paste as Table** at
+the foot of the dialog takes the same text there.
 
 ```setting
 results.pasteFormat
 results.pasteHeaders
 results.pasteEmpty
+results.pasteDecimal
+results.pasteDates
 results.pasteMaxRows
 ```
+
+## Paste or drop a file as a table
+
+Rows from Excel often need a table of their own, for a moment or for good.
+**PlumeSQL: Paste as Table** in the palette, or **Paste as Table** in the SQL
+editor's menu, takes what you copied there, with no result needed.
+
+![The Paste as Table dialog: 3 rows into a temporary table of 4 columns, with Temporary table chosen among New, Unlogged and Existing table, the name kupci, Tab separated detected, Decimal auto reading comma, Dates auto reading day first, and the columns with their types and first values: ime_i_prezime text Ana Horvat, datum date 2026-12-31, iznos numeric 1234.56, sifra text 007](media/paste-table.webp)
+
+**A temporary table by default,** the one you most often want. It is made in the
+tab you are in, so your script goes on querying it, and it goes when the session
+does. Or choose another:
+
+- **New table** stays, in the schema you pick, with an id column as its primary
+  key if you want one, so its rows can be edited in the grid.
+- **Unlogged table** stays and is quick to fill: it is not written to the WAL, is
+  emptied after a crash and is not replicated.
+- **Existing table** adds the rows to a table that is there, through the Paste
+  dialog, with one Undo.
+
+**Names and types are read for you.** A first row of names becomes the columns,
+`Ime i prezime` as `ime_i_prezime` and `Šifra` as `sifra`. Each column gets the
+narrowest type every value fits, and a number with a leading zero, such as `007`,
+stays text. Change any of them: a type some value cannot take holds **Create** and
+says which value.
+
+**All or nothing.** **Create** makes the table and writes its rows in one
+transaction, then shows them in the tab. **SQL** shows the statements, to copy or
+open as a script.
+
+The Objects tree has it too: **Paste as New Table** on a schema's folder and
+**Paste Rows** on a table. Both start where you asked, with no question about it.
+
+### Drop a file on the window
+
+Drop one CSV, TSV or JSON file on the window and the same dialog opens instead of
+a tab, the table named after the file. **Open the File** opens it after all.
+
+![The dialog titled Import Artikli.csv: 3 rows into a temporary table of 6 columns, Encoding Central European (Windows-1250) with the note This file is not UTF-8, Check its letters below, Semicolon separated detected, and the columns with their first values, among them artikl reading Vijak M8, pocinčani, with Open the File beside SQL at the bottom](media/import-file.webp)
+
+- A `.txt` counts when it shows two columns over two lines.
+- A JSON file counts when it holds rows, so a settings file still opens.
+- A `.sql` file, or several files at once, open as they always did.
+- On a connection you cannot write to, or with none, the file opens and the Log
+  says why it was not offered.
+
+**The letters come out right.** A spreadsheet's plain CSV is often not UTF-8. When
+a file is not, the dialog guesses its encoding from your system's language and
+shows **Encoding**, so `pocinčani` can be put right before anything is written.
+
+A dropped file holds up to 8 MiB and the 10,000 rows of a paste.
 
 ## A LEFT JOIN its WHERE undoes
 
@@ -330,6 +394,10 @@ The Search pane's results read more easily, above all in a narrow pane:
 
 ## Fixed
 
+- **Paste in the editor asks nothing on macOS.** The Paste button of the editor's
+  toolbar, its right click menu and the terminal's menu put up a small system
+  Paste popup, and dismissing it left an error in the Log. They now paste at
+  once, as ⌘V does.
 - **A click on a scrollbar keeps the selection.** Pressing a results grid's
   scrollbar counted as a click on empty space and dropped what you had
   selected.
