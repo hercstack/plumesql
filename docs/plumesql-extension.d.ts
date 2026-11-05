@@ -669,6 +669,10 @@ interface RefactorStatement {
   /** Where the caret stands in text. Offer the same rewrites wherever the
    * caret stands; read it only to choose among several of one kind. */
   caret: number;
+  /** What is selected in text, when something is; absent for a bare caret. A
+   * refactor MAY offer something only for a selection: the user's way of naming
+   * the columns they mean. PlumeSQL 0.30.0 and later. */
+  selection?: { from: number; to: number };
   /** Its leading keyword in lower case: 'select', 'with', 'insert', ... */
   keyword: string;
   /** The relations it reads or writes at its own level (FROM and JOINs, an

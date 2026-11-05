@@ -134,6 +134,8 @@ export interface GridRefactor {
 export interface RefactorStatement {
   text: string
   caret: number
+  // What is selected in text, when something is (PlumeSQL 0.30.0 and later).
+  selection?: { from: number; to: number }
   keyword: string
   tables: RefactorTable[]
   // A query's main SELECT, absent for anything else and for a set operation.
@@ -1245,6 +1247,11 @@ quick and MUST answer from what it is given; it cannot ask the server.
   refactors wherever the caret stands in one statement, so a refactor SHOULD
   read the caret only to choose among several candidates of one kind (two
   `*`, two subqueries), and offer a single candidate from anywhere.
+- `selection`: what is selected in `text`, `from` and `to`, when something is;
+  absent for a bare caret, and before PlumeSQL 0.30.0. A refactor MAY offer
+  something only for a selection, the user's way of naming the columns they
+  mean. An offer a selection brings lights the lightbulb's dot, so it SHOULD be
+  worth noticing.
 - `keyword`: the leading keyword in lower case (`select`, `with`, `insert`,
   `update`, `delete`, ...).
 - `tables`: the relations the statement reads or writes at its own level (its

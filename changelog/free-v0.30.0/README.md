@@ -16,6 +16,9 @@ theme from the very first frame.
 - **Paste or drop a file as a table:** rows from Excel, or a CSV, TSV or JSON
   file, into a temporary table in a few clicks, its columns named and typed
   for you.
+- **Select, and the lightbulb offers more:** selected columns can be checked for
+  duplicates, profiled, merged or filtered on; selected statements can go in a
+  transaction, one rolled back to try them, or a DO block. A blue dot says when.
 - **A LEFT JOIN its WHERE undoes:** a warning on the condition, and one
   click moves it where it keeps the rows you meant.
 - **The SQL of a row edit:** the form shows the UPDATE or INSERT it will
@@ -290,6 +293,40 @@ Concatenate the selected columns names each form and what it does with a
 NULL (`concat_ws` skips it, `||` gives NULL), and the LEFT JOIN fixes say
 which rows each one keeps.
 
+### Surround the selected statements
+
+Select two or more statements, at least one that is no SELECT, and the lightbulb
+offers what you would type around them:
+
+- **Wrap in a transaction:** `begin;` above them and `commit;` below.
+- **Try it and roll back:** `begin;` above and `rollback;` below, to see what they do
+  and keep nothing. If a statement fails, the run stops there: nothing is kept, the
+  tab reads **transaction failed**, and `rollback` is yours to run.
+- **Wrap in a DO block:** `do $$ begin ... end; $$;`.
+
+They are not offered around a statement that opens or closes a transaction itself or
+refuses to run in one, such as `VACUUM`. The DO block is also left out for a `SELECT`,
+a `RETURNING` or a parameter, none of which can run in it.
+
+### Select columns, and the lightbulb offers what comes next
+
+Select one or more columns in a query's select list:
+
+![customer and nickname selected in a query over shop.orders, and the lightbulb's list open with First that is not NULL, Filter by, Concatenate, Find duplicates and Profile among its rows](media/column-offers.webp)
+
+- **Find duplicates of a, b:** the values that repeat, with how many times, as a query
+  reading yours, above it or in a new tab.
+- **Profile a, b:** for each column its rows, values, NULLs, distinct values, smallest
+  and largest, the same way.
+- **First that is not NULL:** two or more neighbouring columns become
+  `coalesce(a, b) as a_or_b`. Different kinds of type read as text.
+- **Filter by a:** `where a = $a` in your query, the run asking for the value. For one
+  column also **is NULL** and **is not NULL**.
+
+Nothing of this stands in the list until you select, and each has its switch in the
+Refactors settings. A refactor extension can read what is selected too, through
+`statement.selection`.
+
 ### Concatenate columns of any type
 
 Select two or more neighbouring columns in a select list and the lightbulb offers to
@@ -299,9 +336,10 @@ cast what is not text: `id::text || ' ' || first_name`.
 
 ### The lightbulb's dot tells when a selection brings something
 
-Selecting those columns now puts the blue dot on the lightbulb, the same dot a run's
-new refactors bring, with what is new in its tooltip. It stays while the selection
-does, and opening the list clears it.
+Selecting those columns, or anything else that brings an option to the list, now
+puts the blue dot on the lightbulb, the same dot a run's new refactors bring, with
+what is new in its tooltip. It stays while the selection does, and opening the list
+clears it.
 
 ### Remove an unused variable
 
