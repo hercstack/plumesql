@@ -398,6 +398,11 @@ The Search pane's results read more easily, above all in a narrow pane:
 
 ## Fixed
 
+- **The Objects tree follows a cursor that has not moved.** With Follow the editor
+  on, a script opened with its cursor on a table lit nothing in the tree until the
+  cursor moved, most of all at a start, where the database's objects arrive later
+  than the cursor. The tree now catches up as soon as they do, and scrolls to the
+  object if it is out of sight.
 - **Paste in the editor asks nothing on macOS.** The Paste button of the editor's
   toolbar, its right click menu and the terminal's menu put up a small system
   Paste popup, and dismissing it left an error in the Log. They now paste at
