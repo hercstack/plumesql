@@ -308,6 +308,19 @@ They are not offered around a statement that opens or closes a transaction itsel
 refuses to run in one, such as `VACUUM`. The DO block is also left out for a `SELECT`,
 a `RETURNING` or a parameter, none of which can run in it.
 
+### Explorer rows have buttons on hover
+
+As object rows in the Objects tab do, a row in the Explorer now shows its first actions
+under the pointer, where its size was:
+
+- **A file:** **Open**, in a tab that stays, and **Open Pinned**, in a pinned tab, which
+  is new in the row's menu too. A file connections were discovered in, an `.env` for
+  example, keeps its elephant beside them: a click shows the connection.
+- **A workspace folder:** **New File** and **Find in Folder**.
+- **A script folder:** **New Script** and **New Command**.
+
+Nothing that runs or deletes, since a click in passing lands here too.
+
 ### Select columns, and the lightbulb offers what comes next
 
 Select one or more columns in a query's select list:
@@ -456,6 +469,8 @@ The Search pane's results read more easily, above all in a narrow pane:
 
 ## Fixed
 
+- **Open in a file's menu shows its tab.** On a file already open in another tab it
+  only kept that tab, so nothing seemed to happen.
 - **Enter at the end of a formula ends the line.** In a `-- @computed` or
   `-- @format` line a list stayed open over the formula's punctuation, so Enter
   after `row.email.split('@')[1]` wrote `value` into it. A list now opens at the
