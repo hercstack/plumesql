@@ -398,6 +398,26 @@ The Search pane's results read more easily, above all in a narrow pane:
 
 ## Fixed
 
+- **Enter at the end of a formula ends the line.** In a `-- @computed` or
+  `-- @format` line a list stayed open over the formula's punctuation, so Enter
+  after `row.email.split('@')[1]` wrote `value` into it. A list now opens at the
+  formula's start, on a name being typed and after a dot, and no longer covers a
+  function's signature.
+- **`split(` shows the overload you mean.** It opened on one taking a
+  `{ [Symbol.split](...) }` object, and so did `replace`, `match` and `search`. The
+  plain one comes first now, in a formula and in the extension editors.
+- **A computed column as wide as what it makes.** A formula extended after a pause
+  kept the width of its first values and read `Marko Vuk...`. The same goes for a
+  format.
+- **A computed column's menu can format it.** **Format** in its menu has every
+  template, as a real column has.
+- **`row.` lists what a `-- @computed` line can read:** not the column being
+  written, nor those after it, which are not there yet. Reading one of them is now
+  marked in the line, like a typo.
+- **No "No suggestions." on an annotation line.** It showed while you named a new
+  column, and under any annotation's text with nothing to offer.
+- **The hover of `value` in a `-- @computed` line reads `row.<column>`,** where the
+  column's name was missing.
 - **The Objects tree follows a cursor that has not moved.** With Follow the editor
   on, a script opened with its cursor on a table lit nothing in the tree until the
   cursor moved, most of all at a start, where the database's objects arrive later
