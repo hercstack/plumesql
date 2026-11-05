@@ -290,6 +290,13 @@ Concatenate the selected columns names each form and what it does with a
 NULL (`concat_ws` skips it, `||` gives NULL), and the LEFT JOIN fixes say
 which rows each one keeps.
 
+### Remove an unused variable
+
+The warning on a PL/pgSQL variable nothing uses now comes with a Quick Fix (⌘. or
+Ctrl+.): **Remove unused variable v_note**. The declaration goes, with its comment,
+and the DECLARE too when it was the last. If its default calls something, the title
+says so, since that call would no longer run.
+
 ### A refused edit leaves its line in the Log
 
 When the server refuses a row edit, a duplicate key for example, the form
