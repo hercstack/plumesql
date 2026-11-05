@@ -49,7 +49,8 @@ const parses = (/** @type {string} */ family, /** @type {string} */ s) => {
  * @returns {Tally}
  */
 const tally = () => ({ n: 0, examples: [] })
-const hit = (/** @type {Tally} */ t, /** @type {string} */ s) => { t.n++; if (t.examples.length < EXAMPLES) t.examples.push(s) }
+// Different values say more than one value three times.
+const hit = (/** @type {Tally} */ t, /** @type {string} */ s) => { t.n++; if (t.examples.length < EXAMPLES && !t.examples.includes(s)) t.examples.push(s) }
 const quote = (/** @type {string} */ s) => JSON.stringify(s.length > 40 ? s.slice(0, 39) + '…' : s)
 // A count cell: blank when the check does not apply, the plain number when clean, coloured with its examples when not.
 const countCell = (/** @type {Tally|null} */ t, /** @type {string} */ cls, /** @type {string} */ what) =>

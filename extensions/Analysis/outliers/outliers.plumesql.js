@@ -1,7 +1,7 @@
 // @ts-check
 // @description Flags outliers of the numeric columns you pick, by IQR fences or z-score: a list of the outlying values, or the result with them coloured
 // @color violet
-import { loadRows, topOf, colIndexes, isNumericCol, ask, num, round, sorted, quantile, mean, stdev, tint } from '$ext/stats-core/stats-core.plumesql.js'
+import { loadRows, topOf, colIndex, colIndexes, isNumericCol, ask, num, round, sorted, quantile, mean, stdev, tint } from '$ext/stats-core/stats-core.plumesql.js'
 
 // The grid lists 100,000 rows at most; the fences still read every row.
 const CAP = 100000
@@ -73,8 +73,11 @@ export default {
         const picked = colIndexes(cols, inputs.columns)
         const skipped = picked.filter((i) => !isNumericCol(cols[i]))
         const targets = picked.filter((i) => isNumericCol(cols[i]))
+        // A name this result does not have: 0 rows would read as a clean result.
+        const unknown = String(inputs.columns || '').split(',').map((s) => s.trim()).filter((n) => n && colIndex(cols, n) < 0)
+        if (unknown.length) ctx.log('Outliers: this result has no column named ' + unknown.join(', ') + '; it was not checked.')
         if (skipped.length) ctx.log('Outliers reads numbers; left alone: ' + skipped.map((i) => cols[i].name).join(', '))
-        if (!targets.length) return ask('Pick the numeric Columns to check (the sliders button in the header)')
+        if (!targets.length) return ask((unknown.length ? 'No column named ' + unknown.join(', ') + '. ' : '') + 'Pick the numeric Columns to check (the sliders button in the header)')
         const method = inputs.method === 'z-score' ? 'z-score' : 'iqr'
         const kIn = num(inputs.k), zIn = num(inputs.z)
         const k = kIn != null && kIn >= 0 ? kIn : 1.5

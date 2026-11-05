@@ -2,7 +2,7 @@
   "format": 1,
   "id": "data-quality",
   "kind": "grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "plumesql": ">=0.22.0",
   "name": "Data quality",
   "description": "One row per column with its checks: nulls, empty strings, key duplicates, unparsed values, stray spaces, case variants, odd dates",
