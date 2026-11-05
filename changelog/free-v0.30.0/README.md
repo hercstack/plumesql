@@ -290,6 +290,19 @@ Concatenate the selected columns names each form and what it does with a
 NULL (`concat_ws` skips it, `||` gives NULL), and the LEFT JOIN fixes say
 which rows each one keeps.
 
+### Concatenate columns of any type
+
+Select two or more neighbouring columns in a select list and the lightbulb offers to
+make them one. It used to offer that for text columns alone, so a number or a date
+among them showed nothing. **concat_ws** takes them as they are, and the **||** forms
+cast what is not text: `id::text || ' ' || first_name`.
+
+### The lightbulb's dot tells when a selection brings something
+
+Selecting those columns now puts the blue dot on the lightbulb, the same dot a run's
+new refactors bring, with what is new in its tooltip. It stays while the selection
+does, and opening the list clears it.
+
 ### Remove an unused variable
 
 The warning on a PL/pgSQL variable nothing uses now comes with a Quick Fix (⌘. or
