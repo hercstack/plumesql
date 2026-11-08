@@ -285,7 +285,7 @@ MUST behave exactly as described.
 | `@description` | `@desc` | `@description <text>` | action | query, command | no description: the tab and the tree row show the file name alone |
 | `@refresh` | | `@refresh <interval>` | action | query | no timer: the action runs when opened and on Run again |
 | `@hide` | | `@hide <column> [, <column> ...]` | action | query | every column the query selects is shown |
-| `@toolbar` | | `@toolbar [place] [icon] [label]` | action | query, command | no button in the title bar |
+| `@toolbar` | | `@toolbar [place] [icon] [label]` | action | query, command | no button of its own |
 | `@color` | | `@color <name>` | action | query, command | no color: every mark of the action wears the ordinary chrome |
 | `@face` | | `@face result\|source` | action | query, command | `source`: a click on the file's row opens the file, as for any file |
 | `@connection` | | `@connection <id, name or url>` | action | query, command | the action runs on the connection the gesture came with, and the user may pick another |
@@ -355,7 +355,8 @@ hidden column no button reads (9.5).
 ### 8.4 `@toolbar [place] [icon] [label]`
 
 Ask the application for a button of its own (in the reference
-implementation: the title bar, or a side strip), one click from anywhere,
+implementation: its extensions toolbar, a row of the window's own; the
+editor's toolbar; a result's header), one click from anywhere,
 which DOES the action: a query action runs, a command action runs. The
 value is written in the order the button is drawn: an icon, a label, or
 an icon then a label. The icon is one of three forms: an `<svg ... </svg>`
@@ -412,7 +413,7 @@ file's own and need no rebuild.
 
 Give the action a color, worn by every mark that stands for the action
 in the presenting application (in the reference implementation: the
-row's mark in its pane, the title bar button, the tab). The value is
+row's mark in its pane, the toolbar button, the tab). The value is
 one of ten names, case-insensitive like every keyword value:
 
 `blue`, `cyan`, `teal`, `green`, `olive`, `amber`, `orange`, `red`,
@@ -783,7 +784,7 @@ exactly what a click on any other file opens, and the default; or
 program's run), for an action that is a dashboard and whose file nobody
 needs to see. Only the "take me there" gestures read the annotation (a
 row click, and whatever an implementation treats as the same gesture);
-a door that says what it does (View, Run, a title bar button) does that
+a door that says what it does (View, Run, a toolbar button) does that
 regardless. For a command action `result` means the click RUNS a
 program, which the file asks for in so many words; a file that does so
 SHOULD carry a `@confirm` (8.21). A value outside the vocabulary MUST

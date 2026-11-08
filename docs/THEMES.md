@@ -107,6 +107,27 @@ the moment the system does.
 | `footer-bg`, `footer-text`, `footer-muted` | The status bar. |
 | `footer-conn`, `footer-conn-hover` | The status bar's connection segment. |
 
+A part of the window has tokens of its own, each inheriting another until a
+theme names it (section 3), so a theme says only what it wants different:
+
+| Part | Tokens, and what each inherits |
+|---|---|
+| The title bar | `titlebar-bg` (`panel`), `titlebar-text` (`text`), `titlebar-muted` (`muted`), `titlebar-border` (`border`) |
+| The editor tabs | `tabs-bg` (a step off `panel`, section 3), `tabs-text` (`muted`), `tabs-hover` (`text` at 6%), `tabs-border` (`border`) |
+| The active tab | `tab-active-bg` (`panel`), `tab-active-text` (`text`), `tab-active-border` (`border`) |
+| The sidebars | `sidebar-bg` (`panel`), `sidebar-text` (`text`), `sidebar-muted` (`muted`), `sidebar-hover` (`row-hover`), `sidebar-selected` (`accent-dim`), `sidebar-border` (`border`) |
+| The sidebars' tabs | `rail-bg` (`sidebar-bg`), `rail-text` (`muted`), `rail-border` (`border`) |
+| The editor's toolbar | `toolbar-bg` (`panel`), `toolbar-text` (`text`), `toolbar-muted` (`muted`), `toolbar-border` (`border`) |
+| The editor | `editor-bg` (`bg`), `editor-text` (`text`), `editor-line-number` (`muted`), `editor-line` (`row-hover`), `editor-selection` (`accent-dim`) |
+| The result grid | `grid-bg` (`bg`), `grid-text` (`text`), `grid-header-bg` (`panel-2`), `grid-header-text` (`text`) |
+| The bottom panel | `bottom-bg` (`panel`), `bottom-text` (`text`), `bottom-muted` (`muted`), `bottom-border` (`border`) |
+| The menus | `menu-bg` (`panel`), `menu-text` (`text`), `menu-selected` (`accent-dim`), `menu-border` (`border`) |
+
+A theme that names one of these needs PlumeSQL 0.31.0 or later: an older
+release refuses the theme for its unknown color. An extension carrying one
+MUST declare that release in its manifest (`"plumesql": ">=0.31.0"`), so an
+older release never offers it.
+
 ### 2.2 `syntax`
 
 `keyword`, `string`, `number`, `comment`, `operator`, `type`, `func` and
@@ -175,6 +196,9 @@ CSS `color-mix(in srgb, a t, b)`:
 | `footer-bg` | `mix(accent, bg, 18%)` |
 | `footer-text`, `footer-muted` | `text`, `mix(text, bg, 80%)` |
 | `footer-conn`, `footer-conn-hover` | `green`, `mix(green, text, 82%)` |
+| `tabs-bg` | `mix(panel, bg, 72%)` dark, `mix(panel, text, 94%)` light |
+| `tabs-hover` | `text` at 6% opacity |
+| Every other token of a part (section 2.1) | what it inherits |
 | `syntax.keyword`, `func` | `accent` |
 | `syntax.string`, `number`, `comment` | `green`, `amber`, `muted` |
 | `syntax.operator`, `type`, `annotation` | `text`, `violet`, `violet` |
@@ -251,6 +275,20 @@ shadows. A theme's `text` SHOULD read at 4.5:1 or better on its
   what each token paints on hover.
   Prepare to Publish checks it with the same parser the application
   loads it with.
+- **The Appearance tab's Theme Editor.** A sample of the window to select in, what is selected
+  in the Properties tab: with nothing selected the general tokens above, one row
+  each; with a part selected its own tokens, each saying what it inherits, with a
+  way back to inheriting, and the editor's code colors under the editor. A theme
+  that then names a part's token declares the release it needs in its manifest.
+  A change paints the whole window at once through the same tokens and
+  saves nothing, a draft held in memory; a picker's highlight and a page's
+  Preview show over it, and picking a theme, Discard or closing the tab
+  lets it go. Save as New Theme writes a theme extension into My Extensions
+  holding every color on screen and the faces and shape of the theme it
+  started from, and switches to it. On a theme of the user's own, Save to
+  writes `colors` and `syntax` back into its entry and leaves the rest of
+  the file as it was, the tokens then all named; Open Its File is the road
+  to what has no row, the terminal's colors, the faces and the shape.
 
 ## 5. Importing a VS Code theme
 
