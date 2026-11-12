@@ -4,13 +4,12 @@
 > can become a monitor, a dashboard or a button.
 
 > [!NOTE]
-> **PlumeSQL 0.30.0 is here**: edit rows right in the grid, paste them in
-> from a spreadsheet or make a table of what you copied or of a file you drop
-> on the window, select columns or statements and the lightbulb offers what
-> comes next, a LEFT JOIN its WHERE quietly turns into a JOIN is caught and
-> fixed in one click, and PlumeSQL opens in your theme from the very first
-> frame.
-> [What's in it](changelog/free-v0.30.0/README.md).
+> **PlumeSQL 0.31.0 is here**: draw your database as a diagram you keep
+> beside your scripts and share through git, trace what a table is joined
+> to and put a query's result right on the canvas; the Properties tab says
+> what you are working on and lets you change it, and a new Appearance tab
+> shows the window as you change it, down to a theme of your own.
+> [What's in it](changelog/free-v0.31.0/README.md).
 >
 > PlumeSQL is still in beta: new releases come often, and features can
 > still change between them. The app updates itself. Something broken
@@ -75,6 +74,9 @@ Here's the short version. The rest of this page has the details.
 - You edit data right in the grid, or paste it in from a spreadsheet, into
   a table of its own if you like.
   Enums, jsonb and foreign keys each get the right control.
+- Diagrams of your database are files you keep beside your scripts and
+  share through git. Trace what a table is joined to, add notes, put a
+  query's result on the canvas, copy it as PNG, SVG or Mermaid.
 - There's a JavaScript console, and it reaches everything: your results,
   the open tab, the connection, the DDL snapshot.
 - A few comments turn a query into a small app you can send to your
@@ -100,16 +102,17 @@ It's built on PostgreSQL's own parser, catalogs and sessions:
   [pg_cron](extensions/pg_cron/), [pg_partman](extensions/pg_partman/)
   and `pg_stat_statements`. PlumeSQL sees what's installed on your
   server and recommends the ones that fit.
-- **The PostgreSQL docs, right where you need them.** Hover a keyword
-  and you get a link to its reference page, for your server's version.
+- **The PostgreSQL docs, right where you need them.** Hover a keyword,
+  a clause, a type or a builtin function and you get its own section of
+  the reference, for your server's version, with an example.
   Every catalog, every builtin function and type, and every function an
   extension adds (contrib modules, PostGIS, Citus, TimescaleDB) has a
   Documentation entry that opens the real page inside PlumeSQL. Even
   catalog columns explain themselves, so you finally know what
   `relkind` means. Pages are cached, so they work offline too.
 - **EXPLAIN that tells you what's wrong.** The
-  [explain-plan](extensions/Performance/explain-plan/) extension draws
-  the plan and points out what to look at first: the steps eating the
+  [explain-plan](extensions/Performance/explain-plan/) extension lays
+  the plan out as cards and points out what to look at first: the steps eating the
   time, estimates that are way off, sorts that spilled to disk.
   EXPLAIN ANALYZE on an INSERT, UPDATE or DELETE runs in a rollback, so
   nothing actually changes.
@@ -245,7 +248,7 @@ order by 1;
 
 There's more, like `@confirm-writes` and the file's own formatting
 style. The editor completes annotations as you type, explains each one
-on hover and lists them in the Outline. To any other tool it's still
+on hover and lists them in the Properties tab's Outline. To any other tool it's still
 just a SQL file. The full list is in
 [ACTIONSPEC.md](docs/ACTIONSPEC.md).
 
@@ -313,6 +316,17 @@ plumesql --help                    # everything else
   last result, the open tab and the database at hand.
 - **Your database as files.** The object browser is a DDL snapshot on
   disk, one file per object, to search and compare without a query.
+- **Database diagrams.** Pick objects from the object tree and they are
+  laid out with their keys and dependencies, schemas as frames. Trace
+  what an object is joined to, style cards and lines, add notes and
+  areas, and see what changed in the database since the diagram was
+  drawn. Each computer draws it from a connection of its own.
+- **Properties for whatever you work on.** A script's connection and
+  session, a result's columns and selection with their counts and sums,
+  a setting, a diagram, an object's DDL: all in one tab, to read and to
+  change.
+- **A theme of your own.** The Appearance tab shows the window as you
+  change it. Change any color and save it as a theme extension.
 - **Foreign data wrappers.** Wrappers, servers, user mappings and
   foreign tables are in the object tree and the snapshot, with the
   passwords left out. Right-click a server for a ready
