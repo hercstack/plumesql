@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "readability-refactors",
+  "kind": "refactor",
+  "version": "1.1.0",
+  "plumesql": ">=0.29.0",
+  "commit": "505c7df6cbce9ae4cc5f8f5c83a9721ed174e372",
+  "path": "Formatting/readability-refactors",
+  "files": [
+    {
+      "path": "readability-refactors.plumesql.js",
+      "sha256": "98008a1632e17232dfc0076439448d891897c6925feb7daab2127dbdb1d02a09",
+      "bytes": 13878
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 241,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

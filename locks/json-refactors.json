@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "json-refactors",
+  "kind": "refactor",
+  "version": "1.0.0",
+  "plumesql": ">=0.24.0",
+  "commit": "505c7df6cbce9ae4cc5f8f5c83a9721ed174e372",
+  "path": "Data Types/json-refactors",
+  "files": [
+    {
+      "path": "json-refactors.plumesql.js",
+      "sha256": "286638bdf6b53380cc20428723cf40b1b11f06785f392b52fe308f7bc55aa14e",
+      "bytes": 33699
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 238,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

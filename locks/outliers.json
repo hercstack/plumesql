@@ -1,0 +1,30 @@
+{
+  "format": 1,
+  "id": "outliers",
+  "kind": "grid",
+  "version": "1.0.1",
+  "plumesql": ">=0.22.0",
+  "commit": "505c7df6cbce9ae4cc5f8f5c83a9721ed174e372",
+  "path": "Analysis/outliers",
+  "files": [
+    {
+      "path": "outliers.plumesql.js",
+      "sha256": "6057bef9386b3f72d7a5ff96f5cf7c7d9d067bd552e20fe57375d941d034d41d",
+      "bytes": 8592
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/outliers.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 164,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

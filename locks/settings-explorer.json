@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "settings-explorer",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.29.0",
+  "commit": "505c7df6cbce9ae4cc5f8f5c83a9721ed174e372",
+  "path": "Server and Security/settings-explorer",
+  "files": [
+    {
+      "path": "settings-explorer.plumesql.js",
+      "sha256": "9e14a039e5b63b72ead6366a29b80f34f5d139f8c3a58302f3ec0a37e5d1cb74",
+      "bytes": 8264
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 243,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

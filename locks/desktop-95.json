@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "desktop-95",
+  "kind": "theme",
+  "version": "1.0.0",
+  "plumesql": ">=0.29.0",
+  "commit": "505c7df6cbce9ae4cc5f8f5c83a9721ed174e372",
+  "path": "Themes/desktop-95",
+  "files": [
+    {
+      "path": "desktop-95.plumesql-theme.json",
+      "sha256": "4eb28f480c03c10e21cefd4b6bce827a7ca79fde8c721b2fb5d79170b242a7ea",
+      "bytes": 5410
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/desktop-95.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 237,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

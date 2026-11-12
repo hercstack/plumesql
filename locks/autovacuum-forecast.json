@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "autovacuum-forecast",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.29.0",
+  "commit": "505c7df6cbce9ae4cc5f8f5c83a9721ed174e372",
+  "path": "Storage and Maintenance/autovacuum-forecast",
+  "files": [
+    {
+      "path": "autovacuum-forecast.plumesql.js",
+      "sha256": "291268d6e2390abe67a8577f09a39243f84b4d139c357bd9f69c9d9e7548306a",
+      "bytes": 8428
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 236,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}
