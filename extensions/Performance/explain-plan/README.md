@@ -103,11 +103,13 @@ Run EXPLAIN, the editor's **Explain ▾** lens or the run glyph's right click on
 
 ### The diagram
 
-The first diagram fits the pane. **−**, **Fit** and **+** in the header zoom, so does Ctrl or Cmd with the wheel; drag the background to move around a large plan. The **−** under a card folds the steps under it (in the table too), and **+** brings them back.
+On PlumeSQL 0.31.0 and later the diagram is drawn by PlumeSQL's own diagram canvas, the one its database diagrams use: the plan laid out top to bottom, each card its step's share as a bar (red from half the whole, amber from a fifth), its rows and its own time, how far the estimate was off and what to look at; the lines as thick as the rows they carry, the selected step's way up to the result in the accent. Drag to move around, the wheel zooms, **−**, **Fit** and **+** sit in its corner, and a plan of more than two dozen steps gets a minimap. A deep plan opens at a size its cards read at, its top in sight. A click chooses a step (its detail shows beside), a double click shows it in Steps, and a card's **−** folds the steps under it (in the table too), **+** bringing them back.
+
+On older versions the extension draws the diagram itself: **−**, **Fit** and **+** in the header zoom, so does Ctrl or Cmd with the wheel, and dragging the background moves around a large plan.
 
 ### Keyboard
 
-In the diagram, Up goes to the step that uses this one's rows, Down to its first input, Left and Right to the card beside it; Enter shows the step in Steps; **+** and **−** zoom and **0** fits. In the Steps table, Up and Down walk the steps, Left folds a step or goes to its parent, Right unfolds it or goes to its first child, Home and End go to the first and the last. Enter on a fact goes to its step.
+In the diagram the arrows choose the nearest card that way (on older versions: Up the step that uses this one's rows, Down its first input, Left and Right the card beside it); Enter shows the step in Steps; **+** and **−** zoom and **0** fits. In the Steps table, Up and Down walk the steps, Left folds a step or goes to its parent, Right unfolds it or goes to its first child, Home and End go to the first and the last. Enter on a fact goes to its step.
 
 ## Good to know
 

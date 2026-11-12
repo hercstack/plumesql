@@ -566,6 +566,8 @@ export default {
         let lastLayout = null
         const collapsed = new Set()
         let selected = facts.length ? facts[0].node.id : 0
+        // PlumeSQL draws the diagram itself where it can (ctx.flow, 0.31.0 and later).
+        const hostFlow = typeof ctx.flow === 'function'
         // The step the detail beside showed at the last draw.
         let sideOf = -1
         // A step's colour is its own share: red from half, amber from a
@@ -651,6 +653,7 @@ export default {
           .zoom button{background:none;border:1px solid ${c.bd};border-radius:5px;color:${c.mut};font:inherit;font-size:11.5px;min-width:24px;padding:1px 6px;cursor:pointer}
           .zoom button:hover{color:${c.fg}}
           .dgv{border:1px solid ${c.bd};border-radius:8px;background:${c.ground};overflow:auto;max-height:68vh;cursor:grab;position:relative}
+          .dgv.dgflow{height:62vh;min-height:320px;max-height:none;overflow:hidden;cursor:default}
           .dgv.panning{cursor:grabbing}
           .dgv:focus-visible{outline:2px solid ${c.acc};outline-offset:-2px}
           .dgv svg{display:block;margin:0 auto}
@@ -818,8 +821,10 @@ export default {
           const seg = ['time', 'rows', 'cost', 'buffers'].map((m) => '<button data-metric="' + m + '" class="' + (m === metric ? 'on' : '') + '"' + (why(m) ? ' disabled title="' + escapeHtml(why(m)) + '"' : '') + '>' + m[0].toUpperCase() + m.slice(1) + '</button>').join('')
           const faceSeg = [['diagram', 'Diagram'], ['boxes', 'Boxes']].map(([k, l]) => '<button data-face="' + k + '" class="' + (k === face ? 'on' : '') + '" title="' + (k === 'diagram' ? 'Each step a card, the rows it passes up a line as thick as their number' : 'Each step as wide as its share, under the step that uses its rows') + '">' + l + '</button>').join('')
           html += '<div class="main"><div class="col"><h3>Where it goes <span class="seg">' + faceSeg + '</span><span class="seg">' + seg + '</span>' +
-            (face === 'diagram' ? '<span class="zoom"><button data-zoom="out" title="Zoom out (−)" aria-label="Zoom out">−</button><button data-zoom="fit" title="Fit the plan in view (0)">Fit</button><button data-zoom="in" title="Zoom in (+)" aria-label="Zoom in">+</button></span>' : '') + '</h3>'
-          if (face === 'diagram') html += diagram()
+            (face === 'diagram' && !hostFlow ? '<span class="zoom"><button data-zoom="out" title="Zoom out (−)" aria-label="Zoom out">−</button><button data-zoom="fit" title="Fit the plan in view (0)">Fit</button><button data-zoom="in" title="Zoom in (+)" aria-label="Zoom in">+</button></span>' : '') + '</h3>'
+          // On PlumeSQL 0.31.0 and later the app draws the diagram with its own canvas (ctx.flow):
+          // this box is where, sendFlow below hands it the plan once the page is built.
+          if (face === 'diagram') html += hostFlow ? '<div class="dgv dgflow" tabindex="-1"></div>' : diagram()
           else {
           const maxDepth = all.reduce((d, n) => Math.max(d, n.depth), 0)
           let ice = '<div class="ice" style="height:' + ((maxDepth + 1) * 22 + 4) + 'px">'
@@ -908,6 +913,7 @@ export default {
           root.innerHTML = html
           root.scrollLeft = view.left
           root.scrollTop = view.top
+          if (hostFlow) { if (face === 'diagram') sendFlow(); else ctx.flow(null) }
           sideOf = sel.id
           const side = root.querySelector('.side')
           if (side && sideTop) side.scrollTop = sideTop
@@ -930,6 +936,72 @@ export default {
           const active = root.ownerDocument.activeElement
           const row = /** @type {HTMLElement|null} */ (root.querySelector('tr.row.sel'))
           if (row && hadRowFocus && active !== row) row.focus({ preventScroll: true })
+        }
+
+        // sendFlow hands the plan to PlumeSQL's own diagram canvas (ctx.flow, PlumeSQL 0.31.0 and
+        // later): every step a card under the step that uses its rows, the line between them as
+        // thick as the rows it carries, the selected card's way up to the result in the accent,
+        // a folded step's steps left out. The app lays it out, pans and zooms it; a card chosen,
+        // opened or folded there comes back here.
+        const sendFlow = () => {
+          const box = root.querySelector('.dgflow')
+          if (!box || typeof ctx.flow !== 'function') return
+          const mt = metricTotal()
+          const maxRows = Math.max(1, ...all.map((n) => n.outRows ?? n.estRows ?? 0))
+          const lineage = new Set()
+          for (let q = all[selected]; q; q = q.parent) lineage.add(q.id)
+          /** @type {any[]} */
+          const shown = []
+          const walk = (/** @type {any} */ n) => { shown.push(n); if (!collapsed.has(n.id)) for (const k of n.children) walk(k) }
+          walk(plan.node)
+          const under = (/** @type {any} */ n) => n.children.reduce((/** @type {number} */ a, /** @type {any} */ k) => a + 1 + under(k), 0)
+          const level = (/** @type {number} */ f) => (f >= 0.5 ? 'red' : f >= 0.2 ? 'amber' : 'accent')
+          const nodes = shown.map((n) => {
+            const share = (metricOf(n) || 0) / mt
+            const fl = flagsOf(n)
+            const worst = fl.some((f) => f.level === 'red') ? 'red' : fl.some((f) => f.level === 'amber') ? 'amber' : 'muted'
+            const where = whereOf(n)
+            const tag = n.sub || (n.rel && !['Outer', 'Inner', 'Member'].includes(n.rel) ? n.rel : '')
+            const own = metric === 'time' ? (analyzed ? time(n.excl) : '') : metric === 'buffers' ? bytes(n.bufExcl) : metric === 'cost' ? (n.costExcl || 0).toFixed(1) : ''
+            const est = n.factor !== null && !n.limited && Math.abs(n.factor) >= 10
+            const lines = [{ label: 'rows', value: (analyzed ? count(n.outRows) : count(n.estRows) + ' est.') + (analyzed && (n.loops || 0) > 1 ? ' · ×' + count(n.loops) + ' loops' : '') }]
+            if (own) lines.push({ label: metric === 'cost' ? 'own cost' : 'own', value: own })
+            if (est) lines.push({ label: 'estimate', value: '×' + count(Math.abs(n.factor)) + (n.factor > 0 ? ' more rows than expected' : ' fewer rows than expected'), color: Math.abs(n.factor) >= 100 ? 'red' : 'amber' })
+            const badges = []
+            if (metric !== 'rows' && share >= 0.05) badges.push({ text: pct(share), color: level(share), hint: pct(share) + ' of the ' + metric + ', its own' })
+            if (fl.length) badges.push({ text: fl.length === 1 ? '1 thing to look at' : fl.length + ' things to look at', color: worst, hint: fl.map((f) => f.text).join('\n') })
+            if (n.never) badges.push({ text: 'never ran', color: 'muted' })
+            return {
+              id: String(n.id),
+              title: n.label,
+              sub: where || tag || '',
+              lines,
+              ...(metric !== 'rows' ? { bar: { value: Math.min(1, share), color: level(share), label: pct(share) + ' of the ' + metric } } : {}),
+              badges,
+              ...(n.never ? { tint: 'muted' } : {}),
+              hint: n.label + (where ? ' ' + where : '') + (fl.length ? '\n' + fl.map((f) => '• ' + f.text).join('\n') : ''),
+              ...(n.children.length ? { collapsible: true, collapsed: collapsed.has(n.id), hidden: collapsed.has(n.id) ? under(n) : undefined } : {})
+            }
+          })
+          const edges = shown.filter((n) => n.parent && shown.includes(n.parent)).map((n) => {
+            const r = n.outRows ?? n.estRows ?? 0
+            return {
+              from: String(n.parent.id),
+              to: String(n.id),
+              width: 1.5 + (8 * Math.log10(1 + r)) / Math.log10(1 + maxRows),
+              label: n.never ? 'never ran' : count(r) + (n.outRows === null ? ' est.' : '') + ' rows',
+              color: n.never ? 'muted' : lineage.has(n.id) ? 'accent' : 'muted',
+              ...(n.never ? { dashed: true } : {})
+            }
+          })
+          ctx.flow({ nodes: /** @type {FlowNode[]} */ (nodes), edges: /** @type {FlowEdge[]} */ (edges), direction: 'down', selected: String(selected), minimap: shown.length > 24 }, {
+            into: box,
+            // Chosen on the canvas: its detail beside, the lineage lit.
+            onSelect: (id) => { selected = Number(id); draw(); const side = root.querySelector('.side'); if (side && !reduced) side.classList.add('flash') },
+            // Opened (a double click, Enter): the step in Steps.
+            onOpen: (id) => choose(Number(id), true, true),
+            onToggle: (id) => { const k = Number(id); if (collapsed.has(k)) collapsed.delete(k); else collapsed.add(k); draw() }
+          })
         }
 
         // revealCard brings a card into the diagram's view, scrolling the

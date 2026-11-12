@@ -378,6 +378,75 @@ interface RenderContext {
    * {} when PlumeSQL knows no parameters for the connection yet. Absent
    * before PlumeSQL 0.29.0: check it is there before calling it. */
   settings?(names: string[]): Promise<Record<string, ServerSetting>>;
+  /** Hand a GRAPH to PlumeSQL, which draws it with its own diagram canvas
+   * (Svelte Flow, laid out by ELK) over the element `options.into` (the
+   * view's root when absent): cards and lines as DATA, never markup, in
+   * the theme's colors, with pan, zoom, keys and a fold button per card
+   * that asks for one. The handlers hear the canvas (a card chosen,
+   * opened, folded); answer by sending the graph again. ctx.flow(null)
+   * takes it away. Absent before PlumeSQL 0.31.0: check it is there and
+   * draw your own otherwise. */
+  flow?(graph: FlowGraph | null, options?: FlowOptions): void;
+}
+
+/** A color of ctx.flow, by name: the theme paints it. */
+type FlowColor = 'accent' | 'muted' | 'text' | 'red' | 'amber' | 'green' | 'violet';
+
+/** A card of ctx.flow: its words and numbers; PlumeSQL draws them. */
+interface FlowNode {
+  id: string;
+  title: string;
+  /** A second line, muted. */
+  sub?: string;
+  /** Label and value lines (at most 12). */
+  lines?: { label?: string; value: string; color?: FlowColor }[];
+  /** A share drawn as a bar, 0 to 1. */
+  bar?: { value: number; color?: FlowColor; label?: string };
+  badges?: { text: string; color?: FlowColor; hint?: string }[];
+  /** A wash of a color over the card. */
+  tint?: FlowColor;
+  /** The card's tooltip. */
+  hint?: string;
+  /** A fold button on the card: − folds, + (with how many it hides) unfolds;
+   * onToggle hears it. */
+  collapsible?: boolean;
+  collapsed?: boolean;
+  hidden?: number;
+}
+
+/** A line of ctx.flow between two cards. */
+interface FlowEdge {
+  from: string;
+  to: string;
+  /** 1 to 12 pixels: as thick as what it carries. */
+  width?: number;
+  label?: string;
+  color?: FlowColor;
+  dashed?: boolean;
+  arrow?: boolean;
+}
+
+/** What ctx.flow draws. */
+interface FlowGraph {
+  nodes: FlowNode[];
+  edges: FlowEdge[];
+  /** Which way it is laid out: down (the default), right, up, left. */
+  direction?: 'down' | 'right' | 'up' | 'left';
+  /** The card chosen. */
+  selected?: string;
+  /** Draw a minimap. */
+  minimap?: boolean;
+}
+
+/** Where ctx.flow draws, and what it tells the view. */
+interface FlowOptions {
+  /** The element to draw over; the view's root when absent. */
+  into?: Element;
+  onSelect?(id: string, ctx: RenderContext): void;
+  /** A double click or Enter on a card. */
+  onOpen?(id: string, ctx: RenderContext): void;
+  /** A card's fold button. */
+  onToggle?(id: string, ctx: RenderContext): void;
 }
 
 /** A button PlumeSQL renders in the view's header (its label and an optional icon
