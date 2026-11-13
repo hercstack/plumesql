@@ -1,14 +1,27 @@
 # PlumeSQL 0.31.1
 
-A query on a diagram is titled by its comment, and the PostgreSQL reference in the editor
-reads right for JOIN and for the functions written the SQL standard's way.
+A result now says when you changed its query since it ran, a query on a diagram is titled by
+its comment, and the PostgreSQL reference in the editor reads right for JOIN and for the
+functions written the SQL standard's way.
 
 ## Highlights
 
+- **Results that say when the query changed:** an **Edited** mark on the result, with **Run**
+  beside it.
 - **Query cards titled by their comment:** `-- Revenue by category` above a query names its
   card on a diagram, and its Rows change without a Refresh.
 - **The reference reads right:** JOIN's hover says what a joined table is, and substring,
   trim or JSON_QUERY show their own signatures and examples.
+
+## Results
+
+### A result says when its query changed
+
+Change a query after running it and the result's header says **Edited**, with **Run** beside it
+to run the query as it stands now. Moving the text around or adding a comment does not count;
+a real change does. The rows stay as they were until you run it again.
+
+![A result's header: SELECT count, then an Edited mark and Run beside it](media/result-edited.webp)
 
 ## What changed
 
