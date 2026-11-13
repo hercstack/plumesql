@@ -38,6 +38,12 @@ Click a statement and the file opens with it selected, while the keyboard stays 
 so the arrow keys keep walking the statements. Enter or a double click puts you in the editor on
 it. Only the statements show: what is inside one stays the Outline's.
 
+Right click a statement to select, run or copy it. **Run Statement** opens the file and runs just
+that statement, as the Outline's does.
+
+While you work in a file you have unfolded, the statement your cursor is in is highlighted and
+kept in view as you move, the way the Outline follows it.
+
 A file you have open follows your edits before you save them. The Explorer remembers which files
 you unfolded, and **Statements** in its menu turns the rows off.
 
