@@ -33,7 +33,8 @@ connection's color, with the dot at its corner saying whether it is connected:
 ![The Explorer: idle.sql with a red elephant and a grey dot, live.sql with a red elephant and a green dot](media/explorer-connection.webp)
 
 A connection without a color shows a plain elephant. The color says which connection, the dot
-how it is, so a red Production connection never looks like one that does not answer.
+how it is, so a red Production connection never looks like one that does not answer. A query
+card on a diagram wears the same elephant before its connection's name.
 
 ### A query card is titled by its comment
 
