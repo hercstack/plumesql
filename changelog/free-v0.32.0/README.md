@@ -96,6 +96,11 @@ a slow query takes no longer than before.
 
 ### Errors and decisions from the Log button
 
+Point at the Log button and what this session logged since you last looked shows in the corner,
+or its last entry when there is nothing new; before the session has logged anything, nothing
+shows. The cards stay while you point at the button, and while the pointer is on a card, so you
+can reach its fix or its X.
+
 When something went wrong, the Log button carries a red count of the errors you have not seen.
 Point at the count and the errors show in the corner, each with its own fix and **Dismiss**; click
 the count and they are all dismissed, without opening the Log. A click anywhere else on the
