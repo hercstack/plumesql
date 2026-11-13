@@ -42,6 +42,22 @@ you unfolded, and **Statements** in its menu turns the rows off.
 
 ## What changed
 
+### The Objects tab always shows your script's connection
+
+The Objects tab can no longer stand on another database than the script you are in, so the
+tree and the editor's completion, hover and Go to Definition always answer from the same one.
+The header's Automatic and the connection's Pin Object Browser Here are gone.
+
+Exploring a database before you write anything still works the way other clients teach it: with
+no script open, click a connection in Connections and its objects show at once, and New Script
+then opens on it. With a script on another connection, the click asks first:
+
+![A question: Assign staging to cards.sql? The Objects tab shows the connection of the active tab. cards.sql is on dvdrental; a new script on staging leaves it there. Buttons: Cancel, New Script, Assign to cards.sql](media/objects-assign.webp)
+
+If the script has an open transaction, the question says that assigning another connection rolls
+it back. The arrow keys in Connections never ask. A click on the connection in the Objects header
+now opens the script's own connection picker, the one beside Run.
+
 ### A script's connection in its color in the Explorer
 
 A script's mark after its name in the Explorer is now its connection's elephant, in the
