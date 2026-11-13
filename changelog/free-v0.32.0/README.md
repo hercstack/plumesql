@@ -94,6 +94,13 @@ whatever it shows, and the line under it says how many it shows of how many ("13
 Refresh still brings the rows you see first, and keeps the rest only when they come quickly, so
 a slow query takes no longer than before.
 
+### Dismiss errors from the Log button
+
+When something went wrong, the Log button carries a red count of the errors you have not seen.
+Click the count itself and they are dismissed, without opening the Log; a click anywhere else on
+the button opens it as before. A right click on the button now has the Log's own menu: Open the
+Log, Dismiss, Copy All, Clear and Log Settings, ahead of the title bar's choice of buttons.
+
 ## Fixed
 
 - **JOIN's reference starts at the beginning.** The hover on JOIN (and INNER, CROSS, NATURAL,
