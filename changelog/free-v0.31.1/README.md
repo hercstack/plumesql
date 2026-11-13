@@ -6,7 +6,7 @@ reads right for JOIN and for the functions written the SQL standard's way.
 ## Highlights
 
 - **Query cards titled by their comment:** `-- Revenue by category` above a query names its
-  card on a diagram.
+  card on a diagram, and its Rows change without a Refresh.
 - **The reference reads right:** JOIN's hover says what a joined table is, and substring,
   trim or JSON_QUERY show their own signatures and examples.
 
@@ -21,6 +21,13 @@ title, with the statement's name quieter beside it:
 
 Annotations such as `-- @extension ...` are left out, and a query without a comment keeps its
 statement's name alone. Properties says the title too.
+
+### More rows on a card without a Refresh
+
+Raise a query card's Rows in Properties and the rows show at once: a card keeps up to 100 rows,
+whatever it shows, and the line under it says how many it shows of how many ("13 of 16"). A
+Refresh still brings the rows you see first, and keeps the rest only when they come quickly, so
+a slow query takes no longer than before.
 
 ## Fixed
 
