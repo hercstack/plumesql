@@ -13,6 +13,7 @@ the editor reads right for JOIN and for the functions written the SQL standard's
   card on a diagram, and its Rows change without a Refresh.
 - **The reference reads right:** JOIN's hover says what a joined table is, and substring,
   trim or JSON_QUERY show their own signatures and examples.
+- **A true Zen Mode:** ⌘K Z gives the file you are in the whole window.
 
 ## Results
 
@@ -114,6 +115,19 @@ A right click on the button has the Log's own menu: open it, show or dismiss the
 it on its errors alone (every other entry filtered out), show or set aside the decisions, Copy
 All, Clear and Log Settings. The same commands are in the command
 palette under PlumeSQL.
+
+### A true Zen Mode
+
+⌘K Z (Ctrl+K Z on Windows and Linux) now does what it does in VS Code: the file you are in gets
+the whole window, with no tabs, toolbars, sidebars, bottom panel or status bar. A script's
+results stay with it. The same keys or Escape twice bring everything back, and Zen Mode is also
+in the Layout menu, the command palette and a button of its own at the left of the title bar's
+buttons.
+
+What Zen Mode used to do, both sidebars and the bottom panel hidden at once, is now **Hide
+Sidebars and Panel**: the same title bar button as before, in the Layout menu and the command
+palette, and back as they were on the next press. It has no shortcut by default; you can give
+it one in the keyboard settings.
 
 ## Fixed
 
