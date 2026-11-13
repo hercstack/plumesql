@@ -44,6 +44,14 @@ that statement, as the Outline's does.
 While you work in a file you have unfolded, the statement your cursor is in is highlighted and
 kept in view as you move, the way the Outline follows it.
 
+### Statement icons that say what a statement does
+
+The icons beside the statements, in the Outline and under a script in the Explorer, were
+redrawn. A SELECT no longer wears a magnifier, which looked like a search: it shows a result's
+rows. INSERT, DELETE and TRUNCATE are rows added, taken away and emptied, EXPLAIN is a plan's
+tree, and BEGIN, COMMIT, ROLLBACK and SAVEPOINT each have their own: a flag, a check, an undo
+and a bookmark.
+
 A file you have open follows your edits before you save them. The Explorer remembers which files
 you unfolded, and **Statements** in its menu turns the rows off.
 
