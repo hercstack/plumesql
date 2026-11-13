@@ -25,6 +25,16 @@ a real change does. The rows stay as they were until you run it again.
 
 ## What changed
 
+### A script's connection in its color in the Explorer
+
+A script's mark after its name in the Explorer is now its connection's elephant, in the
+connection's color, with the dot at its corner saying whether it is connected:
+
+![The Explorer: idle.sql with a red elephant and a grey dot, live.sql with a red elephant and a green dot](media/explorer-connection.webp)
+
+A connection without a color shows a plain elephant. The color says which connection, the dot
+how it is, so a red Production connection never looks like one that does not answer.
+
 ### A query card is titled by its comment
 
 Write a comment above the SQL of a query on a diagram and its first line becomes the card's
