@@ -160,6 +160,12 @@ it one in the keyboard settings.
 - **A table view on a diagram shows its table.** A query card drawn by a view that computes rows,
   such as JSON rows, pivot or transpose, stayed empty while its footer counted the rows. The
   card now lists those rows in the app's own grid, as the results pane does.
+- **A table added to a diagram of queries shows.** Add to Diagram… on a table, into a diagram
+  holding only query cards or notes, put the table under them, where nothing showed it. It now
+  stands right of everything on the diagram. Adding something the diagram already holds chooses
+  it there and brings it into sight, moving it out from under a note or a card, and the Log
+  says so. A diagram with no connection yet is offered too, and takes the connection of what
+  you add to it.
 - **Rename selects the name, not its extension.** Renaming a file in the Explorer chooses its
   name with the extension left out, also for PlumeSQL's own two-dot extensions: `Queries` of
   `Queries.plumesql-diagram.json`, `demo` of `demo.plumesql.sql`.
