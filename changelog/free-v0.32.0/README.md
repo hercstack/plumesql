@@ -160,6 +160,9 @@ it one in the keyboard settings.
 - **A table view on a diagram shows its table.** A query card drawn by a view that computes rows,
   such as JSON rows, pivot or transpose, stayed empty while its footer counted the rows. The
   card now lists those rows in the app's own grid, as the results pane does.
+- **Rename selects the name, not its extension.** Renaming a file in the Explorer chooses its
+  name with the extension left out, also for PlumeSQL's own two-dot extensions: `Queries` of
+  `Queries.plumesql-diagram.json`, `demo` of `demo.plumesql.sql`.
 - **JOIN's reference starts at the beginning.** The hover on JOIN (and INNER, CROSS, NATURAL,
   OUTER) opened in the middle of the section, at "This latter equivalence does not hold
   exactly…", and showed a table of sample rows as its example. It now says what a joined
