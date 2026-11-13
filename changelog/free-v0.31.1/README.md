@@ -51,6 +51,8 @@ a slow query takes no longer than before.
 - **Query cards stay sharp.** A query card whose rows scroll (its SQL unfolded, or the card
   made smaller) looked blurred, in the app and in Chrome. Its rows now scroll as before, with
   the wheel, the trackpad or by dragging the bar, and the card stays sharp.
+- **The dynamic parser checks again when the server was busy.** A check the server could not
+  take at that moment waited for your next keystroke; it now tries again on its own.
 - **No Disconnect for a tab that is not connected.** The connection picker offered Disconnect
   even with no connection chosen. It now offers it only when there is something to
   disconnect, and ends with New connection… so an empty list always has a way forward.
