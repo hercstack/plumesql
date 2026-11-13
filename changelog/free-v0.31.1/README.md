@@ -22,6 +22,14 @@ title, with the statement's name quieter beside it:
 Annotations such as `-- @extension ...` are left out, and a query without a comment keeps its
 statement's name alone. Properties says the title too.
 
+### When the script no longer has the query
+
+A query card from a script follows its statement there, also when you rewrite it through Edit
+Query. When the statement is deleted, the card no longer picks up whatever query stands nearby:
+it keeps its own SQL and says "Not in cards.sql any more: its own copy runs.", with **Detach**
+beside it. Detach makes the SQL the card's own, edited on the card. It is also in the card's
+right click and in Properties.
+
 ### More rows on a card without a Refresh
 
 Raise a query card's Rows in Properties and the rows show at once: a card keeps up to 100 rows,
