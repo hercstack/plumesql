@@ -105,8 +105,9 @@ Decisions that wait for you, such as **Update usages** after a rename or **Recon
 changed a connection, now have an amber count of their own. Click it and they show in the
 corner the same way, ready to answer.
 
-A right click on the button has the Log's own menu: open it, show or dismiss the errors, show or
-set aside the decisions, Copy All, Clear and Log Settings. The same commands are in the command
+A right click on the button has the Log's own menu: open it, show or dismiss the errors, open
+it on its errors alone (every other entry filtered out), show or set aside the decisions, Copy
+All, Clear and Log Settings. The same commands are in the command
 palette under PlumeSQL.
 
 ## Fixed
