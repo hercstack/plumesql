@@ -94,12 +94,20 @@ whatever it shows, and the line under it says how many it shows of how many ("13
 Refresh still brings the rows you see first, and keeps the rest only when they come quickly, so
 a slow query takes no longer than before.
 
-### Dismiss errors from the Log button
+### Errors and decisions from the Log button
 
 When something went wrong, the Log button carries a red count of the errors you have not seen.
-Click the count itself and they are dismissed, without opening the Log; a click anywhere else on
-the button opens it as before. A right click on the button now has the Log's own menu: Open the
-Log, Dismiss, Copy All, Clear and Log Settings, ahead of the title bar's choice of buttons.
+Point at the count and the errors show in the corner, each with its own fix and **Dismiss**; click
+the count and they are all dismissed, without opening the Log. A click anywhere else on the
+button opens the Log as before.
+
+Decisions that wait for you, such as **Update usages** after a rename or **Reconnect** after you
+changed a connection, now have an amber count of their own. Click it and they show in the
+corner the same way, ready to answer.
+
+A right click on the button has the Log's own menu: open it, show or dismiss the errors, show or
+set aside the decisions, Copy All, Clear and Log Settings. The same commands are in the command
+palette under PlumeSQL.
 
 ## Fixed
 
