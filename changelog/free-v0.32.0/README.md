@@ -94,6 +94,18 @@ title, with the statement's name quieter beside it:
 Annotations such as `-- @extension ...` are left out, and a query without a comment keeps its
 statement's name alone. Properties says the title too.
 
+### The rest of the comment, and the annotations, as notes
+
+When the comment above a query says more than its first line, Add to Diagram… puts the rest on a
+sticky note beside the card. A sentence that runs on from the first line goes on the note whole.
+The query's annotations go on a second, gray note under it, in plain words: what each one means,
+and whether the card does it too. The view `@extension` names and its `@inputs` are drawn on the
+card; a `@format`, `@hide` or `@refresh` stays with the script, and the note says so.
+
+Both notes are yours: edit them, restyle them or delete what you do not need. A Refresh never
+touches them. **Add Comment as Note** and **Add Annotations as Note**, on the card's right click
+and in Properties, make them again.
+
 ### When the script no longer has the query
 
 A query card from a script follows its statement there, also when you rewrite it through Edit
@@ -145,6 +157,9 @@ it one in the keyboard settings.
 
 ## Fixed
 
+- **A table view on a diagram shows its table.** A query card drawn by a view that computes rows,
+  such as JSON rows, pivot or transpose, stayed empty while its footer counted the rows. The
+  card now lists those rows in the app's own grid, as the results pane does.
 - **JOIN's reference starts at the beginning.** The hover on JOIN (and INNER, CROSS, NATURAL,
   OUTER) opened in the middle of the section, at "This latter equivalence does not hold
   exactly…", and showed a table of sample rows as its example. It now says what a joined
