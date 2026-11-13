@@ -1,13 +1,14 @@
-# PlumeSQL 0.31.1
+# PlumeSQL 0.32.0
 
-A result now says when you changed its query since it ran, a query on a diagram is titled by
-its comment, and the PostgreSQL reference in the editor reads right for JOIN and for the
-functions written the SQL standard's way.
+A result now says when you changed its query since it ran, a script unfolds into its statements
+in the Explorer, a query on a diagram is titled by its comment, and the PostgreSQL reference in
+the editor reads right for JOIN and for the functions written the SQL standard's way.
 
 ## Highlights
 
 - **Results that say when the query changed:** an **Edited** mark on the result, with **Run**
   beside it.
+- **A script's statements in the Explorer:** unfold a SQL file and click the statement you want.
 - **Query cards titled by their comment:** `-- Revenue by category` above a query names its
   card on a diagram, and its Rows change without a Refresh.
 - **The reference reads right:** JOIN's hover says what a joined table is, and substring,
@@ -22,6 +23,22 @@ to run the query as it stands now. Moving the text around or adding a comment do
 a real change does. The rows stay as they were until you run it again.
 
 ![A result's header: SELECT count, then an Edited mark and Run beside it](media/result-edited.webp)
+
+## Explorer
+
+### A script's statements, one click away
+
+A SQL file of two or more statements now has a chevron in the Explorer. Unfold it and every
+statement is a row of its own, named as in the Outline, with the line it starts on:
+
+![The Explorer: cards.sql unfolded into SELECT payment, SELECT film, UPDATE film, INSERT category and DELETE rental, each with its line; idle.sql below it, one statement and no chevron](media/explorer-statements.webp)
+
+Click a statement and the file opens with it selected, while the keyboard stays in the Explorer,
+so the arrow keys keep walking the statements. Enter or a double click puts you in the editor on
+it. Only the statements show: what is inside one stays the Outline's.
+
+A file you have open follows your edits before you save them. The Explorer remembers which files
+you unfolded, and **Statements** in its menu turns the rows off.
 
 ## What changed
 
