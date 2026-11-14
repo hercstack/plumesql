@@ -179,6 +179,14 @@ a slow query takes no longer than before.
 
 ## What changed
 
+### Every title bar button, from the start
+
+The title bar now shows all its buttons by default: Properties, the left sidebar, the bottom
+panel, the right sidebar and the Layout menu, beside Zen Mode, Hide Sidebars and Panel, the
+Terminal, the Log and the activity dot. They stay in Zen Mode too, so a sidebar or Properties is
+one click away there. If you chose your own set on the title bar's right-click, it stays as you
+left it; **Restore the Default Buttons** in the same menu shows them all.
+
 ### The Objects tab always shows your script's connection
 
 The Objects tab can no longer stand on another database than the script you are in, so the
@@ -237,6 +245,11 @@ the whole window, with no tabs, toolbars, sidebars, bottom panel or status bar. 
 results stay with it. The same keys or Escape twice bring everything back, and Zen Mode is also
 in the Layout menu, the command palette and a button of its own at the left of the title bar's
 buttons.
+
+The sidebars stay a key or a click away, over the file: ⌘B and ⌥⌘B show them, ⌘J the bottom panel
+and ⇧⌘Y Properties, also from a diagram's right click, and the title bar keeps its buttons, Zen
+Mode's own among them for the way out. Leaving Zen Mode shows the window exactly as it was when
+you entered it.
 
 What Zen Mode used to do, both sidebars and the bottom panel hidden at once, is now **Hide
 Sidebars and Panel**: the same title bar button as before, in the Layout menu and the command
