@@ -1,14 +1,17 @@
 # PlumeSQL 0.32.0
 
 A result now says when you changed its query since it ran, a script unfolds into its statements
-in the Explorer, a query on a diagram is titled by its comment, and the PostgreSQL reference in
-the editor reads right for JOIN and for the functions written the SQL standard's way.
+in the Explorer, the Objects tab always shows your script's database, a query on a diagram is
+titled by its comment, and the PostgreSQL reference in the editor reads right for JOIN and for the
+functions written the SQL standard's way.
 
 ## Highlights
 
 - **Results that say when the query changed:** an **Edited** mark on the result, with **Run**
   beside it.
 - **A script's statements in the Explorer:** unfold a SQL file and click the statement you want.
+- **Objects always shows your script's database:** no pin any more, and a click in Connections
+  asks before it moves a script to another connection.
 - **Query cards titled by their comment:** `-- Revenue by category` above a query names its
   card on a diagram, and its Rows change without a Refresh.
 - **The reference reads right:** JOIN's hover says what a joined table is, and substring,
@@ -32,7 +35,7 @@ a real change does. The rows stay as they were until you run it again.
 A SQL file of two or more statements now has a chevron in the Explorer. Unfold it and every
 statement is a row of its own, named as in the Outline, with the line it starts on:
 
-![The Explorer: cards.sql unfolded into SELECT payment, SELECT film, UPDATE film, INSERT category and DELETE rental, each with its line; idle.sql below it, one statement and no chevron](media/explorer-statements.webp)
+![The Explorer: cards.sql unfolded into SELECT payment, SELECT film, UPDATE film, INSERT category and DELETE rental, each with its icon and its line, SELECT film highlighted as the statement the cursor is in; idle.sql below it, one statement and no chevron](media/explorer-statements.webp)
 
 Click a statement and the file opens with it selected, while the keyboard stays in the Explorer,
 so the arrow keys keep walking the statements. Enter or a double click puts you in the editor on
@@ -44,6 +47,9 @@ that statement, as the Outline's does.
 While you work in a file you have unfolded, the statement your cursor is in is highlighted and
 kept in view as you move, the way the Outline follows it.
 
+A file you have open follows your edits before you save them. The Explorer remembers which files
+you unfolded, and **Statements** in its menu turns the rows off.
+
 ### Statement icons that say what a statement does
 
 The icons beside the statements, in the Outline and under a script in the Explorer, were
@@ -51,9 +57,6 @@ redrawn. A SELECT no longer wears a magnifier, which looked like a search: it sh
 rows. INSERT, DELETE and TRUNCATE are rows added, taken away and emptied, EXPLAIN is a plan's
 tree, and BEGIN, COMMIT, ROLLBACK and SAVEPOINT each have their own: a flag, a check, an undo
 and a bookmark.
-
-A file you have open follows your edits before you save them. The Explorer remembers which files
-you unfolded, and **Statements** in its menu turns the rows off.
 
 ## What changed
 
@@ -73,6 +76,9 @@ If the script has an open transaction, the question says that assigning another 
 it back. The arrow keys in Connections never ask. A click on the connection in the Objects header
 now opens the script's own connection picker, the one beside Run.
 
+The crosshair in the Objects header, which lights and reveals the object under the editor's
+cursor, is now called **Follow the Cursor**, in its tooltip, the pane's menu and Settings.
+
 ### A script's connection in its color in the Explorer
 
 A script's mark after its name in the Explorer is now its connection's elephant, in the
@@ -89,7 +95,7 @@ card on a diagram wears the same elephant before its connection's name.
 Write a comment above the SQL of a query on a diagram and its first line becomes the card's
 title, with the statement's name quieter beside it:
 
-![A query card on a diagram titled Revenue by category, SELECT payment beside it in grey, over a bar chart of revenue per film category](media/query-card-title.webp)
+![A query card on a diagram: the dvdrental connection's elephant in its header, titled Revenue by category with SELECT payment beside it in grey, over ten of its sixteen rows of revenue per film category](media/query-card-title.webp)
 
 Annotations such as `-- @extension ...` are left out, and a query without a comment keeps its
 statement's name alone. Properties says the title too.
@@ -157,6 +163,9 @@ it one in the keyboard settings.
 
 ## Fixed
 
+- **A path in Properties stays where you scroll it.** On a script's page, the file's path shows
+  its end. Scrolled back to read its start, it jumped to the end again as soon as the page took in
+  something arriving later, such as the connection's details. It now stays where you left it.
 - **A table view on a diagram shows its table.** A query card drawn by a view that computes rows,
   such as JSON rows, pivot or transpose, stayed empty while its footer counted the rows. The
   card now lists those rows in the app's own grid, as the results pane does.
