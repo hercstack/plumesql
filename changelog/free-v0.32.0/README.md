@@ -1,9 +1,9 @@
 # PlumeSQL 0.32.0
 
 A result now says when you changed its query since it ran, a script unfolds into its statements
-in the Explorer, the Objects tab always shows your script's database, a query on a diagram is
-titled by its comment, and the PostgreSQL reference in the editor reads right for JOIN and for the
-functions written the SQL standard's way.
+in the Explorer, a whole script goes on a diagram and a query card there runs any statement, the
+Objects tab always shows your script's database, and the PostgreSQL reference in the editor
+reads right for JOIN and for the functions written the SQL standard's way.
 
 ## Highlights
 
@@ -12,8 +12,11 @@ functions written the SQL standard's way.
 - **A script's statements in the Explorer:** unfold a SQL file and click the statement you want.
 - **Objects always shows your script's database:** no pin any more, and a click in Connections
   asks before it moves a script to another connection.
-- **Query cards titled by their comment:** `-- Revenue by category` above a query names its
-  card on a diagram, and its Rows change without a Refresh.
+- **Scripts, extensions and files on a diagram:** a whole `.sql` file as a card of its
+  statements, a query extension with its buttons and drill-downs, a command, a link to a
+  document or another diagram.
+- **Query cards that run anything:** a query card follows its script, runs any statement and
+  asks its parameters, and `-- Revenue by category` above a query names its card.
 - **The reference reads right:** JOIN's hover says what a joined table is, and substring,
   trim or JSON_QUERY show their own signatures and examples.
 - **A true Zen Mode:** ⌘K Z gives the file you are in the whole window.
@@ -58,6 +61,122 @@ rows. INSERT, DELETE and TRUNCATE are rows added, taken away and emptied, EXPLAI
 tree, and BEGIN, COMMIT, ROLLBACK and SAVEPOINT each have their own: a flag, a check, an undo
 and a bookmark.
 
+## Diagrams
+
+### A script on a diagram
+
+Put a whole script on a diagram: **Add to Diagram…** on a `.sql` file in the Explorer, or drag
+the file onto a diagram. The card lists the script's statements as the Explorer does, each with
+its comment's first line, under the file's name in its `@color` and its `@description`.
+
+![A script card: films.sql in green with its description, four statements, the first SELECT's rows open under it, the UPDATE with its play mark](media/script-card.webp)
+
+Click a SELECT and its rows show under it; its refresh mark asks again. A statement that changes
+the database has a play mark that runs it, and asks first every time, as everything a diagram
+runs does; what the server said ("UPDATE 1") stands beside it. **Run Script** opens the script
+and runs all of it there, the way Run All does, in one session with its transactions as you wrote
+them, and the rows on the card then show what the run gave. Right-click a statement to open it in
+the script or to put it on a card of its own.
+
+The card is drawn from the script as it is now, so what you write there shows at once. When the
+file is gone, the card says so and the diagram's checks count it.
+
+### A statement from the Explorer on a diagram
+
+Unfold a script in the Explorer and its statement rows have **Add to Diagram…** too, or drag one
+onto a diagram: the statement becomes a query card from that script, with its comment and its
+annotations on notes beside it.
+
+### Extensions, commands and any file on a diagram
+
+**Add to Diagram…** on a query or command extension in the Extensions tab, or on any file in the
+Explorer, puts it on a diagram as a card of its kind; dragging a file onto a diagram does the
+same.
+
+A query extension's card runs like a query card, with everything its annotations say: where it
+runs, its parameters, the columns it hides, its row buttons right in the card's grid, a drill-down
+with **← Back**, the question it asks before a run, and its timer, which starts once you refresh
+the card yourself and runs only while the diagram is in front. A command's card starts the
+command in a terminal tab, as it starts from everywhere else, and asks first. Any other file is a
+card that opens it: a Markdown document shows its first heading and lines, and another diagram's
+card takes you to that diagram.
+
+![A query extension's card with a Details button on every row, a command's card with its pg_dump line, a Markdown document's card and another diagram's card](media/extension-cards.webp)
+
+### A query card is titled by its comment
+
+Write a comment above the SQL of a query on a diagram and its first line becomes the card's
+title, with the statement's name quieter beside it:
+
+![A query card on a diagram: the dvdrental connection's elephant in its header, titled Revenue by category with SELECT payment beside it in grey, over ten of its sixteen rows of revenue per film category](media/query-card-title.webp)
+
+Annotations such as `-- @extension ...` are left out, and a query without a comment keeps its
+statement's name alone. Properties says the title too.
+
+### The rest of the comment, and the annotations, as notes
+
+When the comment above a query says more than its first line, Add to Diagram… puts the rest on a
+sticky note beside the card. A sentence that runs on from the first line goes on the note whole.
+The query's annotations go on a second, gray note under it, in plain words: what each one means,
+and whether the card does it too. The view `@extension` names, `@inputs`, the `@format` and
+`@computed` formulas and what the script says of its parameters work on the card as well; a
+`@hide` or `@refresh` stays with the script, and the note says so.
+
+Both notes are yours: edit them, restyle them or delete what you do not need. A Refresh never
+touches them. **Add Comment as Note** and **Add Annotations as Note**, on the card's right click
+and in Properties, make them again.
+
+### A query card runs any statement, a change asked first
+
+A query card on a diagram now holds an INSERT, UPDATE, DELETE, a CREATE or ALTER, a CALL or a
+DO, not only a SELECT. A SELECT refreshes as before, read only. Anything else runs on **Run**,
+the play mark where Refresh was, and asks first, every time: a diagram is easy to click, may come
+from someone else, and shows no transaction. The question says what the statement changes, in red
+when an UPDATE or DELETE has no WHERE, and that Undo on the diagram does not undo the database.
+
+The card then shows what the server said it did ("UPDATE 12") and the rows a RETURNING gives, the
+Log keeps the run with its SQL, and a CREATE or ALTER refreshes the connection's objects, so the
+tables on the diagram follow at once. A connection set to block such changes blocks them here too,
+and a script marked `@readonly` never runs one. BEGIN, SET and the other statements of a session
+stay with their script.
+
+A statement with run parameters (`$1`, `:name`) goes on a diagram too, answered as your script
+answers it in the editor. An `-- @inputs` line answers without asking, `-- @ask` asks on every
+run and `-- @noask` never asks. Otherwise the parameters are asked on the card's first run, with
+the prompts and choices your script declares, and kept, so a Refresh runs again without asking.
+The card shows the values it runs with, and **Parameters…** on it asks again.
+
+A card from a script with `-- @connection` sections runs where its section says, and follows the
+line when you change it.
+
+The card's grid follows its script's formulas too: a `-- @format` or `-- @computed` line above
+the statement, or in the script's header, shapes the card as it shapes the results.
+
+### A query card follows its script, and says when it differs
+
+A query card from a script is drawn from the script as it is now, the way a table's card is drawn
+from the database. It follows its statement there, also when you rewrite it through Edit Query,
+and never picks up another query that only stands where it stood.
+
+When you change the statement in the script, the card says so at once: "Changed in cards.sql
+since it last ran.", with an amber dot before its title. Refresh runs it as it is now; **Accept
+Changes** records it without running.
+
+When the statement is deleted, the card is missing: "Not in cards.sql any more.", with **Detach**
+beside it, and nothing runs, not even its old copy, so a statement you deleted never runs from a
+diagram. Detach makes the SQL the card's own, edited and run on the card. It is also in the card's
+right click and in Properties.
+
+Changed and missing cards count in the diagram's checks on the toolbar beside the tables
+("1 changed · 2 missing"), whose menu accepts, selects or removes them.
+
+### More rows on a card without a Refresh
+
+Raise a query card's Rows in Properties and the rows show at once: a card keeps up to 100 rows,
+whatever it shows, and the line under it says how many it shows of how many ("13 of 16"). A
+Refresh still brings the rows you see first, and keeps the rest only when they come quickly, so
+a slow query takes no longer than before.
+
 ## What changed
 
 ### The Objects tab always shows your script's connection
@@ -89,43 +208,6 @@ connection's color, with the dot at its corner saying whether it is connected:
 A connection without a color shows a plain elephant. The color says which connection, the dot
 how it is, so a red Production connection never looks like one that does not answer. A query
 card on a diagram wears the same elephant before its connection's name.
-
-### A query card is titled by its comment
-
-Write a comment above the SQL of a query on a diagram and its first line becomes the card's
-title, with the statement's name quieter beside it:
-
-![A query card on a diagram: the dvdrental connection's elephant in its header, titled Revenue by category with SELECT payment beside it in grey, over ten of its sixteen rows of revenue per film category](media/query-card-title.webp)
-
-Annotations such as `-- @extension ...` are left out, and a query without a comment keeps its
-statement's name alone. Properties says the title too.
-
-### The rest of the comment, and the annotations, as notes
-
-When the comment above a query says more than its first line, Add to Diagram… puts the rest on a
-sticky note beside the card. A sentence that runs on from the first line goes on the note whole.
-The query's annotations go on a second, gray note under it, in plain words: what each one means,
-and whether the card does it too. The view `@extension` names and its `@inputs` are drawn on the
-card; a `@format`, `@hide` or `@refresh` stays with the script, and the note says so.
-
-Both notes are yours: edit them, restyle them or delete what you do not need. A Refresh never
-touches them. **Add Comment as Note** and **Add Annotations as Note**, on the card's right click
-and in Properties, make them again.
-
-### When the script no longer has the query
-
-A query card from a script follows its statement there, also when you rewrite it through Edit
-Query. When the statement is deleted, the card no longer picks up whatever query stands nearby:
-it keeps its own SQL and says "Not in cards.sql any more: its own copy runs.", with **Detach**
-beside it. Detach makes the SQL the card's own, edited on the card. It is also in the card's
-right click and in Properties.
-
-### More rows on a card without a Refresh
-
-Raise a query card's Rows in Properties and the rows show at once: a card keeps up to 100 rows,
-whatever it shows, and the line under it says how many it shows of how many ("13 of 16"). A
-Refresh still brings the rows you see first, and keeps the rest only when they come quickly, so
-a slow query takes no longer than before.
 
 ### Errors and decisions from the Log button
 
@@ -163,6 +245,9 @@ it one in the keyboard settings.
 
 ## Fixed
 
+- **A script with `-- @connection` sections keeps its own connection.** After you ran a
+  statement of a section that names another database, the script reopened on that database, so
+  the statements above the first section failed there. It now reopens on its own connection.
 - **A path in Properties stays where you scroll it.** On a script's page, the file's path shows
   its end. Scrolled back to read its start, it jumped to the end again as soon as the page took in
   something arriving later, such as the connection's details. It now stays where you left it.
