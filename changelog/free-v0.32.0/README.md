@@ -1,12 +1,22 @@
 # PlumeSQL 0.32.0
 
-A result now says when you changed its query since it ran, a script unfolds into its statements
-in the Explorer, a whole script goes on a diagram and a query card there runs any statement, the
+You can now edit tables: a table's Design lays out its columns, keys and indexes, and every change
+goes into one script you read before anything runs. Comments are Markdown everywhere. A result
+now says when you changed its query since it ran, a script unfolds into its statements in the
+Explorer, a whole script goes on a diagram and a query card there runs any statement, the
 Objects tab always shows your script's database, and the PostgreSQL reference in the editor
 reads right for JOIN and for the functions written the SQL standard's way.
 
 ## Highlights
 
+- **Edit tables:** a table's **Design** lays out its columns, keys and indexes as grids you edit
+  in place, and Properties shows everything about the row you pick.
+- **Nothing runs unread:** every change goes into one **Changes** script for the connection,
+  yours to read and edit, run in one transaction only when you press Run Changes and confirm.
+- **Move a column:** PostgreSQL cannot, so PlumeSQL rebuilds the table in the new order, keys,
+  views, triggers, grants and data included.
+- **Comments are Markdown:** several lines, edited in a Markdown editor with its preview, the same
+  on every table, column, view, function and type.
 - **Results that say when the query changed:** an **Edited** mark on the result, with **Run**
   beside it.
 - **A script's statements in the Explorer:** unfold a SQL file and click the statement you want.
@@ -20,6 +30,108 @@ reads right for JOIN and for the functions written the SQL standard's way.
 - **The reference reads right:** JOIN's hover says what a joined table is, and substring,
   trim or JSON_QUERY show their own signatures and examples.
 - **A true Zen Mode:** ⌘K Z gives the file you are in the whole window.
+
+## Editing tables
+
+### A table's Design
+
+A table's tab now has two faces, switched in its header: **DDL**, as before, and **Design**, where
+you edit it. Right click a table in the Objects tab and choose **Edit Table**, or use the same
+command on a table's card on a diagram, in Properties or in the command palette.
+
+![A table's Design: shop.orders with its schema, name and comment on one line, its columns as a grid with a renamed column and a changed type tinted, a new discount column marked with a plus, and Properties on the right showing everything about the selected status column](media/table-design.webp)
+
+The columns are a grid: name, type, NOT NULL, default, identity and comment, each edited where it
+stands. Enter writes a cell and goes down, the arrow keys move between cells, and ⌥↑ and ⌥↓ (Alt
+on Windows and Linux) move a column. A changed cell is tinted and a ↺ in it puts back what the
+database has. A name, a type or an expression PostgreSQL would not read says so under the cell,
+before anything runs.
+
+Below the columns, the keys, checks and foreign keys, then the indexes, are grids too. A key's
+columns, a check's expression and an index's keys, method and condition are written in their
+cells.
+
+Properties is the inspector: it shows everything about the row you select, including what a grid
+has no room for, such as an identity's numbering, a column's collation, a foreign key's target and
+actions, or an index's INCLUDE. With no row selected, it shows the table itself: its owner, its
+rows, and what stands around it (the foreign keys into it, its triggers, policies and views).
+
+**New Table…** on a schema in the Objects tab, or **New Table Here** on a diagram, opens a new
+table on its Design the same way. Its DDL face shows the CREATE TABLE as it will run.
+
+### One script for every change, read before it runs
+
+Nothing you do in a Design reaches the database by itself. Every change goes into the pending
+changes of the connection, and **Review Changes** (in the table's header, with how many changes
+wait) opens them as one script:
+
+![The Changes tab: the editor toolbar, a line saying 3 changes on 1 table with Run Changes, a shop.orders button with 3 beside it, and the script: a column renamed, then one ALTER TABLE changing a type and adding a column, between BEGIN and COMMIT](media/changes-tab.webp)
+
+The script lists what it changes under its toolbar; click a table to go back to its Design.
+Statements that may lose data, may fail on the data or lock a big table say so in a comment above
+them. What PostgreSQL would refuse, such as changing the type of a column a view uses, is said
+before you run, with the way around it: **Recreate the Views Around It** drops the views and makes
+them again after the change, with their grants and comments.
+
+The status bar keeps the count in sight, from any tab:
+
+![The status bar: 3 pending changes](media/pending-status.webp)
+
+The script is yours to edit. Type in it and it stops following the Design, the tab says so and
+wears the unsaved dot; **Write Again from the Editor** brings the generated script back. ⌘S saves
+it as a script file of its own.
+
+**Run Changes** reads the tables again first, so a table that changed on the server since you
+began never runs on a stale picture. Then it asks, and runs the script in one transaction on a
+connection of its own: everything or nothing. Afterwards the Objects tab and your diagrams catch
+up, a diagram follows a renamed table, and the Log offers to update the scripts that still use an
+old name. **Checks…** opens read only queries that count the rows a change would fail on (NULLs
+under a new NOT NULL, duplicates under a new key), for you to run first.
+
+**Undo** (⌘Z) takes back your last change. **Discard Table Changes** drops everything pending on a
+table at once, and the Log keeps an **Undo** that puts it all back.
+
+### Moving a column rebuilds the table
+
+PostgreSQL cannot move a column of an existing table. Move one anyway, with ↑ ↓ on its row or ⌥↑ and
+⌥↓, and the Design says what that takes:
+
+![Problems: a warning that the columns of shop.orders are in a new order, which PostgreSQL can only make by rebuilding the table under an exclusive lock, with Put the Order Back](media/rebuild-warning.webp)
+
+The script then makes the table again in the new order: a new table, the rows copied under a lock,
+the old one dropped and everything that rested on it made again. That is keys, indexes, foreign
+keys in both directions, triggers, policies and row security, grants, the owner, statistics,
+comments, the views on it, and sequences that keep their names and numbering. A table something
+would be lost from, such as one in a publication or one a function's result type is made of, is
+refused before the run. **Put the Order Back** undoes the move.
+
+### What the editor knows of your PostgreSQL
+
+The editor writes what your server accepts, from PostgreSQL 13 to 18: virtual generated columns
+on 18, a changed generated expression in place on 17, NULLS NOT DISTINCT and ON DELETE SET NULL
+on chosen columns on 15, and the rest on every version. It does not edit yet a table's owner,
+grants, policies, triggers, storage options or partitions; they are shown, and kept when a table
+is rebuilt.
+
+## Comments
+
+### Comments are Markdown, everywhere
+
+A comment is now a box of several lines, on a table, a column, a key, an index, and on any object's
+Properties: a view, a function, a type. The corner button opens it in a tab with PlumeSQL's
+Markdown editor, its toolbar and the preview beside it:
+
+![A column's comment in its tab: the Markdown source on the left with a bold word and a list, the rendered comment on the right, and Preview, Split and Source above them](media/comment-markdown.webp)
+
+⌘Enter puts it back into the field. A comment change goes into the Changes script with the rest,
+so you can describe many objects and run them at once; **Edit Comment…** in the Objects tab now
+adds to the changes too.
+
+### An expression in a SQL tab
+
+A default, a check, a generated column, a USING or an index's condition has the same corner
+button. It opens a SQL editor that tells you, as you type, when PostgreSQL would not read what
+you wrote.
 
 ## Results
 
@@ -186,6 +298,10 @@ panel, the right sidebar and the Layout menu, beside Zen Mode, Hide Sidebars and
 Terminal, the Log and the activity dot. They stay in Zen Mode too, so a sidebar or Properties is
 one click away there. If you chose your own set on the title bar's right-click, it stays as you
 left it; **Restore the Default Buttons** in the same menu shows them all.
+
+The status bar no longer repeats the Terminal, the Log and the activity dot while the title bar
+shows them. Take one out of the title bar and it comes back in the status bar, so each is always
+in exactly one place.
 
 ### The Objects tab always shows your script's connection
 
