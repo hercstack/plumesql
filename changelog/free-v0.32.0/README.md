@@ -441,6 +441,11 @@ it one in the keyboard settings.
 
 ## Fixed
 
+- **Open VSX theme pages open from the cache.** A theme package's page downloaded the whole
+  package and its README every time you opened it, and Install downloaded the package again.
+  They are now kept by version, verified, with each package's color and icon pills and its logo,
+  so a page opened again, an Install after it or a restart downloads nothing until the package
+  has a new version. They count in the Marketplace cache on the System page, which you can clear.
 - **A script with `-- @connection` sections keeps its own connection.** After you ran a
   statement of a section that names another database, the script reopened on that database, so
   the statements above the first section failed there. It now reopens on its own connection.
