@@ -377,6 +377,13 @@ The title bar keeps only its buttons, so the arrows, the command palette and the
 reach while you preview a theme. In Zen Mode, which hides the status bar, the news show in the
 title bar instead.
 
+### The same buttons on every object row
+
+Point at a table in the Objects tab and **Browse Data** and **Open DDL** appear at the end of its
+row. They now appear wherever a row stands for an object: the Outline's objects under a statement,
+and the "depends on" and "used by" rows an object unfolds in the Objects tab. A long name ends
+short of them instead of running under them.
+
 ### The Objects tab always shows your script's connection
 
 The Objects tab can no longer stand on another database than the script you are in, so the
