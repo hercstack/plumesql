@@ -1,7 +1,9 @@
 # PlumeSQL 0.32.0
 
 You can now edit tables: a table's Design lays out its columns, keys and indexes, and every change
-goes into one script you read before anything runs. Comments are Markdown everywhere. A result
+goes into one script you read before anything runs. The owner, the grants and the options of any
+object, and a function's own properties, are edited in Properties the same way. Comments are
+Markdown everywhere. A result
 now says when you changed its query since it ran, a script unfolds into its statements in the
 Explorer, a whole script goes on a diagram and a query card there runs any statement, the
 Objects tab always shows your script's database, and the PostgreSQL reference in the editor
@@ -13,6 +15,11 @@ reads right for JOIN and for the functions written the SQL standard's way.
   in place, and Properties shows everything about the row you pick.
 - **Nothing runs unread:** every change goes into one **Changes** script for the connection,
   yours to read and edit, run in one transaction only when you press Run Changes and confirm.
+- **Owners, grants and options of any object:** a table, a view, a sequence, a function, a
+  schema or a type, edited in Properties: row security, triggers, a view's options, a
+  sequence's numbering, an enum's values, a schema's name.
+- **A function's properties:** volatility, parallel safety, security and settings in
+  Properties, with a word when the body contradicts what the function promises.
 - **Move a column:** PostgreSQL cannot, so PlumeSQL rebuilds the table in the new order, keys,
   views, triggers, grants and data included.
 - **Comments are Markdown:** several lines, edited in a Markdown editor with its preview, the same
@@ -77,6 +84,9 @@ The status bar keeps the count in sight, from any tab:
 
 ![The status bar: 3 pending changes](media/pending-status.webp)
 
+It wiggles each time the count grows, and the first change you make writes a note in the corner
+saying that nothing ran yet, with **Review Changes** on it.
+
 The script is yours to edit. Type in it and it stops following the Design, the tab says so and
 wears the unsaved dot; **Write Again from the Editor** brings the generated script back. ⌘S saves
 it as a script file of its own.
@@ -109,9 +119,46 @@ refused before the run. **Put the Order Back** undoes the move.
 
 The editor writes what your server accepts, from PostgreSQL 13 to 18: virtual generated columns
 on 18, a changed generated expression in place on 17, NULLS NOT DISTINCT and ON DELETE SET NULL
-on chosen columns on 15, and the rest on every version. It does not edit yet a table's owner,
-grants, policies, triggers, storage options or partitions; they are shown, and kept when a table
-is rebuilt.
+on chosen columns on 15, and the rest on every version. It does not edit yet a table's policies,
+storage options or partitions, nor a trigger beyond turning it on or off; they are shown, and kept
+when a table is rebuilt.
+
+## Editing properties
+
+### Owners, grants and options of any object
+
+Every table, view, materialized view, foreign table, sequence, function, procedure, schema and
+type now has an **Owner and grants** group in Properties. PlumeSQL reads them when you press
+**Edit Properties**, and then every field is yours: the owner, offered from the roles on the
+server, and a row per role with its privileges as buttons to press or release. **Add role** gives
+a new role its row, PUBLIC included.
+
+Each kind brings its own options with it:
+
+- a table: row level security and FORCE, and each trigger Enabled, Disabled, Replica or Always;
+- a view: security barrier, security invoker (PostgreSQL 15) and its check option;
+- a sequence: its type, increment, bounds, start, cache and cycle, the value it restarts with,
+  the column that owns it, and logged or unlogged (PostgreSQL 15);
+- an enum: its values renamed, and new ones added where you say ("fine after sad");
+- a schema: its name.
+
+They go where every other change goes: into the Changes script, as `ALTER`, `GRANT` and `REVOKE`,
+run with the rest when you press Run Changes and confirm. A schema's rename runs last, so every
+statement before it still names its objects as they are. What PostgreSQL cannot do, such as
+dropping an enum's value, is said before you run.
+
+### A function's and a procedure's properties
+
+A function's Properties edit what it promises the planner: volatility (Immutable, Stable,
+Volatile), parallel safety, whether it is called on NULL input, its cost and rows. For a function
+and a procedure alike, its security (Definer or Invoker), leakproof, the settings it runs with
+(`SET search_path` and any other), its name and its schema.
+
+PlumeSQL reads the body with PostgreSQL's own parser and says when it contradicts the promise: an
+Immutable function that reads a table, or a Volatile one that reads nothing but its arguments.
+The fix is a click beside it, **Mark as Stable** or **Mark as Immutable**, and a Security Definer
+without a pinned `search_path` is offered **Add SET search_path**. Each change becomes one `ALTER
+FUNCTION` in the Changes script.
 
 ## Comments
 
