@@ -84,7 +84,8 @@ The status bar keeps the count in sight, from any tab:
 
 ![The status bar: 3 pending changes](media/pending-status.webp)
 
-It wiggles each time the count grows, and the first change you make writes a note in the corner
+It wiggles each time the count grows (in Zen Mode it stands in the title bar), and the first
+change you make writes a note in the corner
 saying that nothing ran yet, with **Review Changes** on it:
 
 ![A note in the corner: Changes pending on postgres: nothing runs until you review them and Run Changes, with Review Changes under it](media/pending-notice.webp)
@@ -356,6 +357,18 @@ left it; **Restore the Default Buttons** in the same menu shows them all.
 The status bar no longer repeats the Terminal, the Log and the activity dot while the title bar
 shows them. Take one out of the title bar and it comes back in the status bar, so each is always
 in exactly one place.
+
+### News in the status bar
+
+What waits for your word now stands in one place, the status bar's right end: the pending
+changes, an update on its way (**Download Update**, then Downloading, then **Restart to Update**,
+with **See Notes** beside each), and a mode the window is in, such as a theme or icons previewed
+with **Use** and **Cancel**, or Compare waiting for its second side. Each wiggles when it arrives
+or moves on, so you notice it without looking for it.
+
+The title bar keeps only its buttons, so the arrows, the command palette and the zoom stay within
+reach while you preview a theme. In Zen Mode, which hides the status bar, the news show in the
+title bar instead.
 
 ### The Objects tab always shows your script's connection
 
