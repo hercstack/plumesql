@@ -237,6 +237,19 @@ and a bookmark.
 
 ## Diagrams
 
+### Notes you write in Markdown
+
+A note's words were always Markdown on the canvas. Now writing them is easy too: while you edit
+a note, a bar above it has heading, bold, italic, strikethrough, code, link and bulleted,
+numbered and task lists, the same buttons as the Markdown editor. Enter continues a list and Tab
+indents an item. For longer words, **Edit in Markdown Editor** (on the bar, the note's right
+click or its page) opens the Markdown editor with its preview; Accept brings the words back to
+the note.
+
+A task list (`- [ ] item`) draws its boxes, and you tick one with a click on the canvas: a
+checklist on a whiteboard, kept in the diagram file. The Markdown editor's toolbar has the new
+Task List button too.
+
 ### A script on a diagram
 
 Put a whole script on a diagram: **Add to Diagram…** on a `.sql` file in the Explorer, or drag
