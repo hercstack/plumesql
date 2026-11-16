@@ -104,6 +104,13 @@ under a new NOT NULL, duplicates under a new key), for you to run first.
 **Undo** (⌘Z) takes back your last change. **Discard Table Changes** drops everything pending on a
 table at once, and the Log keeps an **Undo** that puts it all back.
 
+The way back is where you made the change. Undo and Redo stand beside Review Changes in the header
+of every table, function or object you edit, and Properties' **Pending changes** group (Review
+Changes, Undo, Redo) heads the page whatever you selected. Right-click the status bar's pending
+changes for Review Changes, Undo, Redo or Discard All Changes from any tab, and a pending table's
+card on a diagram has Undo and Discard on its own right-click, so you never leave the diagram to
+take a change back.
+
 ### Moving a column rebuilds the table
 
 PostgreSQL cannot move a column of an existing table. Move one anyway, with ↑ ↓ on its row or ⌥↑ and
