@@ -85,7 +85,9 @@ The status bar keeps the count in sight, from any tab:
 ![The status bar: 3 pending changes](media/pending-status.webp)
 
 It wiggles each time the count grows, and the first change you make writes a note in the corner
-saying that nothing ran yet, with **Review Changes** on it.
+saying that nothing ran yet, with **Review Changes** on it:
+
+![A note in the corner: Changes pending on postgres: nothing runs until you review them and Run Changes, with Review Changes under it](media/pending-notice.webp)
 
 The script is yours to edit. Type in it and it stops following the Design, the tab says so and
 wears the unsaved dot; **Write Again from the Editor** brings the generated script back. ⌘S saves
@@ -133,6 +135,8 @@ type now has an **Owner and grants** group in Properties. PlumeSQL reads them wh
 server, and a row per role with its privileges as buttons to press or release. **Add role** gives
 a new role its row, PUBLIC included.
 
+![Properties of shop.orders: the owner postgres, shop_reader holding SELECT, shop_clerk newly given SELECT and UPDATE with its way back, Add role, row security turned on and the orders_touch trigger set to Disabled](media/object-grants.webp)
+
 Each kind brings its own options with it:
 
 - a table: row level security and FORCE, and each trigger Enabled, Disabled, Replica or Always;
@@ -156,6 +160,9 @@ and a procedure alike, its security (Definer or Invoker), leakproof, the setting
 
 PlumeSQL reads the body with PostgreSQL's own parser and says when it contradicts the promise: an
 Immutable function that reads a table, or a Volatile one that reads nothing but its arguments.
+
+![A function's Optimization in Properties: Volatility Immutable, and under it in red: Declared Immutable, but it reads shop.orders: Stable is what this body is, with Mark as Stable below; Parallel, Null input and Cost under it](media/function-props.webp)
+
 The fix is a click beside it, **Mark as Stable** or **Mark as Immutable**, and a Security Definer
 without a pinned `search_path` is offered **Add SET search_path**. Each change becomes one `ALTER
 FUNCTION` in the Changes script.
