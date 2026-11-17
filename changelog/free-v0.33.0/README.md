@@ -34,6 +34,11 @@ then the tree's own entries.
 
 ## Fixed
 
+- **Drag a note onto any card.** A note dragged onto a table's card attached to it with its
+  arrow, but not onto a query card, a script card or another note. Every card takes it now,
+  the note drawn over the card rather than hidden under it, and a query or a script card
+  dragged onto a table attaches as a note does.
+
 ## Tell us what you think
 
 Questions and ideas go to
