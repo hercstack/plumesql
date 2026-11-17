@@ -35,6 +35,9 @@ then the tree's own entries.
 
 ## Fixed
 
+- **The problems count in the status bar closes Problems too.** A click on "2 problems, 1
+  hint" opened the Problems tab, but nothing closed it there. It is a switch now: pressed while
+  Problems is open, and a second click hides it.
 - **Drag a note onto any card.** A note dragged onto a table's card attached to it with its
   arrow, but not onto a query card, a script card or another note. Every card takes it now,
   the note drawn over the card rather than hidden under it, and a query or a script card
