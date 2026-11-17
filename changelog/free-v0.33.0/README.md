@@ -56,6 +56,8 @@ then the tree's own entries.
 
 ## Fixed
 
+- **Compact tabs sit on the strip.** With compact tabs, a thin line showed under the active
+  tab. It joins the editor below now, as a large tab does.
 - **No empty errors in the Log.** A harmless note of the browser ("ResizeObserver loop completed
   with undelivered notifications") showed as an error with "undefined" under it. It no longer
   shows, and no error says "undefined" for want of anything else to say.
