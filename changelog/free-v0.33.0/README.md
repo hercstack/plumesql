@@ -2,12 +2,40 @@
 
 ## Highlights
 
+- **Edit tables on the diagram:** double-click a table's card and change its columns right
+  there, without leaving the diagram.
 - **Properties from a right click:** a table, a schema or a file shows its properties from
   its menu.
 - **A shorter right click in Objects:** an object's menu in groups, eighteen entries instead of
   twenty-seven.
 - **More in the status bar:** how your last run went, and the session's search_path, one click
   from putting another schema first.
+
+## Diagrams
+
+### Edit a table on its card
+
+Designing on a diagram no longer sends you to another tab. Double-click a table's card, or
+press Enter with it chosen, and the card opens for editing: every column with its name, its
+type, `NOT NULL` or `NULL` and its place in the primary key (the key), all changed in place.
+**+ Add column** adds one, the × beside a column drops it (struck through, with **Keep** to
+change your mind), and the table's name in the header renames it.
+
+![A table's card being edited on a diagram: its columns' names, types, NOT NULL and key, a new column added](media/card-edit.webp)
+
+The type comes from a list of PostgreSQL's types and your database's own: click the field,
+or type to narrow it. A type nothing knows is marked in red.
+
+Enter writes a field and goes down to the next column, Escape puts it back, and a second
+Escape or the ✓ in the header ends the editing. Properties shows everything else about the
+column you are on: its default, identity, collation and comment.
+
+Every change waits in the Changes script, as changes from the table's Design do: nothing
+reaches the database until you review it and run it. A new table made on the diagram, with
+**New Table Here…**, opens for editing on its card at once.
+
+A new table lives only in your pending changes and on its card, so deleting its card from the
+diagram discards the table too. Undo on the diagram brings both back.
 
 ## Properties
 
@@ -56,6 +84,10 @@ then the tree's own entries.
 
 ## Fixed
 
+- **Pick a column's type from a list.** In the desktop app the type fields of a table's Design
+  and of Properties showed no list of types, and took any word as a type. Every such field now
+  shows its own list (click it, or start typing to narrow it), and a type neither PostgreSQL nor
+  your database knows is marked at once.
 - **Compact tabs sit on the strip.** With compact tabs, a thin line showed under the active
   tab. It joins the editor below now, as a large tab does.
 - **No empty errors in the Log.** A harmless note of the browser ("ResizeObserver loop completed
