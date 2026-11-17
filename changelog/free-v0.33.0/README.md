@@ -13,8 +13,9 @@
 
 Right-click an object or a schema in Objects, or a file in the Explorer, and choose
 **Properties**: PlumeSQL opens it as a click would and shows the Properties tab beside it, even
-when you had switched the tab off. From Objects, Properties opens below the tree, so the row
-you asked about stays in sight. When Properties already shows it, the menu leaves the entry
+when you had switched the tab off. A schema's Properties are the schema's own, its comment
+ready to edit. From Objects, Properties opens below the tree, so the row you asked about stays
+in sight, and the × in its header closes it there. When Properties already shows it, the menu leaves the entry
 out, and the same goes for a diagram's Display, Line or Note Properties and for Editor
 Properties.
 
