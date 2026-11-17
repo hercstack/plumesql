@@ -6,6 +6,8 @@
   its menu.
 - **A shorter right click in Objects:** an object's menu in groups, eighteen entries instead of
   twenty-seven.
+- **More in the status bar:** how your last run went, and the session's search_path, one click
+  from putting another schema first.
 
 ## Properties
 
@@ -18,6 +20,25 @@ ready to edit. From Objects, Properties opens below the tree, so the row you ask
 in sight, and the × in its header closes it there. When Properties already shows it, the menu leaves the entry
 out, and the same goes for a diagram's Display, Line or Note Properties and for Editor
 Properties.
+
+## Status bar
+
+### The last run, and the search_path
+
+The status bar now says how the script's last run went, in the words of the results: `245
+rows in 18 ms · 2m ago`, **Failed** in red, a counter while it runs. A click brings the results
+back into sight, a failed run's messages first, even when you folded them away.
+
+Beside it stands the session's `search_path`, where names written without a schema are looked
+up. Click it to put one of your schemas first, write the list yourself or reset it to the
+server's default: each is a `SET` on the tab's own session, as if you had typed it.
+
+They use only the room the status bar has free: on a narrower window they step aside,
+`search_path` first, and nothing else moves for them.
+
+The connection stands out now too: on a field of its own, in its color when it has one, its
+name first and in full strength, with a chevron that says it is a picker. The session's pid and
+age moved into its tooltip.
 
 ## What changed
 
@@ -35,6 +56,9 @@ then the tree's own entries.
 
 ## Fixed
 
+- **No empty errors in the Log.** A harmless note of the browser ("ResizeObserver loop completed
+  with undelivered notifications") showed as an error with "undefined" under it. It no longer
+  shows, and no error says "undefined" for want of anything else to say.
 - **The problems count in the status bar closes Problems too.** A click on "2 problems, 1
   hint" opened the Problems tab, but nothing closed it there. It is a switch now: pressed while
   Problems is open, and a second click hides it.
