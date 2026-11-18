@@ -8,6 +8,8 @@
   in one step, and a new table a note again.
 - **A sketch style for diagrams:** the whole diagram drawn as by hand, as draw.io's sketch style
   draws it.
+- **Lines of your own on a diagram:** join any two tables, notes or areas with a line, for what
+  the database does not say, styled and labeled your way.
 - **Properties from a right click:** a table, a schema or a file shows its properties from
   its menu.
 - **A shorter right click in Objects:** an object's menu in groups, eighteen entries instead of
@@ -64,8 +66,9 @@ the key: delete the line (or choose **Remove Foreign Key** on it) and the key go
 A model often starts as a sketch: a box for each thing, an arrow between the ones that belong
 together. Draw it with notes. A chosen note has a small arrow handle on its right edge: drag it
 to another note (or to a table's card), and the note points there. A note can have as many
-arrows as it needs; **Draw Arrow To…** on its right click lists the diagram's notes and objects
-instead, and a chosen arrow goes with Delete.
+arrows as it needs; **Draw Line To…** on its right click lists the diagram's notes and objects
+instead, and a chosen arrow goes with Delete. These arrows are lines of your own (below), so
+everything a line can do, they do.
 
 ![Three notes on a diagram, orders pointing to customers and to products](media/notes-sketch.webp)
 
@@ -99,6 +102,32 @@ every foreign key line, a schema), so you can sketch the draft and keep what is 
 A drawing never trembles: each element is drawn the same way every time, however you pan or
 zoom. The words, the fills and the fonts stay as they are, and Copy as SVG or PNG takes the
 drawing with it.
+
+### Lines of your own
+
+Not every relationship is a foreign key. Many databases declare few or none, and a diagram
+often needs to say more: this view feeds that report, these two tables are matched by a code.
+Now you can draw it. **Draw Line To…** on the right click of a table, a note or an area joins it
+to another one; a chosen note's arrow handle does the same by dragging.
+
+![Lines of your own: straight, curved, in steps and smooth, with labels, crow's feet and arrows, between tables, notes and an area](media/diagram-lines.webp)
+
+A line always belongs to the two things it joins. Drag one of its ends onto another table, note
+or area and it moves there; delete a note and its lines go with it. In between, it is yours to
+shape:
+
+- **Straight, Curved, Step or Smooth**, with waypoints you drag out of it, exactly as on a
+  foreign key line.
+- **A mark at each end:** an arrow, an open arrow, a dot, a crow's foot or a bar.
+- **A label of your words:** double-click the line (or press Enter) and type; drag the label
+  anywhere along it.
+- **Its color, width, stroke and sketch**, all on its own page in Properties, and **Reverse**
+  turns it round.
+
+A line that has collected too many bends? **Reset Line**, on its right click and its page,
+gives it back as a new one is drawn in one step: its look, its waypoints and its sides. It
+works on foreign key lines too. And a note's line to what it is attached to is now a line like
+any other, Step and Smooth included.
 
 ## Properties
 
