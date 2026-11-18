@@ -4,6 +4,8 @@
 
 - **Edit tables on the diagram:** double-click a table's card and change its columns right
   there, without leaving the diagram, and draw its foreign keys to other tables.
+- **Sketch the model with notes:** draw arrows between notes on a diagram, then make them tables
+  in one step, and a new table a note again.
 - **Properties from a right click:** a table, a schema or a file shows its properties from
   its menu.
 - **A shorter right click in Objects:** an object's menu in groups, eighteen entries instead of
@@ -54,6 +56,33 @@ arrow (or pressing Enter on it) lists the diagram's tables instead, and takes a 
 again. The new key is drawn at once, as a pending line, and waits in the Changes script with
 the rest; ON DELETE and the other options are in Properties. Until it is created, the line is
 the key: delete the line (or choose **Remove Foreign Key** on it) and the key goes too.
+
+### Sketch with notes, then make tables
+
+A model often starts as a sketch: a box for each thing, an arrow between the ones that belong
+together. Draw it with notes. A chosen note has a small arrow handle on its right edge: drag it
+to another note (or to a table's card), and the note points there. A note can have as many
+arrows as it needs; **Draw Arrow To…** on its right click lists the diagram's notes and objects
+instead, and a chosen arrow goes with Delete.
+
+![Three notes on a diagram, orders pointing to customers and to products](media/notes-sketch.webp)
+
+When the sketch is ready, choose the notes and pick **Make Tables** on their right click. Each
+note becomes a table not created yet, its card where the note stood:
+
+- the note's first line is the table's name (`Customer orders` becomes `customer_orders`),
+- each item of its list is a column, written as in CREATE TABLE: `- email text not null`,
+  `- total numeric(12,2) default 0`, `- placed timestamptz not null default now()` (a column
+  with no type is `text`),
+- the rest of the note's words become the table's comment,
+- each arrow becomes a foreign key to the table it points to, in a new column such as
+  `customers_id`.
+
+![The same three made tables: orders with customers_id and products_id, the keys drawn between the cards](media/notes-tables.webp)
+
+As with every change made on the diagram, nothing reaches the database until you review the
+Changes script and run it. Changed your mind? **Make Note** on a new table writes it back as a
+note, its keys as arrows, and the diagram's Undo goes back either way.
 
 ## Properties
 
