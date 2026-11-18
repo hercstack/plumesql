@@ -157,6 +157,19 @@ A card from a script is edited in its script, as before. A card of its own (deta
 on the canvas by an earlier version) keeps its SQL as it is and still runs it: a double click
 or **Open as Script** opens the SQL in a new script, to be written again and added back.
 
+### A selection on a diagram is a solid outline
+
+A table not created yet is drawn with a dashed blue border, and a selected one was marked by a
+dashed blue outline too, its dashes walking. With the motion off they looked the same. Now:
+
+- **A selection is a solid outline** with a square handle at each corner, around a table, a
+  note, an area or a schema's frame.
+- **A selected line is drawn wider**, with its handles as before.
+- **Dashed blue means only one thing:** a table, a column or a foreign key not in the database
+  yet. A new table that is selected shows both, its dashed border and the solid outline.
+
+The setting that stopped the walking dashes is gone, with nothing left to move.
+
 ## Fixed
 
 - **Pick a column's type from a list.** In the desktop app the type fields of a table's Design
