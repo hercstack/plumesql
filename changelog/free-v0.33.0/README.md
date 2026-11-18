@@ -118,6 +118,10 @@ or **Open as Script** opens the SQL in a new script, to be written again and add
   and of Properties showed no list of types, and took any word as a type. Every such field now
   shows its own list (click it, or start typing to narrow it), and a type neither PostgreSQL nor
   your database knows is marked at once.
+- **No lines between a diagram card's rows.** In the desktop app, thin lines in the accent
+  color could run between the rows of a card with pending changes (or with changes since the
+  diagram recorded it), darker or lighter depending on the zoom. They are gone. A new table's
+  rows are no longer marked one by one either: its dashed border and New flag say it is new.
 - **A new column takes its keys with it.** Removing a column that was not created yet left its
   foreign key (or another key on it) behind, and the Changes script failed on a column that was
   gone. They go with the column now.
