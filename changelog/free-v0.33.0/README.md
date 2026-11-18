@@ -3,7 +3,7 @@
 ## Highlights
 
 - **Edit tables on the diagram:** double-click a table's card and change its columns right
-  there, without leaving the diagram.
+  there, without leaving the diagram, and draw its foreign keys to other tables.
 - **Properties from a right click:** a table, a schema or a file shows its properties from
   its menu.
 - **A shorter right click in Objects:** an object's menu in groups, eighteen entries instead of
@@ -36,6 +36,23 @@ reaches the database until you review it and run it. A new table made on the dia
 
 A new table lives only in your pending changes and on its card, so deleting its card from the
 diagram discards the table too. Undo on the diagram brings both back.
+
+### Draw a foreign key
+
+While a table is open for editing on its card, every column has a small arrow, its foreign
+key. Drag it to another table and the column references that table's primary key. The line
+follows your pointer, and the table under it says what the key would reference, or why it
+can't (a table with no one-column key is outlined in red). Drop it on a unique column of the
+other table to reference that column instead, or on another column of the same card for a
+key to the table itself; Escape lets go without drawing anything.
+
+![A foreign key being drawn on a diagram: a line from the orders card to the product card, which says what it would reference](media/card-fk.webp)
+
+**+ Reference**, beside **+ Add column**, makes the column for you: drag it to `product` and
+`orders` gets a `product_id` of the same type as the key, with its foreign key. Clicking the
+arrow (or pressing Enter on it) lists the diagram's tables instead, and takes a key away
+again. The new key is drawn at once, as a pending line, and waits in the Changes script with
+the rest; ON DELETE and the other options are in Properties.
 
 ## Properties
 
