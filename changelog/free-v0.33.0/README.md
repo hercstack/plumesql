@@ -151,6 +151,10 @@ or **Open as Script** opens the SQL in a new script, to be written again and add
   color could run between the rows of a card with pending changes (or with changes since the
   diagram recorded it), darker or lighter depending on the zoom. They are gone. A new table's
   rows are no longer marked one by one either: its dashed border and New flag say it is new.
+- **What you type stays as you typed it.** In the desktop app on macOS, writing a note's words on
+  a diagram offered the system's autocorrect and capitalized the first word. Every field now
+  takes plain text, a note's words and the fields a result view draws included: no autocorrect,
+  no capitals, no smart quotes or dashes, no text replacement, no spell check.
 - **A new column takes its keys with it.** Removing a column that was not created yet left its
   foreign key (or another key on it) behind, and the Changes script failed on a column that was
   gone. They go with the column now.
