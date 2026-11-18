@@ -6,6 +6,8 @@
   there, without leaving the diagram, and draw its foreign keys to other tables.
 - **Sketch the model with notes:** draw arrows between notes on a diagram, then make them tables
   in one step, and a new table a note again.
+- **A sketch style for diagrams:** the whole diagram drawn as by hand, as draw.io's sketch style
+  draws it.
 - **Properties from a right click:** a table, a schema or a file shows its properties from
   its menu.
 - **A shorter right click in Objects:** an object's menu in groups, eighteen entries instead of
@@ -83,6 +85,20 @@ note becomes a table not created yet, its card where the note stood:
 As with every change made on the diagram, nothing reaches the database until you review the
 Changes script and run it. Changed your mind? **Make Note** on a new table writes it back as a
 note, its keys as arrows, and the diagram's Undo goes back either way.
+
+### Sketch style
+
+Turn on **Sketch** on the Diagram page in Properties and the whole diagram is drawn as by hand:
+the tables' borders, the lines with their crow's feet and arrows, the notes, the areas and the
+schema frames. Any of them can say otherwise on its own page, or for its group (every table,
+every foreign key line, a schema), so you can sketch the draft and keep what is settled crisp.
+**Roughness** beside it chooses the hand: Light, Normal or Strong.
+
+![A diagram drawn in the sketch style: tables, notes, an area and the lines between them, all drawn as by hand](media/diagram-sketch.webp)
+
+A drawing never trembles: each element is drawn the same way every time, however you pan or
+zoom. The words, the fills and the fonts stay as they are, and Copy as SVG or PNG takes the
+drawing with it.
 
 ## Properties
 
