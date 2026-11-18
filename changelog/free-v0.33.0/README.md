@@ -52,7 +52,8 @@ key to the table itself; Escape lets go without drawing anything.
 `orders` gets a `product_id` of the same type as the key, with its foreign key. Clicking the
 arrow (or pressing Enter on it) lists the diagram's tables instead, and takes a key away
 again. The new key is drawn at once, as a pending line, and waits in the Changes script with
-the rest; ON DELETE and the other options are in Properties.
+the rest; ON DELETE and the other options are in Properties. Until it is created, the line is
+the key: delete the line (or choose **Remove Foreign Key** on it) and the key goes too.
 
 ## Properties
 
@@ -99,12 +100,30 @@ then the tree's own entries.
 - A table's comment is edited in **Properties**, now on the same menu. A column's row still
   has Edit Comment…, and the DDL view's header the form with every comment of the table.
 
+### A query for a diagram is written in a script
+
+A query card's SQL used to be typed on the card itself, with no completion, no checks and no
+formatting. A query is now written where the editor helps: a diagram's **Insert ▸ Query…**
+and **Add Query Here…** open a new script on the diagram's connection. Write the query, run
+it, and **Add to Diagram…** lists that diagram first, so one Enter puts the card there (where
+you asked, for Add Query Here).
+
+A card from a script is edited in its script, as before. A card of its own (detached, or made
+on the canvas by an earlier version) keeps its SQL as it is and still runs it: a double click
+or **Open as Script** opens the SQL in a new script, to be written again and added back.
+
 ## Fixed
 
 - **Pick a column's type from a list.** In the desktop app the type fields of a table's Design
   and of Properties showed no list of types, and took any word as a type. Every such field now
   shows its own list (click it, or start typing to narrow it), and a type neither PostgreSQL nor
   your database knows is marked at once.
+- **A new column takes its keys with it.** Removing a column that was not created yet left its
+  foreign key (or another key on it) behind, and the Changes script failed on a column that was
+  gone. They go with the column now.
+- **A list opens while a diagram's note is being edited.** In the desktop app, choosing a
+  card's connection while a note's words were open for editing showed no list and logged
+  "Quick input service needs a focused editor to work." The list opens now.
 - **Compact tabs sit on the strip.** With compact tabs, a thin line showed under the active
   tab. It joins the editor below now, as a large tab does.
 - **No empty errors in the Log.** A harmless note of the browser ("ResizeObserver loop completed
