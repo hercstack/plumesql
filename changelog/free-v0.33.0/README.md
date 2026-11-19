@@ -18,6 +18,8 @@
 - **A model from Mermaid:** Import from Mermaid (or just paste) Mermaid's erDiagram text on a
   diagram, and its entities become notes and its relationships lines with crow's feet, ready to
   make tables.
+- **DDL, laid out your way:** a function's parameters one per line, a table's columns lined up,
+  and none of what PostgreSQL would assume anyway, each rule a setting of its own.
 - **Properties from a right click:** a table, a schema or a file shows its properties from
   its menu.
 - **A shorter right click in Objects:** an object's menu in groups, eighteen entries instead of
@@ -248,6 +250,38 @@ The connection stands out now too: on a field of its own, in its color when it h
 name first and in full strength, with a chevron that says it is a picker. The session's pid and
 age moved into its tooltip.
 
+## DDL, laid out your way
+
+The DDL in the Objects tab is now written to be read. A function's or a procedure's parameters
+stand one per line, then `RETURNS`, each label (`IMMUTABLE`, `SECURITY DEFINER`, `SET ...`) on a
+line of its own and `LANGUAGE` last. Its body is never touched.
+
+![A function's DDL: its parameters one per line, defaults written as = value, every clause on its own line](media/ddl-routine.webp)
+
+A table's columns line up, the names, the types and the rest each in a column of their own. And
+what PostgreSQL writes but would assume anyway is left out: a parameter's `IN`, a default's cast
+to its own type (`DEFAULT 'new'`, not `DEFAULT 'new'::text`), `nextval`'s `::regclass`, an
+identity column's sequence options while they are the defaults, an index's `USING btree`.
+
+![A table's DDL: its columns lined up, an identity and a default written the short way, an index without USING btree](media/ddl-table.webp)
+
+Every rule is a setting in **Settings ▸ Snapshot**, and each can be set apart for a group of
+connections or for one connection in its editor:
+
+| Setting | Default | The other way |
+|---|---|---|
+| DDL lists | parameters one per line | on one line |
+| Routine clauses | each on its own line | after the parameters |
+| Short form | on | everything as PostgreSQL writes it |
+| Align columns | on | off |
+| DDL indent | four spaces | two spaces, or a tab |
+| Foreign keys | in the table | after it, as `ALTER TABLE ... ADD CONSTRAINT`, the way `pg_dump` writes them |
+| CREATE OR REPLACE | off | views, functions, procedures and aggregates written `CREATE OR REPLACE` |
+
+DDL keyword case, the setting that writes keywords in lower case, now applies to a function's head
+too. However you set them, the DDL is the same object: we replay it into an empty database on
+PostgreSQL 13 to 18 and check it reads back exactly as it was.
+
 ## What changed
 
 ### A shorter right click in Objects
@@ -288,6 +322,10 @@ dashed blue outline too, its dashes walking. With the motion off they looked the
 The setting that stopped the walking dashes is gone, with nothing left to move.
 
 ## Fixed
+
+- **Types offered after RETURNS.** Writing a CREATE FUNCTION, the completion after `RETURNS`
+  (and after a parameter's name) offered functions. It offers types now, `void`, `trigger`,
+  `record`, `setof` and `table (...)` among them.
 
 - **Paste on a diagram after a copy elsewhere.** Once you had copied a table that was on the
   diagram already, Paste stayed disabled, even after you copied something else since. Any other
