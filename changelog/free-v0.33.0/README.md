@@ -15,8 +15,9 @@
 - **Diagrams in the console:** ask a diagram questions and change it with a line of
   JavaScript in the Log's console: what drifted from the database, every audit table greyed,
   the tables a schema has that the diagram leaves out added, a data dictionary in Markdown.
-- **A model from Mermaid:** paste Mermaid's erDiagram text on a diagram, and its entities become
-  notes and its relationships lines with crow's feet, ready to make tables.
+- **A model from Mermaid:** Import from Mermaid (or just paste) Mermaid's erDiagram text on a
+  diagram, and its entities become notes and its relationships lines with crow's feet, ready to
+  make tables.
 - **Properties from a right click:** a table, a schema or a file shows its properties from
   its menu.
 - **A shorter right click in Objects:** an object's menu in groups, eighteen entries instead of
@@ -171,8 +172,14 @@ all follow them.
 ### A model from Mermaid
 
 A model often starts as text: in a document, a wiki page, or an answer from an AI assistant,
-written in Mermaid's `erDiagram`. Copy it and **Paste** on a diagram (its right click, or ⌘V):
-each entity becomes a note with its attributes, each relationship a line with its crow's feet
+written in Mermaid's `erDiagram`. Choose **Insert ▸ Import from Mermaid…** on a diagram's toolbar
+(or on its right click): the model you copied is already in (chosen, so pasting something else
+replaces it), and before anything happens the dialog says what it will make. Copied a whole README? Fine: the model is read out of its
+```` ```mermaid ```` block. Or skip the dialog and just **Paste** on the diagram (⌘V).
+
+![Import from Mermaid: the model's text, and what it will make before anything is done](media/mermaid-import.webp)
+
+Each entity becomes a note with its attributes, each relationship a line with its crow's feet
 and its words, and an entity named like a table already on the diagram joins that table's
 card instead. Then **Make Table**, as with any notes.
 
@@ -281,6 +288,10 @@ dashed blue outline too, its dashes walking. With the motion off they looked the
 The setting that stopped the walking dashes is gone, with nothing left to move.
 
 ## Fixed
+
+- **Paste on a diagram after a copy elsewhere.** Once you had copied a table that was on the
+  diagram already, Paste stayed disabled, even after you copied something else since. Any other
+  copy now lets Paste try again.
 
 - **Fit the Diagram takes in every table.** After the diagram changed while zoomed in (a new
   table made, say), Fit the Diagram left out the tables out of sight, and a fit that had waited
