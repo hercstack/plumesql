@@ -18,6 +18,9 @@
 - **A model from Mermaid:** Import from Mermaid (or just paste) Mermaid's erDiagram text on a
   diagram, and its entities become notes and its relationships lines with crow's feet, ready to
   make tables.
+- **Functions and procedures in a script of their own:** Edit Function opens a function's code
+  ready to change, says before the run what PostgreSQL will do with a changed signature, writes
+  a script to try your version, and writes a test for it.
 - **DDL, laid out your way:** a function's parameters one per line, a table's columns lined up,
   and none of what PostgreSQL would assume anyway, each rule a setting of its own.
 - **Properties from a right click:** a table, a schema or a file shows its properties from
@@ -250,6 +253,55 @@ The connection stands out now too: on a field of its own, in its color when it h
 name first and in full strength, with a chevron that says it is a picker. The session's pid and
 age moved into its tooltip.
 
+## Functions and procedures
+
+### Edit Function
+
+Right-click a function or a procedure in Objects and choose **Edit Function** (or **Edit
+Procedure**; it is also on its DDL tab, its card on a diagram, its Properties and in the command
+palette). Its code opens in a script tied to it: its `CREATE OR REPLACE` as the database has it,
+laid out as the DDL is, with everything the SQL editor does inside the body.
+
+![A function's code in a script of its own, the line above it saying which function it edits, with Try, Add Test, Compare with Database and Open DDL](media/edit-function.webp)
+
+**Run** applies it, and first checks that nobody changed the function since you opened it; if
+someone did, you choose to replace their change or to compare. After the run the script follows
+the function it made. **Compare with Database** shows your version beside the database's.
+
+### The signature, before you run
+
+Rename a parameter, change the result type or remove a default, and PostgreSQL refuses to
+replace the function. The script says so as you type, in PostgreSQL's terms: a replace, a second
+function beside the old one, or a refusal. **Write DROP and CREATE** writes the way out into the
+script, the function's owner, grants and comment put back, for you to read and run.
+
+![A parameter renamed: the line says CREATE OR REPLACE cannot do this, with Write DROP and CREATE beside it](media/edit-signature.webp)
+
+### Try
+
+**Try** writes a script of its own: your version of the function and a call of it, between
+`BEGIN` and `ROLLBACK`. Nothing runs until you run it. The call's arguments are asked in a
+form, each by its parameter's name, a default already filled in. The rows and the notices come
+back as from any script, and the `ROLLBACK` leaves the function as it was. **Write Again**
+writes it again from your script as it is now.
+
+![The Try script with BEGIN and the function's new version, and the rows that version returned](media/try.webp)
+
+### Add Test
+
+**Add Test** writes a test at the end of the script, a `DO` block that calls the function and
+`ASSERT`s on what it returns, shaped by its result:
+
+- **a value** into a variable of its type,
+- **rows** into a temp table, counted, and one row found by its key,
+- **a record** field by field, a procedure's OUT parameters the same way.
+
+Every value you expect is a `null` to fill in, so the test fails until it says something; the
+first one is selected for you to type over. Run runs it after the `CREATE`, the way you would
+write it yourself.
+
+![A test added below the function: ARRANGE, ACT with the call, ASSERT with the nulls to fill in, the first one selected](media/add-test.webp)
+
 ## DDL, laid out your way
 
 The DDL in the Objects tab is now written to be read. A function's or a procedure's parameters
@@ -295,6 +347,18 @@ then the tree's own entries.
 - **Clicks** holds On Click and On Double-Click, in every tree.
 - A table's comment is edited in **Properties**, now on the same menu. A column's row still
   has Edit Comment…, and the DDL view's header the form with every comment of the table.
+
+### Explain Analyze says what it wraps
+
+Explain Analyze really runs the statement. An `INSERT`, `UPDATE`, `DELETE`, `MERGE` or `CREATE
+TABLE AS` runs between `BEGIN` and `ROLLBACK`, so it changes nothing; a `SELECT` always runs as
+written. The Explain item's tooltip says which it will be for that statement before you click,
+and the Log records what ran, with its SQL.
+
+### A pane closes from its header
+
+Properties, Objects or any pane stacked with another in a sidebar has a **×** in its header: it
+leaves the group and stays a tab of the sidebar.
 
 ### A query for a diagram is written in a script
 
