@@ -117,7 +117,7 @@ or area and it moves there; delete a note and its lines go with it. In between, 
 shape:
 
 - **Straight, Curved, Step or Smooth**, with waypoints you drag out of it, exactly as on a
-  foreign key line.
+  foreign key line: drag a step's segment aside and the line goes around the table in its way.
 - **A mark at each end:** an arrow, an open arrow, a dot, a crow's foot or a bar.
 - **A label of your words:** double-click the line (or press Enter) and type; drag the label
   anywhere along it.
