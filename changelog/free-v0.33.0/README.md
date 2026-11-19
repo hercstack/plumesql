@@ -10,6 +10,8 @@
   draws it.
 - **Lines of your own on a diagram:** join any two tables, notes or areas with a line, for what
   the database does not say, styled and labeled your way.
+- **From a logical model to tables:** crow's foot marks on the lines between notes, logical types,
+  and Make Table turns the model into tables, join tables included.
 - **Properties from a right click:** a table, a schema or a file shows its properties from
   its menu.
 - **A shorter right click in Objects:** an object's menu in groups, eighteen entries instead of
@@ -128,6 +130,38 @@ A line that has collected too many bends? **Reset Line**, on its right click and
 gives it back as a new one is drawn in one step: its look, its waypoints and its sides. It
 works on foreign key lines too. And a note's line to what it is attached to is now a line like
 any other, Step and Smooth included.
+
+### From a logical model to tables
+
+A sketch says what the things are. A logical model also says how many: a customer places zero
+or many orders, every order belongs to exactly one customer. Now a line between notes can say
+that too, in crow's foot notation: pick **Start** and **End** on its right click or its page in
+Properties (one, exactly one, zero or one, many, one or many, zero or many).
+
+![A logical model on a diagram: notes with their attributes, lines with crow's feet between them](media/logical-model.webp)
+
+**Make Table** reads the marks:
+
+- The foreign key goes on the **many** side, whichever way you drew the line.
+- **Exactly one** on the other end makes the key NOT NULL; zero or one leaves it optional.
+- **Many on both ends** makes a join table between the two (`order_product`), with a key to
+  each and both as its primary key.
+- **One on both ends** makes the key UNIQUE.
+
+Attributes can stay logical too: write `- total currency` or `- placed datetime` and the table
+gets `numeric(12,2)` and `timestamptz`; an attribute with no type at all gets `text`. The list
+of logical types is yours to change in Settings.
+
+![The same model made tables: keys named customer_id and order_id, the join table between orders and products](media/logical-tables.webp)
+
+### Keys named your way
+
+A new table's key is now named for the table in the singular: `customer_id` for customers,
+`category_id` for categories, and a column that references it is named the same. Prefer `id`,
+or `customers_id`? Settings ▸ Objects ▸ Editing tables has it, along with the key's type (`bigint`
+or `integer`), `GENERATED ALWAYS` or `BY DEFAULT`, what a new foreign key does ON DELETE, and the
+type of a column you gave none. New Table, Make Table and the foreign keys you draw on a diagram
+all follow them.
 
 ## Properties
 
