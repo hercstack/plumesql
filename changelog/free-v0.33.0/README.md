@@ -12,6 +12,11 @@
   the database does not say, styled and labeled your way.
 - **From a logical model to tables:** crow's foot marks on the lines between notes, logical types,
   and Make Table turns the model into tables, join tables included.
+- **Diagrams in the console:** ask a diagram questions and change it with a line of
+  JavaScript in the Log's console: what drifted from the database, every audit table greyed,
+  the tables a schema has that the diagram leaves out added, a data dictionary in Markdown.
+- **A model from Mermaid:** paste Mermaid's erDiagram text on a diagram, and its entities become
+  notes and its relationships lines with crow's feet, ready to make tables.
 - **Properties from a right click:** a table, a schema or a file shows its properties from
   its menu.
 - **A shorter right click in Objects:** an object's menu in groups, eighteen entries instead of
@@ -163,6 +168,48 @@ or `integer`), `GENERATED ALWAYS` or `BY DEFAULT`, what a new foreign key does O
 type of a column you gave none. New Table, Make Table and the foreign keys you draw on a diagram
 all follow them.
 
+### A model from Mermaid
+
+A model often starts as text: in a document, a wiki page, or an answer from an AI assistant,
+written in Mermaid's `erDiagram`. Copy it and **Paste** on a diagram (its right click, or ⌘V):
+each entity becomes a note with its attributes, each relationship a line with its crow's feet
+and its words, and an entity named like a table already on the diagram joins that table's
+card instead. Then **Make Table**, as with any notes.
+
+```
+erDiagram
+  customers ||--o{ reviews : writes
+  products ||--o{ reviews : gets
+  reviews {
+    int rating
+    string body
+  }
+```
+
+![A model pasted as Mermaid: a reviews note joined to the customers and products tables by crow's foot lines](media/mermaid-model.webp)
+
+### Diagrams in the console
+
+The Log's console line now knows the diagram on screen as `diagram`. What the mouse does one
+card at a time, a line does over the whole diagram:
+
+- `diagram.cards` prints every card as a table; `diagram.checks` lists the ones that differ from
+  the database, and what changed.
+- `Object.values(db.shop).filter(t => t.type === 'table' && !diagram.cards[t.name])` asks what
+  the diagram leaves out, and `diagram.add(...$_)` adds it.
+- `diagram.cards.filter(c => c.name.startsWith('audit_')).look({ collapsed: true })` folds every
+  audit table; `diagram.lines.filter(l => l.kind === 'dep').hide()` hides the dependency lines.
+- `diagram.import(text)` reads a Mermaid model in, `diagram.notes.makeTables()` makes it tables,
+  `diagram.link(a, b, { from: 'zeroMany', to: 'oneOnly' })` draws a line with its marks.
+- `diagram.mermaid` writes the diagram back as Mermaid, and `diagram.dictionary` as a data
+  dictionary in Markdown: each table's comment and its columns with their types, keys,
+  references and comments, ready for a wiki or a ticket.
+
+Every change is the diagram's own gesture, one step of its Undo (`diagram.undo()` too). Type
+`help.diagram` for the rest.
+
+![The console under a diagram: the cards printed as a table, audit tables added and folded with one line each](media/diagram-console.webp)
+
 ## Properties
 
 ### Properties from a right click
@@ -234,6 +281,10 @@ dashed blue outline too, its dashes walking. With the motion off they looked the
 The setting that stopped the walking dashes is gone, with nothing left to move.
 
 ## Fixed
+
+- **Fit the Diagram takes in every table.** After the diagram changed while zoomed in (a new
+  table made, say), Fit the Diagram left out the tables out of sight, and a fit that had waited
+  for them could take the view back much later. Every table is fitted now, at once.
 
 - **Pick a column's type from a list.** In the desktop app the type fields of a table's Design
   and of Properties showed no list of types, and took any word as a type. Every such field now
