@@ -27,6 +27,8 @@
   its menu.
 - **A shorter right click in Objects:** an object's menu in groups, eighteen entries instead of
   twenty-seven.
+- **Everything for a statement in its right click:** run it, explain it, select, copy and
+  format it, the same as its lens and its gutter buttons, even with both switched off.
 - **More in the status bar:** how your last run went, and the session's search_path, one click
   from putting another schema first.
 - **Commit and Rollback in the toolbar:** while a transaction is open, its end is one click
@@ -386,6 +388,21 @@ then the tree's own entries.
 - **Clicks** holds On Click and On Double-Click, in every tree.
 - A table's comment is edited in **Properties**, now on the same menu. A column's row still
   has Edit Comment…, and the DDL view's header the form with every comment of the table.
+
+### Everything for a statement in its right click
+
+Right-click a statement in the editor and the menu starts with what you do with it: **Run
+Statement** (Run Selection when text is selected), **Run All**, **Explain**, **Select
+Statement**, **Copy Statement**, **Format Statement**, **Format Document** and **Format With…**.
+They do exactly what the statement's lens items and gutter buttons do, so switching the lens
+and the gutter off costs you nothing.
+
+![The editor's right click on a statement: running and formatting first, then the references, the tools, the clipboard, and Lens and Gutter](media/editor-menu.webp)
+
+Then come going to a definition or the references, the tools (**Refactorings**, **Extensions**,
+**Add to Diagram…**, **Insert Annotation**), the clipboard, and **Lens and Gutter**, the lens's
+own list of what shows above and beside each statement. The Command Palette left the menu: F1
+opens it.
 
 ### Explain Analyze says what it wraps
 
