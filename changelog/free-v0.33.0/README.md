@@ -455,6 +455,10 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 
 ## Fixed
 
+- **No false syntax error in a SQL function's body.** A function returning `table (type text,
+  ...)` whose body wrote `... end as type` was marked with "syntax error at or near "("", although
+  it ran fine: the body's check took the column alias for a reference to the result column.
+  Aliases and the result's columns are left as written now.
 - **Tabs in one row keep their names.** With the editor tabs on one row, many open tabs shrank
   until each showed a single letter of its name. A tab now keeps the width its name needs and
   the row scrolls with its arrows instead, as in VS Code.
