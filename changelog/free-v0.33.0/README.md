@@ -472,6 +472,11 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 
 ## Fixed
 
+- **Extension refactors are no longer stopped for waiting their turn.** The lightbulb, a right
+  click and a selection ask an extension's refactors at the same moment, and the extension
+  answers them one after another; the last ones in line were stopped with "refactor ran longer
+  than 2000 ms" though each took milliseconds. Each question now waits its turn before its time
+  starts, and the same question asked twice is asked once.
 - **No false syntax error in a SQL function's body.** A function returning `table (type text,
   ...)` whose body wrote `... end as type` was marked with "syntax error at or near "("", although
   it ran fine: the body's check took the column alias for a reference to the result column.
