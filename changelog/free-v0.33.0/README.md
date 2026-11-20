@@ -262,7 +262,11 @@ Procedure**; it is also on its DDL tab, its card on a diagram, its Properties an
 palette). Its code opens in a script tied to it: its `CREATE OR REPLACE` as the database has it,
 laid out as the DDL is, with everything the SQL editor does inside the body.
 
-![A function's code in a script of its own, the line above it saying which function it edits, with Try, Add Test, Compare with Database and Open DDL](media/edit-function.webp)
+The script has a toolbar of its own: **Try in a Script**, **Add Test**, **Compare with Database**
+and **Open DDL** first, then which function it edits. The same ways are in the editor's right
+click, under Function.
+
+![A function's code in a script of its own: its toolbar with Try in a Script, Add Test, Compare with Database and Open DDL, then the function it edits](media/edit-function.webp)
 
 **Run** applies it, and first checks that nobody changed the function since you opened it; if
 someone did, you choose to replace their change or to compare. After the run the script follows
@@ -272,15 +276,17 @@ the function it made. **Compare with Database** shows your version beside the da
 
 Rename a parameter, change the result type or remove a default, and PostgreSQL refuses to
 replace the function. The script says so as you type, in PostgreSQL's terms: a replace, a second
-function beside the old one, or a refusal. **Write DROP and CREATE** writes the way out into the
-script, the function's owner, grants and comment put back, for you to read and run.
+function beside the old one, or a refusal. The function's name in the script is underlined, and
+its Quick Fix (⌘.), like the button at the end of the script's toolbar, is **Write DROP and
+CREATE**: it writes the way out into the script, the function's owner, grants and comment put
+back, for you to read and run.
 
-![A parameter renamed: the line says CREATE OR REPLACE cannot do this, with Write DROP and CREATE beside it](media/edit-signature.webp)
+![A parameter renamed: the function's name underlined, the toolbar saying CREATE OR REPLACE cannot do this, Write DROP and CREATE at its end](media/edit-signature.webp)
 
-### Try
+### Try in a Script
 
-**Try** writes a script of its own: your version of the function and a call of it, between
-`BEGIN` and `ROLLBACK`. Nothing runs until you run it. The call's arguments are asked in a
+**Try in a Script** opens a new script beside yours, never a line added to it: your version of
+the function and a call of it, between `BEGIN` and `ROLLBACK`. Nothing runs until you run it. The call's arguments are asked in a
 form, each by its parameter's name, a default already filled in. The rows and the notices come
 back as from any script, and the `ROLLBACK` leaves the function as it was. **Write Again**
 writes it again from your script as it is now.
