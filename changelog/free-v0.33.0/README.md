@@ -28,7 +28,8 @@
 - **A shorter right click in Objects:** an object's menu in groups, eighteen entries instead of
   twenty-seven.
 - **Everything for a statement in its right click:** run it, explain it, select, copy and
-  format it, the same as its lens and its gutter buttons, even with both switched off.
+  format it, the same as its lens and its gutter buttons, even with both switched off, and the
+  menu says which statement and which word it acts on.
 - **More in the status bar:** how your last run went, and the session's search_path, one click
   from putting another schema first.
 - **Commit and Rollback in the toolbar:** while a transaction is open, its end is one click
@@ -391,18 +392,21 @@ then the tree's own entries.
 
 ### Everything for a statement in its right click
 
-Right-click a statement in the editor and the menu starts with what you do with it: **Run
-Statement** (Run Selection when text is selected), **Run All**, **Explain**, **Select
-Statement**, **Copy Statement**, **Format Statement**, **Format Document** and **Format With…**.
-They do exactly what the statement's lens items and gutter buttons do, so switching the lens
-and the gutter off costs you nothing.
+Right-click a statement in the editor and the menu is in parts, each headed by what it acts on:
 
-![The editor's right click on a statement: running and formatting first, then the references, the tools, the clipboard, and Lens and Gutter](media/editor-menu.webp)
+- **The statement** (`SELECT shop.orders`): Run Statement (Run Selection when text is
+  selected), Explain, Select Statement, Copy Statement, Format Statement, Refactorings,
+  Extensions and Add to Diagram….
+- **The word under the cursor** (`Column data_point_id`, `Table orders`): Go to Definition,
+  References, Peek and Rename.
+- **The whole script** (`orders.sql`): Run All, Format Document and Format Document With….
 
-Then come going to a definition or the references, the tools (**Refactorings**, **Extensions**,
-**Add to Diagram…**, **Insert Annotation**), the clipboard, and **Lens and Gutter**, the lens's
-own list of what shows above and beside each statement. The Command Palette left the menu: F1
-opens it.
+![The editor's right click in three parts, each headed by what it acts on: the statement, the word under the cursor, the whole script](media/editor-menu.webp)
+
+Then the clipboard (with Paste as Table… and Insert Annotation), and **Lens and Gutter**, the
+lens's own list of what shows above and beside each statement. The statement's rows do exactly
+what its lens items and gutter buttons do, so switching the lens and the gutter off costs you
+nothing. The Command Palette left the menu: F1 opens it.
 
 ### Explain Analyze says what it wraps
 
