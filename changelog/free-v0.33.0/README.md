@@ -262,9 +262,14 @@ Procedure**; it is also on its DDL tab, its card on a diagram, its Properties an
 palette). Its code opens in a script tied to it: its `CREATE OR REPLACE` as the database has it,
 laid out as the DDL is, with everything the SQL editor does inside the body.
 
-The script has a toolbar of its own: **Try in a Script**, **Add Test**, **Compare with Database**
-and **Open DDL** first, then which function it edits. The same ways are in the editor's right
-click, under Function.
+The script has a toolbar of its own, then which function it edits:
+
+- **Try in a Script**: see what your version returns before you apply it, nothing kept.
+- **Add Test**: a check written into the script, run each time you apply it.
+- **Compare with Database**: your version beside the one the database has now.
+- **Open DDL**: the function's DDL, as the database has it.
+
+The same are in the editor's right click, under Function.
 
 ![A function's code in a script of its own: its toolbar with Try in a Script, Add Test, Compare with Database and Open DDL, then the function it edits](media/edit-function.webp)
 
@@ -285,8 +290,9 @@ back, for you to read and run.
 
 ### Try in a Script
 
-**Try in a Script** opens a new script beside yours, never a line added to it: your version of
-the function and a call of it, between `BEGIN` and `ROLLBACK`. Nothing runs until you run it. The call's arguments are asked in a
+Before you apply a change, you want to see what it does. **Try in a Script** opens a new script
+beside yours, never a line added to it: your version of the function and a call of it, between
+`BEGIN` and `ROLLBACK`, so the database keeps the function it has. Nothing runs until you run it. The call's arguments are asked in a
 form, each by its parameter's name, a default already filled in. The rows and the notices come
 back as from any script, and the `ROLLBACK` leaves the function as it was. **Write Again**
 writes it again from your script as it is now.
@@ -295,8 +301,10 @@ writes it again from your script as it is now.
 
 ### Add Test
 
-**Add Test** writes a test at the end of the script, a `DO` block that calls the function and
-`ASSERT`s on what it returns, shaped by its result:
+A try is for now; a test is for every change after it. **Add Test** writes a test at the end of
+your script, so each time you apply the function the test runs right after it and fails loudly
+if the function no longer returns what you expect. It is a `DO` block that calls the function
+and `ASSERT`s on what it returns, shaped by its result:
 
 - **a value** into a variable of its type,
 - **rows** into a temp table, counted, and one row found by its key,
