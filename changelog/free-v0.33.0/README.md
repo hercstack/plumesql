@@ -472,6 +472,9 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 
 ## Fixed
 
+- **No Writing Tools button in the editor on macOS 27.** Apple Intelligence's Writing Tools
+  showed its button beside selected text again in the desktop app. The editor is code, with
+  nothing for it to rewrite: it is switched off again.
 - **Extension refactors are no longer stopped for waiting their turn.** The lightbulb, a right
   click and a selection ask an extension's refactors at the same moment, and the extension
   answers them one after another; the last ones in line were stopped with "refactor ran longer
