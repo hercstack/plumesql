@@ -299,11 +299,16 @@ The script has a toolbar of its own, then which function it edits:
 
 The same are in the editor's right click, under Function.
 
-![A function's code in a script of its own: its toolbar with Try in a Script, Add Test, Compare with Database and Open DDL, then the function it edits](media/edit-function.webp)
+![A function's code in a script of its own: the function it edits and its connection at the left of its toolbar, Try in a Script, Add Test, Compare with Database and Open DDL at the right](media/edit-function.webp)
 
-**Run** applies it, and first checks that nobody changed the function since you opened it; if
-someone did, you choose to replace their change or to compare. After the run the script follows
-the function it made. **Compare with Database** shows your version beside the database's.
+**Run** runs the whole script, the `CREATE OR REPLACE` and your tests below it, and first checks
+that nobody changed the function since you opened it; if someone did, you choose to replace their
+change or to compare. After the run the script follows the function it made. **Compare with
+Database** shows your version beside the database's.
+
+The script stays on the function's connection: its connection cannot be switched, by mistake or
+otherwise. To put the same code on another server, **Copy to a New Script** (right click,
+Function) gives you a plain script you can point anywhere.
 
 ### The signature, before you run
 
