@@ -20,7 +20,7 @@
   make tables.
 - **Functions and procedures in a script of their own:** Edit Function opens a function's code
   ready to change, says before the run what PostgreSQL will do with a changed signature, writes
-  a script to try your version, and writes a test for it.
+  a call and a test for it.
 - **DDL, laid out your way:** a function's parameters one per line, a table's columns lined up,
   and none of what PostgreSQL would assume anyway, each rule a setting of its own.
 - **Properties from a right click:** a table, a schema or a file shows its properties from
@@ -292,16 +292,16 @@ laid out as the DDL is, with everything the SQL editor does inside the body.
 
 The script has a toolbar of its own, then which function it edits:
 
-- **Try in a Script**: see what your version returns before you apply it, nothing kept.
+- **Add Call**: a call of the function, written into the script below it.
 - **Add Test**: a check written into the script, run each time you apply it.
 - **Compare with Database**: your version beside the one the database has now.
 - **Open DDL**: the function's DDL, as the database has it.
 
 The same are in the editor's right click, under Function.
 
-![A function's code in a script of its own: the function it edits and its connection at the left of its toolbar, Try in a Script, Add Test, Compare with Database and Open DDL at the right](media/edit-function.webp)
+![A function's code in a script of its own: the function it edits and its connection at the left of its toolbar, Add Call, Add Test, Compare with Database and Open DDL at the right](media/edit-function.webp)
 
-**Run** runs the whole script, the `CREATE OR REPLACE` and your tests below it, and first checks
+**Run** runs the whole script, the `CREATE OR REPLACE` and your call and tests below it, and first checks
 that nobody changed the function since you opened it; if someone did, you choose to replace their
 change or to compare. After the run the script follows the function it made. **Compare with
 Database** shows your version beside the database's.
@@ -321,21 +321,24 @@ back, for you to read and run.
 
 ![A parameter renamed: the function's name underlined, the toolbar saying CREATE OR REPLACE cannot do this, Write DROP and CREATE at its end](media/edit-signature.webp)
 
-### Try in a Script
+### Add Call
 
-Before you apply a change, you want to see what it does. **Try in a Script** opens a new script
-beside yours, never a line added to it: your version of the function and a call of it, between
-`BEGIN` and `ROLLBACK`, so the database keeps the function it has. Nothing runs until you run it. The call's arguments are asked in a
-form, each by its parameter's name, a default already filled in. The rows and the notices come
-back as from any script, and the `ROLLBACK` leaves the function as it was. **Write Again**
-writes it again from your script as it is now.
+**Add Call** writes a call of the function right below its `CREATE`, in the same script: its
+arguments are asked in a form when you run it, each by its parameter's name, a default already
+filled in. A script that calls the function already gets no second call: the cursor goes to the
+one it has.
 
-![The Try script with BEGIN and the function's new version, and the rows that version returned](media/try.webp)
+When the function's body writes (an `INSERT`, an `UPDATE`, DDL), the call is written between
+`BEGIN` and `ROLLBACK`: you see what it returns, and nothing it wrote is kept. A procedure that
+commits itself cannot run inside a transaction, and its comment says so. It is all SQL in your
+script: take the two lines away, or write your own around the whole script, as you like.
+
+![A function that inserts, its call written below it between BEGIN and ROLLBACK, and what the call returned](media/call.webp)
 
 ### Add Test
 
-A try is for now; a test is for every change after it. **Add Test** writes a test at the end of
-your script, so each time you apply the function the test runs right after it and fails loudly
+A call is for now; a test is for every change after it. **Add Test** writes a test at the end of
+your script (inside a `BEGIN` and `ROLLBACK` you wrote around it), so each time you apply the function the test runs right after it and fails loudly
 if the function no longer returns what you expect. It is a `DO` block that calls the function
 and `ASSERT`s on what it returns, shaped by its result:
 
@@ -344,7 +347,8 @@ and `ASSERT`s on what it returns, shaped by its result:
 - **a record** field by field, a procedure's OUT parameters the same way.
 
 Every value you expect is a `null` to fill in, so the test fails until it says something; the
-first one is selected for you to type over. Run runs it after the `CREATE`, the way you would
+first one is selected for you to type over, and a second Add Test before you filled it in takes
+you back to it instead of writing another. Run runs it after the `CREATE`, the way you would
 write it yourself.
 
 ![A test added below the function: ARRANGE, ACT with the call, ASSERT with the nulls to fill in, the first one selected](media/add-test.webp)
