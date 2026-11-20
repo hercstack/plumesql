@@ -399,7 +399,12 @@ Right-click a statement in the editor and the menu is in parts, each headed by w
   Extensions and Add to Diagram….
 - **The word under the cursor** (`Column data_point_id`, `Table orders`): Go to Definition,
   References, Peek and Rename.
-- **The whole script** (`orders.sql`): Run All, Format Document and Format Document With….
+- **The whole script** (`orders.sql`): **Run** (Run All, Run from Here, Run to Here) and
+  **Format** (Format Document, Format Document With…).
+
+**Run from Here** runs the script from the statement under the cursor to the end, **Run to
+Here** from its start through that statement, each selected first so you see what runs. A
+script that stopped at a failed statement goes on from it once you fixed it.
 
 ![The editor's right click in three parts, each headed by what it acts on: the statement, the word under the cursor, the whole script](media/editor-menu.webp)
 
@@ -407,6 +412,9 @@ Then the clipboard (with Paste as Table… and Insert Annotation), and **Lens an
 lens's own list of what shows above and beside each statement. The statement's rows do exactly
 what its lens items and gutter buttons do, so switching the lens and the gutter off costs you
 nothing. The Command Palette left the menu: F1 opens it.
+
+A statement's row in the Outline and in the Explorer has the same rows in the same words:
+**Explain** is there now, and in the Outline **Add to Diagram…** too.
 
 ### Explain Analyze says what it wraps
 
