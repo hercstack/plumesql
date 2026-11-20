@@ -19,8 +19,8 @@
   diagram, and its entities become notes and its relationships lines with crow's feet, ready to
   make tables.
 - **Functions and procedures in a script of their own:** Edit Function opens a function's code
-  ready to change, says before the run what PostgreSQL will do with a changed signature, writes
-  a call and a test for it.
+  ready to change, and any script with one `CREATE FUNCTION` is one too: it says before the run
+  what PostgreSQL will do with a changed signature, writes a call and a test for it.
 - **DDL, laid out your way:** a function's parameters one per line, a table's columns lined up,
   and none of what PostgreSQL would assume anyway, each rule a setting of its own.
 - **Properties from a right click:** a table, a schema or a file shows its properties from
@@ -287,28 +287,36 @@ Transaction**) have them too.
 
 Right-click a function or a procedure in Objects and choose **Edit Function** (or **Edit
 Procedure**; it is also on its DDL tab, its card on a diagram, its Properties and in the command
-palette). Its code opens in a script tied to it: its `CREATE OR REPLACE` as the database has it,
-laid out as the DDL is, with everything the SQL editor does inside the body.
+palette). Its code opens in a new script: its `CREATE OR REPLACE` as the database has it, laid
+out as the DDL is, with everything the SQL editor does inside the body.
 
-The script has a toolbar of its own, then which function it edits:
+It is not the only way in. Any script with one `CREATE FUNCTION` or `CREATE PROCEDURE` is a
+function's script, a file of your repository opened from the Explorer as much as a script Edit
+Function opened. A script with two of them is a script like any other.
+
+A function's script has a toolbar of its own: which function it makes and on which connection,
+then:
 
 - **Add Call**: a call of the function, written into the script below it.
 - **Add Test**: a check written into the script, run each time you apply it.
-- **Compare with Database**: your version beside the one the database has now.
+- **Compare with Database**: your `CREATE` beside the function as the database has it now
+  (your calls and tests are not part of it). Written another way (lowercase, `$$` for
+  `$function$`, `AS` on a line of its own), the same function shows no difference: only what
+  changes something is marked.
 - **Open DDL**: the function's DDL, as the database has it.
 
 The same are in the editor's right click, under Function.
 
 ![A function's code in a script of its own: the function it edits and its connection at the left of its toolbar, Add Call, Add Test, Compare with Database and Open DDL at the right](media/edit-function.webp)
 
-**Run** runs the whole script, the `CREATE OR REPLACE` and your call and tests below it, and first checks
-that nobody changed the function since you opened it; if someone did, you choose to replace their
-change or to compare. After the run the script follows the function it made. **Compare with
-Database** shows your version beside the database's.
+**Run** runs the whole script, the `CREATE OR REPLACE` and your call and tests below it. Once the
+script has seen the function (Edit Function opened it, or you ran the script), Run first checks
+that nobody changed it in the database since; if someone did, you choose to replace their change
+or to compare.
 
-The script stays on the function's connection: its connection cannot be switched, by mistake or
-otherwise. To put the same code on another server, **Copy to a New Script** (right click,
-Function) gives you a plain script you can point anywhere.
+Switch the script to another connection and it reads the function there: Compare with Database
+and Open DDL show that database's, and say so when it has no such function yet (the script's
+first run creates it).
 
 ### The signature, before you run
 
