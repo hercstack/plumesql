@@ -426,6 +426,9 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 
 ## Fixed
 
+- **Tabs in one row keep their names.** With the editor tabs on one row, many open tabs shrank
+  until each showed a single letter of its name. A tab now keeps the width its name needs and
+  the row scrolls with its arrows instead, as in VS Code.
 - **Types offered after RETURNS.** Writing a CREATE FUNCTION, the completion after `RETURNS`
   (and after a parameter's name) offered functions. It offers types now, `void`, `trigger`,
   `record`, `setof` and `table (...)` among them.
