@@ -29,6 +29,8 @@
   twenty-seven.
 - **More in the status bar:** how your last run went, and the session's search_path, one click
   from putting another schema first.
+- **Commit and Rollback in the toolbar:** while a transaction is open, its end is one click
+  beside the connection.
 
 ## Diagrams
 
@@ -252,6 +254,29 @@ They use only the room the status bar has free: on a narrower window they step a
 The connection stands out now too: on a field of its own, in its color when it has one, its
 name first and in full strength, with a chevron that says it is a picker. The session's pid and
 age moved into its tooltip.
+
+## Commit and Rollback in the toolbar
+
+### The open transaction's end, beside the connection
+
+When a script opens a transaction, the editor toolbar already marked it with an amber **tx**.
+Now **Commit** and **Rollback** stand right beside it, for as long as the transaction is open,
+and go when it ends:
+
+![The editor toolbar in a transaction: the connection marked tx, then Commit and Rollback beside it](media/tx-commit-rollback.webp)
+
+They run exactly `COMMIT` and `ROLLBACK` on the script's session, as if you had typed them, and
+the results stay as they are. Their tooltips say what you are about to end: the rows changed,
+the schema changes, how long the transaction has been open. Commit still asks first on a
+connection set to confirm a commit.
+
+Once a statement fails inside the transaction, nothing but a rollback can run on that session,
+so only **Rollback** stays, in red:
+
+![A failed transaction: the connection marked tx failed, and Rollback alone in red](media/tx-failed.webp)
+
+The connection's right click and the command palette (**Commit Transaction**, **Rollback
+Transaction**) have them too.
 
 ## Functions and procedures
 
