@@ -20,7 +20,8 @@
   make tables.
 - **Functions and procedures in a script of their own:** Edit Function opens a function's code
   ready to change, and any script with one `CREATE FUNCTION` is one too: it says before the run
-  what PostgreSQL will do with a changed signature, writes a call and a test for it.
+  what PostgreSQL will do with a changed signature, writes a call and a test for it, and its
+  properties, comment and grants in Properties are written into it.
 - **DDL, laid out your way:** a function's parameters one per line, a table's columns lined up,
   and none of what PostgreSQL would assume anyway, each rule a setting of its own.
 - **Properties from a right click:** a table, a schema or a file shows its properties from
@@ -360,6 +361,25 @@ you back to it instead of writing another. Run runs it after the `CREATE`, the w
 write it yourself.
 
 ![A test added below the function: ARRANGE, ACT with the call, ASSERT with the nulls to fill in, the first one selected](media/add-test.webp)
+
+### Its properties, written into the script
+
+The function's page of Properties, beside its script, has what its DDL tab edits: Volatility,
+Parallel, Null input, Cost and Rows, Security, Leakproof and the settings it runs with, with
+the same checks (a body that only reads offers **Mark as Stable**), and its comment, owner and
+grants. They read what your script says, and a change is written into the script, never
+pending and never run: Volatility turns `VOLATILE` into `STABLE` in the `CREATE`, a cost
+writes `COST 5` before the body, and the comment, the owner and the grants, which no `CREATE`
+says, become `COMMENT ON`, `ALTER ... OWNER TO`, `GRANT` and `REVOKE` right below it. Each
+change is one undo in the editor, and your Run applies it all. A field that differs from what
+the database has offers the way back to it.
+
+Changes still pending from the function's DDL tab are listed at the top of the page, with
+**Take into the Script**, so one property never has two versions waiting in two places. And a
+run now also asks when the function's owner, grants or comment were changed in the database
+since the script saw it, not only its code.
+
+![A function script with its labels, its comment and its grants in Properties: IMMUTABLE, COST 5 and a setting in the CREATE, the REVOKE, GRANT and COMMENT ON below it](media/function-properties.webp)
 
 ## DDL, laid out your way
 
