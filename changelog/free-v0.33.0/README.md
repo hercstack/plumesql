@@ -427,6 +427,14 @@ then the tree's own entries.
 - A table's comment is edited in **Properties**, now on the same menu. A column's row still
   has Edit Comment…, and the DDL view's header the form with every comment of the table.
 
+### A tab's header answers a right click
+
+Right-click the header over a tab, a DDL view's, the Changes tab's, an extension's, a
+comparison's, and you get what that header does, the same as its dots menu, instead of the
+app's general menu. The strip of a function's script offers Add Call, Add Test, Compare with
+Database and Open DDL the same way, and the Changes strip in a script every action of the
+pending changes.
+
 ### Everything for a statement in its right click
 
 Right-click a statement in the editor and the menu is in parts, each headed by what it acts on:
