@@ -384,6 +384,27 @@ since the script saw it, not only its code.
 
 ![A function script with its labels, its comment and its grants in Properties: IMMUTABLE, COST 5 and a setting in the CREATE, the REVOKE, GRANT and COMMENT ON below it](media/function-properties.webp)
 
+### Their language, in the object tree
+
+Every function and procedure in Objects now says what it is written in: `plpgsql`, `sql`,
+`plv8`, at the end of its row, where the languages line up in a column. If you would rather read
+it first, **Show Language** puts it before the kind: `PLPGSQL FUNCTION cancel_order(bigint,
+text)`.
+
+And if the language matters more to you than whether it is a function or a procedure, **Group
+Routines by Language** gives each language a folder of its own (`plpgsql routines`, `sql
+routines`), functions and procedures together, each row still saying which it is. Both are in
+the Objects tab's menu and in a functions or procedures folder's right click.
+
+Some languages you never read in the tree: a database's `c` and `internal` functions, its own
+built-in ones and extensions' compiled code, run to thousands, so they are now left out by
+default. The **Object filter** window lists the languages, each with how many routines it has:
+check one to show it, uncheck one to hide its functions and procedures in every schema. A
+routine's right click offers the same under Hide, and **Show all** brings everything back. Only
+the tree leaves them out: completion, hover and Go to Definition still know them.
+
+![Functions and procedures with their language at the end of each row, and the same routines grouped into a plpgsql folder and a sql folder](media/routine-language.webp)
+
 ## Functions in JavaScript and Python
 
 PostgreSQL runs functions written in JavaScript (PL/V8) and in Python (PL/Python), and now the
