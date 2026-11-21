@@ -2,6 +2,9 @@
 
 ## Highlights
 
+- **Functions in JavaScript and Python:** a PL/V8 or PL/Python function is edited the way a
+  PL/pgSQL one is: drawn in its own language, completed, checked, navigated and outlined, and the
+  SQL inside its queries completes your tables and columns.
 - **Edit tables on the diagram:** double-click a table's card and change its columns right
   there, without leaving the diagram, and draw its foreign keys to other tables.
 - **Sketch the model with notes:** draw arrows between notes on a diagram, then make them tables
@@ -380,6 +383,59 @@ run now also asks when the function's owner, grants or comment were changed in t
 since the script saw it, not only its code.
 
 ![A function script with its labels, its comment and its grants in Properties: IMMUTABLE, COST 5 and a setting in the CREATE, the REVOKE, GRANT and COMMENT ON below it](media/function-properties.webp)
+
+## Functions in JavaScript and Python
+
+PostgreSQL runs functions written in JavaScript (PL/V8) and in Python (PL/Python), and now the
+editor knows them as well as it knows PL/pgSQL. Write `LANGUAGE plv8` or `LANGUAGE plpython3u`,
+before the body or after it, and the body is drawn in its own language, with the SQL help
+stepping aside inside it.
+
+### The SQL inside, completed from your database
+
+A query a body runs (`plv8.execute('...')`, `plpy.execute("...")`, and their `prepare` and
+`cursor`) is SQL again: drawn as SQL inside the JavaScript or Python string, its tables, columns
+and functions completed from the connection, its objects hovered with Browse data and Open DDL,
+as in any script.
+
+![A PL/V8 function's query, inside a JavaScript string, completing a column of its table](media/plv8-sql-completion.webp)
+
+### Checked as you type, and by the server
+
+- A syntax error, in JavaScript or in Python, is a warning where it stands. Python's indentation
+  is read exactly as PostgreSQL's Python reads it: a body indented as a whole is fine, an indent
+  no block opens is not.
+- A query's syntax is checked by PostgreSQL's own parser as you type; with the dynamic parser on,
+  the server checks it too, and a missing table or column is said where it stands, in its words.
+- A misspelled `plv8.exeute` is a warning, and so is a variable or a parameter you never read,
+  with a Quick Fix that removes it.
+- What the body does counts: a declared IMMUTABLE that reads a table, or a STABLE that calls
+  `Math.random()` or `datetime.now()`, is a warning, with the word that body is.
+
+![A PL/V8 function declared IMMUTABLE reading a table that does not exist: both said in Problems](media/plv8-checks.webp)
+
+### Help in both languages
+
+- **PL/V8** gets JavaScript's own help: completion of `plv8.execute`, `plv8.prepare`,
+  `plv8.elog` and the rest of the API, the parameters typed from their SQL types (`integer` is a
+  number, `bigint` a BigInt, `text` a string), a trigger's `NEW`, `OLD` and `TG_*`, hovers and
+  signature help, and nothing of a browser's.
+- **PL/Python** gets the `plpy` module after `plpy.` with each function's signature, the
+  standard library's modules after `import`, a trigger's `TD` keys, the parameters with their
+  Python types (`numeric` is a Decimal), and the names the body defines.
+
+![A PL/Python function: plpy's functions listed, execute's signature beside it](media/plpython-plpy.webp)
+
+### Navigate, rename, outline
+
+Go to Definition, Find References and Rename (F2) work on a body's own names, a parameter
+renamed in the function's head too. Both languages fold by their own structure, and the Outline
+shows such a function as it shows a PL/pgSQL one: its parameters, its inner functions, the
+queries it runs by their kind, its messages and its returns. Edit Function, Add Call, Add Test
+and the function's Properties work as for any function, and Format Document leaves the body as
+you wrote it.
+
+![A PL/Python function run, its Outline beside it: the parameter, the query, the NOTICE, the return](media/plpython-outline.webp)
 
 ## DDL, laid out your way
 
