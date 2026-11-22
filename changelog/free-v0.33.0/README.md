@@ -692,6 +692,10 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 - **Running a script of thousands of statements.** A long script (a migration, a dump) could freeze the window for seconds while it ran and each time its results were shown again. It runs smoothly now.
 - **Typing in a long script with annotations.** A script with `-- @format` or other annotation lines above thousands of statements slowed with every key once it showed a result. It keeps up now.
 - **A connection's Checks overrides show as overrides.** In a connection's or a group's editor, five switches under Checks did not show that they override the setting and had no reset. They do now.
+- **Constraints and schemas whose names need quotes.** The DDL of a constraint named in mixed
+  case or with a space (`"PK_Users"`, `"Check N"`) was written without its quotes, and so was a
+  schema named by a reserved word (`"order"`): run again, the script renamed the constraint to
+  lower case or failed. They are quoted now, as PostgreSQL itself writes them.
 
 ## Tell us what you think
 
