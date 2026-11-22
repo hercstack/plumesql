@@ -687,6 +687,8 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 - **A script in the shared Scripts store shows it is unsaved.** In the Explorer its row had neither the dot of unsaved changes nor the italic of a preview. It has both now.
 - **Identity options survive a change in Properties.** Changing an identity column from Always to By default in Properties dropped the sequence options you had typed. They stay now, as in the Design grid.
 - **Numbers read the same everywhere.** On a machine set to another region, some counts read 1.000 and others 1,000 in the same window. All read 1,000 now.
+- **A connection through SSH keeps its sessions.** Cancelling a query, or a background check that timed out, could close the SSH tunnel under every tab on that connection: open transactions, temporary tables and settings were gone. The tunnel is rebuilt only when it is really down now.
+- **Sorting and filtering a large result stays quick.** In a result of a million rows or more, scrolling a sorted or filtered view and exporting it read the whole result again for every screenful. Each screenful reads only its own rows now.
 
 ## Tell us what you think
 
