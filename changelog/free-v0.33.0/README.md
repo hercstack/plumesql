@@ -679,6 +679,9 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
   arrow, but not onto a query card, a script card or another note. Every card takes it now,
   the note drawn over the card rather than hidden under it, and a query or a script card
   dragged onto a table attaches as a note does.
+- **Typing in a long script is fast again.** In a script of a few thousand statements (a
+  migration, a dump of a few hundred KB), every key you pressed could stall the editor for
+  about a second. It answers at once now.
 
 ## Tell us what you think
 
