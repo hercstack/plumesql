@@ -3,7 +3,8 @@
 ## Highlights
 
 - **Comments, written on the diagram:** every card shows its object's comment as Markdown, a
-  click edits it right there, and a long one says how much it leaves out. Comments are the
+  click on a chosen card's comment edits it right there, and a long one says how much it leaves
+  out. Comments are the
   knowledge of your database, for people and for the tools that read it.
 - **Functions in JavaScript and Python:** a PL/V8 or PL/Python function is edited the way a
   PL/pgSQL one is: drawn in its own language, completed, checked, navigated and outlined, and the
@@ -424,7 +425,8 @@ schema's frame can say how many of its objects are documented.
 
 ### Edited where you read it
 
-Click a comment to edit it on the card (⌘Enter keeps it, Escape takes it back); an object
+Click the comment of a chosen card to edit it on the card (⌘Enter keeps it, Escape takes it
+back; the first click on a card chooses it); an object
 without one shows **Add a comment…** in its place. Its corner opens it in the Markdown editor
 instead, with the rendered text beside it, and a card's right click has **Edit Comment…**, a
 column's row **Edit Comment of** the column. Every edit is a pending change, like any other:
