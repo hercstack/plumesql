@@ -696,6 +696,9 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
   case or with a space (`"PK_Users"`, `"Check N"`) was written without its quotes, and so was a
   schema named by a reserved word (`"order"`): run again, the script renamed the constraint to
   lower case or failed. They are quoted now, as PostgreSQL itself writes them.
+- **The Dynamic parser choice in a connection's settings.** A connection or a group could
+  still choose among four ways the parser shows its findings, which the setting itself no longer
+  has. It offers on and off, like the setting.
 
 ## Tell us what you think
 
