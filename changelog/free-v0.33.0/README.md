@@ -707,6 +707,9 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
   now.
 - **Typing with many results showing.** After a run of a script with thousands of statements,
   every key was slower the more results it had. About twice as fast now.
+- **A right click on a diagram card where a line passes behind it.** With the card chosen, a
+  right click at a spot one of its lines runs under opened the line's menu instead of the
+  card's. The card answers now.
 
 ## Tell us what you think
 
