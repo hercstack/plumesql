@@ -2,6 +2,9 @@
 
 ## Highlights
 
+- **Comments, written on the diagram:** every card shows its object's comment as Markdown, a
+  click edits it right there, and a long one says how much it leaves out. Comments are the
+  knowledge of your database, for people and for the tools that read it.
 - **Functions in JavaScript and Python:** a PL/V8 or PL/Python function is edited the way a
   PL/pgSQL one is: drawn in its own language, completed, checked, navigated and outlined, and the
   SQL inside its queries completes your tables and columns.
@@ -404,6 +407,48 @@ routine's right click offers the same under Hide, and **Show all** brings everyt
 the tree leaves them out: completion, hover and Go to Definition still know them.
 
 ![Functions and procedures with their language at the end of each row, and the same routines grouped into a plpgsql folder and a sql folder](media/routine-language.webp)
+
+## Comments on the diagram
+
+An object's comment says what it is: what a table holds, what a column means. That knowledge
+belongs in the database, where people and the tools that read it find it, and the diagram is
+where you see the model it describes. Now it is written there too.
+
+### Shown on every card, as Markdown
+
+Each card shows its object's comment by default, as Markdown (headings, bold, lists, code), in
+a block of its own above the columns, so formatted words are never mistaken for a column. A
+schema's frame can say how many of its objects are documented.
+
+![A schema on a diagram: three tables with their comments as Markdown, the frame saying 3 of 4 documented](media/diagram-comments.webp)
+
+### Edited where you read it
+
+Click a comment to edit it on the card (⌘Enter keeps it, Escape takes it back); an object
+without one shows **Add a comment…** in its place. Its corner opens it in the Markdown editor
+instead, with the rendered text beside it, and a card's right click has **Edit Comment…**, a
+column's row **Edit Comment of** the column. Every edit is a pending change, like any other:
+nothing reaches the database until you run it. **Show Comment as Note** puts a comment on the
+canvas to rework, and a note on an object has **Save as Comment**.
+
+![A table's comment edited right on its card](media/diagram-comment-inline.webp)
+
+### Long comments, never cut without a word
+
+A card shows four lines of a comment by default; when there is more, it says so (**+9 lines**),
+and a click on it shows the whole comment beside the card. Show ▸ **Comment Length** chooses
+how much a card shows: Summary (the first paragraph), 4 lines, 8 lines or the whole. Write a
+one-line summary first and the details after a blank line, and Summary reads like a docstring.
+The canvas's own right click has **Show** for what every card of the diagram shows.
+
+![A long comment cut at four lines, the whole of it beside the card](media/diagram-comment-long.webp)
+
+### Run a small change without opening the script
+
+The pending changes' right click in the status bar has **Run Changes…**: the script that will
+run is shown whole in its question, so a change as small as a comment needs no tab opened.
+
+![Run Changes from the status bar: the COMMENT ON statement shown before it runs](media/run-changes.webp)
 
 ## Functions in JavaScript and Python
 
