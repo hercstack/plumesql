@@ -684,6 +684,9 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
   about a second. It answers at once now.
 - **Your session keeps saving with large scripts open.** With more than about 16 MB of scripts open, the session (open tabs, unsaved text, layout) could stop being saved without any message, and what you did after that was gone on the next start. It saves as it should now, and a save that fails says so in the Log.
 - **The last small choice is remembered.** A result shown side by side, saving cell by cell, a table's Design face and a diagram's tool were saved only with the next other change. Each is saved when you make it now.
+- **A script in the shared Scripts store shows it is unsaved.** In the Explorer its row had neither the dot of unsaved changes nor the italic of a preview. It has both now.
+- **Identity options survive a change in Properties.** Changing an identity column from Always to By default in Properties dropped the sequence options you had typed. They stay now, as in the Design grid.
+- **Numbers read the same everywhere.** On a machine set to another region, some counts read 1.000 and others 1,000 in the same window. All read 1,000 now.
 
 ## Tell us what you think
 
