@@ -699,6 +699,9 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 - **The Dynamic parser choice in a connection's settings.** A connection or a group could
   still choose among four ways the parser shows its findings, which the setting itself no longer
   has. It offers on and off, like the setting.
+- **Objects of a database with thousands of tables load faster.** Reading the definitions
+  slowed down with the square of the number of tables: 13 seconds for 3,000 tables, 2 seconds
+  now, on every refresh after a change.
 
 ## Tell us what you think
 
