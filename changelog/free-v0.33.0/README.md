@@ -705,6 +705,8 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 - **Typing in a script of many short statements.** A script of more than 4,000 statements (a
   dump of one-line INSERTs) had every statement read again after every key. About twice as fast
   now.
+- **Typing with many results showing.** After a run of a script with thousands of statements,
+  every key was slower the more results it had. About twice as fast now.
 
 ## Tell us what you think
 
