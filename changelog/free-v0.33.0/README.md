@@ -682,6 +682,8 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 - **Typing in a long script is fast again.** In a script of a few thousand statements (a
   migration, a dump of a few hundred KB), every key you pressed could stall the editor for
   about a second. It answers at once now.
+- **Your session keeps saving with large scripts open.** With more than about 16 MB of scripts open, the session (open tabs, unsaved text, layout) could stop being saved without any message, and what you did after that was gone on the next start. It saves as it should now, and a save that fails says so in the Log.
+- **The last small choice is remembered.** A result shown side by side, saving cell by cell, a table's Design face and a diagram's tool were saved only with the next other change. Each is saved when you make it now.
 
 ## Tell us what you think
 
