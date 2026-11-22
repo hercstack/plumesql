@@ -689,6 +689,7 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 - **Numbers read the same everywhere.** On a machine set to another region, some counts read 1.000 and others 1,000 in the same window. All read 1,000 now.
 - **A connection through SSH keeps its sessions.** Cancelling a query, or a background check that timed out, could close the SSH tunnel under every tab on that connection: open transactions, temporary tables and settings were gone. The tunnel is rebuilt only when it is really down now.
 - **Sorting and filtering a large result stays quick.** In a result of a million rows or more, scrolling a sorted or filtered view and exporting it read the whole result again for every screenful. Each screenful reads only its own rows now.
+- **Running a script of thousands of statements.** A long script (a migration, a dump) could freeze the window for seconds while it ran and each time its results were shown again. It runs smoothly now.
 
 ## Tell us what you think
 
