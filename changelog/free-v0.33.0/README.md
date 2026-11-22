@@ -702,6 +702,9 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 - **Objects of a database with thousands of tables load faster.** Reading the definitions
   slowed down with the square of the number of tables: 13 seconds for 3,000 tables, 2 seconds
   now, on every refresh after a change.
+- **Typing in a script of many short statements.** A script of more than 4,000 statements (a
+  dump of one-line INSERTs) had every statement read again after every key. About twice as fast
+  now.
 
 ## Tell us what you think
 
