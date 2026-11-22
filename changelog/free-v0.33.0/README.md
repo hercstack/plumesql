@@ -690,6 +690,7 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 - **A connection through SSH keeps its sessions.** Cancelling a query, or a background check that timed out, could close the SSH tunnel under every tab on that connection: open transactions, temporary tables and settings were gone. The tunnel is rebuilt only when it is really down now.
 - **Sorting and filtering a large result stays quick.** In a result of a million rows or more, scrolling a sorted or filtered view and exporting it read the whole result again for every screenful. Each screenful reads only its own rows now.
 - **Running a script of thousands of statements.** A long script (a migration, a dump) could freeze the window for seconds while it ran and each time its results were shown again. It runs smoothly now.
+- **Typing in a long script with annotations.** A script with `-- @format` or other annotation lines above thousands of statements slowed with every key once it showed a result. It keeps up now.
 
 ## Tell us what you think
 
