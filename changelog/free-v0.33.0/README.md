@@ -503,7 +503,10 @@ as in any script.
 ### Navigate, rename, outline
 
 Go to Definition, Find References and Rename (F2) work on a body's own names, a parameter
-renamed in the function's head too. Both languages fold by their own structure, and the Outline
+renamed in the function's head too. Go to Definition on what the language gives the body opens its
+declarations read-only, as VS Code does: `plv8.execute` or `NOTICE` in PL/V8's, `map` or
+`JSON.parse` in JavaScript's standard library, `plpy.execute` or a result's `nrows()` in plpy's
+description, drawn as Python. Both languages fold by their own structure, and the Outline
 shows such a function as it shows a PL/pgSQL one: its parameters, its inner functions, the
 queries it runs by their kind, its messages and its returns. Edit Function, Add Call, Add Test
 and the function's Properties work as for any function, and Format Document leaves the body as
@@ -656,6 +659,9 @@ gone. The Command Palette has **Tab size** beside Tab layout.
 
 ## Fixed
 
+- **Go to Definition into JavaScript's standard library in an extension's editor.** F12 on
+  `toUpperCase`, `map` or `JSON.parse` in a `.plumesql.js` editor did nothing (only Peek showed
+  the declaration). It opens the declaration read-only now, as a CDN library's types do.
 - **No error in the Log after a Backspace.** A Backspace that joined two lines, with a
   statement's commands showing at the cursor, could put "Illegal value for lineNumber" in the Log,
   with a long trace, though nothing went wrong on screen. It no longer does.
