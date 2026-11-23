@@ -502,7 +502,7 @@ when:
 12. a `.plumesql.js` is not `@ts-check` clean against the PlumeSQL
     extension types.
 
-`execute.yml` runs every `.plumesql.sql` against PostgreSQL 13 to 18,
+`execute.yml` runs every `.plumesql.sql` against PostgreSQL 13 to 19,
 TimescaleDB and Citus containers (the private repository's schema
 matrix recipe, duplicated), with the inputs' defaults bound, and fails
 the PR on any error. It is the one live proof of the published queries.

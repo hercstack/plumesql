@@ -7,6 +7,8 @@
   SQL inside its queries completes your tables and columns. A query's rows and a trigger's `NEW`
   complete their columns in all three languages, PL/pgSQL included, and a column the row does not
   have is caught before the function runs.
+- **PostgreSQL 19:** released on 19 November and supported here, tested the same way as every
+  release since 13.
 - **Comments, written on the diagram:** every card shows its object's comment as Markdown, a
   click on a chosen card's comment edits it right there, and a long one says how much it leaves
   out. Comments are the
@@ -586,7 +588,31 @@ connections or for one connection in its editor:
 
 DDL keyword case, the setting that writes keywords in lower case, now applies to a function's head
 too. However you set them, the DDL is the same object: we replay it into an empty database on
-PostgreSQL 13 to 18 and check it reads back exactly as it was.
+PostgreSQL 13 to 19 and check it reads back exactly as it was.
+
+## PostgreSQL 19
+
+PostgreSQL 19 came out on 19 November 2026, and PlumeSQL supports it: 13 to 19 now. The object
+tree, the DDL of every object and the table editor are tested on a real PostgreSQL 19 the same
+way as on every other release, replaying each object's DDL and checking it reads back exactly
+as it was.
+
+- **The editor knows 19's words** when your server is a 19: `REPACK`, `WAIT FOR LSN`,
+  `IGNORE NULLS` and `RESPECT NULLS` in window functions, the `oid8` and `regdatabase` types
+  and the new functions, and `REPACK` and `WAIT` open their pages of the PostgreSQL 19
+  reference. On an older server they stay plain words, as that server would read them.
+- **19's new objects in the DDL:** a publication `FOR ALL SEQUENCES`, one `FOR ALL TABLES
+  EXCEPT (TABLE ...)`, and a foreign data wrapper's `CONNECTION` function.
+- **Backups of a 19 server:** System offers the PostgreSQL 19 client tools and finds the ones
+  you have. A `pg_dump` older than the server refuses it, so a 19 server needs 19's.
+- **REPACK where it helps:** the warning on `VACUUM FULL` and `CLUSTER`, which lock the table
+  while they rewrite it, names `REPACK (CONCURRENTLY)` on a 19 server, which does not.
+- **The extensions run on 19:** every query extension in the Marketplace is executed on
+  PostgreSQL 19 too, and the plan viewer reads 19's plans.
+
+One thing is still on its way: the copy of PostgreSQL's own parser inside the editor is 18's
+until its 19 build is published. On a 19 server that costs the new statements a little
+precision in completion, never a false error: your server judges the syntax, as always.
 
 ## What changed
 

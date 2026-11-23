@@ -514,7 +514,7 @@ comment annotations are the same idea as NpgsqlRest's
 
 Nothing here locks you in: a tool is a plain SQL file you can read and
 run anywhere, and its format is an MIT specification. Every query
-extension in this repository runs on PostgreSQL 13 to 18, TimescaleDB
+extension in this repository runs on PostgreSQL 13 to 19, TimescaleDB
 and Citus on each push:
 
 [![execute](https://github.com/hercstack/plumesql/actions/workflows/execute.yml/badge.svg)](https://github.com/hercstack/plumesql/actions/workflows/execute.yml)
@@ -528,7 +528,7 @@ and Citus on each push:
   in WebAssembly.
 - **Tauri shell** with the system webview: no bundled browser, no Java.
 - **The object browser is a DDL snapshot on disk**, so browsing costs
-  the server nothing. Tested against PostgreSQL 13 to 18.
+  the server nothing. Tested against PostgreSQL 13 to 19.
 
 A 14 MB download (about 90 MB for the Linux AppImage), 38 MB installed,
 the server ready about 40 ms after launch (M4 Pro MacBook).
