@@ -479,6 +479,10 @@ as in any script.
   with a Quick Fix that removes it.
 - What the body does counts: a declared IMMUTABLE that reads a table, or a STABLE that calls
   `Math.random()` or `datetime.now()`, is a warning, with the word that body is.
+- A function in a language its connection does not have (`LANGUAGE plv8` on a server without
+  the plv8 extension) is a warning on the language before you run it, with a Quick Fix that
+  writes `CREATE EXTENSION IF NOT EXISTS plv8;` above it for you to run. It follows the tab's
+  connection, and each connection section of a script.
 
 ![A PL/V8 function declared IMMUTABLE reading a table that does not exist: both said in Problems](media/plv8-checks.webp)
 
@@ -488,9 +492,11 @@ as in any script.
   `plv8.elog` and the rest of the API, the parameters typed from their SQL types (`integer` is a
   number, `bigint` a BigInt, `text` a string), a trigger's `NEW`, `OLD` and `TG_*`, hovers and
   signature help, and nothing of a browser's.
-- **PL/Python** gets the `plpy` module after `plpy.` with each function's signature, the
-  standard library's modules after `import`, a trigger's `TD` keys, the parameters with their
-  Python types (`numeric` is a Decimal), and the names the body defines.
+- **PL/Python** gets the `plpy` module after `plpy.` with each function's signature, the whole
+  standard library after `import` and a module's names after `from ... import`, a trigger's `TD`
+  keys, the parameters with their Python types (`numeric` is a Decimal), and the names the body
+  defines. After a dot it lists what the object has: a string's methods, a module's names,
+  `plpy.execute`'s result and its rows, a plan, a cursor.
 
 ![A PL/Python function: plpy's functions listed, execute's signature beside it](media/plpython-plpy.webp)
 
@@ -650,6 +656,13 @@ gone. The Command Palette has **Tab size** beside Tab layout.
 
 ## Fixed
 
+- **A connection picker opens on the connection in use.** The tab's connection picker opened
+  with its first row highlighted, which read as the one selected, so picking the connection
+  really in use changed nothing. It opens on the current one now, as VS Code's pickers do, and
+  so does every picker that marks what is current (the Objects tab's connection, a group, a
+  setting's value). Two connections found in one file (an `.env` with `PLV8_URL` and
+  `PLPYTHON_URL`) are named by their entry there, as in the Connections tab, instead of both as
+  "postgres (.env)".
 - **No Writing Tools button in the editor on macOS 27.** Apple Intelligence's Writing Tools
   showed its button beside selected text again in the desktop app. The editor is code, with
   nothing for it to rewrite: it is switched off again.
