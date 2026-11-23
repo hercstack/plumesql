@@ -718,6 +718,9 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 - **Problems in a statement that has a parameter.** A statement with `:name`, `$name` or
   `{name}` in it was never marked by the dynamic parser, whatever was wrong in it: a misspelled
   table showed nothing until the run. It is marked now, like any other statement.
+- **A command extension's header lines.** A prompt written in quotes (`@file dump "Dump to"`)
+  showed its quotes in a command's form, and a value used only as another field's default was
+  reported as never used. Both read as they do in a query extension now.
 
 ## Tell us what you think
 
