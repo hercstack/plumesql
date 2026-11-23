@@ -639,6 +639,15 @@ the workspace and it is one of the workspace's files, in the Explorer. A DDL vie
 that opens in a tab of its own, and the view stays as it is. Save As is in the desktop app,
 where there is a save dialog.
 
+### Tab layout and size, beside the tabs
+
+A **⋯** button at the end of the editor tabs (in the column's head when the tabs stand on the
+left or right) opens the tabs' own menu: **Single Row**, **Multiple Rows**, **Vertical Left**
+and **Vertical Right**, **Small Tabs**, **Preview Tabs**, **Close All**, and **Tab Settings**.
+Each change shows at once and is kept for the workspace. A right click on the empty space beside
+the tabs opens the same menu, which helps most with Multiple Rows, where that space is often
+gone. The Command Palette has **Tab size** beside Tab layout.
+
 ## Fixed
 
 - **No Writing Tools button in the editor on macOS 27.** Apple Intelligence's Writing Tools
