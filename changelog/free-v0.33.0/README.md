@@ -2,13 +2,15 @@
 
 ## Highlights
 
+- **Functions in JavaScript and Python:** a PL/V8 or PL/Python function is edited the way a
+  PL/pgSQL one is: drawn in its own language, completed, checked, navigated and outlined, and the
+  SQL inside its queries completes your tables and columns. A query's rows and a trigger's `NEW`
+  complete their columns in all three languages, PL/pgSQL included, and a column the row does not
+  have is caught before the function runs.
 - **Comments, written on the diagram:** every card shows its object's comment as Markdown, a
   click on a chosen card's comment edits it right there, and a long one says how much it leaves
   out. Comments are the
   knowledge of your database, for people and for the tools that read it.
-- **Functions in JavaScript and Python:** a PL/V8 or PL/Python function is edited the way a
-  PL/pgSQL one is: drawn in its own language, completed, checked, navigated and outlined, and the
-  SQL inside its queries completes your tables and columns.
 - **Edit tables on the diagram:** double-click a table's card and change its columns right
   there, without leaving the diagram, and draw its foreign keys to other tables.
 - **Sketch the model with notes:** draw arrows between notes on a diagram, then make them tables
@@ -187,6 +189,8 @@ or `integer`), `GENERATED ALWAYS` or `BY DEFAULT`, what a new foreign key does O
 type of a column you gave none. New Table, Make Table and the foreign keys you draw on a diagram
 all follow them.
 
+![Settings, Editing tables: a new table's first column, its key name in the singular with _id, and the key's type](media/keys-settings.webp)
+
 ### A model from Mermaid
 
 A model often starts as text: in a document, a wiki page, or an answer from an AI assistant,
@@ -247,6 +251,8 @@ in sight, and the × in its header closes it there. When Properties already show
 out, and the same goes for a diagram's Display, Line or Note Properties and for Editor
 Properties.
 
+![Properties below the object tree: the customer table chosen above, its kind, schema, name and comment below](media/properties-right-click.webp)
+
 ## Status bar
 
 ### The last run, and the search_path
@@ -261,6 +267,8 @@ server's default: each is a `SET` on the tab's own session, as if you had typed 
 
 They use only the room the status bar has free: on a narrower window they step aside,
 `search_path` first, and nothing else moves for them.
+
+![The status bar: the session's search_path, then 3 rows in 1 ms, just now](media/status-last-run.webp)
 
 The connection stands out now too: on a field of its own, in its color when it has one, its
 name first and in full strength, with a chevron that says it is a picker. The session's pid and
@@ -486,6 +494,8 @@ as in any script.
 
 ![A PL/V8 function declared IMMUTABLE reading a table that does not exist: both said in Problems](media/plv8-checks.webp)
 
+![A PL/V8 function on a server without plv8: the warning on its language says the function would fail, and how to add the extension](media/pl-language-missing.webp)
+
 ### Help in both languages
 
 - **PL/V8** gets JavaScript's own help: completion of `plv8.execute`, `plv8.prepare`,
@@ -497,8 +507,38 @@ as in any script.
   keys, the parameters with their Python types (`numeric` is a Decimal), and the names the body
   defines. After a dot it lists what the object has: a string's methods, a module's names,
   `plpy.execute`'s result and its rows, a plan, a cursor.
+- **PL/Python hovers and signatures** come from Python itself: `json.dumps(` shows the
+  signature and the first line of the documentation Python reports for it, and so do a result's
+  `nrows()`, a string's `split` and the builtins. The parameter you are writing is marked, by its
+  name when you name it (`indent=2` marks `indent`).
 
 ![A PL/Python function: plpy's functions listed, execute's signature beside it](media/plpython-plpy.webp)
+
+![json.dumps in a PL/Python function: its signature as Python reports it, indent marked for the indent=2 being written](media/plpython-signature.webp)
+
+### The rows a body meets, in every language
+
+A body knows the rows it works with, and completes their columns after a dot:
+
+- **A query's rows.** `const found = plv8.execute('select title, rating from film ...')` and
+  `found[0].` lists `title` and `rating`; in PL/Python the rows of `plpy.execute("...")` complete
+  their keys, `rows[0]['` or a loop's `row['`. The columns are what the query gives, read from
+  your database.
+- **A trigger's row.** In a trigger function `NEW.` and `OLD.` (`TD['new']` in PL/Python) list the
+  columns of the table the trigger is on, found in a `CREATE TRIGGER` in the same script or in the
+  database. Before any trigger uses the function, the hover on `NEW` says how its columns become
+  known.
+- **PL/pgSQL too.** A record filled by `FOR r IN SELECT ...` or `SELECT ... INTO r`, and `NEW` and
+  `OLD`, complete their columns and hover with their types.
+
+![A PL/V8 function: the rows of its query completing their two columns, rating and title](media/pl-rows.webp)
+
+And a column the row does not have is caught as you type, in each language's own terms:
+`NEW.titel` in PL/pgSQL is PostgreSQL's own `record "new" has no field "titel"`, which it would
+only say when the trigger fires; in PL/V8 it would be `undefined` with no error at all, and in
+PL/Python a `KeyError`. Each comes with a Quick Fix to the nearest column, **Change to title**.
+
+![A PL/pgSQL trigger function: NEW.titel underlined, record "new" has no field "titel", the table's columns listed, a Quick Fix offered](media/plpgsql-record-field-hover.webp)
 
 ### Navigate, rename, outline
 
@@ -513,6 +553,8 @@ and the function's Properties work as for any function, and Format Document leav
 you wrote it.
 
 ![A PL/Python function run, its Outline beside it: the parameter, the query, the NOTICE, the return](media/plpython-outline.webp)
+
+![F12 on plpy.execute: plpy's description opened read-only, drawn as Python, on execute's two forms](media/pl-f12.webp)
 
 ## DDL, laid out your way
 
@@ -560,6 +602,8 @@ then the tree's own entries.
 - A table's comment is edited in **Properties**, now on the same menu. A column's row still
   has Edit Comment…, and the DDL view's header the form with every comment of the table.
 
+![A table's right click in Objects: Browse Data, Open DDL and Edit Table, then the groups, Diagram, Data, Copy, Refresh, Pin and Hide](media/objects-menu.webp)
+
 ### A tab's header answers a right click
 
 Right-click the header over a tab, a DDL view's, the Changes tab's, an extension's, a
@@ -567,6 +611,8 @@ comparison's, and you get what that header does, the same as its dots menu, inst
 app's general menu. The strip of a function's script offers Add Call, Add Test, Compare with
 Database and Open DDL the same way, and the Changes strip in a script every action of the
 pending changes.
+
+![A right click on a table's DDL view header: Browse Data, Find, Copy, Copy name, Script, Copy Script and Edit Comment](media/tab-header-menu.webp)
 
 ### Everything for a statement in its right click
 
@@ -601,10 +647,14 @@ TABLE AS` runs between `BEGIN` and `ROLLBACK`, so it changes nothing; a `SELECT`
 written. The Explain item's tooltip says which it will be for that statement before you click,
 and the Log records what ran, with its SQL.
 
+![The Log after Explain Analyze of an UPDATE: it ran between BEGIN and ROLLBACK, what it changed was not kept, the SQL that ran below](media/explain-log.webp)
+
 ### A pane closes from its header
 
 Properties, Objects or any pane stacked with another in a sidebar has a **×** in its header: it
 leaves the group and stays a tab of the sidebar.
+
+![Properties stacked under the object tree, its header with a × at the end](media/pane-close.webp)
 
 ### A query for a diagram is written in a script
 
@@ -613,6 +663,8 @@ formatting. A query is now written where the editor helps: a diagram's **Insert 
 and **Add Query Here…** open a new script on the diagram's connection. Write the query, run
 it, and **Add to Diagram…** lists that diagram first, so one Enter puts the card there (where
 you asked, for Add Query Here).
+
+![A diagram's right click: Add Note Here, Add Text Here, Add Query Here…, New Table Here…, Add Area Here, Import from Mermaid…](media/diagram-query.webp)
 
 A card from a script is edited in its script, as before. A card of its own (detached, or made
 on the canvas by an earlier version) keeps its SQL as it is and still runs it: a double click
@@ -629,6 +681,8 @@ dashed blue outline too, its dashes walking. With the motion off they looked the
 - **Dashed blue means only one thing:** a table, a column or a foreign key not in the database
   yet. A new table that is selected shows both, its dashed border and the solid outline.
 
+![Three tables on a diagram: payment, new and selected, has its dashed border inside a solid outline with a handle at each corner](media/diagram-selection.webp)
+
 The setting that stopped the walking dashes is gone, with nothing left to move.
 
 ### A file from outside the workspace says so on its tab
@@ -637,6 +691,8 @@ A file you dropped on the window or opened with **Open File** from somewhere out
 workspace has a small folder with an arrow out of it beside its name. Its tooltip gives the
 full path and says it is saved back where it is. A file from the workspace has no mark, however
 you opened it.
+
+![Two tabs: report.sql from outside the workspace with its mark, orders.sql from the workspace without one](media/external-tab.webp)
 
 ### Save As
 
@@ -656,6 +712,8 @@ and **Vertical Right**, **Small Tabs**, **Preview Tabs**, **Close All**, and **T
 Each change shows at once and is kept for the workspace. A right click on the empty space beside
 the tabs opens the same menu, which helps most with Multiple Rows, where that space is often
 gone. The Command Palette has **Tab size** beside Tab layout.
+
+![The ⋯ menu at the end of the tabs: Single Row, Multiple Rows, Vertical Left, Vertical Right, Small Tabs, Preview Tabs, Close All, Tab Settings](media/tab-menu.webp)
 
 ## Fixed
 
