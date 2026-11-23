@@ -721,6 +721,9 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 - **A command extension's header lines.** A prompt written in quotes (`@file dump "Dump to"`)
   showed its quotes in a command's form, and a value used only as another field's default was
   reported as never used. Both read as they do in a query extension now.
+- **Run answers at once while the parser is checking a long script.** On a slow connection a
+  Run pressed during a check of hundreds of statements waited for the whole check. It takes the
+  connection at once now.
 
 ## Tell us what you think
 
