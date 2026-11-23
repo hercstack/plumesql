@@ -31,6 +31,12 @@ Because it does nothing else, it can use everything PostgreSQL has.
   written statements included. Your server checks names and types as you
   type, without running anything, and a PL/pgSQL body is checked without
   creating the function. [More](#the-editor)
+- **Functions in JavaScript and Python too.** A PL/V8 or PL/Python
+  function is edited in its own language: completed, checked, navigated
+  and outlined, with the SQL inside its queries completing your tables.
+  A query's rows and a trigger's `NEW` complete their columns, in
+  PL/pgSQL as well, and a column the row doesn't have is caught before
+  the function runs. [More](#functions-in-javascript-and-python)
 - **It sees your session.** Create a temp table, or a table in a
   transaction you haven't committed, and it's in the object tree and in
   completion at once. Roll back and it's gone. We found no other client
@@ -94,9 +100,6 @@ releases in its first six weeks, each installed by the app itself. What
 we're most likely to build next, subject to change:
 
 - a PL/pgSQL debugger
-- functions and procedures in the procedural languages extensions add
-  to PostgreSQL, such as PL/Python and PL/V8 (JavaScript), with the
-  editor support PL/pgSQL has
 - a test runner for your database
 - documentation generated from your database
 - a semantic layer that ties your tables to the business they describe
@@ -170,6 +173,10 @@ PlumeSQL is built on PostgreSQL's own parser, catalogs and sessions:
   before the function ever runs, with plpgsql_check style warnings
   (unused variables, unreachable code, a missing RETURN) and no
   plpgsql_check to install.
+- **PL/V8 and PL/Python, as well as PL/pgSQL.** A function in JavaScript
+  or Python gets the help its language deserves, and PlumeSQL warns
+  before the run when the connection doesn't have the language, with
+  the `CREATE EXTENSION` written for you.
 - **Safe on production.** Besides `@readonly` and the red UPDATE without
   WHERE, COMMIT can show you what the transaction changed before it goes
   through.
@@ -191,8 +198,37 @@ database, and keeps up while the statement is only half written.
 - **The next word first.** After `select *` the list opens on FROM,
   after a join on ON, after a condition on AND, GROUP BY and ORDER BY.
 - **PL/pgSQL too.** Parameters and variables with their types, a
-  `%ROWTYPE` variable's columns, exception names with their SQLSTATE,
-  and every loop and block, written out for you.
+  `%ROWTYPE` variable's columns, a record's columns from the query that
+  fills it, a trigger's `NEW` and `OLD` from its table, exception names
+  with their SQLSTATE, and every loop and block, written out for you.
+
+### Functions in JavaScript and Python
+
+PostgreSQL runs functions written in JavaScript (PL/V8) and Python
+(PL/Python), and PlumeSQL edits them the way it edits PL/pgSQL. Write
+`LANGUAGE plv8` or `LANGUAGE plpython3u` and the body is drawn in its own
+language:
+
+- **Its language's own help.** PL/V8 gets JavaScript's type-aware
+  completion, hovers and signature help for `plv8.execute` and the rest
+  of PL/V8's API, its parameters typed from their SQL types. PL/Python
+  gets `plpy`, the standard library and the builtins, with the
+  signatures and documentation Python itself reports.
+- **The SQL inside is SQL.** A query in `plv8.execute('...')` or
+  `plpy.execute("...")` is drawn, checked and completed from your
+  database, as in a script.
+- **Rows that know their columns.** `found[0].` after a query lists its
+  columns, and a trigger's `NEW` (`TD['new']` in Python) its table's. A
+  column the row doesn't have is a warning with the nearest one as its
+  fix: in PL/V8 it would have been `undefined` without a word.
+- **Checked as you type.** Syntax errors, Python's indentation as
+  PostgreSQL reads it, unused variables, and a declared `IMMUTABLE` that
+  reads a table.
+- **Navigate and outline.** Go to Definition, Find References and Rename
+  on the body's names, F12 into `plv8`, `plpy` and JavaScript's standard
+  library, folding and the Outline by the body's own structure.
+
+<img src="changelog/free-v0.33.0/media/plv8-sql-completion.webp" alt="A PL/V8 function's query, inside a JavaScript string, completing a column of its table" width="720" />
 
 ### The lightbulb
 
