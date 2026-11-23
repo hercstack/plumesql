@@ -715,6 +715,9 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 - **A script with thousands of results.** Every result was drawn at once, which slowed the
   run's end and every key typed after it. Results are drawn as you scroll to them now; typing
   with 2,000 results showing is about twice as fast.
+- **Problems in a statement that has a parameter.** A statement with `:name`, `$name` or
+  `{name}` in it was never marked by the dynamic parser, whatever was wrong in it: a misspelled
+  table showed nothing until the run. It is marked now, like any other statement.
 
 ## Tell us what you think
 
