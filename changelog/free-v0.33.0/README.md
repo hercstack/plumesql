@@ -656,6 +656,9 @@ gone. The Command Palette has **Tab size** beside Tab layout.
 
 ## Fixed
 
+- **No error in the Log after a Backspace.** A Backspace that joined two lines, with a
+  statement's commands showing at the cursor, could put "Illegal value for lineNumber" in the Log,
+  with a long trace, though nothing went wrong on screen. It no longer does.
 - **A connection picker opens on the connection in use.** The tab's connection picker opened
   with its first row highlighted, which read as the one selected, so picking the connection
   really in use changed nothing. It opens on the current one now, as VS Code's pickers do, and
