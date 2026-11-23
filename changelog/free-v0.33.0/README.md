@@ -629,6 +629,16 @@ workspace has a small folder with an arrow out of it beside its name. Its toolti
 full path and says it is saved back where it is. A file from the workspace has no mark, however
 you opened it.
 
+### Save As
+
+**File ▸ Save As…** saves the tab you are in as another file, on `⇧⌘S` (`Ctrl+Shift+S`) as in
+VS Code, and in the Command Palette. The save dialog opens in the file's own folder. The tab then
+is the new file, saved, still on its connection with its results, and the file it held stays as
+it was last saved. Save it outside the workspace and its tab gets the mark above; save it into
+the workspace and it is one of the workspace's files, in the Explorer. A DDL view saves a copy
+that opens in a tab of its own, and the view stays as it is. Save As is in the desktop app,
+where there is a save dialog.
+
 ## Fixed
 
 - **No Writing Tools button in the editor on macOS 27.** Apple Intelligence's Writing Tools
