@@ -18,7 +18,7 @@ One row per kind of wait, the most sessions first. It refreshes every five secon
 
 | Column | Meaning |
 |---|---|
-| type | The family of wait: `Lock` (another session holds something), `LWLock` (a short internal lock, often on WAL or buffers), `IO` (reading or writing files), `IPC` (waiting for another server process), `Client` (waiting for the application), `Timeout` (a sleep), `BufferPin`, `Extension`, or `CPU` for a session that waits on nothing and is working. |
+| type | The family of wait: `Lock` (another session holds something), `LWLock` (a short internal lock, often on WAL or buffers), `IO` (reading or writing files), `IPC` (waiting for another server process), `Client` (waiting for the application), `Timeout` (a sleep), `BufferPin` (`Buffer` from PostgreSQL 19), `Extension`, or `CPU` for a session that waits on nothing and is working. |
 | event | The exact wait (`transactionid`, `tuple`, `DataFileRead`, `WALWrite`, ...), or `running` under `CPU`. |
 | backends | How many sessions wait on it now. |
 | pids | Their process ids, the longest waiting first. |

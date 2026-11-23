@@ -106,7 +106,7 @@ The checklist, every item of which the validator or the reviewer checks:
 6. **The validator is green**: `node extensions/tools/catalog.mjs --check`
    passes locally; the `validate` workflow runs the same on the PR. Do not
    add a catalog file: the index is built after the merge.
-7. **It executes**: a query extension runs on PostgreSQL 13 to 18 (the
+7. **It executes**: a query extension runs on PostgreSQL 13 to 19 (the
    `execute` workflow), or skips with a reason where a PostgreSQL extension
    it needs is missing; locally, point `tools/execute.mjs --pg
    host:port:db:user:password` at a server.

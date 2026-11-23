@@ -2,7 +2,7 @@ name: execute
 
 # Every query extension executes on every PostgreSQL release PlumeSQL supports
 # (extensions/tools/execute.mjs), the marketplace's live test. One job with
-# service containers: PostgreSQL 13 to 18, plus a TimescaleDB and a Citus
+# service containers: PostgreSQL 13 to 19, plus a TimescaleDB and a Citus
 # server on one major each, so the extensions in those folders are really
 # executed where the extension is installed and skipped, by name, where it
 # is not. Runs on every pull request and every push to main.
@@ -86,6 +86,17 @@ jobs:
           --health-interval 5s
           --health-timeout 5s
           --health-retries 12
+      pg19:
+        image: postgres:19-alpine
+        env:
+          POSTGRES_PASSWORD: plume
+        ports:
+          - 15419:5432
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
       ts17:
         image: timescale/timescaledb:latest-pg17
         env:
@@ -116,4 +127,4 @@ jobs:
       - name: Execute every query extension
         run: >-
           node extensions/tools/execute.mjs --pg
-          127.0.0.1:15413:postgres:postgres:plume,127.0.0.1:15414:postgres:postgres:plume,127.0.0.1:15415:postgres:postgres:plume,127.0.0.1:15416:postgres:postgres:plume,127.0.0.1:15417:postgres:postgres:plume,127.0.0.1:15418:postgres:postgres:plume,127.0.0.1:15517:postgres:postgres:plume,127.0.0.1:15617:postgres:postgres:plume
+          127.0.0.1:15413:postgres:postgres:plume,127.0.0.1:15414:postgres:postgres:plume,127.0.0.1:15415:postgres:postgres:plume,127.0.0.1:15416:postgres:postgres:plume,127.0.0.1:15417:postgres:postgres:plume,127.0.0.1:15418:postgres:postgres:plume,127.0.0.1:15419:postgres:postgres:plume,127.0.0.1:15517:postgres:postgres:plume,127.0.0.1:15617:postgres:postgres:plume

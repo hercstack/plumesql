@@ -11,7 +11,7 @@ A schema change that cannot hold your database up. The lightbulb on an `ALTER TA
 
 ## What it offers
 
-**A lock wait with an end.** On `ALTER TABLE`, `ALTER INDEX`, `CREATE INDEX` (not `concurrently`), `DROP TABLE`, `DROP INDEX`, `TRUNCATE`, `REINDEX`, `VACUUM FULL`, `CLUSTER`, `REFRESH MATERIALIZED VIEW` and `LOCK TABLE`, when your session's `lock_timeout` is 0:
+**A lock wait with an end.** On `ALTER TABLE`, `ALTER INDEX`, `CREATE INDEX` (not `concurrently`), `DROP TABLE`, `DROP INDEX`, `TRUNCATE`, `REINDEX`, `VACUUM FULL`, `CLUSTER`, PostgreSQL 19's `REPACK` (not `concurrently`), `REFRESH MATERIALIZED VIEW` and `LOCK TABLE`, when your session's `lock_timeout` is 0:
 
 ```sql
 set lock_timeout = '5s';
@@ -20,7 +20,7 @@ alter table orders add column note text;
 
 If the lock does not come within five seconds, the change fails with `canceling statement due to lock timeout` and nothing waits behind it. Run it again when the long query is done. The wait is an option: **Longest lock wait** under the refactor in the Refactors settings, and on the extension's page.
 
-**More memory for an index build.** On `CREATE INDEX`, `REINDEX`, `VACUUM`, `CLUSTER` and an `ALTER TABLE ... ADD FOREIGN KEY` (which checks every row), when your session's `maintenance_work_mem` is under 256MB:
+**More memory for an index build.** On `CREATE INDEX`, `REINDEX`, `VACUUM`, `CLUSTER`, `REPACK` and an `ALTER TABLE ... ADD FOREIGN KEY` (which checks every row), when your session's `maintenance_work_mem` is under 256MB:
 
 ```sql
 set maintenance_work_mem = '256MB';

@@ -20,7 +20,7 @@ One row per running operation, on every database of the server, the longest runn
 | Column | Meaning |
 |---|---|
 | pid | The backend doing the work. |
-| command | `VACUUM`, `ANALYZE`, `CREATE INDEX`, `CREATE INDEX CONCURRENTLY`, `REINDEX`, `CLUSTER` or `VACUUM FULL`. |
+| command | `VACUUM`, `ANALYZE`, `CREATE INDEX`, `CREATE INDEX CONCURRENTLY`, `REINDEX`, `CLUSTER` or `VACUUM FULL`. PostgreSQL 19's `REPACK` shows as the one it stands for: `CLUSTER` with an index, `VACUUM FULL` without. |
 | database, relation | Where it works. The relation is named for the database you are connected to; elsewhere it shows its oid. |
 | phase | The step PostgreSQL reports, word for word (`scanning heap`, `vacuuming indexes`, `building index`, ...). |
 | done % | How far along the current phase is, where PostgreSQL counts it. Empty where nothing measures it. |

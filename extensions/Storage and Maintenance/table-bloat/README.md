@@ -10,7 +10,7 @@ A small shop database. Every row of `sessions` was rewritten three times while a
 
 - **The database keeps growing** while the number of rows does not: bloat is the usual reason.
 - **A table got slow to scan** after a big `UPDATE` or `DELETE`: a query that reads the whole table reads the empty space too.
-- **Before a cleanup window**: to pick the one or two tables where `VACUUM FULL` or `pg_repack` is worth its lock.
+- **Before a cleanup window**: to pick the one or two tables where `VACUUM FULL` or `pg_repack` is worth its lock, or, on PostgreSQL 19, a `REPACK (CONCURRENTLY)` its time.
 - **After switching autovacuum off** on a table (or tuning it down): to see what that cost.
 
 ## How to read it
@@ -33,7 +33,7 @@ What the numbers mean:
 - **Over 50 percent on a table that matters**: worth a look. Ask first whether autovacuum keeps up with it (Vacuum candidates shows its dead rows and who holds them).
 - **A large waste that comes back after every cleanup**: autovacuum runs too rarely on that table. Lower its threshold (`ALTER TABLE ... SET (autovacuum_vacuum_scale_factor = 0.02)`) rather than cleaning harder.
 
-How to give the space back: a plain `VACUUM` makes the waste reusable by new rows but rarely returns it to the operating system. `VACUUM FULL table_name` (or `CLUSTER`) rewrites the table to its real size, holding an exclusive lock for the whole rewrite, so nobody reads or writes the table meanwhile. The `pg_repack` extension does the same without the long lock.
+How to give the space back: a plain `VACUUM` makes the waste reusable by new rows but rarely returns it to the operating system. `VACUUM FULL table_name` (or `CLUSTER`) rewrites the table to its real size, holding an exclusive lock for the whole rewrite, so nobody reads or writes the table meanwhile. The `pg_repack` extension does the same without the long lock, and so does PostgreSQL 19 itself: `REPACK (CONCURRENTLY) table_name`.
 
 **Columns** on a table name opens the inputs of its estimate, one row per column: its type, the average width and null share the statistics hold, and how it is stored. A column with `no statistics` is where an odd figure comes from; `ANALYZE table_name` fills it in.
 

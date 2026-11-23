@@ -15,9 +15,9 @@
 // is asked of the server.
 
 // The statements that take a lock their table's other queries wait behind.
-const LOCKING = /^\s*(?:alter\s+(?:table|index|materialized\s+view)|create\s+(?:unique\s+)?index(?!\s+concurrently)|drop\s+(?:table|index(?!\s+concurrently)|materialized\s+view)|truncate|reindex(?!\s+[^;]*\bconcurrently\b)|vacuum\s+(?:\([^)]*\bfull\b[^)]*\)|full)|cluster|refresh\s+materialized\s+view(?!\s+concurrently)|lock\s+table)\b/i
+const LOCKING = /^\s*(?:alter\s+(?:table|index|materialized\s+view)|create\s+(?:unique\s+)?index(?!\s+concurrently)|drop\s+(?:table|index(?!\s+concurrently)|materialized\s+view)|truncate|reindex(?!\s+[^;]*\bconcurrently\b)|vacuum\s+(?:\([^)]*\bfull\b[^)]*\)|full)|cluster|repack(?!\s*\([^)]*\bconcurrently\b)|refresh\s+materialized\s+view(?!\s+concurrently)|lock\s+table)\b/i
 // And those an index build or a vacuum makes go faster with more memory.
-const BUILDS = /^\s*(?:create\s+(?:unique\s+)?index|reindex|vacuum|cluster|alter\s+table\s+[^;]*\badd\s+(?:constraint\s+\S+\s+)?foreign\s+key)\b/i
+const BUILDS = /^\s*(?:create\s+(?:unique\s+)?index|reindex|vacuum|cluster|repack|alter\s+table\s+[^;]*\badd\s+(?:constraint\s+\S+\s+)?foreign\s+key)\b/i
 
 /**
  * @param {RefactorStatement} statement
