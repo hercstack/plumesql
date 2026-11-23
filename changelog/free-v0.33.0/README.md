@@ -622,6 +622,13 @@ dashed blue outline too, its dashes walking. With the motion off they looked the
 
 The setting that stopped the walking dashes is gone, with nothing left to move.
 
+### A file from outside the workspace says so on its tab
+
+A file you dropped on the window or opened with **Open File** from somewhere outside the
+workspace has a small folder with an arrow out of it beside its name. Its tooltip gives the
+full path and says it is saved back where it is. A file from the workspace has no mark, however
+you opened it.
+
 ## Fixed
 
 - **No Writing Tools button in the editor on macOS 27.** Apple Intelligence's Writing Tools
