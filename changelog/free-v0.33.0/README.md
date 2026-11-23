@@ -712,6 +712,9 @@ The setting that stopped the walking dashes is gone, with nothing left to move.
 - **A right click on a diagram card where a line passes behind it.** With the card chosen, a
   right click at a spot one of its lines runs under opened the line's menu instead of the
   card's. The card answers now.
+- **A script with thousands of results.** Every result was drawn at once, which slowed the
+  run's end and every key typed after it. Results are drawn as you scroll to them now; typing
+  with 2,000 results showing is about twice as fast.
 
 ## Tell us what you think
 
