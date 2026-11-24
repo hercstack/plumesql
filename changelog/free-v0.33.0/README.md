@@ -9,6 +9,8 @@
   have is caught before the function runs.
 - **New, from the object tree:** a table, a view, a function, a trigger function and more, made
   from a right click on any row or from the + in the tree's header.
+- **A table's Design reads what you write in it:** defaults, checks and index keys complete the
+  table's columns, and a column the table does not have is caught before anything runs.
 - **PostgreSQL 19:** released on 19 November and supported here, tested the same way as every
   release since 13.
 - **Comments, written on the diagram:** every card shows its object's comment as Markdown, a
@@ -629,6 +631,33 @@ transaction, everything or nothing:
 - **Run one on its own** and it leaves the pending changes; its script stays open either way.
 
 ![A trigger function made from the orders table: the function, its trigger below, and NEW. completing the table's columns](media/new-trigger-function.webp)
+
+## The table Design reads its expressions
+
+A default, a check, an index's keys and its `WHERE` were plain text fields: `price > 0` on a
+table with no `price` went all the way to the server to be refused. Now the Design reads them.
+
+![A new table's Design: a check that names ratng, said in Problems with rating offered, and the word list under an index's keys](media/table-design-expressions.webp)
+
+- **A word list as you type.** The table's columns with their types, what a type usually
+  defaults to (`now()` for a timestamp, `gen_random_uuid()` for a uuid, `false` and `true`),
+  and your database's functions. `Ctrl+Space` shows everything.
+- **A column the table does not have is caught at once**, with the nearest one it has: `No
+  column ratng on the table: rating?`. It is said beside the field and in Problems, and Run
+  Changes waits until it is answered. **Go to it** on a problem puts the cursor in its field.
+- **Rename a column** and the checks and indexes you wrote here follow it.
+- **⤢ opens a field in a tab:** a default, a check or a `WHERE` as SQL, a comment as Markdown
+  with its rendered face.
+- **Advice, where you edit:** a foreign key no index begins with (PostgreSQL makes none), with
+  **Add Index**; an index another one already covers; a btree index on a `jsonb` or array
+  column, where `gin` is what searches inside it.
+- **What a change risks is marked on its row:** a ▲ where it loses data, may fail on the data,
+  or locks and rewrites the table.
+- **Several columns at once:** paste a list (a line each, name then type) and they are added;
+  `⇧⌥↓` makes a column again under it; a column's number drags it, and picks several with `⌘`
+  or `Ctrl` and `Shift` to drop together.
+- **A new table can be made** Unlogged, partitioned, with storage parameters and a tablespace,
+  and its Type list knows the new enums that wait in the pending changes.
 
 ## PostgreSQL 19
 
