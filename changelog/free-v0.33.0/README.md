@@ -571,6 +571,13 @@ you wrote it.
 
 ![F12 on plpy.execute: plpy's description opened read-only, drawn as Python, on execute's two forms](media/pl-f12.webp)
 
+### A server with PL/Python, to try it on
+
+Few servers have PL/Python installed, so System's **Get a server** makes one: tick **With
+PL/Python** beside the empty server's version, name and port, and once the server answers, its
+script installs PL/Python in the container and creates the extension in its `postgres`
+database. Both are lines of the script you read before it runs, like the rest of it.
+
 ## DDL, laid out your way
 
 The DDL in the Objects tab is now written to be read. A function's or a procedure's parameters
@@ -685,6 +692,8 @@ as it was.
   EXCEPT (TABLE ...)`, and a foreign data wrapper's `CONNECTION` function.
 - **Backups of a 19 server:** System offers the PostgreSQL 19 client tools and finds the ones
   you have. A `pg_dump` older than the server refuses it, so a 19 server needs 19's.
+- **A 19 server of your own:** Get a server's empty server offers PostgreSQL 19, with PL/Python
+  if you like.
 - **REPACK where it helps:** the warning on `VACUUM FULL` and `CLUSTER`, which lock the table
   while they rewrite it, names `REPACK (CONCURRENTLY)` on a 19 server, which does not.
 - **The extensions run on 19:** every query extension in the Marketplace is executed on
