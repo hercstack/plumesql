@@ -35,6 +35,8 @@ function fromJson(p, parallel) {
     label: head,
     target: on,
     index: p['Index Name'] || '',
+    // The relation a scan reads, as the plan names it: what ties the step to the statement's text.
+    relName: p['Relation Name'] || '', relSchema: p.Schema || '', alias: p.Alias || p['Relation Name'] || '',
     startup: num(p['Startup Cost']), cost: num(p['Total Cost']), rows: num(p['Plan Rows']), width: num(p['Plan Width']),
     aStart: num(p['Actual Startup Time']), aTotal: num(p['Actual Total Time']), aRows: num(p['Actual Rows']), loops: num(p['Actual Loops']),
     never: p['Actual Loops'] === 0,
@@ -87,8 +89,11 @@ function fromText(lines) {
       const head = used ? used[1] : onAt > 0 ? text.slice(0, onAt) : text
       const on = used ? used[3] : onAt > 0 ? text.slice(onAt + 4) : ''
       const indexOnly = !used && /Index Scan$/.test(head)
+      const relWords = indexOnly ? [] : on.split(/\s+/).filter(Boolean)
+      const relQ = relWords[0] || ''
       const node = {
         type: head, label: head, target: indexOnly ? '' : on, index: used ? used[2] : indexOnly ? on : '',
+        relName: /Scan/.test(head) && !/^(CTE|Subquery|Function|Values|WorkTable|Named Tuplestore|Table Function) Scan/.test(head) ? relQ.split('.').pop() || '' : '', relSchema: relQ.includes('.') ? relQ.split('.')[0] : '', alias: relWords[1] || relQ.split('.').pop() || '',
         startup: Number(m[4]), cost: Number(m[5]), rows: Number(m[6]), width: Number(m[7]),
         aStart: m[8] ? Number(m[8]) : null, aTotal: m[9] ? Number(m[9]) : null, aRows: m[10] ? Number(m[10]) : null, loops: m[11] ? Number(m[11]) : m[12] ? 0 : null,
         never: !!m[12], props: [], rel: '', sub: pendingSub, parallel: false, children: []
@@ -224,8 +229,47 @@ function buffersOf(n) {
   return b
 }
 
+// Where a misestimate STARTS. A step's row estimate is built on its inputs'
+// estimates: a join's is its two inputs' times the share its condition keeps,
+// a sort's or a hash's is its input's. So one wrong guess low in the plan is
+// wrong again in every step above it, and the step to look at is the one
+// where it began. Each step's error as a signed power of ten (+ more rows
+// than planned, − fewer), the part its inputs explain, and what is left: a
+// step whose own part is ten times or more, the same way, is where a
+// misestimate starts (its `estOrigin`); one whose error its inputs carry
+// points at the step it came from (`estFrom`). A step's input under a nested
+// loop is read per loop, which is what multiplies. BitmapAnd and BitmapOr
+// count no rows (PostgreSQL reports 0), so they say nothing either way.
+/** @param {any} n */
+const logError = (n) => (n.factor === null || /^Bitmap(And|Or)$/.test(n.type) ? null : Math.log10(Math.max(n.outRows, 1) / Math.max(n.estRows, 1)))
+/** @param {any} n */
+const feeds = (n) => n.children.filter((/** @type {any} */ c) => !c.sub && c.rel !== 'SubPlan' && c.rel !== 'InitPlan')
+/** @param {any} n */
+function estimateOrigin(n) {
+  n.estErr = logError(n)
+  n.estCand = n.estErr !== null && !n.limited && Math.abs(n.factor) >= 10 && Math.max(n.outRows, n.estRows) >= 100
+  n.estOrigin = false
+  n.estFrom = null
+  if (!n.estCand) return
+  const kids = feeds(n).filter((/** @type {any} */ k) => k.estErr !== null)
+  let carried = 0
+  if (kids.length) {
+    if (/Nested Loop|Join/.test(n.type) && !/Semi|Anti/.test(n.label)) carried = kids.reduce((/** @type {number} */ s, /** @type {any} */ k) => s + k.estErr, 0)
+    else if (/^(Append|Merge Append|Recursive Union)$/.test(n.type)) {
+      const act = kids.reduce((/** @type {number} */ s, /** @type {any} */ k) => s + Math.max(k.outRows || 0, 0), 0), est = kids.reduce((/** @type {number} */ s, /** @type {any} */ k) => s + (k.estRows || 0), 0)
+      carried = Math.log10(Math.max(act, 1) / Math.max(est, 1))
+    } else carried = kids.reduce((/** @type {number} */ a, /** @type {any} */ k) => (Math.abs(k.estErr) > Math.abs(a) ? k.estErr : a), 0)
+  }
+  const own = n.estErr - carried
+  if (Math.sign(own) === Math.sign(n.estErr) && Math.abs(own) >= 1) { n.estOrigin = true; return }
+  const src = kids.filter((/** @type {any} */ k) => k.estCand && Math.sign(k.estErr) === Math.sign(n.estErr)).sort((/** @type {any} */ a, /** @type {any} */ b) => Math.abs(b.estErr) - Math.abs(a.estErr))[0]
+  if (src) n.estFrom = src.estOrigin ? src : src.estFrom || src
+  else n.estOrigin = true
+}
+
 // Every node gets its numbers: inclusive and exclusive time (ms), rows out,
-// the misestimate, exclusive cost and buffers, and its depth and id.
+// the misestimate and where it started, exclusive cost and buffers, and its
+// depth and id.
 /** @param {any} root */
 export function measure(root) {
   /** @type {any[]} */
@@ -256,6 +300,7 @@ export function measure(root) {
     // Under a Limit a step stops early by design: fewer rows than planned
     // there is the Limit working, not a misestimate.
     n.limited = n.factor !== null && n.factor < 0 && (() => { for (let p = n.parent; p; p = p.parent) if (p.type === 'Limit') return true; return false })()
+    estimateOrigin(n)
     n.buf = buffersOf(n)
     const kb = n.children.reduce((/** @type {any} */ s, /** @type {any} */ c) => { s.hit += c.buf.hit; s.read += c.buf.read; return s }, { hit: 0, read: 0 })
     n.bufExcl = Math.max(0, n.buf.hit + n.buf.read - kb.hit - kb.read)
@@ -264,14 +309,177 @@ export function measure(root) {
   return { all, analyzed: isAnalyzed }
 }
 
+// ----- the statement a plan came from ------------------------------------------------------
+//
+// PlumeSQL 0.33.0 and later hand a view the statement its result came from (ctx.statement): its
+// text and every relation it names, resolved in the connection's dictionary, with where the text
+// names it. A scan of the plan is tied to the relation it reads by its name and its alias (a
+// relation the plan names twice with one alias gets `_1`, `_2` from PostgreSQL 16: the second,
+// third mention in the text); a step that reads none (a join, a sort) reads its scans' relations.
+
+/** @param {any[]} all @param {any} stmt */
+export function linkTables(all, stmt) {
+  for (const n of all) n.table = null
+  if (!stmt || !Array.isArray(stmt.tables)) return
+  for (const n of all) {
+    if (!n.relName) continue
+    const same = stmt.tables.filter((/** @type {any} */ t) => t.name === n.relName && (!n.relSchema || t.schema === n.relSchema))
+    const alias = String(n.alias || n.relName)
+    const exact = same.filter((/** @type {any} */ t) => (t.alias || t.name) === alias)
+    const nth = /^(.+)_(\d+)$/.exec(alias)
+    n.table = exact.length === 1 ? exact[0] : nth ? same.filter((/** @type {any} */ t) => (t.alias || t.name) === nth[1])[Number(nth[2])] || null : exact[0] || null
+  }
+}
+
+// Where the text names what a step reads: a scan's relation and every qualifier that reads as it
+// (`o.` in `o.channel`), or for any other step its scans' relations as they are written.
+/** @param {any} n @returns {{ from: number, to: number }[]} */
+export function spansOf(n) {
+  if (n.table) return [n.table.written, ...(n.table.qualifiers || [])].filter(Boolean)
+  /** @type {{ from: number, to: number }[]} */
+  const out = []
+  const walk = (/** @type {any} */ m) => { if (m.table?.written && !out.some((x) => x.from === m.table.written.from)) out.push(m.table.written); for (const k of m.children) walk(k) }
+  walk(n)
+  return out
+}
+
+// A name as PostgreSQL stores it: a quoted one without its quotes; and back, quoted when it must be.
+/** @param {string} x */
+const unquote = (x) => (/^".*"$/.test(x) ? x.slice(1, -1).replace(/""/g, '"') : x)
+/** @param {string} x */
+const qn = (x) => (/^[a-z_][a-z0-9_$]*$/.test(x) ? x : '"' + x.replace(/"/g, '""') + '"')
+
+// The conditions of a plan's Filter (or Index Cond, Recheck Cond), as PostgreSQL prints them:
+// split at the top level ANDs, each read as a column (its name, an alias before it dropped), an
+// expression over columns, or something else, compared by equality ('=', '= ANY', IN's form),
+// a range (<, <=, >, >=) or otherwise.
+/** @param {string} text @returns {{ column?: string, expr?: string, kind: 'eq'|'range'|'other', param?: boolean }[]} */
+export function conditionsOf(text) {
+  const strip = (/** @type {string} */ t) => {
+    let x = t.trim()
+    while (x.startsWith('(') && x.endsWith(')')) {
+      let depth = 0, whole = true
+      for (let i = 0; i < x.length; i++) {
+        if (x[i] === '(') depth++
+        else if (x[i] === ')') { depth--; if (depth === 0 && i < x.length - 1) { whole = false; break } }
+      }
+      if (!whole) break
+      x = x.slice(1, -1).trim()
+    }
+    return x
+  }
+  // Top level pieces, never inside parentheses or a quoted literal.
+  const split = (/** @type {string} */ t, /** @type {RegExp} */ sep) => {
+    const out = []
+    let depth = 0, quote = false, cur = ''
+    for (let i = 0; i < t.length; i++) {
+      const ch = t[i]
+      if (ch === "'") quote = !quote
+      if (!quote && ch === '(') depth++
+      if (!quote && ch === ')') depth--
+      if (!quote && depth === 0) { const m = sep.exec(t.slice(i)); if (m && m.index === 0) { out.push(cur); cur = ''; i += m[0].length - 1; continue } }
+      cur += ch
+    }
+    out.push(cur)
+    return out.map((x) => x.trim()).filter(Boolean)
+  }
+  const body = strip(text)
+  if (/^\s*$/.test(body)) return []
+  return split(body, /^ AND /).map((c) => {
+    const x = strip(c)
+    // An OR is one condition of its own, never two estimated apart.
+    if (split(x, /^ OR /).length > 1) return { kind: /** @type {'other'} */ ('other') }
+    const m = /^(.+?)\s+(=\s*ANY|=|<>|!=|<=|>=|<|>|~~\*?|!~~\*?|~\*?|IS(?: NOT)?)\s+(.+)$/s.exec(x)
+    // A column PostgreSQL printed with its implicit cast ((name)::text, a varchar compared as
+    // text) is still the column.
+    const lhs = (m ? strip(m[1]) : x).replace(/^\(((?:"[^"]+"|[A-Za-z_][\w$]*)(?:\.(?:"[^"]+"|[A-Za-z_][\w$]*))?)\)::[\w ]+(?:\[\])?$/, '$1')
+    const op = m ? m[2].replace(/\s+/g, ' ').toUpperCase() : ''
+    const kind = op === '=' || op === '= ANY' ? 'eq' : ['<', '<=', '>', '>='].includes(op) ? 'range' : 'other'
+    // A column: a name, maybe after an alias or a table and a dot; a quoted one keeps its quotes.
+    const col = /^(?:(?:"[^"]+"|[A-Za-z_][\w$]*)\.)?("(?:[^"]|"")+"|[A-Za-z_][\w$]*)$/.exec(lhs)
+    // The other side naming a column of a relation (a join's) is no constant: nothing to estimate alone.
+    const rhsColumn = m && /^(?:"[^"]+"|[A-Za-z_][\w$]*)\.(?:"[^"]+"|[A-Za-z_][\w$]*)$/.test(strip(m[3]))
+    if (col && !rhsColumn) return { column: unquote(col[1]), kind: /** @type {'eq'|'range'|'other'} */ (kind) }
+    // Compared with another relation's column: a join's condition, or in a step run once per outer
+    // row (a correlated subquery, a nested loop's inner side) a value that comes from outside.
+    if (col && rhsColumn) return { column: unquote(col[1]), kind: /** @type {'eq'|'range'|'other'} */ (kind), param: true }
+    if (!col && /\(/.test(lhs) && /[A-Za-z_]/.test(lhs) && !rhsColumn) return { expr: lhs, kind: /** @type {'eq'|'range'|'other'} */ (kind) }
+    return { kind: 'other' }
+  })
+}
+
+// Why a misestimate started where it did and what a fix would be, from the plan and the
+// relation's facts (its extended statistics, its indexes): conditions on two columns or more of
+// one relation, which PostgreSQL estimates as if independent unless extended statistics cover
+// them (and those help an equality, not a range); a condition on an expression, which has no
+// statistics unless asked for (PostgreSQL 14 and later). Nothing when the statement is unknown.
+/** @param {any} n @param {number} major @returns {{ text: string, advice?: Advice } | null} */
+function estimateWhy(n, major) {
+  const t = n.table
+  if (!t || !n.relName) return null
+  const conds = ['Filter', 'Index Cond', 'Recheck Cond'].flatMap((k) => { const v = prop(n, k); return typeof v === 'string' ? conditionsOf(v) : [] })
+  const rel = qn(t.schema) + '.' + qn(t.name)
+  /** @type {{ name: string, kinds: string[], on: string[] }[]} */
+  const stats = Array.isArray(t.statistics) ? t.statistics : []
+  // A condition on an expression: no statistics on it unless an object asks for them.
+  const expr = conds.find((c) => c.expr)
+  if (expr && expr.expr) {
+    const norm = (/** @type {string} */ x) => x.replace(/\s+/g, '').toLowerCase().replace(/^\((.*)\)$/, '$1')
+    const covered = stats.some((st) => st.on.some((o) => norm(o) === norm(String(expr.expr))))
+    const exprIndex = Array.isArray(t.indexes) && t.indexes.some((/** @type {any} */ i) => i.keys.includes(''))
+    if (!covered && !exprIndex) {
+      return {
+        text: 'it filters on an expression, ' + clip(String(expr.expr), 60) + ', which PostgreSQL keeps no statistics on',
+        ...(major >= 14 ? { advice: { sql: 'CREATE STATISTICS ' + qn(t.schema) + '.' + qn((t.name + '_expr').slice(0, 63)) + ' ON (' + expr.expr + ') FROM ' + rel + '; ANALYZE ' + rel, text: 'lets it count the rows the expression keeps' } } : {})
+      }
+    }
+  }
+  const own = conds.filter((c) => !c.param)
+  const cols = [...new Set(own.filter((c) => c.column).map((c) => String(c.column)))]
+  if (cols.length < 2) return null
+  const covering = stats.find((st) => cols.every((c) => st.on.map(unquote).includes(c)) && (!st.kinds.length || st.kinds.some((k) => k === 'dependencies' || k === 'mcv')))
+  if (covering) return null
+  const eq = [...new Set(own.filter((c) => c.column && c.kind === 'eq').map((c) => String(c.column)))]
+  return {
+    text: 'its ' + cols.length + ' conditions on ' + cols.join(', ') + ' are estimated as if independent',
+    // Extended statistics hold how columns go together for equalities (dependencies, a list of
+    // the common combinations); a range keeps its own estimate either way.
+    ...(eq.length >= 2 ? { advice: { sql: 'CREATE STATISTICS ' + qn(t.schema) + '.' + qn((t.name + '_' + eq.join('_')).slice(0, 63)) + ' ON ' + eq.map(qn).join(', ') + ' FROM ' + rel + '; ANALYZE ' + rel, text: 'lets the planner learn how ' + eq.join(' and ') + ' go together' } } : {})
+  }
+}
+
+// What an index would change for a scan that reads a table to keep little of it: the columns
+// its filter compares (equalities first, then one range, the order a btree serves them in), the
+// indexes the relation has that begin with one of them, else the one that would.
+/** @param {any} n @param {number} read @returns {Advice | undefined} */
+function indexAdvice(n, read) {
+  const t = n.table
+  if (!t || !/Seq Scan/.test(n.type) || read < 10000) return undefined
+  // A value from outside the step (its outer row's) is a key too when the step runs once per row:
+  // an index on it reads that row's matches each time instead of the whole table.
+  const looped = (n.loops || 0) > 1
+  const conds = conditionsOf(String(prop(n, 'Filter') || '')).filter((c) => !c.param || looped)
+  // Only an index that serves the whole filter: a condition it cannot read (an expression, a
+  // LIKE) may be what threw the rows away, and an index on the rest may select nothing.
+  if (!conds.length || conds.some((c) => !c.column || c.kind === 'other')) return undefined
+  const eq = [...new Set(conds.filter((c) => c.column && c.kind === 'eq').map((c) => String(c.column)))]
+  const range = conds.find((c) => c.column && c.kind === 'range' && !eq.includes(String(c.column)))
+  const keys = [...eq, ...(range ? [String(range.column)] : [])]
+  if (!keys.length || !Array.isArray(t.indexes)) return undefined
+  const has = t.indexes.filter((/** @type {any} */ i) => keys.includes(i.keys[0]))
+  if (has.length) return { text: (has.length === 1 ? 'the index ' + has[0].name + ' begins with ' + has[0].keys[0] : 'the indexes ' + has.map((/** @type {any} */ i) => i.name).join(', ') + ' begin with these columns') + ', and the planner read the table instead' }
+  return { sql: 'CREATE INDEX ON ' + qn(t.schema) + '.' + qn(t.name) + ' (' + keys.map(qn).join(', ') + ')', text: 'lets it read the rows it keeps instead of the whole table (CONCURRENTLY builds it without blocking writes, outside a transaction)' }
+}
+
 // What stands out: facts, each on the node it is about, the plan's own
 // numbers and the server's parameters it ran under, nothing guessed; and
 // beside a fact whose numbers point at a change, that change (advice):
 // the statement to run and what it should do.
 /** @typedef {{ sql?: string, text: string }} Advice */
-/** @param {any[]} all @param {number} total @param {boolean} analyzed @param {RunSettings} [set] the server's parameters it ran under (runSettings) */
-export function findings(all, total, analyzed, set = {}) {
-  /** @type {{ node: any, level: 'red'|'amber'|'muted', text: string, weight: number, advice?: Advice }[]} */
+/** @typedef {{ node: any, level: 'red'|'amber'|'muted', text: string, weight: number, advice?: Advice, inherited?: boolean }} Finding */
+/** @param {any[]} all @param {number} total @param {boolean} analyzed @param {RunSettings} [set] the server's parameters it ran under (runSettings) @param {number} [major] the server's PostgreSQL major, 0 when unknown */
+export function findings(all, total, analyzed, set = {}, major = 0) {
+  /** @type {Finding[]} */
   const out = []
   const fmt = (/** @type {number} */ x) => Math.round(x).toLocaleString()
   // The memory a sort or a hash had before it spilled, beside the spill.
@@ -281,11 +489,17 @@ export function findings(all, total, analyzed, set = {}) {
   const offSwitches = switchesOff(set)
   for (const n of all) {
     if (analyzed && total > 0 && n.excl / total >= 0.2) out.push({ node: n, level: n.excl / total >= 0.5 ? 'red' : 'amber', text: pct(n.excl / total) + ' of the time is spent here', weight: 10 + n.excl / total })
-    if (n.factor !== null && !n.limited && Math.abs(n.factor) >= 10 && Math.max(n.outRows, n.estRows) >= 100) {
-      out.push({ node: n, level: Math.abs(n.factor) >= 100 ? 'red' : 'amber', text: 'rows ' + (n.factor > 0 ? 'under' : 'over') + 'estimated ×' + fmt(Math.abs(n.factor)) + ' (' + fmt(n.estRows) + ' planned, ' + fmt(n.outRows) + ' actual)', weight: 5 + Math.log10(Math.abs(n.factor)) })
+    // A misestimate is said where it starts; the steps above that only carry
+    // it say where it came from, beside them and never in the list.
+    if (n.estOrigin) {
+      const carriers = all.filter((m) => m.estFrom === n).length
+      const why = estimateWhy(n, major)
+      out.push({ node: n, level: Math.abs(n.factor) >= 100 ? 'red' : 'amber', text: 'rows ' + (n.factor > 0 ? 'under' : 'over') + 'estimated ×' + fmt(Math.abs(n.factor)) + ' (' + fmt(n.estRows) + ' planned, ' + fmt(n.outRows) + ' actual)' + (carriers ? ', where the misestimate starts: ' + (carriers === 1 ? 'the step above carries it' : carriers + ' steps above carry it') : '') + (why ? '; ' + why.text : ''), weight: 5 + Math.log10(Math.abs(n.factor)), ...(why?.advice ? { advice: why.advice } : {}) })
+    } else if (n.estFrom) {
+      out.push({ node: n, level: 'muted', inherited: true, text: 'rows ' + (n.factor > 0 ? 'under' : 'over') + 'estimated ×' + fmt(Math.abs(n.factor)) + ', carried from ' + n.estFrom.label + (whereOf(n.estFrom) ? ' ' + whereOf(n.estFrom) : ''), weight: 0 })
     }
     const removed = Number(prop(n, 'Rows Removed by Filter') || 0) * Math.max(1, n.loops || 1)
-    if (removed >= 1000 && n.outRows !== null && removed / (removed + n.outRows) >= 0.9) out.push({ node: n, level: 'amber', text: 'the filter discarded ' + pct(removed / (removed + n.outRows)) + ' of ' + fmt(removed + n.outRows) + ' rows read', weight: 4 + removed / 1e6 })
+    if (removed >= 1000 && n.outRows !== null && removed / (removed + n.outRows) >= 0.9) out.push({ node: n, level: 'amber', text: 'the filter discarded ' + pct(removed / (removed + n.outRows)) + ' of ' + fmt(removed + n.outRows) + ' rows read', weight: 4 + removed / 1e6, advice: indexAdvice(n, removed + n.outRows) })
     if (/Seq Scan/.test(n.type) && n.outRows !== null && n.outRows + removed >= 100000 && !(removed >= 1000 && removed / (removed + n.outRows) >= 0.9)) out.push({ node: n, level: 'muted', text: 'reads the whole table, ' + fmt(n.outRows + removed) + ' rows', weight: 2 })
     const space = prop(n, 'Sort Space Type'), method = String(prop(n, 'Sort Method') || '').split(/\s{2,}/)[0]
     const sortSpill = space === 'Disk' || /external/.test(method)
@@ -338,7 +552,7 @@ export function findings(all, total, analyzed, set = {}) {
 // are timed, and the planner's enable_ switches. Facts beside the plan's
 // own numbers, never advice.
 const ENABLES = ['async_append', 'bitmapscan', 'distinct_reordering', 'gathermerge', 'group_by_reordering', 'hashagg', 'hashjoin', 'incremental_sort', 'indexonlyscan', 'indexscan', 'material', 'memoize', 'mergejoin', 'nestloop', 'parallel_append', 'parallel_hash', 'partition_pruning', 'partitionwise_aggregate', 'partitionwise_join', 'presorted_aggregate', 'self_join_elimination', 'seqscan', 'sort', 'tidscan'].map((k) => 'enable_' + k)
-export const SETTING_NAMES = ['work_mem', 'hash_mem_multiplier', 'jit', 'jit_above_cost', 'jit_inline_above_cost', 'jit_optimize_above_cost', 'max_parallel_workers', 'max_parallel_workers_per_gather', 'max_worker_processes', 'track_io_timing', ...ENABLES]
+export const SETTING_NAMES = ['work_mem', 'hash_mem_multiplier', 'jit', 'jit_above_cost', 'jit_inline_above_cost', 'jit_optimize_above_cost', 'max_parallel_workers', 'max_parallel_workers_per_gather', 'max_worker_processes', 'track_io_timing', 'server_version_num', ...ENABLES]
 
 /** @typedef {Record<string, { shown: string, value: string, bytes?: number, boot?: string, reset?: string }>} RunSettings */
 
@@ -522,11 +736,16 @@ export default {
         // The server's parameters, asked beside the rows (an older PlumeSQL
         // has no ctx.settings), and never waited on for long either.
         const asked = typeof ctx.settings === 'function' ? Promise.race([ctx.settings(SETTING_NAMES).catch(() => ({})), new Promise((done) => setTimeout(() => done({}), 3000))]) : Promise.resolve({})
+        // The statement the plan came from (PlumeSQL 0.33.0 and later): what ties its steps to the
+        // text and the relations' facts behind the advice; never waited on for long either.
+        /** @type {Promise<ResultStatement | null>} */
+        const askedStmt = typeof ctx.statement === 'function' ? Promise.race([ctx.statement().catch(/** @returns {null} */ () => null), new Promise((/** @type {(v: null) => void} */ done) => setTimeout(() => done(null), 3000))]) : Promise.resolve(null)
         const rows =
           ctx.rowCount && have.length >= ctx.rowCount
             ? have
             : await Promise.race([loadRows(data, ctx, 200000), new Promise((done) => setTimeout(() => done(have), 10000))])
         const known = /** @type {Record<string, any>} */ (await asked)
+        const stmt = /** @type {ResultStatement | null} */ (await askedStmt)
         const plan = readPlan(rows)
         const pal = ctx.palette
         const dark = ctx.theme !== 'light'
@@ -541,9 +760,11 @@ export default {
           return
         }
         const { all, analyzed } = measure(plan.node)
+        linkTables(all, stmt)
         const total = analyzed ? (plan.execution ?? plan.node.incl) : plan.node.cost || 0
         const set = runSettings(known, plan.run.settings)
-        const facts = findings(all, analyzed ? (plan.execution ?? plan.node.incl) : 0, analyzed, set)
+        const major = Math.floor(Number(known.server_version_num?.value || 0) / 10000)
+        const facts = findings(all, analyzed ? (plan.execution ?? plan.node.incl) : 0, analyzed, set, major)
         const more = runFacts(plan, all, analyzed, set)
         copyText = plan.text
         const totBuf = plan.node.buf
@@ -552,7 +773,7 @@ export default {
           plan.planning !== null ? 'Planning time: ' + time(plan.planning) : '',
           analyzed ? 'Rows: ' + count(plan.node.outRows) : 'Estimated rows: ' + count(plan.node.estRows),
           ...more.map(([k, v, a]) => k + ': ' + v + adviceText(a)),
-          ...facts.slice(0, 8).map((f) => '- ' + f.node.label + (whereOf(f.node) ? ' ' + whereOf(f.node) : '') + ': ' + f.text + adviceText(f.advice))
+          ...facts.filter((f) => !f.inherited).slice(0, 8).map((f) => '- ' + f.node.label + (whereOf(f.node) ? ' ' + whereOf(f.node) : '') + ': ' + f.text + adviceText(f.advice))
         ].filter(Boolean).join('\n')
 
         // The metric the bars, the boxes and the diagram measure; the user
@@ -565,7 +786,20 @@ export default {
         /** @type {{ W: number, H: number, pos: Map<number, { x: number, y: number }>, NW: number, NH: number } | null} */
         let lastLayout = null
         const collapsed = new Set()
-        let selected = facts.length ? facts[0].node.id : 0
+        // What stands out, one row per step: its facts in order of weight,
+        // the steps in the order of their weightiest. A misestimate a step
+        // only carries from below is said beside it, never here.
+        const stepFacts = (() => {
+          /** @type {Map<any, Finding[]>} */
+          const by = new Map()
+          for (const f of facts) { if (f.inherited) continue; const g = by.get(f.node); if (g) g.push(f); else by.set(f.node, [f]) }
+          return [...by.entries()].map(([node, fs]) => ({ node, facts: fs, weight: Math.max(...fs.map((f) => f.weight)), level: fs.some((f) => f.level === 'red') ? 'red' : fs.some((f) => f.level === 'amber') ? 'amber' : 'muted' })).sort((a, b) => b.weight - a.weight)
+        })()
+        // The first three steps show; the rest one click away.
+        let allFacts = false
+        // The detail's fold of every property the step has, open or not.
+        let propsOpen = false
+        let selected = stepFacts.length ? stepFacts[0].node.id : 0
         // PlumeSQL draws the diagram itself where it can (ctx.flow, 0.31.0 and later).
         const hostFlow = typeof ctx.flow === 'function'
         // The step the detail beside showed at the last draw.
@@ -579,17 +813,37 @@ export default {
         // step's share reads the same in the facts, the boxes and Steps).
         const metricTotal = () => { if (metric === 'time' && analyzed && total > 0) return total; const t = all.reduce((s, n) => s + (metricOf(n) || 0), 0); return t || 1 }
         const flagsOf = (/** @type {any} */ n) => facts.filter((f) => f.node === n)
+        // A step's rows as the plan counts them: per loop, times the loops
+        // (the arithmetic EXPLAIN leaves to its reader); a parallel step's
+        // loops are its processes, side by side.
+        const perLoop = (/** @type {any} */ n) => (n.aRows === null || n.aRows === undefined ? '' : Number.isInteger(n.aRows) ? count(n.aRows) : Number(n.aRows).toFixed(2))
+        const loopsText = (/** @type {any} */ n) => (analyzed && (n.loops || 0) > 1 ? (n.parallel ? ' over ' + n.loops + ' processes' : ' = ' + perLoop(n) + ' × ' + count(n.loops) + ' loops') : '')
+        // What a step's filter kept of the rows it read, when it removed any.
+        const keptOf = (/** @type {any} */ n) => {
+          const removed = Number(prop(n, 'Rows Removed by Filter') || 0) * Math.max(1, n.loops || 1)
+          if (!analyzed || n.outRows === null || removed <= 0) return null
+          const read = removed + n.outRows
+          return { read, removed, share: n.outRows / read }
+        }
+        // A line as thick as the rows it carries, on a log scale: four rows
+        // and sixty thousand read apart at a glance, a million and ten
+        // million still apart.
+        const rowsWidth = (/** @type {number} */ r, /** @type {number} */ max) => 1 + (11 * Math.log10(1 + r)) / Math.log10(1 + Math.max(max, 9))
 
         const css = `
           *{box-sizing:border-box}
-          .ep{padding:14px 16px 24px;max-width:100%}
-          .sum{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
-          .card{background:${c.ground};border:1px solid ${c.bd};border-radius:10px;padding:10px 14px;min-width:120px}
-          .card b{display:block;font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:2px}
-          .card span{color:${c.mut};font-size:11.5px}
-          h3{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:${c.mut};margin:16px 0 8px;font-weight:700;display:flex;align-items:center;gap:10px}
-          .facts{display:flex;flex-direction:column;gap:4px}
-          .fact{display:flex;gap:8px;align-items:baseline;padding:5px 8px;border-radius:6px;cursor:pointer;border:1px solid transparent}
+          .ep{padding:10px 16px 24px;max-width:100%}
+          .sum{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 22px;margin-bottom:6px}
+          .card{display:flex;align-items:baseline;gap:6px;white-space:nowrap}
+          .card b{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
+          .card b span{font-size:11.5px;font-weight:400;color:${c.mut}}
+          .card > span{color:${c.mut};font-size:11.5px}
+          h3{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:${c.mut};margin:12px 0 6px;font-weight:700;display:flex;align-items:center;gap:10px}
+          .facts{display:flex;flex-direction:column;gap:2px}
+          .fact{display:flex;gap:8px;align-items:baseline;padding:4px 8px;border-radius:6px;cursor:pointer;border:1px solid transparent}
+          .fact .fi + .fi::before{content:' · ';color:${c.mut}}
+          .more{background:none;border:0;color:${c.acc};font:inherit;font-size:12px;padding:2px 8px;cursor:pointer;align-self:flex-start}
+          .more:hover,.more:focus-visible{text-decoration:underline;outline:none}
           .fact:hover,.fact:focus-visible{background:${c.ground};border-color:${c.bd};outline:none}
           .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;transform:translateY(-1px)}
           .fact .on{color:${c.mut}}
@@ -636,6 +890,21 @@ export default {
           .est{font-size:10.5px;border-radius:4px;padding:0 4px;margin-left:4px}
           .side{width:360px;flex-shrink:0;border:1px solid ${c.bd};border-radius:8px;background:${c.ground};padding:12px 14px;position:sticky;top:0;max-height:calc(100vh - 40px);overflow:auto}
           .side h4{margin:0 0 2px;font-size:14px}
+          .sh{display:flex;align-items:baseline;gap:8px}
+          .sh .sp{margin-left:auto;font-weight:600;font-variant-numeric:tabular-nums}
+          .flag{display:flex;gap:6px;align-items:baseline;font-size:12.5px}
+          .flag.carried{color:${c.mut}}
+          .sbk{margin-top:12px}
+          .bk{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:${c.mut};font-weight:700;margin-bottom:4px}
+          .bv{font-size:12.5px;font-variant-numeric:tabular-nums}
+          .bv .mut{font-size:12px}
+          .stk{display:flex;height:8px;border-radius:4px;overflow:hidden;background:${c.bg};margin:5px 0 3px}
+          .stk span{height:100%}
+          .leg{display:flex;flex-wrap:wrap;gap:2px 12px;font-size:11.5px;color:${c.mut}}
+          .leg i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;vertical-align:0}
+          details.props{margin-top:12px;font-size:12px}
+          details.props summary{cursor:pointer;color:${c.mut}}
+          details.props summary:focus-visible{outline:2px solid ${c.acc};outline-offset:2px;border-radius:3px}
           .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;margin-top:10px;font-size:12px}
           .kv .k{color:${c.mut};white-space:nowrap}
           .kv .v{word-break:break-word}
@@ -653,7 +922,7 @@ export default {
           .zoom button{background:none;border:1px solid ${c.bd};border-radius:5px;color:${c.mut};font:inherit;font-size:11.5px;min-width:24px;padding:1px 6px;cursor:pointer}
           .zoom button:hover{color:${c.fg}}
           .dgv{border:1px solid ${c.bd};border-radius:8px;background:${c.ground};overflow:auto;max-height:68vh;cursor:grab;position:relative}
-          .dgv.dgflow{height:62vh;min-height:320px;max-height:none;overflow:hidden;cursor:default}
+          .dgv.dgflow{height:62vh;min-height:300px;max-height:none;overflow:hidden;cursor:default}
           .dgv.panning{cursor:grabbing}
           .dgv:focus-visible{outline:2px solid ${c.acc};outline-offset:-2px}
           .dgv svg{display:block;margin:0 auto}
@@ -677,6 +946,51 @@ export default {
           @container (max-width: 900px){.main{flex-direction:column;align-items:stretch}.side{width:100%;position:static;max-height:none}.tg{max-width:160px}}
         `
 
+        // The detail of a step, in blocks read top down: what stands out
+        // about it, its time, its rows (what came against what was planned,
+        // the loops they are made of, what its filter kept of what it read),
+        // what it read (from memory or from disk), the conditions and keys it
+        // works by, and every other property PlumeSQL was given in a fold,
+        // the ones that say nothing (a zero, a false) left out there.
+        /** @param {any} sel @param {any[][]} lead @param {any[][]} rest @param {(k: string, v: unknown) => string} val */
+        const sideOfStep = (sel, lead, rest, val) => {
+          const share = analyzed && total ? sel.excl / total : 0
+          const dotOf = (/** @type {string} */ l) => (l === 'red' ? c.red : l === 'amber' ? c.amber : c.mut)
+          const block = (/** @type {string} */ k, /** @type {string} */ body) => '<div class="sbk"><div class="bk">' + escapeHtml(k) + '</div>' + body + '</div>'
+          const stack = (/** @type {[number, string, string][]} */ parts) => {
+            const sum = parts.reduce((s, p) => s + p[0], 0) || 1
+            return '<div class="stk">' + parts.map(([v, col]) => (v > 0 ? '<span style="width:' + Math.max(0.8, (100 * v) / sum).toFixed(2) + '%;background:' + col + '"></span>' : '')).join('') + '</div>' +
+              '<div class="leg">' + parts.map(([v, col, label]) => '<span><i style="background:' + col + '"></i>' + label + '</span>').join('') + '</div>'
+          }
+          let h = '<div class="side"><div class="sh"><h4>' + escapeHtml(sel.label) + '</h4>' + (analyzed && !sel.never ? '<span class="sp" style="color:' + (share >= 0.05 ? heat(share) : c.mut) + '">' + pct(share) + '</span>' : '') + '</div>' +
+            (sel.target ? '<div class="mut">on ' + escapeHtml(sel.target) + (sel.index ? ' using ' + escapeHtml(sel.index) : '') + '</div>' : sel.index ? '<div class="mut">using ' + escapeHtml(sel.index) + '</div>' : '')
+          const fl = flagsOf(sel)
+          if (fl.length) h += '<div style="margin-top:8px">' + fl.map((f) => '<div class="flag' + (f.inherited ? ' carried' : '') + '"><span class="dot" style="background:' + dotOf(f.level) + '"></span><span>' + escapeHtml(f.text) + adviceHtml(f.advice, true) + '</span></div>').join('') + '</div>'
+          if (sel.never) h += block('Ran', '<div class="bv mut">never: the step above it did not need it</div>')
+          else if (analyzed) h += block('Time', '<div class="bv">' + time(sel.excl) + ' own <span class="mut">· ' + time(sel.incl) + ' with the steps under it</span></div>')
+          // Rows: what came, what was planned, the loops they are made of.
+          let rows = '<div class="bv">' + (analyzed ? count(sel.outRows) + ' <span class="mut">actual · ' + count(sel.estRows) + ' planned</span>' : count(sel.estRows) + ' <span class="mut">planned</span>')
+          if (sel.estCand) rows += ' <span style="color:' + (sel.estOrigin ? (Math.abs(sel.factor) >= 100 ? c.red : c.amber) : c.mut) + '">×' + count(Math.abs(sel.factor)) + (sel.factor > 0 ? ' more' : ' fewer') + '</span>'
+          rows += '</div>'
+          if (analyzed && (sel.loops || 0) > 1) rows += '<div class="bv mut">' + (sel.parallel ? perLoop(sel) + ' rows on average in each of ' + sel.loops + ' processes' : perLoop(sel) + ' per loop × ' + Number(sel.loops).toLocaleString() + ' loops') + '</div>'
+          const kept = keptOf(sel)
+          if (kept) rows += stack([[sel.outRows, c.acc, count(sel.outRows) + ' kept'], [kept.removed, kept.share <= 0.1 ? c.amber : c.mut, count(kept.removed) + ' removed by the filter (' + pct(1 - kept.share) + ')']])
+          h += block('Rows', rows)
+          // What it read: from memory (cached) or from disk, and what spilled.
+          const b = sel.buf
+          if (b.hit + b.read + b.tempWritten > 0) {
+            const parts = /** @type {[number, string, string][]} */ ([[b.hit, c.acc, bytes(b.hit) + ' cached'], [b.read, c.amber, bytes(b.read) + ' from disk']])
+            if (b.tempWritten) parts.push([b.tempWritten, c.red, bytes(b.tempWritten) + ' written to temporary files'])
+            h += block('Buffers' + (b.hit + b.read > 0 ? (b.read ? ' · ' + pct(b.read / (b.hit + b.read)) + ' from disk' : ' · all cached') : ''), stack(parts))
+          }
+          h += block('Cost', '<div class="bv">' + (sel.costExcl || 0).toFixed(2) + ' own <span class="mut">· ' + (sel.startup ?? 0).toFixed(2) + ' .. ' + (sel.cost ?? 0).toFixed(2) + ' with the steps under it</span></div>')
+          // The conditions and keys it works by, as PostgreSQL printed them.
+          if (lead.length) h += '<div class="kv">' + lead.map((p) => '<span class="k">' + escapeHtml(p[0] || '·') + '</span><span class="v">' + val(String(p[0]), p[1]) + '</span>').join('') + '</div>'
+          const said = rest.filter((p) => !(p[1] === 0 || p[1] === false || p[1] === '0' || p[1] === 'false' || p[1] === '' || p[1] === null || p[1] === undefined || (Array.isArray(p[1]) && !p[1].length)))
+          if (said.length) h += '<details class="props"' + (propsOpen ? ' open' : '') + '><summary>All properties (' + said.length + ')</summary><div class="kv">' + said.map((p) => '<span class="k">' + escapeHtml(p[0] || '·') + '</span><span class="v">' + val(String(p[0]), p[1]) + '</span>').join('') + '</div></details>'
+          return h + '</div>'
+        }
+
         // The Steps search: what a step's row matches, its name, table,
         // index, subplan and every property (conditions, keys, output).
         let query = ''
@@ -695,6 +1009,29 @@ export default {
             if (text.includes(w)) { hits.add(n.id); for (let p = n.parent; p; p = p.parent) kin.add(p.id) }
           }
         }
+        // The picture fills what the pane has left under what stands out, so
+        // the first screen is the run, its facts and where it goes; Steps
+        // follow below. The detail beside is as tall as the picture.
+        const fitMain = () => {
+          const dg = /** @type {HTMLElement|null} */ (root.querySelector('.dgv'))
+          const main = /** @type {HTMLElement|null} */ (root.querySelector('.main'))
+          if (!dg || !main) return
+          const r0 = root.getBoundingClientRect()
+          const top = dg.getBoundingClientRect().top - r0.top + root.scrollTop
+          // No taller than the plan needs: a step or two do not get a screen of empty canvas.
+          let levels = 0
+          const depthOf = (/** @type {any} */ n, /** @type {number} */ d) => { levels = Math.max(levels, d + 1); if (!collapsed.has(n.id)) for (const k of n.children) depthOf(k, d + 1) }
+          depthOf(plan.node, 0)
+          const h = Math.max(300, Math.min(Math.floor(root.clientHeight - top - 14), 140 + levels * 150))
+          if (dg.classList.contains('dgflow')) dg.style.height = h + 'px'
+          else dg.style.maxHeight = h + 'px'
+          const side = /** @type {HTMLElement|null} */ (root.querySelector('.side'))
+          const col = /** @type {HTMLElement|null} */ (main.querySelector('.col'))
+          if (side && col && getComputedStyle(main).flexDirection === 'row') side.style.maxHeight = h + Math.round(dg.getBoundingClientRect().top - col.getBoundingClientRect().top) + 'px'
+        }
+        // The step a fact or a search went to, brought into the canvas's view
+        // with the next graph (PlumeSQL 0.33.0 and later read it).
+        let revealNext = ''
         const draw = () => {
           const hadRowFocus = !!root.ownerDocument.activeElement?.classList?.contains('row')
           const mt = metricTotal()
@@ -719,15 +1056,19 @@ export default {
           for (const [k, v, a] of more) runLines.push('<b>' + escapeHtml(k) + '</b> ' + escapeHtml(v) + adviceHtml(a, false))
           if (runLines.length) html += '<div class="run">' + runLines.map((l) => '<div>' + l + '</div>').join('') + '</div>'
 
-          // What stands out.
-          if (facts.length) {
+          // What stands out: a row per step, its facts after its name.
+          if (stepFacts.length) {
             html += '<h3>What stands out</h3><div class="facts">'
-            for (const f of facts.slice(0, 7)) {
-              html += '<div class="fact' + (f.node.id === selected ? ' cur' : '') + '" tabindex="0" title="Show this step in Steps" data-id="' + f.node.id + '"><span class="dot" style="background:' + (f.level === 'red' ? c.red : f.level === 'amber' ? c.amber : c.mut) + '"></span><span><b>' + escapeHtml(f.node.label) + '</b>' +
-                (whereOf(f.node) ? ' <span class="on">' + escapeHtml(clip(whereOf(f.node), 60)) + '</span>' : '') + ': ' + escapeHtml(f.text) + adviceHtml(f.advice, true) + '</span><span class="go">Show step ↓</span></div>'
+            for (const g of allFacts ? stepFacts : stepFacts.slice(0, 3)) {
+              html += '<div class="fact' + (g.node.id === selected ? ' cur' : '') + '" tabindex="0" title="Show this step" data-id="' + g.node.id + '"><span class="dot" style="background:' + (g.level === 'red' ? c.red : g.level === 'amber' ? c.amber : c.mut) + '"></span><span><b>' + escapeHtml(g.node.label) + '</b>' +
+                (whereOf(g.node) ? ' <span class="on">' + escapeHtml(clip(whereOf(g.node), 60)) + '</span>' : '') + ': ' + g.facts.map((f) => '<span class="fi">' + escapeHtml(f.text) + adviceHtml(f.advice, true) + '</span>').join('') + '</span><span class="go">Show step</span></div>'
             }
+            if (stepFacts.length > 3) html += '<button class="more" data-more>' + (allFacts ? 'Show fewer' : 'Show ' + (stepFacts.length - 3) + ' more step' + (stepFacts.length - 3 === 1 ? '' : 's')) + '</button>'
             html += '</div>'
           } else if (analyzed) html += '<h3>What stands out</h3><div class="mut" style="padding:4px 8px">Nothing: no step dominates, no estimate is far off, nothing spilled.</div>'
+          // A plain EXPLAIN ran nothing: no times, no actual rows, so nothing can stand out. Said,
+          // with the way to the numbers, rather than an empty place.
+          else html += '<h3>What stands out</h3><div class="mut" style="padding:4px 8px">Estimates only: a plain EXPLAIN does not run the query, so there is no time and no actual row to judge it by. EXPLAIN ANALYZE runs it (the lens’s Explain ▾, Explain Analyze), and then this says where the time went, what was misestimated and what to change.</div>'
 
           // The diagram: every step a card under the step that uses its
           // rows, the line between them as thick as the rows it carries (the
@@ -778,20 +1119,20 @@ export default {
                 const q = /** @type {{ x: number, y: number }} */ (pos.get(n.parent.id))
                 const x1 = q.x + NW / 2, y1 = q.y + NH, x2 = p.x + NW / 2, y2 = p.y, my = (y1 + y2) / 2
                 const r = n.outRows ?? n.estRows ?? 0
-                const sw = 1.5 + (8 * Math.log10(1 + r)) / Math.log10(1 + maxRows)
+                const sw = rowsWidth(r, maxRows)
                 const lit = lineage.has(n.id)
                 const col = n.never ? c.bd : lit ? c.acc : c.mut
                 edges += '<path d="M' + x1 + ' ' + y1 + ' C' + x1 + ' ' + my + ' ' + x2 + ' ' + my + ' ' + x2 + ' ' + y2 + '" fill="none" stroke="' + col + '" stroke-opacity="' + (n.never ? 0.5 : lit ? 0.9 : 0.55) + '" stroke-width="' + sw.toFixed(1) + '"><title>' + escapeHtml(count(r) + ' rows' + (n.outRows === null ? ' planned' : '') + ' from ' + n.label + ' up to ' + n.parent.label) + '</title></path>'
                 edges += '<text class="el" x="' + (x2 + sw / 2 + 5).toFixed(1) + '" y="' + (y2 - 9).toFixed(1) + '">' + escapeHtml(n.never ? 'never ran' : count(r) + (n.outRows === null ? ' est.' : '') + ' rows') + '</text>'
               }
-              const fl = flagsOf(n)
+              const fl = flagsOf(n).filter((f) => !f.inherited)
               const worst = fl.some((f) => f.level === 'red') ? c.red : fl.some((f) => f.level === 'amber') ? c.amber : fl.length ? c.mut : ''
               const tag = n.sub || (n.rel && !['Outer', 'Inner', 'Member'].includes(n.rel) ? n.rel : '')
               const where = whereOf(n)
               const own = metric === 'time' ? (analyzed ? time(n.excl) + ' own' : '') : metric === 'buffers' ? bytes(n.bufExcl) + ' own' : metric === 'rows' ? '' : (n.costExcl || 0).toFixed(1) + ' own cost'
               const rowsTxt = (analyzed ? count(n.outRows) : count(n.estRows) + ' est.') + ' rows'
-              const est = n.factor !== null && !n.limited && Math.abs(n.factor) >= 10
-              const estCol = est && Math.abs(n.factor) >= 100 ? c.red : c.amber
+              const est = n.estCand
+              const estCol = !n.estOrigin ? c.mut : Math.abs(n.factor) >= 100 ? c.red : c.amber
               const loops = analyzed && (n.loops || 0) > 1 ? ' · ×' + count(n.loops) : ''
               const pctCol = share >= 0.05 ? heat(share) : c.mut
               cards += '<g class="dn' + (n.id === selected ? ' sel' : '') + (n.never ? ' never' : '') + '" data-id="' + n.id + '">' +
@@ -864,7 +1205,9 @@ export default {
             // so a match is still read in its place.
             if (query && !hits.has(n.id) && !kin.has(n.id)) return ''
             const chev = n.children.length ? (collapsed.has(n.id) ? '▸' : '▾') : ''
-            const est = n.factor !== null && !n.limited && Math.abs(n.factor) >= 10 ? '<span class="est" style="background:color-mix(in srgb, ' + (Math.abs(n.factor) >= 100 ? c.red : c.amber) + ' 22%, transparent);color:' + (Math.abs(n.factor) >= 100 ? c.red : c.amber) + '" title="' + (n.factor > 0 ? 'under' : 'over') + 'estimated: ' + count(n.estRows) + ' planned">×' + count(Math.abs(n.factor)) + (n.factor > 0 ? '↑' : '↓') + '</span>' : ''
+            // The misestimate where it starts in its colour, a carried one muted.
+            const estC = !n.estOrigin ? c.mut : Math.abs(n.factor) >= 100 ? c.red : c.amber
+            const est = n.estCand ? '<span class="est" style="background:color-mix(in srgb, ' + estC + ' 22%, transparent);color:' + estC + '" title="' + (n.factor > 0 ? 'under' : 'over') + 'estimated: ' + count(n.estRows) + ' planned' + (n.estFrom ? ', carried from ' + escapeHtml(n.estFrom.label + (whereOf(n.estFrom) ? ' ' + whereOf(n.estFrom) : '')) : '') + '">×' + count(Math.abs(n.factor)) + (n.factor > 0 ? '↑' : '↓') + '</span>' : ''
             const chips = flagsOf(n).filter((f) => !/of the time is spent here|estimated/.test(f.text)).map((f) => { const col = f.level === 'red' ? c.red : f.level === 'amber' ? c.amber : c.mut; return '<span class="chip" style="color:' + col + ';border-color:' + col + '" title="' + escapeHtml(f.text) + '">' + escapeHtml(f.text.split(/[(,]/)[0].replace(/^the /, '').trim()) + '</span>' }).join('')
             return '<tr class="row' + (n.id === selected ? ' sel' : '') + (n.never ? ' never' : '') + (query && !hits.has(n.id) ? ' dim' : '') + '" tabindex="' + (n.id === selected ? '0' : '-1') + '" data-id="' + n.id + '"><td><div class="nm" style="padding-left:' + n.depth * 16 + 'px"><span class="chev" data-toggle="' + n.id + '">' + chev + '</span>' +
               (n.sub ? '<span class="sub">' + escapeHtml(n.sub) + '</span>' : n.rel && n.rel !== 'Outer' && n.rel !== 'Inner' && n.rel !== 'Member' ? '<span class="sub">' + escapeHtml(n.rel) + '</span>' : '') +
@@ -887,17 +1230,7 @@ export default {
             }
             return CODE_KEYS.test(k) ? '<code>' + escapeHtml(s) + '</code>' : escapeHtml(s)
           }
-          const facts2 = flagsOf(sel)
-          html += '<div class="side"><h4>' + escapeHtml(sel.label) + '</h4>' + (sel.target ? '<div class="mut">on ' + escapeHtml(sel.target) + (sel.index ? ' using ' + escapeHtml(sel.index) : '') + '</div>' : '') +
-            (facts2.length ? '<div style="margin-top:8px">' + facts2.map((f) => '<div style="display:flex;gap:6px;align-items:baseline"><span class="dot" style="background:' + (f.level === 'red' ? c.red : f.level === 'amber' ? c.amber : c.mut) + '"></span>' + escapeHtml(f.text) + '</div>').join('') + '</div>' : '') +
-            '<div class="kv">' +
-            (analyzed ? '<span class="k">Own time</span><span class="v">' + time(sel.excl) + ' · ' + pct(total ? sel.excl / total : 0) + '</span><span class="k">In all</span><span class="v">' + time(sel.incl) + '</span>' : '') +
-            '<span class="k">Rows</span><span class="v">' + (analyzed ? count(sel.outRows) + ' actual · ' : '') + count(sel.estRows) + ' planned</span>' +
-            (analyzed ? '<span class="k">Loops</span><span class="v">' + (sel.loops ?? '') + '</span>' : '') +
-            '<span class="k">Cost</span><span class="v">' + (sel.startup ?? 0).toFixed(2) + ' .. ' + (sel.cost ?? 0).toFixed(2) + ' · ' + (sel.costExcl || 0).toFixed(2) + ' own</span>' +
-            (sel.buf.hit + sel.buf.read > 0 ? '<span class="k">Buffers</span><span class="v">' + bytes(sel.buf.hit) + ' cached, ' + bytes(sel.buf.read) + ' read' + (sel.buf.tempWritten ? ', ' + bytes(sel.buf.tempWritten) + ' temp' : '') + '</span>' : '') +
-            lead.concat(rest).map((p) => '<span class="k">' + escapeHtml(p[0] || '·') + '</span><span class="v">' + val(String(p[0]), p[1]) + '</span>').join('') +
-            '</div></div></div></div>'
+          html += sideOfStep(sel, lead, rest, val) + '</div></div>'
           // The view's scroll, the diagram's own and its focus outlive the
           // redraw: a click must not throw the view back to its top (WebKit,
           // the desktop app's engine, puts a scroller whose content is
@@ -913,6 +1246,7 @@ export default {
           root.innerHTML = html
           root.scrollLeft = view.left
           root.scrollTop = view.top
+          fitMain()
           if (hostFlow) { if (face === 'diagram') sendFlow(); else ctx.flow(null) }
           sideOf = sel.id
           const side = root.querySelector('.side')
@@ -958,15 +1292,18 @@ export default {
           const level = (/** @type {number} */ f) => (f >= 0.5 ? 'red' : f >= 0.2 ? 'amber' : 'accent')
           const nodes = shown.map((n) => {
             const share = (metricOf(n) || 0) / mt
-            const fl = flagsOf(n)
+            const fl = flagsOf(n).filter((f) => !f.inherited)
             const worst = fl.some((f) => f.level === 'red') ? 'red' : fl.some((f) => f.level === 'amber') ? 'amber' : 'muted'
             const where = whereOf(n)
             const tag = n.sub || (n.rel && !['Outer', 'Inner', 'Member'].includes(n.rel) ? n.rel : '')
             const own = metric === 'time' ? (analyzed ? time(n.excl) : '') : metric === 'buffers' ? bytes(n.bufExcl) : metric === 'cost' ? (n.costExcl || 0).toFixed(1) : ''
-            const est = n.factor !== null && !n.limited && Math.abs(n.factor) >= 10
-            const lines = [{ label: 'rows', value: (analyzed ? count(n.outRows) : count(n.estRows) + ' est.') + (analyzed && (n.loops || 0) > 1 ? ' · ×' + count(n.loops) + ' loops' : '') }]
+            /** @type {{ label?: string, value: string, color?: FlowColor }[]} */
+            const lines = [{ label: 'rows', value: analyzed ? count(n.outRows) + loopsText(n) : count(n.estRows) + ' est.' }]
+            const kept = keptOf(n)
+            if (kept) lines.push({ label: 'kept', value: pct(kept.share) + ' of ' + count(kept.read) + ' read', ...(kept.share <= 0.1 ? { color: /** @type {FlowColor} */ ('amber') } : {}) })
             if (own) lines.push({ label: metric === 'cost' ? 'own cost' : 'own', value: own })
-            if (est) lines.push({ label: 'estimate', value: '×' + count(Math.abs(n.factor)) + (n.factor > 0 ? ' more rows than expected' : ' fewer rows than expected'), color: Math.abs(n.factor) >= 100 ? 'red' : 'amber' })
+            if (n.estOrigin) lines.push({ label: 'estimate', value: '×' + count(Math.abs(n.factor)) + (n.factor > 0 ? ' more' : ' fewer') + ' than the ' + count(n.estRows) + ' planned', color: Math.abs(n.factor) >= 100 ? 'red' : 'amber' })
+            else if (n.estFrom) lines.push({ label: 'estimate', value: '×' + count(Math.abs(n.factor)) + ', carried from ' + n.estFrom.label, color: 'muted' })
             const badges = []
             if (metric !== 'rows' && share >= 0.05) badges.push({ text: pct(share), color: level(share), hint: pct(share) + ' of the ' + metric + ', its own' })
             if (fl.length) badges.push({ text: fl.length === 1 ? '1 thing to look at' : fl.length + ' things to look at', color: worst, hint: fl.map((f) => f.text).join('\n') })
@@ -988,16 +1325,19 @@ export default {
             return {
               from: String(n.parent.id),
               to: String(n.id),
-              width: 1.5 + (8 * Math.log10(1 + r)) / Math.log10(1 + maxRows),
-              label: n.never ? 'never ran' : count(r) + (n.outRows === null ? ' est.' : '') + ' rows',
+              width: rowsWidth(r, maxRows),
+              // Where a misestimate starts, the line says what was planned beside what came.
+              label: n.never ? 'never ran' : count(r) + (n.outRows === null ? ' est.' : '') + ' rows' + (n.estOrigin ? ', ' + count(n.estRows) + ' planned' : ''),
               color: n.never ? 'muted' : lineage.has(n.id) ? 'accent' : 'muted',
               ...(n.never ? { dashed: true } : {})
             }
           })
-          ctx.flow({ nodes: /** @type {FlowNode[]} */ (nodes), edges: /** @type {FlowEdge[]} */ (edges), direction: 'down', selected: String(selected), minimap: shown.length > 24 }, {
+          const reveal = revealNext
+          revealNext = ''
+          ctx.flow({ nodes: /** @type {FlowNode[]} */ (nodes), edges: /** @type {FlowEdge[]} */ (edges), direction: 'down', selected: String(selected), minimap: shown.length > 24, ...(reveal ? { reveal } : {}) }, {
             into: box,
             // Chosen on the canvas: its detail beside, the lineage lit.
-            onSelect: (id) => { selected = Number(id); draw(); const side = root.querySelector('.side'); if (side && !reduced) side.classList.add('flash') },
+            onSelect: (id) => { selected = Number(id); draw(); const side = root.querySelector('.side'); if (side && !reduced) side.classList.add('flash'); markStep(selected) },
             // Opened (a double click, Enter): the step in Steps.
             onOpen: (id) => choose(Number(id), true, true),
             onToggle: (id) => { const k = Number(id); if (collapsed.has(k)) collapsed.delete(k); else collapsed.add(k); draw() }
@@ -1053,6 +1393,7 @@ export default {
           selected = id
           if (go) for (let p = all[id]?.parent; p; p = p.parent) collapsed.delete(p.id)
           draw()
+          markStep(id)
           // The diagram follows the selection, inside its own frame.
           revealCard(id, go)
           if (go) {
@@ -1072,11 +1413,36 @@ export default {
         const pick = (/** @type {number} */ id) => {
           selected = id
           draw()
+          markStep(id)
           revealCard(id)
           const side = root.querySelector('.side')
           if (side && !reduced) side.classList.add('flash')
           const dg = /** @type {HTMLElement|null} */ (root.querySelector('.dgv'))
           dg?.focus({ preventScroll: true })
+        }
+        // What a chosen step reads, marked where the editor holds the statement; nothing for a
+        // step that reads no relation of it.
+        const markStep = (/** @type {number} */ id, reveal = true) => {
+          if (!stmt || !stmt.inEditor || typeof ctx.mark !== 'function' || !all[id]) return
+          const spans = spansOf(all[id])
+          ctx.mark(spans.length ? spans : null, { reveal })
+        }
+        // A fact goes to its step where the picture is: chosen, the steps
+        // above it unfolded, brought into view, its detail beside flashing
+        // once. The page stays where it is; Steps is a double click away.
+        const showStep = (/** @type {number} */ id) => {
+          selected = id
+          for (let p = all[id]?.parent; p; p = p.parent) collapsed.delete(p.id)
+          revealNext = String(id)
+          draw()
+          if (face === 'diagram' && !hostFlow) {
+            revealCard(id, true)
+            const card = root.querySelector('.dn[data-id="' + id + '"]')
+            if (card && !reduced) card.classList.add('flash')
+          }
+          const side = root.querySelector('.side')
+          if (side && !reduced) side.classList.add('flash')
+          markStep(id)
         }
         let dragged = false
         // A piece of advice's statement copies itself, and says so a beat.
@@ -1090,6 +1456,12 @@ export default {
           if (dragged) { dragged = false; return }
           const chip = t.closest('[data-copy]')
           if (chip) { copyChip(chip); return }
+          if (t.closest('[data-more]')) { allFacts = !allFacts; draw(); return }
+          // The detail's fold: the click toggles it after this, so its next state is the other one.
+          const fold = t.closest('details.props > summary')
+          if (fold) { propsOpen = !(/** @type {HTMLDetailsElement} */ (fold.parentElement)).open; return }
+          const fact = t.closest('.fact')
+          if (fact) { showStep(Number(fact.getAttribute('data-id'))); return }
           const metricBtn = t.closest('[data-metric]')
           if (metricBtn) { metric = String(metricBtn.getAttribute('data-metric')); draw(); return }
           const faceBtn = t.closest('[data-face]')
@@ -1101,6 +1473,7 @@ export default {
           const hit = t.closest('[data-id]')
           if (!hit) return
           if (hit.classList.contains('dn')) { pick(Number(hit.getAttribute('data-id'))); return }
+          if (hit.classList.contains('ib')) { showStep(Number(hit.getAttribute('data-id'))); return }
           choose(Number(hit.getAttribute('data-id')), true, !hit.classList.contains('row'))
         }
         // Dragging the diagram's background pans it, as a map does; the
@@ -1150,7 +1523,7 @@ export default {
         root.onkeydown = (e) => {
           const t = /** @type {HTMLElement} */ (e.target)
           if (t.classList.contains('cp') && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); copyChip(t); return }
-          if (t.classList.contains('fact') && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); choose(Number(t.getAttribute('data-id')), true, true); return }
+          if (t.classList.contains('fact') && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); showStep(Number(t.getAttribute('data-id'))); return }
           // The diagram: Up to the step that uses this one's rows, Down to
           // its first input, Left and Right to the card beside it on the
           // same level; Enter shows the step in Steps; + and − zoom, 0 fits.
@@ -1188,7 +1561,26 @@ export default {
           else if (e.key === 'Home') { e.preventDefault(); choose(visible[0], true) }
           else if (e.key === 'End') { e.preventDefault(); choose(visible[visible.length - 1], true) }
         }
+        // The first look shows the step that stands out most.
+        revealNext = stepFacts.length ? String(selected) : ''
         draw()
+        // The plan and its statement, both ways (PlumeSQL 0.33.0 and later): a step chosen here
+        // marks in the editor what it reads, and the caret on a relation of the statement (its
+        // name, or a column read through its alias) chooses the step that reads it.
+        if (stmt && typeof ctx.onCaret === 'function') {
+          ctx.onCaret((at) => {
+            if (at === null) return
+            const inside = (/** @type {{ from: number, to: number } | undefined} */ sp) => !!sp && sp.from <= at && at <= sp.to
+            const t = stmt.tables.find((x) => inside(x.written) || (x.qualifiers || []).some(inside))
+            const n = t ? all.find((m) => m.table === t) : null
+            if (!n || n.id === selected) return
+            selected = n.id
+            for (let p = n.parent; p; p = p.parent) collapsed.delete(p.id)
+            revealNext = String(n.id)
+            draw()
+            markStep(n.id, false)
+          })
+        }
       }
     }
   ]

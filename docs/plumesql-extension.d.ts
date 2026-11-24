@@ -387,6 +387,58 @@ interface RenderContext {
    * takes it away. Absent before PlumeSQL 0.31.0: check it is there and
    * draw your own otherwise. */
   flow?(graph: FlowGraph | null, options?: FlowOptions): void;
+  /** The statement the result came from, as PlumeSQL reads it: its text as
+   * it ran (an EXPLAIN with its options included) and every relation it
+   * names at every level, resolved in the connection's dictionary (its
+   * indexes, its row estimate, its extended statistics) with where the text
+   * names it. Facts, never a verdict: the view decides what they mean.
+   * Resolves to null when PlumeSQL has no statement for the result (a view
+   * in a tab of its own) or no dictionary for its connection yet. Absent
+   * before PlumeSQL 0.33.0: check it is there before calling it. */
+  statement?(): Promise<ResultStatement | null>;
+  /** Mark spans of ResultStatement.text where the editor holds the
+   * statement (the table a plan's step reads, the condition it filters
+   * by), bringing the first into view when it is out of sight
+   * ({ reveal: false } leaves the editor's scroll alone: marks answering
+   * the caret's own move); the user's caret, selection and focus stay
+   * where they are. null, or an empty
+   * list, takes the marks away; so does the view going. Shows nothing
+   * while the editor no longer holds the statement as it ran
+   * (ResultStatement.inEditor). Absent before PlumeSQL 0.33.0. */
+  mark?(spans: { from: number; to: number }[] | null, options?: { reveal?: boolean }): void;
+  /** Hear where the editor's caret stands in the statement: an offset into
+   * ResultStatement.text while it stands inside it, null when it leaves
+   * (or the editor no longer holds the statement as it ran). Called once at
+   * once with where it stands now, then on every move. One handler per
+   * view: a second call replaces it, null stops it. Absent before PlumeSQL
+   * 0.33.0. */
+  onCaret?(handler: ((at: number | null) => void) | null): void;
+}
+
+/** The statement a result came from (RenderContext.statement). Every offset
+ * indexes text. */
+interface ResultStatement {
+  /** The statement as it ran, from its first code token to its end. */
+  text: string;
+  /** Every relation it names, at every level (FROM and JOIN, a subquery's,
+   * a CTE's query's, an UPDATE's or a DELETE's target, an EXPLAIN's
+   * statement's), in the order the text names them: the same table named
+   * twice is two entries, each with its own alias and written span. A name
+   * the dictionary does not know (a CTE's own) is left out. */
+  tables: ResultTable[];
+  /** Whether the editor still holds the statement where it ran, as it ran:
+   * mark and onCaret answer only then. */
+  inEditor: boolean;
+}
+
+/** One relation of a result's statement: a refactor's table, and its
+ * extended statistics. */
+interface ResultTable extends RefactorTable {
+  /** Its extended statistics objects (CREATE STATISTICS), when it has any:
+   * each one's kinds ('ndistinct', 'dependencies', 'mcv'; none written
+   * means all of them) and what it is on (a column's name, an
+   * expression as written, in its parentheses). */
+  statistics?: { name: string; kinds: string[]; on: string[] }[];
 }
 
 /** A color of ctx.flow, by name: the theme paints it. */
@@ -434,6 +486,11 @@ interface FlowGraph {
   direction?: 'down' | 'right' | 'up' | 'left';
   /** The card chosen. */
   selected?: string;
+  /** A card to bring into view: PlumeSQL centres it, at the zoom it has, when
+   * any of it is out of sight (a card a fact or a search went to). Send it
+   * with the graph that should show it, and leave it out after. Ignored
+   * before PlumeSQL 0.33.0. */
+  reveal?: string;
   /** Draw a minimap. */
   minimap?: boolean;
 }
