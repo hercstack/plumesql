@@ -308,8 +308,8 @@ Transaction**) have them too.
 ### Edit Function
 
 Right-click a function or a procedure in Objects and choose **Edit Function** (or **Edit
-Procedure**; it is also on its DDL tab, its card on a diagram, its Properties and in the command
-palette). Its code opens in a new script: its `CREATE OR REPLACE` as the database has it, laid
+Procedure**; it is also a button on its row under the pointer, beside Open DDL, on its DDL tab,
+its card on a diagram, its Properties and in the command palette). Its code opens in a new script: its `CREATE OR REPLACE` as the database has it, laid
 out as the DDL is, with everything the SQL editor does inside the body.
 
 It is not the only way in. Any script with one `CREATE FUNCTION` or `CREATE PROCEDURE` is a
