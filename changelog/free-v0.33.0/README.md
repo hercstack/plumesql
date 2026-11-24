@@ -355,8 +355,9 @@ back, for you to read and run.
 
 **Add Call** writes a call of the function right below its `CREATE`, in the same script: its
 arguments are asked in a form when you run it, each by its parameter's name, a default already
-filled in. A script that calls the function already gets no second call: the cursor goes to the
-one it has.
+filled in. Each Add Call writes another, after the calls the script has: a function has more
+than one case to try, and a call you do not want is yours to delete. What it wrote scrolls into
+view.
 
 When the function's body writes (an `INSERT`, an `UPDATE`, DDL), the call is written between
 `BEGIN` and `ROLLBACK`: you see what it returns, and nothing it wrote is kept. A procedure that
@@ -377,9 +378,17 @@ and `ASSERT`s on what it returns, shaped by its result:
 - **a record** field by field, a procedure's OUT parameters the same way.
 
 Every value you expect is a `null` to fill in, so the test fails until it says something; the
-first one is selected for you to type over, and a second Add Test before you filled it in takes
-you back to it instead of writing another. Run runs it after the `CREATE`, the way you would
-write it yourself.
+first one is selected for you to type over. Each Add Test writes another, one per case, and
+scrolls it into view. Run runs it after the `CREATE`, the way you would write it yourself.
+
+Its `ARRANGE` starts from the tables the function's body works with, read from the database when
+you click: a row to insert for each, as a comment with sample values for the columns a row has
+to say, parents before the tables that point at them. Uncomment the rows your test needs, and
+with them `set constraints all deferred`, so a row stands without the rows its foreign keys point
+at. A foreign key that is not `DEFERRABLE` gets a commented `ALTER ... DEFERRABLE` for the test
+alone. The test ends with a `rollback` inside its block: running when the function writes, a
+comment to uncomment with your rows when it only reads, so a test that passes leaves nothing
+behind, the `ALTER` included. A test that fails leaves nothing either.
 
 ![A test added below the function: ARRANGE, ACT with the call, ASSERT with the nulls to fill in, the first one selected](media/add-test.webp)
 
