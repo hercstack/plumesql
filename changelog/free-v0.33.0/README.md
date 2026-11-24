@@ -50,6 +50,9 @@
   from putting another schema first.
 - **Commit and Rollback in the toolbar:** while a transaction is open, its end is one click
   beside the connection.
+- **A query plan tied to its query:** the Explain plan extension marks in your query what a step
+  reads, chooses the step the caret is on, says where a wrong estimate starts and offers the
+  statistics or the index that fixes it, read from your own tables.
 
 ## Diagrams
 
@@ -711,6 +714,36 @@ as it was.
 One thing is still on its way: the copy of PostgreSQL's own parser inside the editor is 18's
 until its 19 build is published. On a 19 server that costs the new statements a little
 precision in completion, never a false error: your server judges the syntax, as always.
+
+## A query plan tied to its query
+
+An extension that shows a result can now read the statement the result came from: its tables
+as your database knows them, with their indexes and their statistics, and where the query
+names each one. It can mark a part of the query in the editor and hear where your caret is.
+[Explain plan](https://github.com/hercstack/plumesql/tree/main/extensions/Performance/explain-plan)
+uses all of it:
+
+- **A step marks what it reads.** Choose a step of the plan, and the editor marks the table it
+  reads and every column read through its alias. Put the caret on a table of the query, or on
+  one of those columns, and the plan chooses the step that reads it.
+- **A wrong estimate is said where it starts.** One bad guess low in a plan is wrong again in
+  every step built on it. The plan says it once, at the step where it begins, and how many
+  steps above carry it.
+- **Why, and what fixes it.** Two conditions on columns that go together, estimated as if they
+  were independent, or a condition on an expression PostgreSQL keeps no statistics on: said,
+  with the `CREATE STATISTICS` that fixes it. A scan that reads a whole table to keep a little
+  of it gets the `CREATE INDEX` that would serve its filter, unless such an index is already
+  there. Nothing runs: you copy the statement and run it yourself.
+- **The picture first.** The run fits in a line, what stands out is a row per step, and the
+  plan fills what is left of the pane, opening on the step that matters most. A step's rows
+  read as the plan counts them, `60.0k = 3 × 20.0k loops`, and its detail shows what its filter
+  kept and what came from disk.
+
+![The Explain plan beside its query: the subquery's scan of rental chosen in the plan and marked in the editor, with the index it is missing to copy](media/explain-plan-link.webp)
+
+```extensions
+explain-plan
+```
 
 ## What changed
 
