@@ -615,6 +615,19 @@ first, and what you make goes into the schema you clicked in.
 Everything but a table is a script you read and run yourself: PlumeSQL writes it and stops. The
 Command Palette has **New Object…**, **New Table…** and **New Function…** too.
 
+What you made and have not run yet is one set of **pending changes**, the new table and the new
+scripts together. Review Changes lists them all, and Run Changes creates them in one
+transaction, everything or nothing:
+
+- **Only what makes the object is taken from its script:** its `CREATE`, a trigger function's
+  trigger, the comment and grants you set in Properties. A call or a test you added to try it
+  stays in the script.
+- **Each is made after what it needs.** A new enum comes before the new table that uses it, a
+  function a column's `DEFAULT` calls before that table, a function before the view that calls
+  it, whatever their names. When two objects need each other in a circle, the script says so
+  before you run it.
+- **Run one on its own** and it leaves the pending changes; its script stays open either way.
+
 ![A trigger function made from the orders table: the function, its trigger below, and NEW. completing the table's columns](media/new-trigger-function.webp)
 
 ## PostgreSQL 19
