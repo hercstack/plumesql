@@ -506,6 +506,10 @@ as in any script.
   the plv8 extension) is a warning on the language before you run it, with a Quick Fix that
   writes `CREATE EXTENSION IF NOT EXISTS plv8;` above it for you to run. It follows the tab's
   connection, and each connection section of a script.
+- A language name one letter off a real one, such as `plpython3` (PL/Python is `plpython3u` on
+  every server), is a warning whatever the connection, with a Quick Fix to the name you meant,
+  **Change to plpython3u**. Until then its body is drawn as the plain string PostgreSQL would
+  take it for.
 
 ![A PL/V8 function declared IMMUTABLE reading a table that does not exist: both said in Problems](media/plv8-checks.webp)
 
