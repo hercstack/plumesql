@@ -573,7 +573,9 @@ line of its own and `LANGUAGE` last. Its body is never touched.
 A table's columns line up, the names, the types and the rest each in a column of their own. And
 what PostgreSQL writes but would assume anyway is left out: a parameter's `IN`, a default's cast
 to its own type (`DEFAULT 'new'`, not `DEFAULT 'new'::text`), `nextval`'s `::regclass`, an
-identity column's sequence options while they are the defaults, an index's `USING btree`.
+identity column's sequence options while they are the defaults, an index's `USING btree`. A
+function's body is delimited by `$$` where PostgreSQL writes `$function$`, in Edit Function too;
+a body that holds `$$` itself keeps PostgreSQL's delimiter, and the body is never touched.
 
 ![A table's DDL: its columns lined up, an identity and a default written the short way, an index without USING btree](media/ddl-table.webp)
 
@@ -812,6 +814,8 @@ gone. The Command Palette has **Tab size** beside Tab layout.
 
 ## Fixed
 
+- **A function whose body ends with a `$`.** Its DDL in the Objects tab closed the body one
+  character early and would not run. It is written with a delimiter that fits such a body.
 - **Go to Definition into JavaScript's standard library in an extension's editor.** F12 on
   `toUpperCase`, `map` or `JSON.parse` in a `.plumesql.js` editor did nothing (only Peek showed
   the declaration). It opens the declaration read-only now, as a CDN library's types do.
