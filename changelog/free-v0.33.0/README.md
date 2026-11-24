@@ -7,6 +7,8 @@
   SQL inside its queries completes your tables and columns. A query's rows and a trigger's `NEW`
   complete their columns in all three languages, PL/pgSQL included, and a column the row does not
   have is caught before the function runs.
+- **New, from the object tree:** a table, a view, a function, a trigger function and more, made
+  from a right click on any row or from the + in the tree's header.
 - **PostgreSQL 19:** released on 19 November and supported here, tested the same way as every
   release since 13.
 - **Comments, written on the diagram:** every card shows its object's comment as Markdown, a
@@ -589,6 +591,31 @@ connections or for one connection in its editor:
 DDL keyword case, the setting that writes keywords in lower case, now applies to a function's head
 too. However you set them, the DDL is the same object: we replay it into an empty database on
 PostgreSQL 13 to 19 and check it reads back exactly as it was.
+
+## New objects from the object tree
+
+The object tree could open, edit and drop everything, and make only a table, from one row you
+had to know. Now every row has **New**, and so does a **+** in the tree's header: Table…, View…,
+Function…, Procedure…, Sequence…, Enum Type…, Schema…, Extension…. The row's own kind comes
+first, and what you make goes into the schema you clicked in.
+
+![A right click on a table in the object tree: New, with Table, View, Function, Procedure, Trigger Function, Sequence, Enum Type, Schema and Extension](media/new-object-menu.webp)
+
+- **A table** opens in its Design, as before: nothing is created until you run its script.
+- **A function or a procedure** asks its name and its language, from the languages your
+  connection has (PL/pgSQL and SQL, and PL/V8 or PL/Python where they are installed), and writes
+  the `CREATE OR REPLACE` into a new script with the cursor in its body. From there it has
+  everything a function script has: Add Call, Add Test, its Properties.
+- **A trigger function**, on a table's row, comes with its trigger on that table in the same
+  script, so `NEW.` completes the table's columns from the first keystroke.
+- **A view** on a table's row starts with that table's columns, one per line.
+- **An extension** is chosen from a list of what your server can install and this database does
+  not have yet, each with its version and what it is.
+
+Everything but a table is a script you read and run yourself: PlumeSQL writes it and stops. The
+Command Palette has **New Object…**, **New Table…** and **New Function…** too.
+
+![A trigger function made from the orders table: the function, its trigger below, and NEW. completing the table's columns](media/new-trigger-function.webp)
 
 ## PostgreSQL 19
 
