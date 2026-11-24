@@ -482,6 +482,11 @@ editor knows them as well as it knows PL/pgSQL. Write `LANGUAGE plv8` or `LANGUA
 before the body or after it, and the body is drawn in its own language, with the SQL help
 stepping aside inside it.
 
+Such a function is three languages deep: the SQL around it, the body's JavaScript or Python, and
+the SQL its queries run. Each has a ground of its own, so they read apart at a glance: the body's
+lines a faint shade, the SQL inside its query strings a deeper one, the same wherever the cursor
+is.
+
 ### The SQL inside, completed from your database
 
 A query a body runs (`plv8.execute('...')`, `plpy.execute("...")`, and their `prepare` and
