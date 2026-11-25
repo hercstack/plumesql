@@ -56,6 +56,8 @@
 - **A Database Dictionary:** a Markdown document of your database, kept up to date by PlumeSQL
   and readable on GitHub, where the team writes what every table, column and function is for,
   and those words go to the database as comments.
+- **Diagram and Dictionary menus:** both have a menu of their own in the menu bar, and every
+  item is in the Command Palette too.
 
 ## Diagrams
 
@@ -791,6 +793,9 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
   Properties, and an object's right click leaves it out of the dictionary or puts it back.
 - **Shared with the team.** The document says what it holds, so a teammate opening it from a
   checkout binds it to their own connection with one click.
+- **A menu of its own.** The Dictionary menu in the menu bar has everything for the dictionary
+  in front, and so does the Command Palette. Diagrams got their own Diagram menu too, with the
+  toolbar's actions by name.
 - **In the preview,** the parts PlumeSQL keeps are marked, an empty comment invites yours, and
   the relationships open as a PlumeSQL diagram of those tables.
 
