@@ -53,6 +53,9 @@
 - **A query plan tied to its query:** the Explain plan extension marks in your query what a step
   reads, chooses the step the caret is on, says where a wrong estimate starts and offers the
   statistics or the index that fixes it, read from your own tables.
+- **A Database Dictionary:** a Markdown document of your database, kept up to date by PlumeSQL
+  and readable on GitHub, where the team writes what every table, column and function is for,
+  and those words go to the database as comments.
 
 ## Diagrams
 
@@ -745,6 +748,43 @@ uses all of it:
 explain-plan
 ```
 
+## A Database Dictionary
+
+What a table is for, why a column can be empty, which function the nightly job calls: that
+knowledge usually lives in people's heads. A Database Dictionary gathers it in one Markdown file
+beside your code, of one connection, that PlumeSQL keeps up to date and GitHub shows as a page.
+
+- **Made from a right click.** New Database Dictionary… on a connection or a schema in Objects,
+  on a folder of the Explorer, or from the Command Palette. Say where it goes
+  (`docs/database/<database>.md` is proposed) and what it holds: the whole database, a schema,
+  some schemas or some kinds of objects.
+- **Everything about each object.** A header with the server, its version, its extensions and
+  how much of it is documented; a table of contents; the relationships as a Mermaid diagram,
+  which GitHub draws; and for every table its comment, its columns with their types, defaults
+  and keys, every foreign key linked to the column it points at, what refers to it, its checks,
+  indexes, triggers and policies, and how big it is. Views, functions, procedures, enums and
+  domains have theirs.
+- **A link to every column.** Each column has its own anchor, so a URL can point at it, and a
+  link in a review or an issue opens the document right there.
+- **Write in it, and the database gets it.** Write a table's, a column's or a function's comment
+  in the document and save: it waits in the pending changes as `COMMENT ON`, and runs when you
+  run the changes. A note a diagram attaches to a table is in the document too, and what you
+  write there goes back to the diagram.
+- **Always current.** When the database changes, a comment waits, a diagram is saved or the
+  statistics are collected, the document is written again, only in the parts PlumeSQL keeps:
+  your own text around them is never touched, and a file that did not change is not written,
+  so git shows a change only when there is one. Sizes are said in ranges by default, so a
+  growing table does not change the file every day.
+- **A strip over it.** Whose dictionary it is, when it was updated, how much is documented,
+  what waits to run, with Update Now and Refresh Statistics. Its settings are on its page in
+  Properties, and an object's right click leaves it out of the dictionary or puts it back.
+- **Shared with the team.** The document says what it holds, so a teammate opening it from a
+  checkout binds it to their own connection with one click.
+- **In the preview,** the parts PlumeSQL keeps are marked, an empty comment invites yours, and
+  the relationships open as a PlumeSQL diagram of those tables.
+
+![A Database Dictionary of dvdrental in the preview: the rental table's comment, its statistics in ranges, its columns with their anchors, keys linked to the columns they reference and a column's comment, under the strip with Update Now and Refresh Statistics](media/database-dictionary.webp)
+
 ## What changed
 
 ### A shorter right click in Objects
@@ -874,6 +914,11 @@ gone. The Command Palette has **Tab size** beside Tab layout.
 
 ## Fixed
 
+- **A Markdown file's preview hides HTML comments and follows its own links.** A comment in a
+  `.md` file showed as text in the preview, where GitHub hides it, and a link to a heading of the
+  same document did nothing. Comments are hidden now, every heading has GitHub's anchor, and such
+  a link scrolls to it. A table wider than the page scrolls by itself, as on GitHub, instead of
+  pushing the whole document sideways.
 - **A function whose body ends with a `$`.** Its DDL in the Objects tab closed the body one
   character early and would not run. It is written with a delimiter that fits such a body.
 - **Go to Definition into JavaScript's standard library in an extension's editor.** F12 on
