@@ -754,10 +754,11 @@ What a table is for, why a column can be empty, which function the nightly job c
 knowledge usually lives in people's heads. A Database Dictionary gathers it in one Markdown file
 beside your code, of one connection, that PlumeSQL keeps up to date and GitHub shows as a page.
 
-- **Made from a right click.** New Database Dictionary… on a connection or a schema in Objects,
-  on a folder of the Explorer, or from the Command Palette. Say where it goes
-  (`docs/database/<database>.md` is proposed) and what it holds: the whole database, a schema,
-  some schemas or some kinds of objects.
+- **Made from a right click, like a diagram.** Add to Dictionary… stands beside Add to Diagram…
+  on a connection, a schema, a folder of tables or views, and a single table or function. Pick
+  one of the connection's dictionaries and what you clicked joins it, or type a path for a new
+  one (`docs/database/<database>.md` is proposed) that holds just that. Leave Out of Dictionary
+  takes it out again.
 - **Everything about each object.** A header with the server, its version, its extensions and
   how much of it is documented; a table of contents; the relationships as a Mermaid diagram,
   which GitHub draws; and for every table its comment, its columns with their types, defaults
