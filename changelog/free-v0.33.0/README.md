@@ -759,6 +759,10 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
   one of the connection's dictionaries and what you clicked joins it, or type a path for a new
   one (`docs/database/<database>.md` is proposed) that holds just that. Leave Out of Dictionary
   takes it out again.
+- **Choose what it holds like you filter Objects.** Choose Objects… opens a window like the
+  Object filter: every schema opens into its tables, views, functions, procedures, types and
+  sequences, and a check means it is in the dictionary. Objects you added one by one or left out
+  are listed below it, one click from undoing, and Add Object… brings in one more by name.
 - **Everything about each object.** A header with the server, its version, its extensions and
   how much of it is documented; a table of contents; the relationships as a Mermaid diagram,
   which GitHub draws; and for every table its comment, its columns with their types, defaults
