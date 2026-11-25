@@ -766,10 +766,14 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
   domains have theirs.
 - **A link to every column.** Each column has its own anchor, so a URL can point at it, and a
   link in a review or an issue opens the document right there.
-- **Write in it, and the database gets it.** Write a table's, a column's or a function's comment
-  in the document and save: it waits in the pending changes as `COMMENT ON`, and runs when you
-  run the changes. A note a diagram attaches to a table is in the document too, and what you
+- **Write in it, and the database gets it.** Click a table's, a column's or a function's comment
+  right in the preview and write: it waits in the pending changes as `COMMENT ON`, and runs when
+  you run the changes. A note a diagram attaches to a table is in the document too, and what you
   write there goes back to the diagram.
+- **Your team writes in it too, with or without PlumeSQL.** It is plain Markdown: a teammate
+  writes a comment on GitHub or in any editor, and when you pull, PlumeSQL keeps their words and
+  takes them into your pending changes. The Log names every comment it took, and quotes what
+  your database said before, so nothing changes without you seeing it.
 - **Always current.** When the database changes, a comment waits, a diagram is saved or the
   statistics are collected, the document is written again, only in the parts PlumeSQL keeps:
   your own text around them is never touched, and a file that did not change is not written,
