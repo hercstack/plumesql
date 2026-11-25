@@ -761,16 +761,18 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
   one of the connection's dictionaries and what you clicked joins it, or type a path for a new
   one (`docs/database/<database>.md` is proposed) that holds just that. Leave Out of Dictionary
   takes it out again.
-- **Choose what it holds like you filter Objects.** Choose Objects… opens a window like the
-  Object filter: every schema opens into its tables, views, functions, procedures, types and
+- **Choose what it holds like you filter Objects.** Its Properties page has the Object
+  filter's tree: every schema opens into its tables, views, functions, procedures, types and
   sequences, and a check means it is in the dictionary. Objects you added one by one or left out
   are listed below it, one click from undoing, and Add Object… brings in one more by name.
-- **Everything about each object.** A header with the server, its version, its extensions and
-  how much of it is documented; a table of contents; the relationships as a Mermaid diagram,
-  which GitHub draws; and for every table its comment, its columns with their types, defaults
-  and keys, every foreign key linked to the column it points at, what refers to it, its checks,
-  indexes, triggers and policies, and how big it is. Views, functions, procedures, enums and
-  domains have theirs.
+- **Everything about each object.** A header that opens with what the database is for, the
+  database's own comment, written right there in the document like any other comment, then its
+  extensions and how much of it is documented; a table of contents; the relationships as a
+  Mermaid diagram, which GitHub draws, every table a card with its name (and, if you like, its
+  key); and for every table its comment, its columns with their types, defaults and keys, every
+  foreign key linked to the column it points at, what refers to it, its checks, indexes,
+  triggers and policies, and how big it is. Views, functions, procedures, enums and domains have
+  theirs.
 - **A link to every column.** Each column has its own anchor, so a URL can point at it, and a
   link in a review or an issue opens the document right there.
 - **Write in it, and the database gets it.** Click a table's, a column's or a function's comment
@@ -783,11 +785,12 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
   your database said before, so nothing changes without you seeing it. Two people who write the
   same comment and both commit get a merge conflict, and PlumeSQL leaves such a file alone until
   it is resolved, and says so.
-- **Always current.** When the database changes, a comment waits, a diagram is saved or the
-  statistics are collected, the document is written again, only in the parts PlumeSQL keeps:
-  your own text around them is never touched, and a file that did not change is not written,
-  so git shows a change only when there is one. Sizes are said in ranges by default, so a
-  growing table does not change the file every day.
+- **Always current, and quiet in git.** When the database changes, a comment waits, a
+  diagram is saved, or you come back to PlumeSQL after a pull, the document is written again, only in the parts PlumeSQL keeps: your own
+  text around them is never touched, and a file that did not change is not written. It holds
+  only what your team shares, nothing of one computer's server or connection, so your
+  teammates' updates do not rewrite it. Sizes are said in ranges, and only Update Now or Refresh
+  Statistics writes them anew, so another computer's data never changes the file.
 - **A strip over it.** Whose dictionary it is, when it was updated, how much is documented,
   what waits to run, with Update Now and Refresh Statistics. Its settings are on its page in
   Properties, and an object's right click leaves it out of the dictionary or puts it back.
@@ -796,12 +799,19 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
 - **A menu of its own.** The Dictionary menu in the menu bar has everything for the dictionary
   in front, and so does the Command Palette. Diagrams got their own Diagram menu too, with the
   toolbar's actions by name.
-- **In the preview,** the parts PlumeSQL keeps are marked, an empty comment invites yours, and
-  the relationships open as a PlumeSQL diagram of those tables.
+- **It reads like a document.** It opens as it reads, with only what your team writes marked as
+  editable, an empty comment inviting yours; one Markdown button on its strip shows the source,
+  and the relationships open as a PlumeSQL diagram of those tables.
 
-![A Database Dictionary of dvdrental in the preview: the rental table's comment, its statistics in ranges, its columns with their anchors, keys linked to the columns they reference and a column's comment, under the strip with Update Now and Refresh Statistics](media/database-dictionary.webp)
+![A Database Dictionary of dvdrental in the preview: the rental table's comment, its columns with their anchors, keys linked to the columns they reference and a column's comment, an empty comment inviting one, under the strip with Markdown, Choose Objects…, Update Now and Refresh Statistics](media/database-dictionary.webp)
 
 ## What changed
+
+### Markdown files in the Explorer
+
+`.md` files are a kind of their own in the Explorer's filter, Markdown documents, and show by
+default like your SQL scripts and diagrams: a Database Dictionary or a README is there without
+Show All.
 
 ### A shorter right click in Objects
 
