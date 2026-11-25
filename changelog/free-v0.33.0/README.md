@@ -773,7 +773,9 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
 - **Your team writes in it too, with or without PlumeSQL.** It is plain Markdown: a teammate
   writes a comment on GitHub or in any editor, and when you pull, PlumeSQL keeps their words and
   takes them into your pending changes. The Log names every comment it took, and quotes what
-  your database said before, so nothing changes without you seeing it.
+  your database said before, so nothing changes without you seeing it. Two people who write the
+  same comment and both commit get a merge conflict, and PlumeSQL leaves such a file alone until
+  it is resolved, and says so.
 - **Always current.** When the database changes, a comment waits, a diagram is saved or the
   statistics are collected, the document is written again, only in the parts PlumeSQL keeps:
   your own text around them is never touched, and a file that did not change is not written,
@@ -918,6 +920,12 @@ gone. The Command Palette has **Tab size** beside Tab layout.
 
 ## Fixed
 
+- **Two people, one server: a comment is no longer overwritten unseen.** When you and a
+  colleague both change objects on the same server, Run Changes reads what you change again
+  before it runs, and again right after you answer its question. Tables, functions and grants
+  were read again already; now the comments of views, functions, types and schemas are too. If
+  someone changed one since you began, nothing runs: the Log quotes their text and yours, and
+  the next Run Changes, once you have read it, runs yours.
 - **A Markdown file's preview hides HTML comments and follows its own links.** A comment in a
   `.md` file showed as text in the preview, where GitHub hides it, and a link to a heading of the
   same document did nothing. Comments are hidden now, every heading has GitHub's anchor, and such
