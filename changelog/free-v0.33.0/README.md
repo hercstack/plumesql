@@ -938,6 +938,13 @@ gone. The Command Palette has **Tab size** beside Tab layout.
 
 ![The ⋯ menu at the end of the tabs: Single Row, Multiple Rows, Vertical Left, Vertical Right, Small Tabs, Preview Tabs, Close All, Tab Settings](media/tab-menu.webp)
 
+### Shorter tooltips
+
+Tooltips say only what you cannot already see. The ones that repeated a button's label or a
+field's own words are gone, and "Click to…" sentences are cut to a short fact. What stays is the
+name of an icon button, its keyboard shortcut, why something is unavailable, and a value too
+long to show in full.
+
 ## Fixed
 
 - **Two people, one server: a comment is no longer overwritten unseen.** When you and a
@@ -1066,6 +1073,9 @@ gone. The Command Palette has **Tab size** beside Tab layout.
 - **Run answers at once while the parser is checking a long script.** On a slow connection a
   Run pressed during a check of hundreds of statements waited for the whole check. It takes the
   connection at once now.
+- **Replace All in Search on macOS.** The Replace field's Replace All is ⌥⌘Enter on macOS, as
+  in VS Code, and its tooltip and the Keyboard Shortcuts list say so. It wanted the Control key
+  before, and both named Ctrl+Alt+Enter.
 
 ## Tell us what you think
 
