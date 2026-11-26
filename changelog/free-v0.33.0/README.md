@@ -977,6 +977,12 @@ written into it, and **Counted since**: when the server began counting, as long 
 "Not read" means not read since then, and you can see when that was. Last read needs
 PostgreSQL 16 or later.
 
+### A double click in a Markdown preview selects text
+
+In a Database Dictionary, a README or any Markdown file's preview, a double click selects a word
+and a triple click a paragraph, as in any text, instead of jumping to the source. The Markdown
+button (Source, for other files) takes you to the source.
+
 ### Shorter tooltips
 
 Tooltips say only what you cannot already see. The ones that repeated a button's label or a
@@ -986,6 +992,9 @@ long to show in full.
 
 ## Fixed
 
+- **A double click past the last line no longer selects everything.** On a page of text, a
+  double click past the end of its last line selected the whole document. It selects nothing
+  there now.
 - **Two people, one server: a comment is no longer overwritten unseen.** When you and a
   colleague both change objects on the same server, Run Changes reads what you change again
   before it runs, and again right after you answer its question. Tables, functions and grants
