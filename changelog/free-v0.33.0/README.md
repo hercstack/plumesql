@@ -801,6 +801,15 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
 - **Nothing read behind your back.** Statistics are collected only when you press Collect
   Statistics, never on their own and never with anything else, so on a production server every read
   is one you asked for by name.
+- **Tables that fit the page.** A table's columns read as Column, Type and Comment: the key
+  beside the name (a foreign key an arrow to the column it points to), `not null` and the
+  default with the type, one line a row, so GitHub shows the whole table and your comments get
+  the room. A column's name is its link. Each fact can have a column of its own, go under the
+  name or go away, in Properties under Columns.
+- **Shaped your way.** Properties says how every part reads: the contents as an overview table
+  with what each table is for, undocumented objects left out, sections by kind or by name,
+  shorter headings, long column tables folded, a view's SQL under it, the diagram left to right
+  or one per schema, and which diagrams' notes it carries, each a checkbox.
 - **A right click that knows where you are.** On a column: edit its comment, copy its name or a
   link to it. On a table: Browse Data, Open DDL, Edit Table and the rest of its menu in Objects,
   in the same words. Then the dictionary's own: Collect Statistics, Review Changes, Markdown.
@@ -820,10 +829,11 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
   in front, and so does the Command Palette. Diagrams got their own Diagram menu too, with the
   toolbar's actions by name.
 - **It reads like a document.** It opens as it reads, with only what your team writes marked as
-  editable, an empty comment inviting yours; one Markdown button on its strip shows the source,
-  and the relationships open as a PlumeSQL diagram of those tables.
+  editable, an empty comment inviting yours; a longer one opens in a tab from the field's corner,
+  as Markdown rendered beside it. One Markdown button on its strip shows the source, and the
+  relationships open as a PlumeSQL diagram of those tables.
 
-![A Database Dictionary of dvdrental in the preview: the rental table's comment, its columns with their anchors, keys linked to the columns they reference and a column's comment, an empty comment inviting one, under its strip](media/database-dictionary.webp)
+![A Database Dictionary of dvdrental in the preview: the rental table's comment, its columns with their types, keys linked to the columns they reference and a column's comment, an empty comment inviting one, under its strip](media/database-dictionary.webp)
 
 ## What changed
 
