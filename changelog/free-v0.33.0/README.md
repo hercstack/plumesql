@@ -794,6 +794,10 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
 - **A strip over it.** Whose dictionary it is, when it was updated, how much is documented,
   what waits to run. There is no update button: it follows the database on its own, and
   Refresh in the Objects tab reads the database again when you want it now.
+- **Statistics you choose.** Under each table its rows, size, scans and the day it was last
+  read; switch on what is written into it, how much each index is used, how often a function
+  is called, vacuum and analyze. The header says the day they were collected and since when
+  the server counts, and a table nobody read says `not read since 2026-09-14`.
 - **Nothing read behind your back.** Statistics are collected only when you press Collect
   Statistics, never on their own and never with anything else, so on a production server every read
   is one you asked for by name.
@@ -802,7 +806,8 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
 - **Its Markdown says what is yours.** The parts PlumeSQL writes are shaded, and the strip says
   so. Your own text and the comments are kept; an edit in a shaded part is not, and the Log
   says where it was.
-- **Its page in Properties.** What it holds and how it reads, when its objects were read and its
+- **Its page in Properties.** What it holds, what it shows in sections (Statistics,
+  Relationships), when its objects were read and its
   statistics collected, and its connection at the end, in the connection's color, as a script's
   page shows it. An object's right click leaves it out of the dictionary or puts it back.
 - **Shared with the team.** The document itself says it is a dictionary and what it holds, so
@@ -964,6 +969,13 @@ the tabs opens the same menu, which helps most with Multiple Rows, where that sp
 gone. The Command Palette has **Tab size** beside Tab layout.
 
 ![The ⋯ menu at the end of the tabs: Single Row, Multiple Rows, Vertical Left, Vertical Right, Small Tabs, Preview Tabs, Close All, Tab Settings](media/tab-menu.webp)
+
+### An object's statistics say since when they count
+
+A table's Properties beside its DDL show when it was last read (an index's last use), the rows
+written into it, and **Counted since**: when the server began counting, as long ago as it was.
+"Not read" means not read since then, and you can see when that was. Last read needs
+PostgreSQL 16 or later.
 
 ### Shorter tooltips
 
