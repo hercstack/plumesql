@@ -801,6 +801,9 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
 - **Nothing read behind your back.** Statistics are collected only when you press Collect
   Statistics, never on their own and never with anything else, so on a production server every read
   is one you asked for by name.
+- **A right click that knows where you are.** On a column: edit its comment, copy its name or a
+  link to it. On a table: Browse Data, Open DDL, Edit Table and the rest of its menu in Objects,
+  in the same words. Then the dictionary's own: Collect Statistics, Review Changes, Markdown.
 - **Search it.** The strip has the search every page has: type, and every place is marked,
   with 1 of N and the arrows. ⌘F in the dictionary goes there.
 - **Its Markdown says what is yours.** The parts PlumeSQL writes are shaded, and the strip says
