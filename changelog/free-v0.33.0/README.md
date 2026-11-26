@@ -789,13 +789,25 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
   diagram is saved, or you come back to PlumeSQL after a pull, the document is written again, only in the parts PlumeSQL keeps: your own
   text around them is never touched, and a file that did not change is not written. It holds
   only what your team shares, nothing of one computer's server or connection, so your
-  teammates' updates do not rewrite it. Sizes are said in ranges, and only Update Now or Refresh
-  Statistics writes them anew, so another computer's data never changes the file.
+  teammates' updates do not rewrite it. Sizes are said in ranges, and only a gesture of yours
+  writes them anew, so another computer's data never changes the file.
 - **A strip over it.** Whose dictionary it is, when it was updated, how much is documented,
-  what waits to run, with Update Now and Refresh Statistics. Its settings are on its page in
-  Properties, and an object's right click leaves it out of the dictionary or puts it back.
-- **Shared with the team.** The document says what it holds, so a teammate opening it from a
-  checkout binds it to their own connection with one click.
+  what waits to run. There is no update button: it follows the database on its own, and
+  Refresh in the Objects tab reads the database again when you want it now.
+- **Nothing read behind your back.** Statistics are collected only when you press Collect
+  Statistics, never on their own and never with anything else, so on a production server every read
+  is one you asked for by name.
+- **Search it.** The strip has the search every page has: type, and every place is marked,
+  with 1 of N and the arrows. ⌘F in the dictionary goes there.
+- **Its Markdown says what is yours.** The parts PlumeSQL writes are shaded, and the strip says
+  so. Your own text and the comments are kept; an edit in a shaded part is not, and the Log
+  says where it was.
+- **Its page in Properties.** What it holds and how it reads, when its objects were read and its
+  statistics collected, and its connection at the end, in the connection's color, as a script's
+  page shows it. An object's right click leaves it out of the dictionary or puts it back.
+- **Shared with the team.** The document itself says it is a dictionary and what it holds, so
+  a teammate's checkout knows it at once: it wears a book in the Explorer before it is opened,
+  and when they have one connection to that database, Bind to it is one click.
 - **A menu of its own.** The Dictionary menu in the menu bar has everything for the dictionary
   in front, and so does the Command Palette. Diagrams got their own Diagram menu too, with the
   toolbar's actions by name.
@@ -803,7 +815,7 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
   editable, an empty comment inviting yours; one Markdown button on its strip shows the source,
   and the relationships open as a PlumeSQL diagram of those tables.
 
-![A Database Dictionary of dvdrental in the preview: the rental table's comment, its columns with their anchors, keys linked to the columns they reference and a column's comment, an empty comment inviting one, under the strip with Markdown, Choose Objects…, Update Now and Refresh Statistics](media/database-dictionary.webp)
+![A Database Dictionary of dvdrental in the preview: the rental table's comment, its columns with their anchors, keys linked to the columns they reference and a column's comment, an empty comment inviting one, under its strip](media/database-dictionary.webp)
 
 ## What changed
 
@@ -812,6 +824,21 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
 `.md` files are a kind of their own in the Explorer's filter, Markdown documents, and show by
 default like your SQL scripts and diagrams: a Database Dictionary or a README is there without
 Show All.
+
+### File marks in one row, each color one meaning
+
+Every file's mark stands in a slot of the same width, so the names in a folder line up. JSON
+wears `{}`, CSV and TSV files their own marks, a pg_dump archive a box, and a diagram a picture
+of two cards and a line where it read ERD. A query or command extension your team keeps in the
+workspace wears the feather in its flavor's color, as search results already showed it.
+
+The colors say one thing each: the accent for what talks to the database (a SQL script, a query
+extension, a Database Dictionary's book, a diagram), green for what runs a program, violet for
+what shapes the grid, and everything else quiet. The same marks are on the tabs and in search
+results. Under a file icon theme a dictionary, a diagram and an extension keep their own marks,
+which no theme knows.
+
+![The Explorer: .env.local, {} app.json, CSV orders.csv, a box for shop.dump, the book of the dictionary shop.md, the diagram's mark, MD README.md, feathers for the extensions, RUN, SQL](media/file-marks.webp)
 
 ### A shorter right click in Objects
 
