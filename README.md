@@ -556,12 +556,12 @@ plumesql --help                    # everything else
 - [A Database Dictionary: what your tables mean, beside your code](https://www.youtube.com/watch?v=2Uz8z1mdHE8)
 - [From a sketch to tables](https://www.youtube.com/watch?v=BkFgdYSZeFI)
 - [PL/V8 and PL/Python: functions edited in their own language](https://www.youtube.com/watch?v=0uxkRM3ex2U)
-- [Refactorings: the lightbulb rewrites SQL for you](https://www.youtube.com/watch?v=Mfr1j4pGQ1I)
-- [Query extensions: SQL files with annotations](https://www.youtube.com/watch?v=8tOLJhyk-0E)
-- [DBA tools as extensions](https://www.youtube.com/watch?v=CL4u4m4qfKo)
-- [A grid for millions of rows](https://www.youtube.com/watch?v=aGKpahWAfTg)
-- [EXPLAIN and the plan visualizer](https://www.youtube.com/watch?v=B0QXuUPePc8)
-- [Charts over your query results](https://www.youtube.com/watch?v=MiyHdIKaAlY)
+- [Refactorings: the lightbulb rewrites SQL for you](https://www.youtube.com/watch?v=-sZ1rtXzpt8)
+- [Query extensions: SQL files with annotations](https://www.youtube.com/watch?v=f_ZE0SI1myU)
+- [DBA tools as extensions](https://www.youtube.com/watch?v=erkLWykPNwQ)
+- [A grid for millions of rows](https://www.youtube.com/watch?v=6KUaK5CGuvU)
+- [EXPLAIN and the plan visualizer](https://www.youtube.com/watch?v=ukZQH5uEfOc)
+- [Charts over your query results](https://www.youtube.com/watch?v=EnEd-aN30nU)
 
 More, about a minute each:
 [Connections and objects](https://www.youtube.com/playlist?list=PLaGGK16T-VQw) ·
