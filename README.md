@@ -5,11 +5,12 @@
 > and turns a SQL file into a tool. Free, a 14 MB download, no account.
 
 > [!NOTE]
-> **PlumeSQL 0.32.0 is here**: edit a table in its Design, and the owner,
-> grants and options of any object in Properties, every change gathered in
-> one script you read before anything runs. Comments are Markdown
-> everywhere, and a whole script, an extension or any file goes on a
-> diagram. [What's in it](changelog/free-v0.32.0/README.md).
+> **PlumeSQL 0.33.0 is here**: design a database on a diagram, from a
+> sketch or a logical model to real tables, and keep what every table and
+> column means in a Database Dictionary beside your code. Functions in
+> JavaScript and Python are edited like PL/pgSQL, every function in a
+> script of its own, and PostgreSQL 19 is supported.
+> [What's in it](changelog/free-v0.33.0/README.md).
 >
 > PlumeSQL is in beta, with a new release about every week. The app
 > updates itself, and features can still change between releases.
@@ -37,6 +38,15 @@ Because it does nothing else, it can use everything PostgreSQL has.
   A query's rows and a trigger's `NEW` complete their columns, in
   PL/pgSQL as well, and a column the row doesn't have is caught before
   the function runs. [More](#functions-in-javascript-and-python)
+- **Design on a diagram.** Sketch notes, draw lines between them, and
+  Make Tables turns them into tables with their keys; a logical model
+  with crow's feet, or Mermaid's erDiagram, gets there the same way.
+  Existing tables are edited right on their cards. [More](#diagrams)
+- **What your data means, written down.** A Database Dictionary is a
+  Markdown file beside your code that PlumeSQL keeps up to date with
+  your database: your team writes what every table and column is for,
+  GitHub shows it as a page, AI agents read it, and the words go back to
+  the database as comments. [More](#a-database-dictionary)
 - **It sees your session.** Create a temp table, or a table in a
   transaction you haven't committed, and it's in the object tree and in
   completion at once. Roll back and it's gone. We found no other client
@@ -95,14 +105,14 @@ in, and nothing in it changes unless you ask.
 
 ### In beta, a release a week, and what's next
 
-PlumeSQL has been in public beta since 4 October 2026: more than fifteen
-releases in its first six weeks, each installed by the app itself. What
-we're most likely to build next, subject to change:
+PlumeSQL has been in public beta since 4 October 2026: twenty releases
+in its first eight weeks, each installed by the app itself. What we're
+most likely to build next, subject to change:
 
 - a PL/pgSQL debugger
 - a test runner for your database
-- documentation generated from your database
-- a semantic layer that ties your tables to the business they describe
+- a semantic layer that ties your tables to the business they describe,
+  grown from the Database Dictionary
 
 And AI built on it, not beside it: a knowledge graph that joins what
 your data means to your business with the PostgreSQL documentation
@@ -230,6 +240,21 @@ language:
 
 <img src="changelog/free-v0.33.0/media/plv8-sql-completion.webp" alt="A PL/V8 function's query, inside a JavaScript string, completing a column of its table" width="720" />
 
+### A function's whole life in a script
+
+Edit Function on a function or a procedure opens its `CREATE OR REPLACE`
+in a script of its own, and that script knows what it makes:
+
+- **Before you run it,** it says what PostgreSQL will do with a changed
+  signature, and Write DROP and CREATE puts the way out in the script,
+  its owner and grants put back.
+- **Add Call** writes a call of it, between `BEGIN` and `ROLLBACK` when
+  its body writes, its arguments asked when you run.
+- **Add Test** writes an arrange, act, assert test from what the body
+  reads, the value to expect selected for you to type.
+- **Its properties,** its comment and its grants, set in Properties, are
+  written into the script, to run with it.
+
 ### The lightbulb
 
 The lightbulb beside each statement rewrites it for you. A few of the
@@ -304,13 +329,49 @@ and dependencies, schemas as frames. A diagram is a file beside your
 scripts, shared through git, and each computer draws it from a
 connection of its own.
 
+It is also where a database is designed. Sketch a note per thing with
+its columns in plain words, draw lines between them, and Make Tables
+turns them into tables with their primary and foreign keys; a logical
+model with crow's feet and logical types, or Mermaid's erDiagram pasted
+in, gets there the same way. Double-click a table's card to change its
+columns, drag a reference to another table for a foreign key, and write
+its comment, in Markdown, right on the card. Every change waits in one
+script you read before it runs.
+
+<img src="changelog/free-v0.33.0/media/card-edit.webp" alt="A table edited on its diagram card: its columns as rows to change, a new column, and + Reference to draw a foreign key" width="720" />
+
 <img src="changelog/free-v0.31.0/media/diagram.webp" alt="A diagram of a rental database: tables as cards joined by their foreign keys, with the diagram's properties on the right" width="720" />
 
 Trace what a table is joined to, style cards and lines, add notes in
 Markdown, and see what changed in the database since the diagram was
 drawn. Queries, whole scripts and extensions go on the canvas too: a
 SELECT shows its rows there, anything else runs when you ask, a change
-confirmed first. Copy it as PNG, SVG or Mermaid.
+confirmed first. Draw the whole diagram as by hand with its sketch
+style, ask it questions and change it from the console in JavaScript,
+and copy it as PNG, SVG or Mermaid.
+
+## A Database Dictionary
+
+What a table is for, why a column can be empty, which function the
+nightly job calls: that knowledge usually lives in people's heads. A
+Database Dictionary gathers it in one Markdown file of a connection,
+beside your code, that PlumeSQL keeps up to date as the database
+changes.
+
+- **Written where you read it.** Click a table's or a column's comment
+  and write it in place; it goes to the database as `COMMENT ON`
+  through the same pending changes as every other change.
+- **Shared like code.** GitHub shows the file as a page, a teammate's
+  edit there comes back as a change to run, and AI agents working in the
+  repository read it like the rest of your code.
+- **Shaped your way.** Which schemas and objects it holds, its
+  statistics, its relationships as a Mermaid diagram, its columns,
+  headings and links, each chosen in Properties.
+
+<img src="changelog/free-v0.33.0/media/database-dictionary.webp" alt="A Database Dictionary of dvdrental: the rental table's comment and statistics, its columns with types and comments, keys linked to the columns they reference" width="720" />
+
+A sample, dvdrental as GitHub shows it:
+[dvdrental.md](https://gist.github.com/vbilopav/65e19cd3133f7fc40fcdb0e5ecb1aa14).
 
 ## Scripts that set themselves up
 
@@ -464,7 +525,13 @@ plumesql --help                    # everything else
 - **A console over your results.** JavaScript under the Log, with the
   last result, the open tab and the database at hand.
 - **Your database as files.** The object browser is a DDL snapshot on
-  disk, one file per object, to search and compare without a query.
+  disk, one file per object, to search and compare without a query, its
+  DDL laid out to be read.
+- **Make anything from the object tree.** New Table, View, Function,
+  Trigger Function and more from any row's right click or the tree's +,
+  each written as a script you read before it runs.
+- **Videos you can search.** Help > Videos finds the minute of the tour
+  that shows what you're looking for, and plays it from there.
 - **Properties for whatever you work on.** A script's connection and
   session, a result's columns and selection with their counts and sums,
   a setting, a diagram, an object: all in one tab, to read and to change.
@@ -485,13 +552,16 @@ plumesql --help                    # everything else
 
 ## See it in action
 
-- [PlumeSQL in 90 seconds](https://www.youtube.com/watch?v=HlLU1z-JeoY)
-- [Refactorings: the lightbulb rewrites SQL for you](https://www.youtube.com/watch?v=-sZ1rtXzpt8)
-- [Query extensions: SQL files with annotations](https://www.youtube.com/watch?v=f_ZE0SI1myU)
-- [DBA tools as extensions](https://www.youtube.com/watch?v=erkLWykPNwQ)
-- [A grid for millions of rows](https://www.youtube.com/watch?v=6KUaK5CGuvU)
-- [EXPLAIN and the plan visualizer](https://www.youtube.com/watch?v=ukZQH5uEfOc)
-- [Charts over your query results](https://www.youtube.com/watch?v=EnEd-aN30nU)
+- [PlumeSQL in 90 seconds](https://www.youtube.com/watch?v=VZOADmZbdbk)
+- [A Database Dictionary: what your tables mean, beside your code](https://www.youtube.com/watch?v=2Uz8z1mdHE8)
+- [From a sketch to tables](https://www.youtube.com/watch?v=BkFgdYSZeFI)
+- [PL/V8 and PL/Python: functions edited in their own language](https://www.youtube.com/watch?v=0uxkRM3ex2U)
+- [Refactorings: the lightbulb rewrites SQL for you](https://www.youtube.com/watch?v=Mfr1j4pGQ1I)
+- [Query extensions: SQL files with annotations](https://www.youtube.com/watch?v=8tOLJhyk-0E)
+- [DBA tools as extensions](https://www.youtube.com/watch?v=CL4u4m4qfKo)
+- [A grid for millions of rows](https://www.youtube.com/watch?v=aGKpahWAfTg)
+- [EXPLAIN and the plan visualizer](https://www.youtube.com/watch?v=B0QXuUPePc8)
+- [Charts over your query results](https://www.youtube.com/watch?v=MiyHdIKaAlY)
 
 More, about a minute each:
 [Connections and objects](https://www.youtube.com/playlist?list=PLaGGK16T-VQw) ·
@@ -499,7 +569,10 @@ More, about a minute each:
 [Data and the grid](https://www.youtube.com/playlist?list=PLT3-TpTaniTc) ·
 [Annotations and extensions](https://www.youtube.com/playlist?list=PLOpBX3NpZSy0) ·
 [PostgreSQL extensions](https://www.youtube.com/playlist?list=PLHw_hYKYYgq4) ·
-[Workspace](https://www.youtube.com/playlist?list=PLaIRU3PzWLLA)
+[Workspace](https://www.youtube.com/playlist?list=PLaIRU3PzWLLA) ·
+[Diagrams and the Database Dictionary](https://www.youtube.com/playlist?list=PLJSKXWfnqeb8)
+
+In the app, Help > Videos searches them all, step by step.
 
 ## Who makes it
 

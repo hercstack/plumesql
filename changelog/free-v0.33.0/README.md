@@ -1,7 +1,42 @@
 # PlumeSQL 0.33.0
 
-## Highlights
+Design a database on a diagram, from a sketch or a logical model to real tables, and edit
+them right on their cards. Keep what every table and column means in a Database Dictionary beside
+your code, which GitHub shows as a page and your team and your AI agents read. Write functions in
+JavaScript and Python as well as PL/pgSQL, each in a script of its own that says what PostgreSQL
+will do before you run it. Make any object from the object tree, read DDL laid out for people, and
+work against PostgreSQL 19. And the video tour is a help you can search.
 
+## Highlights
+- **Edit tables on the diagram:** double-click a table's card and change its columns right
+  there, without leaving the diagram, and draw its foreign keys to other tables.
+- **Comments, written on the diagram:** every card shows its object's comment as Markdown, a
+  click on a chosen card's comment edits it right there, and a long one says how much it leaves
+  out. Comments are the
+  knowledge of your database, for people and for the tools that read it.
+- **Sketch the model with notes:** draw arrows between notes on a diagram, then make them tables
+  in one step, and a new table a note again.
+- **From a logical model to tables:** crow's foot marks on the lines between notes, logical types,
+  and Make Table turns the model into tables, join tables included.
+- **A model from Mermaid:** Import from Mermaid (or just paste) Mermaid's erDiagram text on a
+  diagram, and its entities become notes and its relationships lines with crow's feet, ready to
+  make tables.
+- **A sketch style for diagrams:** the whole diagram drawn as by hand, as draw.io's sketch style
+  draws it.
+- **Lines of your own on a diagram:** join any two tables, notes or areas with a line, for what
+  the database does not say, styled and labeled your way.
+- **Diagrams in the console:** ask a diagram questions and change it with a line of
+  JavaScript in the Log's console: what drifted from the database, every audit table greyed,
+  the tables a schema has that the diagram leaves out added, a data dictionary in Markdown.
+- **A Database Dictionary:** a Markdown document of your database, kept up to date by PlumeSQL
+  and readable on GitHub, where the team writes what every table, column and function is for,
+  and those words go to the database as comments.
+- **Diagram and Dictionary menus:** both have a menu of their own in the menu bar, and every
+  item is in the Command Palette too.
+- **Functions and procedures in a script of their own:** Edit Function opens a function's code
+  ready to change, and any script with one `CREATE FUNCTION` is one too: it says before the run
+  what PostgreSQL will do with a changed signature, writes a call and a test for it, and its
+  properties, comment and grants in Properties are written into it.
 - **Functions in JavaScript and Python:** a PL/V8 or PL/Python function is edited the way a
   PL/pgSQL one is: drawn in its own language, completed, checked, navigated and outlined, and the
   SQL inside its queries completes your tables and columns. A query's rows and a trigger's `NEW`
@@ -11,32 +46,6 @@
   from a right click on any row or from the + in the tree's header.
 - **A table's Design reads what you write in it:** defaults, checks and index keys complete the
   table's columns, and a column the table does not have is caught before anything runs.
-- **PostgreSQL 19:** released on 19 November and supported here, tested the same way as every
-  release since 13.
-- **Comments, written on the diagram:** every card shows its object's comment as Markdown, a
-  click on a chosen card's comment edits it right there, and a long one says how much it leaves
-  out. Comments are the
-  knowledge of your database, for people and for the tools that read it.
-- **Edit tables on the diagram:** double-click a table's card and change its columns right
-  there, without leaving the diagram, and draw its foreign keys to other tables.
-- **Sketch the model with notes:** draw arrows between notes on a diagram, then make them tables
-  in one step, and a new table a note again.
-- **A sketch style for diagrams:** the whole diagram drawn as by hand, as draw.io's sketch style
-  draws it.
-- **Lines of your own on a diagram:** join any two tables, notes or areas with a line, for what
-  the database does not say, styled and labeled your way.
-- **From a logical model to tables:** crow's foot marks on the lines between notes, logical types,
-  and Make Table turns the model into tables, join tables included.
-- **Diagrams in the console:** ask a diagram questions and change it with a line of
-  JavaScript in the Log's console: what drifted from the database, every audit table greyed,
-  the tables a schema has that the diagram leaves out added, a data dictionary in Markdown.
-- **A model from Mermaid:** Import from Mermaid (or just paste) Mermaid's erDiagram text on a
-  diagram, and its entities become notes and its relationships lines with crow's feet, ready to
-  make tables.
-- **Functions and procedures in a script of their own:** Edit Function opens a function's code
-  ready to change, and any script with one `CREATE FUNCTION` is one too: it says before the run
-  what PostgreSQL will do with a changed signature, writes a call and a test for it, and its
-  properties, comment and grants in Properties are written into it.
 - **DDL, laid out your way:** a function's parameters one per line, a table's columns lined up,
   and none of what PostgreSQL would assume anyway, each rule a setting of its own.
 - **Properties from a right click:** a table, a schema or a file shows its properties from
@@ -53,13 +62,10 @@
 - **A query plan tied to its query:** the Explain plan extension marks in your query what a step
   reads, chooses the step the caret is on, says where a wrong estimate starts and offers the
   statistics or the index that fixes it, read from your own tables.
-- **A Database Dictionary:** a Markdown document of your database, kept up to date by PlumeSQL
-  and readable on GitHub, where the team writes what every table, column and function is for,
-  and those words go to the database as comments.
+- **PostgreSQL 19:** released on 19 November and supported here, tested the same way as every
+  release since 13.
 - **Videos you can search:** Help > Videos finds a video by its words and by every step it
   shows, and plays it from the step you looked for.
-- **Diagram and Dictionary menus:** both have a menu of their own in the menu bar, and every
-  item is in the Command Palette too.
 
 ## Diagrams
 
@@ -105,6 +111,47 @@ again. The new key is drawn at once, as a pending line, and waits in the Changes
 the rest; ON DELETE and the other options are in Properties. Until it is created, the line is
 the key: delete the line (or choose **Remove Foreign Key** on it) and the key goes too.
 
+### Comments shown on every card, as Markdown
+
+An object's comment says what it is: what a table holds, what a column means. That knowledge
+belongs in the database, where people and the tools that read it find it, and the diagram is
+where you see the model it describes. Now it is written there too.
+
+Each card shows its object's comment by default, as Markdown (headings, bold, lists, code), in
+a block of its own above the columns, so formatted words are never mistaken for a column. A
+schema's frame can say how many of its objects are documented.
+
+![A schema on a diagram: the film table's comment as Markdown on its card, cut with +9 lines, the actor card offering Add a comment, the frame saying 1 of 2 documented](media/diagram-comments.webp)
+
+### Comments edited where you read them
+
+Click the comment of a chosen card to edit it on the card (⌘Enter keeps it, Escape takes it
+back; the first click on a card chooses it); an object
+without one shows **Add a comment…** in its place. Its corner opens it in the Markdown editor
+instead, with the rendered text beside it, and a card's right click has **Edit Comment…**, a
+column's row **Edit Comment of** the column. Every edit is a pending change, like any other:
+nothing reaches the database until you run it. **Show Comment as Note** puts a comment on the
+canvas to rework, and a note on an object has **Save as Comment**.
+
+![The actor table's comment edited right on its card, in Markdown](media/diagram-comment-inline.webp)
+
+### Long comments, never cut without a word
+
+A card shows four lines of a comment by default; when there is more, it says so (**+9 lines**),
+and a click on it shows the whole comment beside the card. Show ▸ **Comment Length** chooses
+how much a card shows: Summary (the first paragraph), 4 lines, 8 lines or the whole. Write a
+one-line summary first and the details after a blank line, and Summary reads like a docstring.
+The canvas's own right click has **Show** for what every card of the diagram shows.
+
+![A long comment cut at four lines, and the whole of it in a popup beside the card, with Edit](media/diagram-comment-long.webp)
+
+### A comment saved without opening the script
+
+The pending changes' right click in the status bar has **Run Changes…**: the script that will
+run is shown whole in its question, so a change as small as a comment needs no tab opened.
+
+![Run Changes from the status bar: the COMMENT ON statement shown before it runs](media/run-changes.webp)
+
 ### Sketch with notes, then make tables
 
 A model often starts as a sketch: a box for each thing, an arrow between the ones that belong
@@ -132,6 +179,55 @@ note becomes a table not created yet, its card where the note stood:
 As with every change made on the diagram, nothing reaches the database until you review the
 Changes script and run it. Changed your mind? **Make Note** on a new table writes it back as a
 note, its keys as arrows, and the diagram's Undo goes back either way.
+
+### From a logical model to tables
+
+A sketch says what the things are. A logical model also says how many: a customer places zero
+or many orders, every order belongs to exactly one customer. Now a line between notes can say
+that too, in crow's foot notation: pick **Start** and **End** on its right click or its page in
+Properties (one, exactly one, zero or one, many, one or many, zero or many).
+
+![A logical model on a diagram: notes with their attributes, lines with crow's feet between them](media/logical-model.webp)
+
+**Make Table** reads the marks:
+
+- The foreign key goes on the **many** side, whichever way you drew the line.
+- **Exactly one** on the other end makes the key NOT NULL; zero or one leaves it optional.
+- **Many on both ends** makes a join table between the two (`order_product`), with a key to
+  each and both as its primary key.
+- **One on both ends** makes the key UNIQUE.
+
+Attributes can stay logical too: write `- total currency` or `- placed datetime` and the table
+gets `numeric(12,2)` and `timestamptz`; an attribute with no type at all gets `text`. The list
+of logical types is yours to change in Settings.
+
+![The same model made tables: keys named customer_id and order_id, the join table between orders and products](media/logical-tables.webp)
+
+### A model from Mermaid
+
+A model often starts as text: in a document, a wiki page, or an answer from an AI assistant,
+written in Mermaid's `erDiagram`. Choose **Insert ▸ Import from Mermaid…** on a diagram's toolbar
+(or on its right click): the model you copied is already in (chosen, so pasting something else
+replaces it), and before anything happens the dialog says what it will make. Copied a whole README? Fine: the model is read out of its
+```` ```mermaid ```` block. Or skip the dialog and just **Paste** on the diagram (⌘V).
+
+![Import from Mermaid: the model's text, and what it will make before anything is done](media/mermaid-import.webp)
+
+Each entity becomes a note with its attributes, each relationship a line with its crow's feet
+and its words, and an entity named like a table already on the diagram joins that table's
+card instead. Then **Make Table**, as with any notes.
+
+```
+erDiagram
+  customers ||--o{ reviews : writes
+  products ||--o{ reviews : gets
+  reviews {
+    int rating
+    string body
+  }
+```
+
+![A model pasted as Mermaid: a reviews note joined to the customers and products tables by crow's foot lines](media/mermaid-model.webp)
 
 ### Sketch style
 
@@ -173,29 +269,6 @@ gives it back as a new one is drawn in one step: its look, its waypoints and its
 works on foreign key lines too. And a note's line to what it is attached to is now a line like
 any other, Step and Smooth included.
 
-### From a logical model to tables
-
-A sketch says what the things are. A logical model also says how many: a customer places zero
-or many orders, every order belongs to exactly one customer. Now a line between notes can say
-that too, in crow's foot notation: pick **Start** and **End** on its right click or its page in
-Properties (one, exactly one, zero or one, many, one or many, zero or many).
-
-![A logical model on a diagram: notes with their attributes, lines with crow's feet between them](media/logical-model.webp)
-
-**Make Table** reads the marks:
-
-- The foreign key goes on the **many** side, whichever way you drew the line.
-- **Exactly one** on the other end makes the key NOT NULL; zero or one leaves it optional.
-- **Many on both ends** makes a join table between the two (`order_product`), with a key to
-  each and both as its primary key.
-- **One on both ends** makes the key UNIQUE.
-
-Attributes can stay logical too: write `- total currency` or `- placed datetime` and the table
-gets `numeric(12,2)` and `timestamptz`; an attribute with no type at all gets `text`. The list
-of logical types is yours to change in Settings.
-
-![The same model made tables: keys named customer_id and order_id, the join table between orders and products](media/logical-tables.webp)
-
 ### Keys named your way
 
 A new table's key is now named for the table in the singular: `customer_id` for customers,
@@ -206,32 +279,6 @@ type of a column you gave none. New Table, Make Table and the foreign keys you d
 all follow them.
 
 ![Settings, Editing tables: a new table's first column, its key name in the singular with _id, and the key's type](media/keys-settings.webp)
-
-### A model from Mermaid
-
-A model often starts as text: in a document, a wiki page, or an answer from an AI assistant,
-written in Mermaid's `erDiagram`. Choose **Insert ▸ Import from Mermaid…** on a diagram's toolbar
-(or on its right click): the model you copied is already in (chosen, so pasting something else
-replaces it), and before anything happens the dialog says what it will make. Copied a whole README? Fine: the model is read out of its
-```` ```mermaid ```` block. Or skip the dialog and just **Paste** on the diagram (⌘V).
-
-![Import from Mermaid: the model's text, and what it will make before anything is done](media/mermaid-import.webp)
-
-Each entity becomes a note with its attributes, each relationship a line with its crow's feet
-and its words, and an entity named like a table already on the diagram joins that table's
-card instead. Then **Make Table**, as with any notes.
-
-```
-erDiagram
-  customers ||--o{ reviews : writes
-  products ||--o{ reviews : gets
-  reviews {
-    int rating
-    string body
-  }
-```
-
-![A model pasted as Mermaid: a reviews note joined to the customers and products tables by crow's foot lines](media/mermaid-model.webp)
 
 ### Diagrams in the console
 
@@ -255,63 +302,135 @@ Every change is the diagram's own gesture, one step of its Undo (`diagram.undo()
 
 ![The console under a diagram: the cards printed as a table, audit tables added and folded with one line each](media/diagram-console.webp)
 
-## Properties
+### A query for a diagram is written in a script
 
-### Properties from a right click
+A query card's SQL used to be typed on the card itself, with no completion, no checks and no
+formatting. A query is now written where the editor helps: a diagram's **Insert ▸ Query…**
+and **Add Query Here…** open a new script on the diagram's connection. Write the query, run
+it, and **Add to Diagram…** lists that diagram first, so one Enter puts the card there (where
+you asked, for Add Query Here).
 
-Right-click an object or a schema in Objects, or a file in the Explorer, and choose
-**Properties**: PlumeSQL opens it as a click would and shows the Properties tab beside it, even
-when you had switched the tab off. A schema's Properties are the schema's own, its comment
-ready to edit. From Objects, Properties opens below the tree, so the row you asked about stays
-in sight, and the × in its header closes it there. When Properties already shows it, the menu leaves the entry
-out, and the same goes for a diagram's Display, Line or Note Properties and for Editor
-Properties.
+![A diagram's right click: Add Note Here, Add Text Here, Add Query Here…, New Table Here…, Add Area Here, Import from Mermaid…](media/diagram-query.webp)
 
-![Properties below the object tree: the customer table chosen above, its kind, schema, name and comment below](media/properties-right-click.webp)
+A card from a script is edited in its script, as before. A card of its own (detached, or made
+on the canvas by an earlier version) keeps its SQL as it is and still runs it: a double click
+or **Open as Script** opens the SQL in a new script, to be written again and added back.
 
-## Status bar
+### A selection on a diagram is a solid outline
 
-### The last run, and the search_path
+A table not created yet is drawn with a dashed blue border, and a selected one was marked by a
+dashed blue outline too, its dashes walking. With the motion off they looked the same. Now:
 
-The status bar now says how the script's last run went, in the words of the results: `245
-rows in 18 ms · 2m ago`, **Failed** in red, a counter while it runs. A click brings the results
-back into sight, a failed run's messages first, even when you folded them away.
+- **A selection is a solid outline** with a square handle at each corner, around a table, a
+  note, an area or a schema's frame.
+- **A selected line is drawn wider**, with its handles as before.
+- **Dashed blue means only one thing:** a table, a column or a foreign key not in the database
+  yet. A new table that is selected shows both, its dashed border and the solid outline.
 
-Beside it stands the session's `search_path`, where names written without a schema are looked
-up. Click it to put one of your schemas first, write the list yourself or reset it to the
-server's default: each is a `SET` on the tab's own session, as if you had typed it.
+![Three tables on a diagram: payment, new and selected, has its dashed border inside a solid outline with a handle at each corner](media/diagram-selection.webp)
 
-They use only the room the status bar has free: on a narrower window they step aside,
-`search_path` first, and nothing else moves for them.
+The setting that stopped the walking dashes is gone, with nothing left to move.
 
-![The status bar: the session's search_path, then 3 rows in 1 ms, just now](media/status-last-run.webp)
+## A Database Dictionary
 
-The connection stands out now too: on a field of its own, in its color when it has one, its
-name first and in full strength, with a chevron that says it is a picker. The session's pid and
-age moved into its tooltip.
+What a table is for, why a column can be empty, which function the nightly job calls: that
+knowledge usually lives in people's heads. A Database Dictionary gathers it in one Markdown file
+beside your code, of one connection, that PlumeSQL keeps up to date and GitHub shows as a page.
 
-## Commit and Rollback in the toolbar
+- **Made from a right click, like a diagram.** Add to Dictionary… stands beside Add to Diagram…
+  on a connection, a schema, a folder of tables or views, and a single table or function. Pick
+  one of the connection's dictionaries and what you clicked joins it, or type a path for a new
+  one (`docs/database/<database>.md` is proposed) that holds just that. Leave Out of Dictionary
+  takes it out again.
+- **Choose what it holds like you filter Objects.** Its Properties page has the Object
+  filter's tree: every schema opens into its tables, views, functions, procedures, types and
+  sequences, and a check means it is in the dictionary. Objects you added one by one or left out
+  are listed below it, one click from undoing, and Add Object… brings in one more by name.
+- **Everything about each object.** A header that opens with what the database is for, the
+  database's own comment, written right there in the document like any other comment, then its
+  extensions and how much of it is documented; a table of contents; the relationships as a
+  Mermaid diagram, which GitHub draws, every table a card with its name (and, if you like, its
+  key); and for every table its comment, its columns with their types, defaults and keys, every
+  foreign key linked to the column it points at, what refers to it, its checks, indexes,
+  triggers and policies, and how big it is. Views, functions, procedures, enums and domains have
+  theirs.
+- **A link to every column.** Each column has its own anchor, so a URL can point at it, and a
+  link in a review or an issue opens the document right there.
+- **Write in it, and the database gets it.** Click a table's, a column's or a function's comment
+  right in the preview and write: it waits in the pending changes as `COMMENT ON`, and runs when
+  you run the changes. A note a diagram attaches to a table is in the document too, and what you
+  write there goes back to the diagram.
+- **Your team writes in it too, with or without PlumeSQL.** It is plain Markdown: a teammate
+  writes a comment on GitHub or in any editor, and when you pull, PlumeSQL keeps their words and
+  takes them into your pending changes. The Log names every comment it took, and quotes what
+  your database said before, so nothing changes without you seeing it. Two people who write the
+  same comment and both commit get a merge conflict, and PlumeSQL leaves such a file alone until
+  it is resolved, and says so.
+- **Always current, and quiet in git.** When the database changes, a comment waits, a
+  diagram is saved, or you come back to PlumeSQL after a pull, the document is written again, only in the parts PlumeSQL keeps: your own
+  text around them is never touched, and a file that did not change is not written. It holds
+  only what your team shares, nothing of one computer's server or connection, so your
+  teammates' updates do not rewrite it. Sizes are said in ranges, and only a gesture of yours
+  writes them anew, so another computer's data never changes the file.
+- **A strip over it.** Whose dictionary it is, when it was updated, how much is documented,
+  what waits to run. There is no update button: it follows the database on its own, and
+  Refresh in the Objects tab reads the database again when you want it now.
+- **Statistics you choose.** Under each table its rows, size, scans and the day it was last
+  read; switch on what is written into it, how much each index is used, how often a function
+  is called, vacuum and analyze. The header says the day they were collected and since when
+  the server counts, and a table nobody read says `not read since 2026-09-14`.
+- **Nothing read behind your back.** Statistics are collected only when you press Collect
+  Statistics, never on their own and never with anything else, so on a production server every read
+  is one you asked for by name.
+- **Tables that fit the page.** A table's columns read as Column, Type and Comment: the key
+  beside the name (a foreign key an arrow to the column it points to), `not null` and the
+  default with the type, one line a row, so GitHub shows the whole table and your comments get
+  the room. A column's name is its link. Each fact can have a column of its own, go under the
+  name or go away, in Properties under Columns.
+- **Shaped your way.** Properties says how every part reads: the contents as an overview table
+  with what each table is for, undocumented objects left out, sections by kind or by name,
+  shorter headings, long column tables folded, a view's SQL under it, the diagram left to right
+  or one per schema, and which diagrams' notes it carries, each a checkbox. A function's code can
+  fold under it too.
+- **Everything links.** A column's type goes to its enum or domain, a trigger to its function,
+  an index to its columns, a foreign key to the column it points to: whatever has its place in
+  the document is a link to it, and nothing links to what is not there.
+- **A right click that knows where you are.** On a column: edit its comment, copy its name or a
+  link to it. On a table: Browse Data, Open DDL, Edit Table and the rest of its menu in Objects,
+  in the same words. Then the dictionary's own: Collect Statistics, Review Changes, Markdown.
+- **Search it.** The strip has the search every page has: type, and every place is marked,
+  with 1 of N and the arrows. ⌘F in the dictionary goes there.
+- **Its Markdown says what is yours.** The parts PlumeSQL writes are shaded, and the strip says
+  so. Your own text and the comments are kept; an edit in a shaded part is not, and the Log
+  says where it was.
+- **Its page in Properties.** What it holds, what it shows in sections (Statistics,
+  Relationships), when its objects were read and its
+  statistics collected, and its connection at the end, in the connection's color, as a script's
+  page shows it. An object's right click leaves it out of the dictionary or puts it back.
+- **Shared with the team.** The document itself says it is a dictionary and what it holds, so
+  a teammate's checkout knows it at once: it wears a book in the Explorer before it is opened,
+  and when they have one connection to that database, Bind to it is one click.
+- **A menu of its own.** The Dictionary menu in the menu bar has everything for the dictionary
+  in front, and so does the Command Palette. Diagrams got their own Diagram menu too, with the
+  toolbar's actions by name.
+- **It reads like a document.** It opens as it reads, with only what your team writes marked as
+  editable, an empty comment inviting yours; a longer one opens in a tab from the field's corner,
+  as Markdown rendered beside it. One Markdown button on its strip shows the source, and the
+  relationships open as a PlumeSQL diagram of those tables.
 
-### The open transaction's end, beside the connection
+![A Database Dictionary of dvdrental in the preview: the rental table's comment and its statistics, its columns with their types, keys linked to the columns they reference and a column's comment, then its references, indexes and trigger linked, under the dictionary's strip](media/database-dictionary.webp)
 
-When a script opens a transaction, the editor toolbar already marked it with an amber **tx**.
-Now **Commit** and **Rollback** stand right beside it, for as long as the transaction is open,
-and go when it ends:
+### Markdown files in the Explorer
 
-![The editor toolbar in a transaction: the connection marked tx, then Commit and Rollback beside it](media/tx-commit-rollback.webp)
+`.md` files are a kind of their own in the Explorer's filter, Markdown documents, and show by
+default like your SQL scripts and diagrams: a Database Dictionary or a README is there without
+Show All.
 
-They run exactly `COMMIT` and `ROLLBACK` on the script's session, as if you had typed them, and
-the results stay as they are. Their tooltips say what you are about to end: the rows changed,
-the schema changes, how long the transaction has been open. Commit still asks first on a
-connection set to confirm a commit.
+### A double click in a Markdown preview selects text
 
-Once a statement fails inside the transaction, nothing but a rollback can run on that session,
-so only **Rollback** stays, in red:
-
-![A failed transaction: the connection marked tx failed, and Rollback alone in red](media/tx-failed.webp)
-
-The connection's right click and the command palette (**Commit Transaction**, **Rollback
-Transaction**) have them too.
+In a Database Dictionary, a README or any Markdown file's preview, a double click selects a word
+and a triple click a paragraph, as in any text, instead of jumping to the source. The Markdown
+button (Source, for other files) takes you to the source.
 
 ## Functions and procedures
 
@@ -442,49 +561,6 @@ the tree leaves them out: completion, hover and Go to Definition still know them
 
 ![Functions and procedures with their language at the end of each row, and the same routines grouped into a plpgsql folder and a sql folder](media/routine-language.webp)
 
-## Comments on the diagram
-
-An object's comment says what it is: what a table holds, what a column means. That knowledge
-belongs in the database, where people and the tools that read it find it, and the diagram is
-where you see the model it describes. Now it is written there too.
-
-### Shown on every card, as Markdown
-
-Each card shows its object's comment by default, as Markdown (headings, bold, lists, code), in
-a block of its own above the columns, so formatted words are never mistaken for a column. A
-schema's frame can say how many of its objects are documented.
-
-![A schema on a diagram: three tables with their comments as Markdown, the frame saying 3 of 4 documented](media/diagram-comments.webp)
-
-### Edited where you read it
-
-Click the comment of a chosen card to edit it on the card (⌘Enter keeps it, Escape takes it
-back; the first click on a card chooses it); an object
-without one shows **Add a comment…** in its place. Its corner opens it in the Markdown editor
-instead, with the rendered text beside it, and a card's right click has **Edit Comment…**, a
-column's row **Edit Comment of** the column. Every edit is a pending change, like any other:
-nothing reaches the database until you run it. **Show Comment as Note** puts a comment on the
-canvas to rework, and a note on an object has **Save as Comment**.
-
-![A table's comment edited right on its card](media/diagram-comment-inline.webp)
-
-### Long comments, never cut without a word
-
-A card shows four lines of a comment by default; when there is more, it says so (**+9 lines**),
-and a click on it shows the whole comment beside the card. Show ▸ **Comment Length** chooses
-how much a card shows: Summary (the first paragraph), 4 lines, 8 lines or the whole. Write a
-one-line summary first and the details after a blank line, and Summary reads like a docstring.
-The canvas's own right click has **Show** for what every card of the diagram shows.
-
-![A long comment cut at four lines, the whole of it beside the card](media/diagram-comment-long.webp)
-
-### Run a small change without opening the script
-
-The pending changes' right click in the status bar has **Run Changes…**: the script that will
-run is shown whole in its question, so a change as small as a comment needs no tab opened.
-
-![Run Changes from the status bar: the COMMENT ON statement shown before it runs](media/run-changes.webp)
-
 ## Functions in JavaScript and Python
 
 PostgreSQL runs functions written in JavaScript (PL/V8) and in Python (PL/Python), and now the
@@ -597,41 +673,9 @@ PL/Python** beside the empty server's version, name and port, and once the serve
 script installs PL/Python in the container and creates the extension in its `postgres`
 database. Both are lines of the script you read before it runs, like the rest of it.
 
-## DDL, laid out your way
+## Tables and objects
 
-The DDL in the Objects tab is now written to be read. A function's or a procedure's parameters
-stand one per line, then `RETURNS`, each label (`IMMUTABLE`, `SECURITY DEFINER`, `SET ...`) on a
-line of its own and `LANGUAGE` last. Its body is never touched.
-
-![A function's DDL: its parameters one per line, defaults written as = value, every clause on its own line](media/ddl-routine.webp)
-
-A table's columns line up, the names, the types and the rest each in a column of their own. And
-what PostgreSQL writes but would assume anyway is left out: a parameter's `IN`, a default's cast
-to its own type (`DEFAULT 'new'`, not `DEFAULT 'new'::text`), `nextval`'s `::regclass`, an
-identity column's sequence options while they are the defaults, an index's `USING btree`. A
-function's body is delimited by `$$` where PostgreSQL writes `$function$`, in Edit Function too;
-a body that holds `$$` itself keeps PostgreSQL's delimiter, and the body is never touched.
-
-![A table's DDL: its columns lined up, an identity and a default written the short way, an index without USING btree](media/ddl-table.webp)
-
-Every rule is a setting in **Settings ▸ Snapshot**, and each can be set apart for a group of
-connections or for one connection in its editor:
-
-| Setting | Default | The other way |
-|---|---|---|
-| DDL lists | parameters one per line | on one line |
-| Routine clauses | each on its own line | after the parameters |
-| Short form | on | everything as PostgreSQL writes it |
-| Align columns | on | off |
-| DDL indent | four spaces | two spaces, or a tab |
-| Foreign keys | in the table | after it, as `ALTER TABLE ... ADD CONSTRAINT`, the way `pg_dump` writes them |
-| CREATE OR REPLACE | off | views, functions, procedures and aggregates written `CREATE OR REPLACE` |
-
-DDL keyword case, the setting that writes keywords in lower case, now applies to a function's head
-too. However you set them, the DDL is the same object: we replay it into an empty database on
-PostgreSQL 13 to 19 and check it reads back exactly as it was.
-
-## New objects from the object tree
+### New objects from the object tree
 
 The object tree could open, edit and drop everything, and make only a table, from one row you
 had to know. Now every row has **New**, and so does a **+** in the tree's header: Table…, View…,
@@ -669,7 +713,7 @@ transaction, everything or nothing:
 
 ![A trigger function made from the orders table: the function, its trigger below, and NEW. completing the table's columns](media/new-trigger-function.webp)
 
-## The table Design reads its expressions
+### The table Design reads its expressions
 
 A default, a check, an index's keys and its `WHERE` were plain text fields: `price > 0` on a
 table with no `price` went all the way to the server to be refused. Now the Design reads them.
@@ -696,33 +740,151 @@ table with no `price` went all the way to the server to be refused. Now the Desi
 - **A new table can be made** Unlogged, partitioned, with storage parameters and a tablespace,
   and its Type list knows the new enums that wait in the pending changes.
 
-## PostgreSQL 19
+### DDL, laid out your way
 
-PostgreSQL 19 came out on 19 November 2026, and PlumeSQL supports it: 13 to 19 now. The object
-tree, the DDL of every object and the table editor are tested on a real PostgreSQL 19 the same
-way as on every other release, replaying each object's DDL and checking it reads back exactly
-as it was.
+The DDL in the Objects tab is now written to be read. A function's or a procedure's parameters
+stand one per line, then `RETURNS`, each label (`IMMUTABLE`, `SECURITY DEFINER`, `SET ...`) on a
+line of its own and `LANGUAGE` last. Its body is never touched.
 
-- **The editor knows 19's words** when your server is a 19: `REPACK`, `WAIT FOR LSN`,
-  `IGNORE NULLS` and `RESPECT NULLS` in window functions, the `oid8` and `regdatabase` types
-  and the new functions, and `REPACK` and `WAIT` open their pages of the PostgreSQL 19
-  reference. On an older server they stay plain words, as that server would read them.
-- **19's new objects in the DDL:** a publication `FOR ALL SEQUENCES`, one `FOR ALL TABLES
-  EXCEPT (TABLE ...)`, and a foreign data wrapper's `CONNECTION` function.
-- **Backups of a 19 server:** System offers the PostgreSQL 19 client tools and finds the ones
-  you have. A `pg_dump` older than the server refuses it, so a 19 server needs 19's.
-- **A 19 server of your own:** Get a server's empty server offers PostgreSQL 19, with PL/Python
-  if you like.
-- **REPACK where it helps:** the warning on `VACUUM FULL` and `CLUSTER`, which lock the table
-  while they rewrite it, names `REPACK (CONCURRENTLY)` on a 19 server, which does not.
-- **The extensions run on 19:** every query extension in the Marketplace is executed on
-  PostgreSQL 19 too, and the plan viewer reads 19's plans.
+![A function's DDL: its parameters one per line, defaults written as = value, every clause on its own line](media/ddl-routine.webp)
 
-One thing is still on its way: the copy of PostgreSQL's own parser inside the editor is 18's
-until its 19 build is published. On a 19 server that costs the new statements a little
-precision in completion, never a false error: your server judges the syntax, as always.
+A table's columns line up, the names, the types and the rest each in a column of their own. And
+what PostgreSQL writes but would assume anyway is left out: a parameter's `IN`, a default's cast
+to its own type (`DEFAULT 'new'`, not `DEFAULT 'new'::text`), `nextval`'s `::regclass`, an
+identity column's sequence options while they are the defaults, an index's `USING btree`. A
+function's body is delimited by `$$` where PostgreSQL writes `$function$`, in Edit Function too;
+a body that holds `$$` itself keeps PostgreSQL's delimiter, and the body is never touched.
 
-## A query plan tied to its query
+![A table's DDL: its columns lined up, an identity and a default written the short way, an index without USING btree](media/ddl-table.webp)
+
+Every rule is a setting in **Settings ▸ Snapshot**, and each can be set apart for a group of
+connections or for one connection in its editor:
+
+| Setting | Default | The other way |
+|---|---|---|
+| DDL lists | parameters one per line | on one line |
+| Routine clauses | each on its own line | after the parameters |
+| Short form | on | everything as PostgreSQL writes it |
+| Align columns | on | off |
+| DDL indent | four spaces | two spaces, or a tab |
+| Foreign keys | in the table | after it, as `ALTER TABLE ... ADD CONSTRAINT`, the way `pg_dump` writes them |
+| CREATE OR REPLACE | off | views, functions, procedures and aggregates written `CREATE OR REPLACE` |
+
+DDL keyword case, the setting that writes keywords in lower case, now applies to a function's head
+too. However you set them, the DDL is the same object: we replay it into an empty database on
+PostgreSQL 13 to 19 and check it reads back exactly as it was.
+
+### Properties from a right click
+
+Right-click an object or a schema in Objects, or a file in the Explorer, and choose
+**Properties**: PlumeSQL opens it as a click would and shows the Properties tab beside it, even
+when you had switched the tab off. A schema's Properties are the schema's own, its comment
+ready to edit. From Objects, Properties opens below the tree, so the row you asked about stays
+in sight, and the × in its header closes it there. When Properties already shows it, the menu leaves the entry
+out, and the same goes for a diagram's Display, Line or Note Properties and for Editor
+Properties.
+
+![Properties below the object tree: the customer table chosen above, its kind, schema, name and comment below](media/properties-right-click.webp)
+
+### A shorter right click in Objects
+
+An object's menu was long. It now reads in groups: open it, work with it, take it somewhere,
+then the tree's own entries.
+
+- **Diagram** holds Add to Diagram… and Reveal in Diagram….
+- **Data** holds Copy As, Export and Paste Rows….
+- **Copy** holds the scripts to the clipboard too, under its Script.
+- **Clicks** holds On Click and On Double-Click, in every tree.
+- A table's comment is edited in **Properties**, now on the same menu. A column's row still
+  has Edit Comment…, and the DDL view's header the form with every comment of the table.
+
+![A table's right click in Objects: Browse Data, Open DDL and Edit Table, then the groups, Diagram, Data, Copy, Refresh, Pin and Hide](media/objects-menu.webp)
+
+### An object's statistics say since when they count
+
+A table's Properties beside its DDL show when it was last read (an index's last use), the rows
+written into it, and **Counted since**: when the server began counting, as long ago as it was.
+"Not read" means not read since then, and you can see when that was. Last read needs
+PostgreSQL 16 or later.
+
+## Writing and running SQL
+
+### Everything for a statement in its right click
+
+Right-click a statement in the editor and the menu is in parts, each headed by what it acts on:
+
+- **The statement** (`SELECT shop.orders`): Run Statement (Run Selection when text is
+  selected), Explain, Select Statement, Copy Statement, Format Statement, Refactorings,
+  Extensions and Add to Diagram….
+- **The word under the cursor** (`Column data_point_id`, `Table orders`): Go to Definition,
+  References, Peek and Rename.
+- **The whole script** (`orders.sql`): **Run** (Run All, Run from Here, Run to Here) and
+  **Format** (Format Document, Format Document With…).
+
+**Run from Here** runs the script from the statement under the cursor to the end, **Run to
+Here** from its start through that statement, each selected first so you see what runs. A
+script that stopped at a failed statement goes on from it once you fixed it.
+
+![The editor's right click in three parts, each headed by what it acts on: the statement, the word under the cursor, the whole script](media/editor-menu.webp)
+
+Then the clipboard (with Paste as Table… and Insert Annotation), and **Lens and Gutter**, the
+lens's own list of what shows above and beside each statement. The statement's rows do exactly
+what its lens items and gutter buttons do, so switching the lens and the gutter off costs you
+nothing. The Command Palette left the menu: F1 opens it.
+
+A statement's row in the Outline and in the Explorer has the same rows in the same words:
+**Explain** is there now, and in the Outline **Add to Diagram…** too.
+
+### The last run and the search_path, in the status bar
+
+The status bar now says how the script's last run went, in the words of the results: `245
+rows in 18 ms · 2m ago`, **Failed** in red, a counter while it runs. A click brings the results
+back into sight, a failed run's messages first, even when you folded them away.
+
+Beside it stands the session's `search_path`, where names written without a schema are looked
+up. Click it to put one of your schemas first, write the list yourself or reset it to the
+server's default: each is a `SET` on the tab's own session, as if you had typed it.
+
+They use only the room the status bar has free: on a narrower window they step aside,
+`search_path` first, and nothing else moves for them.
+
+![The status bar: the session's search_path, then 3 rows in 1 ms, just now](media/status-last-run.webp)
+
+The connection stands out now too: on a field of its own, in its color when it has one, its
+name first and in full strength, with a chevron that says it is a picker. The session's pid and
+age moved into its tooltip.
+
+### Commit and Rollback beside the connection
+
+When a script opens a transaction, the editor toolbar already marked it with an amber **tx**.
+Now **Commit** and **Rollback** stand right beside it, for as long as the transaction is open,
+and go when it ends:
+
+![The editor toolbar in a transaction: the connection marked tx, then Commit and Rollback beside it](media/tx-commit-rollback.webp)
+
+They run exactly `COMMIT` and `ROLLBACK` on the script's session, as if you had typed them, and
+the results stay as they are. Their tooltips say what you are about to end: the rows changed,
+the schema changes, how long the transaction has been open. Commit still asks first on a
+connection set to confirm a commit.
+
+Once a statement fails inside the transaction, nothing but a rollback can run on that session,
+so only **Rollback** stays, in red:
+
+![A failed transaction: the connection marked tx failed, and Rollback alone in red](media/tx-failed.webp)
+
+The connection's right click and the command palette (**Commit Transaction**, **Rollback
+Transaction**) have them too.
+
+### Explain Analyze says what it wraps
+
+Explain Analyze really runs the statement. An `INSERT`, `UPDATE`, `DELETE`, `MERGE` or `CREATE
+TABLE AS` runs between `BEGIN` and `ROLLBACK`, so it changes nothing; a `SELECT` always runs as
+written. The Explain item's tooltip says which it will be for that statement before you click,
+and the Log records what ran, with its SQL.
+
+![The Log after Explain Analyze of an UPDATE: it ran between BEGIN and ROLLBACK, what it changed was not kept, the SQL that ran below](media/explain-log.webp)
+
+### A query plan tied to its query
 
 An extension that shows a result can now read the statement the result came from: its tables
 as your database knows them, with their indexes and their statistics, and where the query
@@ -752,96 +914,33 @@ uses all of it:
 explain-plan
 ```
 
-## A Database Dictionary
+## PostgreSQL 19
 
-What a table is for, why a column can be empty, which function the nightly job calls: that
-knowledge usually lives in people's heads. A Database Dictionary gathers it in one Markdown file
-beside your code, of one connection, that PlumeSQL keeps up to date and GitHub shows as a page.
+PostgreSQL 19 came out on 19 November 2026, and PlumeSQL supports it: 13 to 19 now. The object
+tree, the DDL of every object and the table editor are tested on a real PostgreSQL 19 the same
+way as on every other release, replaying each object's DDL and checking it reads back exactly
+as it was.
 
-- **Made from a right click, like a diagram.** Add to Dictionary… stands beside Add to Diagram…
-  on a connection, a schema, a folder of tables or views, and a single table or function. Pick
-  one of the connection's dictionaries and what you clicked joins it, or type a path for a new
-  one (`docs/database/<database>.md` is proposed) that holds just that. Leave Out of Dictionary
-  takes it out again.
-- **Choose what it holds like you filter Objects.** Its Properties page has the Object
-  filter's tree: every schema opens into its tables, views, functions, procedures, types and
-  sequences, and a check means it is in the dictionary. Objects you added one by one or left out
-  are listed below it, one click from undoing, and Add Object… brings in one more by name.
-- **Everything about each object.** A header that opens with what the database is for, the
-  database's own comment, written right there in the document like any other comment, then its
-  extensions and how much of it is documented; a table of contents; the relationships as a
-  Mermaid diagram, which GitHub draws, every table a card with its name (and, if you like, its
-  key); and for every table its comment, its columns with their types, defaults and keys, every
-  foreign key linked to the column it points at, what refers to it, its checks, indexes,
-  triggers and policies, and how big it is. Views, functions, procedures, enums and domains have
-  theirs.
-- **A link to every column.** Each column has its own anchor, so a URL can point at it, and a
-  link in a review or an issue opens the document right there.
-- **Write in it, and the database gets it.** Click a table's, a column's or a function's comment
-  right in the preview and write: it waits in the pending changes as `COMMENT ON`, and runs when
-  you run the changes. A note a diagram attaches to a table is in the document too, and what you
-  write there goes back to the diagram.
-- **Your team writes in it too, with or without PlumeSQL.** It is plain Markdown: a teammate
-  writes a comment on GitHub or in any editor, and when you pull, PlumeSQL keeps their words and
-  takes them into your pending changes. The Log names every comment it took, and quotes what
-  your database said before, so nothing changes without you seeing it. Two people who write the
-  same comment and both commit get a merge conflict, and PlumeSQL leaves such a file alone until
-  it is resolved, and says so.
-- **Always current, and quiet in git.** When the database changes, a comment waits, a
-  diagram is saved, or you come back to PlumeSQL after a pull, the document is written again, only in the parts PlumeSQL keeps: your own
-  text around them is never touched, and a file that did not change is not written. It holds
-  only what your team shares, nothing of one computer's server or connection, so your
-  teammates' updates do not rewrite it. Sizes are said in ranges, and only a gesture of yours
-  writes them anew, so another computer's data never changes the file.
-- **A strip over it.** Whose dictionary it is, when it was updated, how much is documented,
-  what waits to run. There is no update button: it follows the database on its own, and
-  Refresh in the Objects tab reads the database again when you want it now.
-- **Statistics you choose.** Under each table its rows, size, scans and the day it was last
-  read; switch on what is written into it, how much each index is used, how often a function
-  is called, vacuum and analyze. The header says the day they were collected and since when
-  the server counts, and a table nobody read says `not read since 2026-09-14`.
-- **Nothing read behind your back.** Statistics are collected only when you press Collect
-  Statistics, never on their own and never with anything else, so on a production server every read
-  is one you asked for by name.
-- **Tables that fit the page.** A table's columns read as Column, Type and Comment: the key
-  beside the name (a foreign key an arrow to the column it points to), `not null` and the
-  default with the type, one line a row, so GitHub shows the whole table and your comments get
-  the room. A column's name is its link. Each fact can have a column of its own, go under the
-  name or go away, in Properties under Columns.
-- **Shaped your way.** Properties says how every part reads: the contents as an overview table
-  with what each table is for, undocumented objects left out, sections by kind or by name,
-  shorter headings, long column tables folded, a view's SQL under it, the diagram left to right
-  or one per schema, and which diagrams' notes it carries, each a checkbox. A function's code can
-  fold under it too.
-- **Everything links.** A column's type goes to its enum or domain, a trigger to its function,
-  an index to its columns, a foreign key to the column it points to: whatever has its place in
-  the document is a link to it, and nothing links to what is not there.
-- **A right click that knows where you are.** On a column: edit its comment, copy its name or a
-  link to it. On a table: Browse Data, Open DDL, Edit Table and the rest of its menu in Objects,
-  in the same words. Then the dictionary's own: Collect Statistics, Review Changes, Markdown.
-- **Search it.** The strip has the search every page has: type, and every place is marked,
-  with 1 of N and the arrows. ⌘F in the dictionary goes there.
-- **Its Markdown says what is yours.** The parts PlumeSQL writes are shaded, and the strip says
-  so. Your own text and the comments are kept; an edit in a shaded part is not, and the Log
-  says where it was.
-- **Its page in Properties.** What it holds, what it shows in sections (Statistics,
-  Relationships), when its objects were read and its
-  statistics collected, and its connection at the end, in the connection's color, as a script's
-  page shows it. An object's right click leaves it out of the dictionary or puts it back.
-- **Shared with the team.** The document itself says it is a dictionary and what it holds, so
-  a teammate's checkout knows it at once: it wears a book in the Explorer before it is opened,
-  and when they have one connection to that database, Bind to it is one click.
-- **A menu of its own.** The Dictionary menu in the menu bar has everything for the dictionary
-  in front, and so does the Command Palette. Diagrams got their own Diagram menu too, with the
-  toolbar's actions by name.
-- **It reads like a document.** It opens as it reads, with only what your team writes marked as
-  editable, an empty comment inviting yours; a longer one opens in a tab from the field's corner,
-  as Markdown rendered beside it. One Markdown button on its strip shows the source, and the
-  relationships open as a PlumeSQL diagram of those tables.
+- **The editor knows 19's words** when your server is a 19: `REPACK`, `WAIT FOR LSN`,
+  `IGNORE NULLS` and `RESPECT NULLS` in window functions, the `oid8` and `regdatabase` types
+  and the new functions, and `REPACK` and `WAIT` open their pages of the PostgreSQL 19
+  reference. On an older server they stay plain words, as that server would read them.
+- **19's new objects in the DDL:** a publication `FOR ALL SEQUENCES`, one `FOR ALL TABLES
+  EXCEPT (TABLE ...)`, and a foreign data wrapper's `CONNECTION` function.
+- **Backups of a 19 server:** System offers the PostgreSQL 19 client tools and finds the ones
+  you have. A `pg_dump` older than the server refuses it, so a 19 server needs 19's.
+- **A 19 server of your own:** Get a server's empty server offers PostgreSQL 19, with PL/Python
+  if you like.
+- **REPACK where it helps:** the warning on `VACUUM FULL` and `CLUSTER`, which lock the table
+  while they rewrite it, names `REPACK (CONCURRENTLY)` on a 19 server, which does not.
+- **The extensions run on 19:** every query extension in the Marketplace is executed on
+  PostgreSQL 19 too, and the plan viewer reads 19's plans.
 
-![A Database Dictionary of dvdrental in the preview: the rental table's comment, its columns with their types, keys linked to the columns they reference and a column's comment, an empty comment inviting one, under its strip](media/database-dictionary.webp)
+One thing is still on its way: the copy of PostgreSQL's own parser inside the editor is 18's
+until its 19 build is published. On a 19 server that costs the new statements a little
+precision in completion, never a false error: your server judges the syntax, as always.
 
-## What changed
+## Help, tabs and the window
 
 ### Videos you can search
 
@@ -850,17 +949,13 @@ Command Palette) lists every video, and the search finds one by its words and by
 shows: type `\dt`, `COMMENT ON` or `foreign key`, and a step that says it plays from that
 moment. The newest release's videos are marked New, the ones you watched are checked.
 
+![The Videos page: a search for foreign key lists the videos that say it, each with the step that says it, one click from playing there](media/videos-search.webp)
+
 ### Welcome, in a first day's order
 
 The Welcome tab starts with your connections, then the video tour, with the trailer as Start
 here and the new videos marked; the looks, your setup and a shorter list of recommended
 extensions follow.
-
-### Markdown files in the Explorer
-
-`.md` files are a kind of their own in the Explorer's filter, Markdown documents, and show by
-default like your SQL scripts and diagrams: a Database Dictionary or a README is there without
-Show All.
 
 ### File marks in one row, each color one meaning
 
@@ -877,20 +972,6 @@ which no theme knows.
 
 ![The Explorer: .env.local, {} app.json, CSV orders.csv, a box for shop.dump, the book of the dictionary shop.md, the diagram's mark, MD README.md, feathers for the extensions, RUN, SQL](media/file-marks.webp)
 
-### A shorter right click in Objects
-
-An object's menu was long. It now reads in groups: open it, work with it, take it somewhere,
-then the tree's own entries.
-
-- **Diagram** holds Add to Diagram… and Reveal in Diagram….
-- **Data** holds Copy As, Export and Paste Rows….
-- **Copy** holds the scripts to the clipboard too, under its Script.
-- **Clicks** holds On Click and On Double-Click, in every tree.
-- A table's comment is edited in **Properties**, now on the same menu. A column's row still
-  has Edit Comment…, and the DDL view's header the form with every comment of the table.
-
-![A table's right click in Objects: Browse Data, Open DDL and Edit Table, then the groups, Diagram, Data, Copy, Refresh, Pin and Hide](media/objects-menu.webp)
-
 ### A tab's header answers a right click
 
 Right-click the header over a tab, a DDL view's, the Changes tab's, an extension's, a
@@ -901,76 +982,12 @@ pending changes.
 
 ![A right click on a table's DDL view header: Browse Data, Find, Copy, Copy name, Script, Copy Script and Edit Comment](media/tab-header-menu.webp)
 
-### Everything for a statement in its right click
-
-Right-click a statement in the editor and the menu is in parts, each headed by what it acts on:
-
-- **The statement** (`SELECT shop.orders`): Run Statement (Run Selection when text is
-  selected), Explain, Select Statement, Copy Statement, Format Statement, Refactorings,
-  Extensions and Add to Diagram….
-- **The word under the cursor** (`Column data_point_id`, `Table orders`): Go to Definition,
-  References, Peek and Rename.
-- **The whole script** (`orders.sql`): **Run** (Run All, Run from Here, Run to Here) and
-  **Format** (Format Document, Format Document With…).
-
-**Run from Here** runs the script from the statement under the cursor to the end, **Run to
-Here** from its start through that statement, each selected first so you see what runs. A
-script that stopped at a failed statement goes on from it once you fixed it.
-
-![The editor's right click in three parts, each headed by what it acts on: the statement, the word under the cursor, the whole script](media/editor-menu.webp)
-
-Then the clipboard (with Paste as Table… and Insert Annotation), and **Lens and Gutter**, the
-lens's own list of what shows above and beside each statement. The statement's rows do exactly
-what its lens items and gutter buttons do, so switching the lens and the gutter off costs you
-nothing. The Command Palette left the menu: F1 opens it.
-
-A statement's row in the Outline and in the Explorer has the same rows in the same words:
-**Explain** is there now, and in the Outline **Add to Diagram…** too.
-
-### Explain Analyze says what it wraps
-
-Explain Analyze really runs the statement. An `INSERT`, `UPDATE`, `DELETE`, `MERGE` or `CREATE
-TABLE AS` runs between `BEGIN` and `ROLLBACK`, so it changes nothing; a `SELECT` always runs as
-written. The Explain item's tooltip says which it will be for that statement before you click,
-and the Log records what ran, with its SQL.
-
-![The Log after Explain Analyze of an UPDATE: it ran between BEGIN and ROLLBACK, what it changed was not kept, the SQL that ran below](media/explain-log.webp)
-
 ### A pane closes from its header
 
 Properties, Objects or any pane stacked with another in a sidebar has a **×** in its header: it
 leaves the group and stays a tab of the sidebar.
 
 ![Properties stacked under the object tree, its header with a × at the end](media/pane-close.webp)
-
-### A query for a diagram is written in a script
-
-A query card's SQL used to be typed on the card itself, with no completion, no checks and no
-formatting. A query is now written where the editor helps: a diagram's **Insert ▸ Query…**
-and **Add Query Here…** open a new script on the diagram's connection. Write the query, run
-it, and **Add to Diagram…** lists that diagram first, so one Enter puts the card there (where
-you asked, for Add Query Here).
-
-![A diagram's right click: Add Note Here, Add Text Here, Add Query Here…, New Table Here…, Add Area Here, Import from Mermaid…](media/diagram-query.webp)
-
-A card from a script is edited in its script, as before. A card of its own (detached, or made
-on the canvas by an earlier version) keeps its SQL as it is and still runs it: a double click
-or **Open as Script** opens the SQL in a new script, to be written again and added back.
-
-### A selection on a diagram is a solid outline
-
-A table not created yet is drawn with a dashed blue border, and a selected one was marked by a
-dashed blue outline too, its dashes walking. With the motion off they looked the same. Now:
-
-- **A selection is a solid outline** with a square handle at each corner, around a table, a
-  note, an area or a schema's frame.
-- **A selected line is drawn wider**, with its handles as before.
-- **Dashed blue means only one thing:** a table, a column or a foreign key not in the database
-  yet. A new table that is selected shows both, its dashed border and the solid outline.
-
-![Three tables on a diagram: payment, new and selected, has its dashed border inside a solid outline with a handle at each corner](media/diagram-selection.webp)
-
-The setting that stopped the walking dashes is gone, with nothing left to move.
 
 ### A file from outside the workspace says so on its tab
 
@@ -1001,19 +1018,6 @@ the tabs opens the same menu, which helps most with Multiple Rows, where that sp
 gone. The Command Palette has **Tab size** beside Tab layout.
 
 ![The ⋯ menu at the end of the tabs: Single Row, Multiple Rows, Vertical Left, Vertical Right, Small Tabs, Preview Tabs, Close All, Tab Settings](media/tab-menu.webp)
-
-### An object's statistics say since when they count
-
-A table's Properties beside its DDL show when it was last read (an index's last use), the rows
-written into it, and **Counted since**: when the server began counting, as long ago as it was.
-"Not read" means not read since then, and you can see when that was. Last read needs
-PostgreSQL 16 or later.
-
-### A double click in a Markdown preview selects text
-
-In a Database Dictionary, a README or any Markdown file's preview, a double click selects a word
-and a triple click a paragraph, as in any text, instead of jumping to the source. The Markdown
-button (Source, for other files) takes you to the source.
 
 ### Shorter tooltips
 
