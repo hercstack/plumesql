@@ -1009,6 +1009,22 @@ long to show in full.
 
 ## Fixed
 
+- **A click inside a selection moves the caret.** In the SQL editor it did nothing; dragging a
+  selection now moves the text, as in VS Code.
+- **The object tree's numbers come the first time Objects opens.** They used to wait for a tab
+  switch. Under the pointer, a row's name now carries their words, share of the database included.
+- **F2 renames a function's parameter from where it is declared,** not only from the body.
+- **A query's result is named after its own FROM,** not after a table a subquery reads.
+- **Joins that may repeat rows reads up to a derived table** instead of going quiet for the whole
+  query.
+- **Typing fast no longer opens the Log** over the editor for a harmless completion race.
+- **Discovered connections of one server are told apart:** each row leads with its file.
+- **The list commands with a + answer in the editor:** `\dt+`, `\df+` and the rest, as `\d+` did.
+- **Run Changes says "running" only while it runs,** not while it still asks.
+- **A workspace opened with no tab shows the connection it used last,** also when a tab's own
+  picker chose it.
+- **An extension's toolbar button asked for at the end stands at the end** of the extensions
+  toolbar.
 - **The System page shows its whole text.** Storage's descriptions were cut to one line; they
   wrap now, and long paths and commands wrap instead of running past the page. Storage also
   counts what it missed: SSH host keys, window positions, file icon themes and your extension
