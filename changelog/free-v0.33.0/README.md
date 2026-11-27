@@ -56,6 +56,8 @@
 - **A Database Dictionary:** a Markdown document of your database, kept up to date by PlumeSQL
   and readable on GitHub, where the team writes what every table, column and function is for,
   and those words go to the database as comments.
+- **Videos you can search:** Help > Videos finds a video by its words and by every step it
+  shows, and plays it from the step you looked for.
 - **Diagram and Dictionary menus:** both have a menu of their own in the menu bar, and every
   item is in the Command Palette too.
 
@@ -840,6 +842,19 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
 ![A Database Dictionary of dvdrental in the preview: the rental table's comment, its columns with their types, keys linked to the columns they reference and a column's comment, an empty comment inviting one, under its strip](media/database-dictionary.webp)
 
 ## What changed
+
+### Videos you can search
+
+The video tour is a help you can search now. **Help > Videos** (or **Help: Find a Video…** in the
+Command Palette) lists every video, and the search finds one by its words and by every step it
+shows: type `\dt`, `COMMENT ON` or `foreign key`, and a step that says it plays from that
+moment. The newest release's videos are marked New, the ones you watched are checked.
+
+### Welcome, in a first day's order
+
+The Welcome tab starts with your connections, then the video tour, with the trailer as Start
+here and the new videos marked; the looks, your setup and a shorter list of recommended
+extensions follow.
 
 ### Markdown files in the Explorer
 

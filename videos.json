@@ -9,13 +9,123 @@
       "youtube": "PLaGGK16T-VQw",
       "videos": [
         {
+          "n": 58,
+          "slug": "intro",
+          "title": "Turn SQL into tools",
+          "short": "PlumeSQL in a minute and a half",
+          "summary": "PlumeSQL is a desktop IDE for PostgreSQL where a SQL file can become a monitor, a dashboard or a button. In a minute and a half: connections found in your project files, completion that reads CTEs and subqueries, PL/pgSQL checked against your server before anything is created, an object tree that sees your own open transaction, a SQL file with a few comments that becomes a live lock monitor with a Terminate button, charts from the extensions Marketplace, and VS Code's editor and keys. Free, no account, for macOS, Windows and Linux.",
+          "seconds": 94,
+          "youtube": "HlLU1z-JeoY",
+          "label": "Start here",
+          "keywords": [
+            "overview",
+            "tour",
+            "PlumeSQL",
+            "what it does"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Open a project: its connections are found in the files it already has"
+            },
+            {
+              "at": 9,
+              "title": "Completion reads your query: a CTE’s columns, through its alias"
+            },
+            {
+              "at": 18,
+              "title": "PL/pgSQL is checked as you type, against your server, before anything is created"
+            },
+            {
+              "at": 25,
+              "title": "A missing table inside a function body, caught before the function exists"
+            },
+            {
+              "at": 32,
+              "title": "The object tree reads through your session: even a temp table in an open transaction"
+            },
+            {
+              "at": 49,
+              "title": "Turn SQL into tools: a few comments make this file a live lock monitor"
+            },
+            {
+              "at": 57,
+              "title": "Somebody holds a lock, somebody waits: here they are"
+            },
+            {
+              "at": 58,
+              "title": "Terminate the blocker, and the waiter goes through"
+            },
+            {
+              "at": 69,
+              "title": "Extensions draw charts and dashboards over a result"
+            },
+            {
+              "at": 76,
+              "title": "Need a tool? Search the extensions. Can’t find it? Write one."
+            },
+            {
+              "at": 86,
+              "title": "VS Code’s editor, its keys and its command palette"
+            }
+          ]
+        },
+        {
           "n": 1,
           "slug": "discovered-connections",
           "title": "Connections found in your project files",
           "short": "Connections found in .env, docker-compose and more, nothing to type",
           "summary": "Open a project and PlumeSQL finds its PostgreSQL connections in the files it already has: .env, appsettings.json, docker-compose.yml, Django settings, Prisma, Rails, Spring and more. Nothing to type: a click shows the objects, the source file is one click away, an edit to the file updates the connection live, and passwords stay in your project's files.",
-          "seconds": 66,
-          "youtube": "9WeK3BtCwKM"
+          "seconds": 73,
+          "youtube": "9WeK3BtCwKM",
+          "label": "1",
+          "keywords": [
+            ".env",
+            "docker-compose",
+            "appsettings.json",
+            "connection string",
+            "discovered",
+            "project files",
+            "connect"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "One project, many stacks: .NET, Prisma, Django, Rails, Spring and Docker Compose"
+            },
+            {
+              "at": 8,
+              "title": "Eight connections under Discovered, read from those files, nothing typed"
+            },
+            {
+              "at": 18,
+              "title": "A click shows its objects, straight away"
+            },
+            {
+              "at": 25,
+              "title": "Every connection knows the file it came from"
+            },
+            {
+              "at": 32,
+              "title": "Edit the file and the connection follows: the database becomes postgres"
+            },
+            {
+              "at": 45,
+              "title": "Nothing is copied: the password stays in the project's files, where it already lives"
+            },
+            {
+              "at": 48,
+              "title": "Copy to Vault keeps a connection of your own, encrypted"
+            },
+            {
+              "at": 56,
+              "title": "Hide one you never use"
+            },
+            {
+              "at": 63,
+              "title": "The Discovered menu brings it back"
+            }
+          ]
         },
         {
           "n": 2,
@@ -24,7 +134,68 @@
           "short": "Vault and discovered connections, groups and a guard on production",
           "summary": "The Connections tab lists every server the workspace can reach: connections discovered from project files, and Vault connections kept encrypted with the key in the OS keychain. Groups (Production, Staging, Development, Local) bring a color and their own rules: on Production, reading runs as ever but a statement that changes data asks first.",
           "seconds": 72,
-          "youtube": "e13r29mPgkE"
+          "youtube": "e13r29mPgkE",
+          "label": "2",
+          "keywords": [
+            "Vault",
+            "groups",
+            "Production",
+            "guard",
+            "connection editor",
+            "Test",
+            "password",
+            "color"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "The Connections tab: every server this workspace can reach"
+            },
+            {
+              "at": 8,
+              "title": "A connection discovered from the workspace .env, nothing to configure"
+            },
+            {
+              "at": 11,
+              "title": "The seeded groups: Production, Staging, Development and Local, each with a color"
+            },
+            {
+              "at": 13,
+              "title": "A Vault connection: PlumeSQL keeps it encrypted, the key in the OS keychain"
+            },
+            {
+              "at": 24,
+              "title": "Test dials it once and says what answered"
+            },
+            {
+              "at": 30,
+              "title": "Save keeps it in the Vault"
+            },
+            {
+              "at": 35,
+              "title": "Move it into Production: the group brings its color and its rules"
+            },
+            {
+              "at": 43,
+              "title": "Point the script at it"
+            },
+            {
+              "at": 49,
+              "title": "The tab and the status bar carry the connection's color"
+            },
+            {
+              "at": 52,
+              "title": "Reading is free: a select runs as ever"
+            },
+            {
+              "at": 57,
+              "title": "A statement that changes data asks first on Production"
+            },
+            {
+              "at": 64,
+              "title": "Only a deliberate yes runs it"
+            }
+          ]
         },
         {
           "n": 3,
@@ -32,17 +203,138 @@
           "title": "The object browser",
           "short": "Browse objects with row counts, open rows and follow foreign keys",
           "summary": "A click on a connection shows its objects; every table carries its row count and size. A click on a table browses its rows in a preview tab, a double click keeps it, and foreign keys are links: one click opens the related row while the tree follows. A function opens its DDL. The row menu offers rows or DDL and sets what a click and a double click do. Go to Object finds anything by name, find narrows the tree, and the Object filter chooses the schemas and object types to show.",
-          "seconds": 78,
-          "youtube": "2Q6wbm18a8M"
+          "seconds": 80,
+          "youtube": "2Q6wbm18a8M",
+          "label": "3",
+          "keywords": [
+            "Objects",
+            "object tree",
+            "browse data",
+            "DDL",
+            "Go to Object",
+            "find",
+            "filter",
+            "preview tab",
+            "On Click"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "A click on a connection shows its objects"
+            },
+            {
+              "at": 10,
+              "title": "Every table with its row count and size, from the statistics"
+            },
+            {
+              "at": 13,
+              "title": "A click on a table browses its rows in a preview tab"
+            },
+            {
+              "at": 22,
+              "title": "A double click opens a kept tab"
+            },
+            {
+              "at": 27,
+              "title": "Foreign keys are links: one click opens the related row, and the tree follows"
+            },
+            {
+              "at": 39,
+              "title": "A function opens its DDL"
+            },
+            {
+              "at": 44,
+              "title": "The row menu: rows or DDL, and what a click and a double click do"
+            },
+            {
+              "at": 54,
+              "title": "Go to Object: any object by name"
+            },
+            {
+              "at": 60,
+              "title": "Find in the tree: it narrows to what matches"
+            },
+            {
+              "at": 68,
+              "title": "The Object filter: choose the schemas and object types to show"
+            }
+          ]
         },
         {
           "n": 4,
           "slug": "object-stats",
           "title": "Statistics and dependencies in the object tree",
           "short": "Statistics, sizes, vacuum times and dependencies on every object",
-          "summary": "Every object carries its statistics: row estimates, size, dead rows, last vacuum and analyze, routine call counts, and a table that dominates its database is marked. Dependencies come from pg_depend, both what an object depends on and what uses it. Edit Comment writes COMMENT ON for a table and its columns in one form, and the tree follows the object under the editor's cursor.",
-          "seconds": 72,
-          "youtube": "AwNzT3y5xtI"
+          "summary": "Every object carries its statistics: row estimates, size, dead rows, last vacuum and analyze, routine call counts, and a table that dominates its database is marked. Dependencies come from pg_depend, both what an object depends on and what uses it. Properties beside a table's DDL spells out every number with its age. Edit Comment, on the table's DDL view, takes the comments of the table and its columns in one form and puts a COMMENT ON for each into the Changes script, which runs on Run Changes; the tree follows the object under the editor's cursor.",
+          "seconds": 90,
+          "youtube": "AwNzT3y5xtI",
+          "label": "4",
+          "keywords": [
+            "statistics",
+            "row count",
+            "size",
+            "dead rows",
+            "vacuum",
+            "dependencies",
+            "depends on",
+            "used by",
+            "comment",
+            "Properties"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Every object row carries what the database already knows about it"
+            },
+            {
+              "at": 8,
+              "title": "Rows, size, dead rows waiting for vacuum: one cheap query, no table read"
+            },
+            {
+              "at": 11,
+              "title": "A table that dominates the database is marked in red"
+            },
+            {
+              "at": 14,
+              "title": "Properties spells out every number, with its age"
+            },
+            {
+              "at": 25,
+              "title": "Routines count their calls"
+            },
+            {
+              "at": 32,
+              "title": "A chevron discloses a table’s columns and its dependencies"
+            },
+            {
+              "at": 36,
+              "title": "Fold the columns: \"depends on\" and \"used by\" come from pg_depend"
+            },
+            {
+              "at": 41,
+              "title": "Edit Comment: one form for the table and every column"
+            },
+            {
+              "at": 55,
+              "title": "Add to Changes writes a COMMENT ON for each; nothing reaches the server yet"
+            },
+            {
+              "at": 58,
+              "title": "Run Changes asks first, then the tree shows the comment at once"
+            },
+            {
+              "at": 68,
+              "title": "The tree follows the editor: the object under the cursor lights up"
+            },
+            {
+              "at": 76,
+              "title": "Run it: the headers name each type the way PostgreSQL does"
+            },
+            {
+              "at": 81,
+              "title": "The hover names the source column, its definition and its comment"
+            }
+          ]
         },
         {
           "n": 5,
@@ -51,7 +343,41 @@
           "short": "The object tree reads through your editor's own session",
           "summary": "Open a transaction in the editor, create a table and a temporary one inside it: the Objects tree reads through the same session, so it shows both, including the temp table no other session can see. Roll back and they are gone. What you see in the tree is what your tab sees.",
           "seconds": 50,
-          "youtube": "cGAvY0cwmiw"
+          "youtube": "cGAvY0cwmiw",
+          "label": "5",
+          "keywords": [
+            "session",
+            "temp table",
+            "search_path",
+            "transaction",
+            "tree follows"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Open a transaction in the editor"
+            },
+            {
+              "at": 12,
+              "title": "Create a table and a temporary one inside it"
+            },
+            {
+              "at": 22,
+              "title": "CREATE TABLE AS answers with the table it created"
+            },
+            {
+              "at": 25,
+              "title": "The Objects tree reads through the same session"
+            },
+            {
+              "at": 32,
+              "title": "The editor sees them too"
+            },
+            {
+              "at": 38,
+              "title": "Roll back, and they are gone"
+            }
+          ]
         }
       ]
     },
@@ -68,16 +394,320 @@
           "short": "Completion that knows your CTEs, subqueries and their columns",
           "summary": "PlumeSQL's SQL editor completes what your statement actually defines, not just the tables in the database. A CTE is offered as a table in FROM and its columns follow its alias; a subquery's alias knows the columns the subquery selects. The Outline beside the editor lists every statement and the objects it touches: a click finds an object in the script, a double click opens its definition. Run executes the statement under the cursor: the first press selects it, the second runs it.",
           "seconds": 46,
-          "youtube": "XkHjN49-Y-M"
+          "youtube": "XkHjN49-Y-M",
+          "label": "6",
+          "keywords": [
+            "completion",
+            "autocomplete",
+            "CTE",
+            "subquery",
+            "alias",
+            "Outline",
+            "IntelliSense"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "A CTE is a table to completion: its name in FROM"
+            },
+            {
+              "at": 11,
+              "title": "and its columns through the alias"
+            },
+            {
+              "at": 18,
+              "title": "A subquery works the same way: its alias knows its columns"
+            },
+            {
+              "at": 26,
+              "title": "The Outline lists every statement and the objects it touches"
+            },
+            {
+              "at": 30,
+              "title": "A click finds the object in the script"
+            },
+            {
+              "at": 32,
+              "title": "A double click opens its definition"
+            },
+            {
+              "at": 35,
+              "title": "Run the statement under the cursor: the first press selects it, the second runs it"
+            }
+          ]
+        },
+        {
+          "n": 42,
+          "slug": "from-first",
+          "title": "FROM-first queries (experimental)",
+          "short": "Write the FROM first and the columns complete as you type (experimental).",
+          "summary": "PlumeSQL can let you write a query in the order it runs, FROM first. It is experimental and off by default: switch it on in Settings, Experimental, FROM-first queries (editor.fromFirst). The select list then completes from the tables already named, even inside a WITH, a foreign key writes the join with its ON, and a key column alone with a dot joins its table in. The semicolon, Run and Explain write the query back as standard SQL, so the server only ever sees SQL, and one undo gives your own order back.",
+          "seconds": 91,
+          "youtube": "5JLCu6d5z64",
+          "label": "6.1",
+          "keywords": [
+            "FROM-first",
+            "experimental",
+            "completion",
+            "editor.fromFirst",
+            "joins"
+          ],
+          "chapters": [
+            {
+              "at": 6,
+              "title": "Experimental, off by default: switch it on in Settings"
+            },
+            {
+              "at": 11,
+              "title": "Settings, Experimental: FROM-first queries"
+            },
+            {
+              "at": 19,
+              "title": "Write FROM first: after the table, SELECT and its joins"
+            },
+            {
+              "at": 23,
+              "title": "A foreign key makes the join, ON clause and all"
+            },
+            {
+              "at": 28,
+              "title": "The select list already knows the columns of both tables"
+            },
+            {
+              "at": 36,
+              "title": "A key column alone and a dot: its table joins in"
+            },
+            {
+              "at": 42,
+              "title": "Its ; writes it back as standard SQL"
+            },
+            {
+              "at": 45,
+              "title": "One undo gives your own order back"
+            },
+            {
+              "at": 48,
+              "title": "Run it as written: the server only ever sees SQL"
+            },
+            {
+              "at": 53,
+              "title": "The same at any depth: a WITH written FROM first"
+            },
+            {
+              "at": 69,
+              "title": "The query over it completes the WITH's own columns"
+            },
+            {
+              "at": 79,
+              "title": "Explain writes it as SQL too, then shows the plan"
+            },
+            {
+              "at": 85,
+              "title": "Experimental: try it, and tell us how it feels"
+            }
+          ],
+          "since": "0.29.0"
+        },
+        {
+          "n": 43,
+          "slug": "type-operators",
+          "title": "Operators for json, arrays and ranges, from the column type",
+          "short": "A column of jsonb, an array or a range: its operators, offered by its type",
+          "summary": "Pick a jsonb column and the editor offers its operators at once: a key as json or as text, a path, containment and key tests. An array column offers contains, overlaps and an element by position; a range column offers overlaps, contains and adjacent on Ctrl+Space. Each operator comes with what it gives, from the type PostgreSQL knows, so nobody has to remember them.",
+          "seconds": 43,
+          "youtube": "1jHcMrS7L58",
+          "label": "6.2",
+          "keywords": [
+            "jsonb",
+            "json",
+            "array",
+            "range",
+            "operators",
+            "->>",
+            "@>"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "A jsonb column: picking it opens its operators"
+            },
+            {
+              "at": 15,
+              "title": "An array column: contains, overlaps, an element by position"
+            },
+            {
+              "at": 25,
+              "title": "A range column: overlaps, contains, adjacent, ask with Ctrl+Space"
+            },
+            {
+              "at": 36,
+              "title": "Each with what it gives, from the type PostgreSQL knows"
+            }
+          ],
+          "since": "0.29.0"
+        },
+        {
+          "n": 44,
+          "slug": "editor-pickers",
+          "title": "Pick values in the editor: keys, enums and dates",
+          "short": "A foreign key's value from its table, an enum's from its labels, a date from a calendar",
+          "summary": "A foreign key's value is picked from the table it points to, an enum's from its labels in their order, a date from a calendar right behind the string. Every value from its column, typed right, then run.",
+          "seconds": 39,
+          "youtube": "mEUjcKB1r4Y",
+          "label": "6.3",
+          "keywords": [
+            "foreign key",
+            "enum",
+            "date",
+            "calendar",
+            "pick",
+            "values"
+          ],
+          "chapters": [
+            {
+              "at": 6,
+              "title": "customer_id is a foreign key: pick it from the customer table"
+            },
+            {
+              "at": 18,
+              "title": "rating is an enum: the quote lists its labels, in their order"
+            },
+            {
+              "at": 25,
+              "title": "rental_date is a timestamp: a calendar right behind the string"
+            },
+            {
+              "at": 31,
+              "title": "Every value from its column, typed right: run it"
+            }
+          ],
+          "since": "0.29.0"
         },
         {
           "n": 7,
           "slug": "editor",
           "title": "A SQL editor that knows your database",
           "short": "Format, hover DDL, peek definitions and live checks as you type",
-          "summary": "Beyond completion: Format Document turns a one-liner into readable SQL, hovering a table shows its DDL and statistics, Peek Definition (Alt+F12) shows a table's definition inline and F12 opens it. A statement with $1 asks for its value when you run it. The live parser checks each statement as you type and shows the server's own error and hint. psql's \\d works right in the editor.",
-          "seconds": 74,
-          "youtube": "3vVcKUZwPu4"
+          "summary": "Beyond completion: Format Document asks how (your settings, compact, expanded and more) and turns a one-liner into readable SQL, hovering a table shows its DDL and statistics, Peek Definition (Alt+F12) shows a table's definition inline and F12 opens it. A psql style :name parameter asks for its value when you run it, bound as a value. The live parser checks each statement as you type and shows the server's own error and hint. psql's \\d works right in the editor.",
+          "seconds": 77,
+          "youtube": "3vVcKUZwPu4",
+          "label": "7",
+          "keywords": [
+            "hover",
+            "Go to Definition",
+            "F12",
+            "Peek",
+            "format",
+            "Shift+Alt+F",
+            "Problems",
+            "parameters",
+            "dynamic parser"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Format Document asks how, then formats every statement, parameters included"
+            },
+            {
+              "at": 12,
+              "title": "Hover a table for its definition, straight from the database"
+            },
+            {
+              "at": 17,
+              "title": "A column tells its type and its table"
+            },
+            {
+              "at": 22,
+              "title": "Peek Definition shows the DDL inline, without leaving the script"
+            },
+            {
+              "at": 29,
+              "title": "Go to Definition opens the table’s DDL in its own tab"
+            },
+            {
+              "at": 38,
+              "title": ":rating is a parameter, psql style: Run asks for its value"
+            },
+            {
+              "at": 45,
+              "title": "Bound as a value, never pasted into the SQL"
+            },
+            {
+              "at": 48,
+              "title": "The live parser asks PostgreSQL while you type, nothing runs"
+            },
+            {
+              "at": 58,
+              "title": "Every problem is listed in Problems, with its line"
+            },
+            {
+              "at": 63,
+              "title": "psql meta commands work in the editor: \\d film, then Enter"
+            },
+            {
+              "at": 68,
+              "title": "The answer lands under the line, the table’s whole DDL"
+            }
+          ]
+        },
+        {
+          "n": 54,
+          "slug": "key-joins",
+          "title": "Key joins: joins read from your foreign keys",
+          "short": "Joins written from your foreign keys, and a warning when a join repeats the rows you sum.",
+          "summary": "PlumeSQL writes your joins from the foreign keys: name the table and its ON or USING is offered, or type join and every table the keys reach comes with its whole condition. It also reads every join against the keys of its tables, the idea the Key Joins proposal makes a guarantee of: a join on a unique key keeps each row once, any other may repeat them. A one-to-many join gets a quiet hint, and a sum or count over rows a join repeats gets a warning before you run it. Here a customer's rentals counted and payments summed through two such joins say 960 rentals instead of 32, and summing the payments in a subquery fixes it.",
+          "seconds": 90,
+          "youtube": "XpD3HE-mxiQ",
+          "label": "7.1",
+          "keywords": [
+            "joins",
+            "foreign keys",
+            "USING",
+            "Key Joins",
+            "fan-out",
+            "repeat rows",
+            "sum",
+            "aggregate"
+          ],
+          "chapters": [
+            {
+              "at": 7,
+              "title": "Name the table: its foreign key writes the ON, or USING"
+            },
+            {
+              "at": 18,
+              "title": "One customer, many rentals: a quiet hint that rows repeat"
+            },
+            {
+              "at": 26,
+              "title": "Type join: every table the keys reach, ON and all"
+            },
+            {
+              "at": 36,
+              "title": "Count the rentals, sum the payments: three warnings"
+            },
+            {
+              "at": 45,
+              "title": "Why: the rental join repeats every payment row"
+            },
+            {
+              "at": 52,
+              "title": "It runs anyway: Mary Smith, 960 rentals, 3670.40 paid"
+            },
+            {
+              "at": 60,
+              "title": "The fix: drop that join, sum the payments in a subquery"
+            },
+            {
+              "at": 73,
+              "title": "No warnings left; the quiet hint on rental stays"
+            },
+            {
+              "at": 80,
+              "title": "Run it again: 32 rentals and 114.70, the real numbers"
+            }
+          ],
+          "since": "0.29.0"
         },
         {
           "n": 8,
@@ -86,7 +716,159 @@
           "short": "Lightbulb refactors: expand *, add GROUP BY, extract a CTE",
           "summary": "Lightbulb refactors (Cmd+.) rewrite SQL for you: expand * into its columns, add the GROUP BY a query needs, add an INSERT's column list, qualify columns, extract a subquery into a CTE. A forgotten semicolon is flagged and fixed in one click, inlay hints show column types, JSON, array and range literals are checked to the character, an operator explains itself on hover, and keywords link the reference for your server's version.",
           "seconds": 94,
-          "youtube": "DBB--K0hmD4"
+          "youtube": "DBB--K0hmD4",
+          "label": "8",
+          "keywords": [
+            "lightbulb",
+            "refactor",
+            "quick fix",
+            "Cmd+.",
+            "rewrite"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "The lightbulb (⌘.) expands a star into the columns, read from the object dictionary"
+            },
+            {
+              "at": 12,
+              "title": "The server wants a GROUP BY: the lightbulb writes it"
+            },
+            {
+              "at": 22,
+              "title": "An INSERT gets its column list"
+            },
+            {
+              "at": 30,
+              "title": "Bare columns get their table"
+            },
+            {
+              "at": 38,
+              "title": "A subquery in FROM moves up into a CTE, on any statement of the file"
+            },
+            {
+              "at": 45,
+              "title": "A forgotten semicolon between two statements is flagged"
+            },
+            {
+              "at": 55,
+              "title": "Inlay hints: parameter names and column types, drawn inside the text"
+            },
+            {
+              "at": 62,
+              "title": "A JSON literal is parsed as you type: the fault is marked on its character"
+            },
+            {
+              "at": 66,
+              "title": "Arrays and ranges too, by PostgreSQL’s own input rules"
+            },
+            {
+              "at": 74,
+              "title": "Fix it, and the operator explains itself on hover"
+            },
+            {
+              "at": 81,
+              "title": "Keywords link the reference for the server’s own version"
+            },
+            {
+              "at": 85,
+              "title": "F12 on a keyword opens the whole synopsis"
+            }
+          ]
+        },
+        {
+          "n": 41,
+          "slug": "refactorings",
+          "title": "Refactorings: the lightbulb rewrites SQL for you",
+          "short": "Joins, fixes, safe changes, JSON and refactors from extensions",
+          "summary": "The lightbulb in the gutter (yellow on the statement you are in) lists what PlumeSQL can rewrite: expand * into columns, join a related table along its foreign key, qualify an ambiguous column (a quick fix for the server's 42702), add the missing GROUP BY, rewrite NOT IN as a NULL-safe NOT EXISTS, turn a value into a run parameter, preview the rows a DELETE would touch, give an UPDATE its WHERE and RETURNING, make an INSERT an upsert, and work with JSON (containment operator, expand an object into rows). Refactor extensions from the Marketplace add their own: PostGIS readable geometry, pgvector nearest neighbours, TimescaleDB time buckets, and an extension suggested for a query. The same list is in the right-click menu, and Refactor Settings turns each one on or off.",
+          "seconds": 160,
+          "youtube": "-sZ1rtXzpt8",
+          "label": "8.1",
+          "keywords": [
+            "refactor",
+            "lightbulb",
+            "join",
+            "GROUP BY",
+            "NOT EXISTS",
+            "upsert",
+            "RETURNING",
+            "JSON"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "The lightbulb sits in the gutter, yellow on the statement you are in"
+            },
+            {
+              "at": 14,
+              "title": "A click lists what it can do for this statement"
+            },
+            {
+              "at": 21,
+              "title": "Join a related table along its foreign key: NOT NULL joins, nullable left joins"
+            },
+            {
+              "at": 29,
+              "title": "An ambiguous column, the server’s 42702: a quick fix per table"
+            },
+            {
+              "at": 36,
+              "title": "An aggregate gets the GROUP BY it needs"
+            },
+            {
+              "at": 44,
+              "title": "NOT IN returns nothing once a NULL shows up: rewrite it as NOT EXISTS"
+            },
+            {
+              "at": 51,
+              "title": "A value becomes a run parameter, asked when the query runs"
+            },
+            {
+              "at": 58,
+              "title": "Before a DELETE: preview the rows it would remove"
+            },
+            {
+              "at": 67,
+              "title": "An UPDATE without a WHERE gets one on its primary key, and RETURNING"
+            },
+            {
+              "at": 82,
+              "title": "An INSERT becomes an upsert on its key"
+            },
+            {
+              "at": 91,
+              "title": "JSON: ->> compared to a value becomes @>, which a GIN index serves"
+            },
+            {
+              "at": 99,
+              "title": "An object column expands into rows, one per key, by what its values hold"
+            },
+            {
+              "at": 107,
+              "title": "Extensions add refactors of their own. PostGIS: an extension suggested for the query"
+            },
+            {
+              "at": 115,
+              "title": "PostGIS refactors: geometry as readable text"
+            },
+            {
+              "at": 124,
+              "title": "pgvector refactors: order by the nearest embedding"
+            },
+            {
+              "at": 132,
+              "title": "TimescaleDB refactors: count a hypertable by time bucket, written above"
+            },
+            {
+              "at": 141,
+              "title": "The same list in the right-click menu, under Refactorings"
+            },
+            {
+              "at": 148,
+              "title": "Refactor Settings: each refactor on or off, extensions included, and how they write"
+            }
+          ]
         },
         {
           "n": 9,
@@ -95,7 +877,308 @@
           "short": "PL/pgSQL bodies checked by the server as you type",
           "summary": "PlumeSQL reads inside your functions. A PL/pgSQL body is analyzed as you type and its statements are checked by the server without creating anything, so a missing table shows before the function ever runs. plpgsql_check style warnings (unused variables, unreachable code, a missing RETURN) come without the extension, completion knows RAISE, EXCEPTION WHEN and GET DIAGNOSTICS, variables navigate and rename like symbols, and the Outline reads inside routines.",
           "seconds": 91,
-          "youtube": "sUFqhMESh3Y"
+          "youtube": "sUFqhMESh3Y",
+          "label": "9",
+          "keywords": [
+            "PL/pgSQL",
+            "function",
+            "plpgsql_check",
+            "RAISE",
+            "EXCEPTION",
+            "rename",
+            "F2",
+            "Outline",
+            "body"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "The body is read by PostgreSQL’s own parser as you type, nothing is created"
+            },
+            {
+              "at": 11,
+              "title": "A missing table inside a function, caught before the function exists"
+            },
+            {
+              "at": 17,
+              "title": "Fixed, the mark goes away"
+            },
+            {
+              "at": 21,
+              "title": "The checks plpgsql_check is known for, without the extension"
+            },
+            {
+              "at": 25,
+              "title": "A statement after RETURN can never run"
+            },
+            {
+              "at": 36,
+              "title": "Completion knows PL/pgSQL: after RAISE, its levels"
+            },
+            {
+              "at": 45,
+              "title": "After EXCEPTION WHEN, the condition names"
+            },
+            {
+              "at": 58,
+              "title": "Variables are symbols: F12 jumps to the declaration"
+            },
+            {
+              "at": 61,
+              "title": "F2 renames every use, by the parser’s reading, not by text"
+            },
+            {
+              "at": 67,
+              "title": "The Outline reads inside the routine: parameters, variables, the body"
+            },
+            {
+              "at": 73,
+              "title": "A function from completion arrives as a runnable call"
+            },
+            {
+              "at": 83,
+              "title": "Every argument a valid value for its type: type over them and run"
+            }
+          ]
+        },
+        {
+          "n": 45,
+          "slug": "plpgsql-ide-full",
+          "title": "PL/pgSQL in an IDE: checked, fixed, renamed and cross-referenced",
+          "short": "A function checked before it exists, quick fixes, rename and references across scripts",
+          "summary": "A PL/pgSQL function that does not exist in the database yet. PostgreSQL's own parser reads its body as you type and catches a missing table before CREATE FUNCTION runs; the Outline reads inside the function; quick fixes pin a SECURITY DEFINER function's search_path and declare a read-only function STABLE; Find All References lists your scripts and the database's own functions, views and constraints. Then the renames: F2 on a PL/pgSQL variable renames every use the parser finds, F2 on a column writes its ALTER TABLE ... RENAME, and once it has run the Log offers to update every script that names it.",
+          "seconds": 117,
+          "youtube": "AiIbJS-N2Gw",
+          "label": "9.1",
+          "keywords": [
+            "PL/pgSQL",
+            "quick fix",
+            "SECURITY DEFINER",
+            "search_path",
+            "references",
+            "Shift+F12",
+            "F2",
+            "rename"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "A PL/pgSQL function that does not exist in the database yet"
+            },
+            {
+              "at": 8,
+              "title": "PostgreSQL’s own parser reads the body as you type"
+            },
+            {
+              "at": 14,
+              "title": "A missing table, caught inside the function body"
+            },
+            {
+              "at": 20,
+              "title": "Fixed: the mark goes away"
+            },
+            {
+              "at": 22,
+              "title": "The Outline reads inside the function"
+            },
+            {
+              "at": 31,
+              "title": "SECURITY DEFINER without search_path: one key fixes it"
+            },
+            {
+              "at": 38,
+              "title": "It only reads, so declare it STABLE"
+            },
+            {
+              "at": 45,
+              "title": "Find All References: scripts, functions, views, constraints"
+            },
+            {
+              "at": 53,
+              "title": "PlumeSQL: a PostgreSQL IDE, not just a query editor"
+            },
+            {
+              "at": 65,
+              "title": "F2 renames a PL/pgSQL variable, every use the parser finds"
+            },
+            {
+              "at": 73,
+              "title": "Find All References: who reads product.price?"
+            },
+            {
+              "at": 80,
+              "title": "F2 on a column writes its ALTER TABLE ... RENAME"
+            },
+            {
+              "at": 89,
+              "title": "Run it: the Log offers to update the scripts that name it"
+            },
+            {
+              "at": 94,
+              "title": "You decide: the function body waits until you tick it"
+            },
+            {
+              "at": 99,
+              "title": "Both scripts now say unit_price"
+            },
+            {
+              "at": 111,
+              "title": "PlumeSQL: a PostgreSQL IDE, not just a query editor"
+            }
+          ]
+        },
+        {
+          "n": 46,
+          "slug": "pl-languages",
+          "title": "PL/V8 and PL/Python: functions edited in their own language",
+          "short": "JavaScript and Python bodies completed, checked and navigated, their SQL too",
+          "summary": "PostgreSQL runs functions written in PL/V8 (JavaScript) and PL/Python. Here their bodies are edited in their own language: completion, hovers and signatures, the SQL inside plv8.execute and plpy.execute completed from your database, a query's rows completing their columns, a trigger's NEW the columns of its table, a typo PL/V8 would quietly turn into undefined caught with its fix, F12 into what PL/V8 and plpy give a body, and on a server without the language a warning before you run, with the CREATE EXTENSION written for you.",
+          "seconds": 96,
+          "label": "9.2",
+          "keywords": [
+            "PL/V8",
+            "PL/Python",
+            "plv8",
+            "plpython",
+            "JavaScript",
+            "Python",
+            "functions",
+            "trigger",
+            "NEW"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "A PL/V8 function: JavaScript inside PostgreSQL"
+            },
+            {
+              "at": 7,
+              "title": "The SQL inside is SQL: columns from your database"
+            },
+            {
+              "at": 15,
+              "title": "Its rows know their columns"
+            },
+            {
+              "at": 24,
+              "title": "F12 opens what PL/V8 gives a body"
+            },
+            {
+              "at": 33,
+              "title": "In a trigger, NEW has the columns of its table"
+            },
+            {
+              "at": 42,
+              "title": "A typo PL/V8 never reports, caught as you type"
+            },
+            {
+              "at": 47,
+              "title": "Fixed to the nearest column"
+            },
+            {
+              "at": 54,
+              "title": "PL/Python: the same help, in Python"
+            },
+            {
+              "at": 63,
+              "title": "Signatures and docs as Python itself reports them"
+            },
+            {
+              "at": 71,
+              "title": "On a server without plv8, you know before you run"
+            },
+            {
+              "at": 87,
+              "title": "CREATE EXTENSION written above, for you to run"
+            },
+            {
+              "at": 90,
+              "title": "PL/pgSQL, PL/V8 and PL/Python: one editor"
+            }
+          ],
+          "since": "0.33.0"
+        },
+        {
+          "n": 55,
+          "slug": "routines",
+          "title": "Functions and procedures in a script of their own",
+          "short": "Edit a function in a script: calls, tests and its signature checked before you run",
+          "summary": "Right-click a function in the object tree and choose Edit Function: its CREATE OR REPLACE opens in a script of its own, and a toolbar says which function it makes and on which connection. Add Call writes a call right below it, between BEGIN and ROLLBACK when the body writes, and Run asks for the arguments by their names. Add Test writes an arrange, act, assert test with the value to expect selected, and a comment set in Properties becomes a COMMENT ON in the script. Rename a parameter and the script says PostgreSQL will refuse it before you run, with Write DROP and CREATE ready as the way out, its owner and grants put back.",
+          "seconds": 93,
+          "label": "9.3",
+          "keywords": [
+            "Edit Function",
+            "function",
+            "procedure",
+            "Add Call",
+            "Add Test",
+            "signature",
+            "DROP and CREATE",
+            "grants"
+          ],
+          "chapters": [
+            {
+              "at": 7,
+              "title": "Objects: every function says the language it is written in"
+            },
+            {
+              "at": 12,
+              "title": "Right-click a function: Edit Function"
+            },
+            {
+              "at": 16,
+              "title": "Its code opens in a script of its own, ready to change"
+            },
+            {
+              "at": 22,
+              "title": "Add Call writes a call of it, right below"
+            },
+            {
+              "at": 25,
+              "title": "Its body writes: the call runs between BEGIN and ROLLBACK"
+            },
+            {
+              "at": 29,
+              "title": "Run asks for its arguments, each by its name"
+            },
+            {
+              "at": 35,
+              "title": "The new order's id comes back, and nothing is kept"
+            },
+            {
+              "at": 42,
+              "title": "A comment set in Properties is written into the script"
+            },
+            {
+              "at": 54,
+              "title": "Add Test writes a test: arrange, act, assert"
+            },
+            {
+              "at": 59,
+              "title": "Type the value you expect over the selected null"
+            },
+            {
+              "at": 63,
+              "title": "Rename a parameter with F2"
+            },
+            {
+              "at": 69,
+              "title": "Before any run, the script says PostgreSQL will refuse it"
+            },
+            {
+              "at": 74,
+              "title": "Write DROP and CREATE: the way out, in one transaction"
+            },
+            {
+              "at": 80,
+              "title": "Its owner and grants put back, for you to read and run"
+            },
+            {
+              "at": 87,
+              "title": "All of it SQL in your script: nothing runs until you run it"
+            }
+          ],
+          "since": "0.33.0"
         },
         {
           "n": 10,
@@ -103,8 +1186,89 @@
           "title": "psql in the editor, the console and the terminal",
           "short": "psql meta commands in the editor, the console and a terminal",
           "summary": "psql's meta commands work in the SQL editor: \\d, \\dt, \\df, \\sf, \\conninfo and \\? answer right under the line. The Log's console line speaks psql too, with completion that adds the backslash for you. And the psql extension opens a real psql in PlumeSQL's terminal on the tab's connection.",
-          "seconds": 114,
-          "youtube": "AeF7p36xZkg"
+          "seconds": 116,
+          "youtube": "AeF7p36xZkg",
+          "label": "10",
+          "keywords": [
+            "psql",
+            "\\d",
+            "\\dt",
+            "\\d+",
+            "\\df",
+            "meta-commands",
+            "terminal",
+            "console"
+          ],
+          "chapters": [
+            {
+              "at": 7,
+              "title": "psql meta-commands work in the editor: type one on its own line, press Enter"
+            },
+            {
+              "at": 10,
+              "title": "\\d film: the table's definition, from the snapshot, no query sent"
+            },
+            {
+              "at": 13,
+              "title": "The line that ran became a comment, so the script stays runnable"
+            },
+            {
+              "at": 17,
+              "title": "\\dt lists every table with its comment; a list always comes as a comment"
+            },
+            {
+              "at": 23,
+              "title": "\\dv lists the views, their comments beside them"
+            },
+            {
+              "at": 27,
+              "title": "\\df lists functions"
+            },
+            {
+              "at": 33,
+              "title": "\\sf shows a function's source"
+            },
+            {
+              "at": 39,
+              "title": "\\conninfo says where you are"
+            },
+            {
+              "at": 44,
+              "title": "And \\? lists every command the editor answers"
+            },
+            {
+              "at": 49,
+              "title": "The Log's console line speaks psql too"
+            },
+            {
+              "at": 58,
+              "title": "The answer lands in the Log, in psql's own shape"
+            },
+            {
+              "at": 66,
+              "title": "No backslash needed: type the command, completion adds it"
+            },
+            {
+              "at": 76,
+              "title": "For the real thing, the psql extension, from the Marketplace"
+            },
+            {
+              "at": 83,
+              "title": "A command extension: it runs psql on your machine, on the tab's connection"
+            },
+            {
+              "at": 85,
+              "title": "It runs a program, and the page says so up front: Install accepts it"
+            },
+            {
+              "at": 92,
+              "title": "Back in the script, psql is a button on the toolbar under the title bar"
+            },
+            {
+              "at": 100,
+              "title": "A real psql, in PlumeSQL's own terminal, on this connection"
+            }
+          ]
         },
         {
           "n": 11,
@@ -112,8 +1276,56 @@
           "title": "Scripts from the object tree and statement templates",
           "short": "Statements written from the object tree, and statement templates",
           "summary": "A table's row menu writes its statements: a select with every column and a join for each foreign key, an update keyed by the primary key, inserts and more, opened in a temporary script or copied. Statement templates come with completion at a statement's start and Tab walks their placeholders; Format makes any statement readable.",
-          "seconds": 67,
-          "youtube": "OQPQrSkHNWw"
+          "seconds": 72,
+          "youtube": "OQPQrSkHNWw",
+          "label": "11",
+          "keywords": [
+            "templates",
+            "Script",
+            "Copy Script",
+            "INSERT",
+            "UPDATE",
+            "CREATE FUNCTION",
+            "object tree scripts"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "A table's row menu writes its statements: Script opens one"
+            },
+            {
+              "at": 13,
+              "title": "Every column, and a join for each foreign key, in a temporary script"
+            },
+            {
+              "at": 15,
+              "title": "Run it as it stands"
+            },
+            {
+              "at": 20,
+              "title": "An update lists every column with its type, keyed by the primary key"
+            },
+            {
+              "at": 29,
+              "title": "New Script: a file in Workspace Scripts"
+            },
+            {
+              "at": 31,
+              "title": "Copy ▸ Script puts a statement on the clipboard instead"
+            },
+            {
+              "at": 39,
+              "title": "Statement templates come with completion at a statement's start"
+            },
+            {
+              "at": 44,
+              "title": "Tab walks the placeholders"
+            },
+            {
+              "at": 55,
+              "title": "Format Statement asks how, then makes a one-line statement readable"
+            }
+          ]
         },
         {
           "n": 12,
@@ -121,8 +1333,108 @@
           "title": "EXPLAIN and the plan visualizer",
           "short": "Explain and Explain Analyze, and the plan drawn as a picture",
           "summary": "Every statement has a lens with Explain beside Run. Explain Analyze runs the statement and times every step, and on a write it rolls back so no row changes. With the free Explain plan extension the plan opens as a picture: where the time goes, step by step, each with its time, rows and loops.",
-          "seconds": 46,
-          "youtube": "ukZQH5uEfOc"
+          "seconds": 56,
+          "youtube": "ukZQH5uEfOc",
+          "label": "12",
+          "keywords": [
+            "EXPLAIN",
+            "EXPLAIN ANALYZE",
+            "plan",
+            "query plan",
+            "visualizer",
+            "performance",
+            "slow query"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Every statement has a lens: Run, then Explain"
+            },
+            {
+              "at": 13,
+              "title": "Explain Analyze runs it and times every step"
+            },
+            {
+              "at": 18,
+              "title": "On a write, Explain Analyze rolls back: no row changes"
+            },
+            {
+              "at": 24,
+              "title": "Install the Explain plan extension from the Marketplace"
+            },
+            {
+              "at": 31,
+              "title": "Now the plan opens as a picture: where the time goes, step by step"
+            },
+            {
+              "at": 41,
+              "title": "Each card is a step: its own time and its rows"
+            },
+            {
+              "at": 48,
+              "title": "Steps lists them all: own time, rows and loops"
+            }
+          ]
+        },
+        {
+          "n": 56,
+          "slug": "query-plan",
+          "title": "A query plan tied to its query",
+          "short": "Plan steps marked in your query, with the statistics or index that fix them",
+          "summary": "Explain Analyze a query and the Explain plan extension ties its plan to your SQL: choose a step and the editor marks the table and the columns it reads, put the caret on a table and the plan chooses the step that reads it. A wrong row estimate is said once, where it starts, with why: two columns that go together, estimated as if they were independent. The CREATE STATISTICS and the CREATE INDEX that fix it are read from your own tables, and nothing runs by itself: you paste them into your script, run them, and Explain again.",
+          "seconds": 74,
+          "label": "12.1",
+          "keywords": [
+            "EXPLAIN",
+            "plan",
+            "estimate",
+            "CREATE STATISTICS",
+            "index",
+            "Explain plan"
+          ],
+          "chapters": [
+            {
+              "at": 6,
+              "title": "The best customers in Zagreb: a join and a filter"
+            },
+            {
+              "at": 9,
+              "title": "Explain Analyze: the plan opens under the query"
+            },
+            {
+              "at": 14,
+              "title": "PostgreSQL planned 28 rows here and got 1,500"
+            },
+            {
+              "at": 18,
+              "title": "Where it starts, and why: two columns that go together"
+            },
+            {
+              "at": 23,
+              "title": "Choose a step: your query shows what it reads"
+            },
+            {
+              "at": 30,
+              "title": "Put the caret on a table: the plan chooses its step"
+            },
+            {
+              "at": 35,
+              "title": "Each fix is a statement to copy. Nothing runs by itself"
+            },
+            {
+              "at": 40,
+              "title": "Paste them into the script, then run them yourself"
+            },
+            {
+              "at": 51,
+              "title": "Explain again: the estimate is right, the index is used"
+            },
+            {
+              "at": 66,
+              "title": "It reads the 1,500 rows it keeps, not all 100,000"
+            }
+          ],
+          "since": "0.33.0"
         },
         {
           "n": 13,
@@ -130,17 +1442,49 @@
           "title": "Safety nets for production data",
           "short": "Statement marks, commit previews and read only scripts",
           "summary": "Statement marks show what a statement will do before it runs, red for an UPDATE or DELETE without WHERE. COMMIT can ask first and show what the transaction changed. A script can declare itself read only with @readonly, and then PostgreSQL itself refuses any write; @confirm-writes asks before each one.",
-          "seconds": 93,
-          "youtube": "NSSrcrC7glI"
-        },
-        {
-          "n": 41,
-          "slug": "refactorings",
-          "title": "Refactorings: the lightbulb rewrites SQL for you",
-          "short": "Joins, fixes, safe changes, JSON and refactors from extensions",
-          "summary": "The lightbulb in the gutter (yellow on the statement you are in) lists what PlumeSQL can rewrite: expand * into columns, join a related table along its foreign key, qualify an ambiguous column (a quick fix for the server's 42702), add the missing GROUP BY, rewrite NOT IN as a NULL-safe NOT EXISTS, turn a value into a run parameter, preview the rows a DELETE would touch, give an UPDATE its WHERE and RETURNING, make an INSERT an upsert, and work with JSON (containment operator, expand an object into rows). Refactor extensions from the Marketplace add their own: PostGIS readable geometry, pgvector nearest neighbours, TimescaleDB time buckets, and an extension suggested for a query. The same list is in the right-click menu, and Refactor Settings turns each one on or off.",
-          "seconds": 167,
-          "youtube": "-sZ1rtXzpt8"
+          "seconds": 92,
+          "youtube": "NSSrcrC7glI",
+          "label": "13",
+          "keywords": [
+            "production",
+            "guard",
+            "read only",
+            "@readonly",
+            "DELETE",
+            "UPDATE without WHERE",
+            "confirm",
+            "safety"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "A thin mark beside each statement says what it would change, before it runs"
+            },
+            {
+              "at": 14,
+              "title": "In a transaction, COMMIT asks first and lists what changed"
+            },
+            {
+              "at": 41,
+              "title": "Committed: every change is also recorded in the Log, with its SQL"
+            },
+            {
+              "at": 49,
+              "title": "A script can make itself read only with one line: @readonly"
+            },
+            {
+              "at": 63,
+              "title": "Reads run as usual; a write is refused by PostgreSQL itself"
+            },
+            {
+              "at": 72,
+              "title": "@confirm-writes asks before every write from the file"
+            },
+            {
+              "at": 85,
+              "title": "Cancel, and nothing runs"
+            }
+          ]
         }
       ]
     },
@@ -157,7 +1501,54 @@
           "short": "Browse any table and click through foreign keys, Back and Forward",
           "summary": "Browse any table from the object tree or by name from the palette. Foreign key values are links: one click steps to the referenced row while the object tree lights its table, and Back and Forward walk the trail. Big tables show their first rows and say so; Show All Rows loads every row, stored whole.",
           "seconds": 57,
-          "youtube": "r0xn-w0kcsk"
+          "youtube": "r0xn-w0kcsk",
+          "label": "14",
+          "keywords": [
+            "browse",
+            "foreign keys",
+            "follow",
+            "grid",
+            "related rows",
+            "navigation"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "A click on a table in the Objects tree browses its rows"
+            },
+            {
+              "at": 8,
+              "title": "Foreign key values are links to the row they reference"
+            },
+            {
+              "at": 13,
+              "title": "One step: the referenced row, and the tree lights its table"
+            },
+            {
+              "at": 17,
+              "title": "Back and Forward walk the trail"
+            },
+            {
+              "at": 25,
+              "title": "Any table by name: the palette’s Browse Table"
+            },
+            {
+              "at": 31,
+              "title": "A big table shows its first rows, and says so"
+            },
+            {
+              "at": 34,
+              "title": "Show All Rows lifts the limit: every row, stored whole"
+            },
+            {
+              "at": 40,
+              "title": "Follow a rental to its customer, then on to the address"
+            },
+            {
+              "at": 49,
+              "title": "Every step stays on the trail: a crumb goes straight back"
+            }
+          ]
         },
         {
           "n": 15,
@@ -166,7 +1557,67 @@
           "short": "Edit rows in place: enums, jsonb, arrays and foreign key pickers",
           "summary": "Rows are editable where you read them. F2 opens the row editor: an enum picks from its labels, a jsonb value opens in a JSON editor, an array edits one element per line, and a foreign key is picked from the table it references. Update patches the grid in place without a re-run, Alt+N inserts, Delete asks first, and every change is logged with an Undo.",
           "seconds": 62,
-          "youtube": "0Rk0QfMfow8"
+          "youtube": "0Rk0QfMfow8",
+          "label": "15",
+          "keywords": [
+            "edit rows",
+            "grid",
+            "insert row",
+            "delete row",
+            "save",
+            "undo",
+            "changes"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Browse a table: its rows are editable in place"
+            },
+            {
+              "at": 8,
+              "title": "F2 opens the row editor on the selected cell"
+            },
+            {
+              "at": 13,
+              "title": "An enum column picks from its labels, in the enum’s order"
+            },
+            {
+              "at": 15,
+              "title": "A jsonb value opens in a JSON editor of its own"
+            },
+            {
+              "at": 20,
+              "title": "Accept puts the text back into the form"
+            },
+            {
+              "at": 22,
+              "title": "An array edits one element per line"
+            },
+            {
+              "at": 24,
+              "title": "Update writes the row and patches the grid in place, no re-run"
+            },
+            {
+              "at": 28,
+              "title": "Alt+N inserts a new row through the same form"
+            },
+            {
+              "at": 32,
+              "title": "A foreign key is picked from the table it references"
+            },
+            {
+              "at": 45,
+              "title": "The new row lands last, with its generated id"
+            },
+            {
+              "at": 48,
+              "title": "Delete asks first"
+            },
+            {
+              "at": 52,
+              "title": "Every change is logged, with an Undo that puts the row back"
+            }
+          ]
         },
         {
           "n": 16,
@@ -174,17 +1625,122 @@
           "title": "Edit any table, read any value",
           "short": "Edit tables without a primary key, read long values in full",
           "summary": "Rows stay editable without a primary key: PlumeSQL uses a unique index, or finds the row by its contents and refuses when two rows match. A long value opens in a tab of its own, and Space peeks at any cell.",
-          "seconds": 68,
-          "youtube": "TS0-z8Ujjw8"
+          "seconds": 66,
+          "youtube": "TS0-z8Ujjw8",
+          "label": "16",
+          "keywords": [
+            "JSON",
+            "array",
+            "value tab",
+            "cell",
+            "peek",
+            "bytea",
+            "timestamp"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "A table with no primary key, only a NOT NULL unique index"
+            },
+            {
+              "at": 8,
+              "title": "The unique index stands in for the key: the header says so"
+            },
+            {
+              "at": 12,
+              "title": "So F2 edits a row exactly as through a key"
+            },
+            {
+              "at": 21,
+              "title": "A long text is one line in the grid: Space peeks at the whole value"
+            },
+            {
+              "at": 27,
+              "title": "A JSON document gets a tab of its own: Shift+Enter"
+            },
+            {
+              "at": 31,
+              "title": "Pretty print lays the document out, with folding and find"
+            },
+            {
+              "at": 35,
+              "title": "Go to Cell goes back to the very cell it came from"
+            },
+            {
+              "at": 38,
+              "title": "No key at all: the row is found by everything it shows"
+            },
+            {
+              "at": 51,
+              "title": "Two identical rows: refused, never guessed between"
+            },
+            {
+              "at": 55,
+              "title": "The refusal is in the Log, where every message lives"
+            }
+          ]
         },
         {
           "n": 17,
           "slug": "grid-advanced",
           "title": "A grid for millions of rows",
           "short": "Millions of rows, frozen columns and server side filters",
-          "summary": "Two million rows, stored whole with no row cap: scroll smoothly with the rows read ahead of you, or jump anywhere and they are there at once. Freeze columns and rows while the rest scroll under them. Column filters run on the server over every row. Copy Format sets the shape of a copy: tab separated, CSV, JSON, SQL or a Markdown table.",
-          "seconds": 70,
-          "youtube": "6KUaK5CGuvU"
+          "summary": "Two million rows, stored whole with no row cap: scroll smoothly with the rows read ahead of you, or jump anywhere and they are there at once. Freeze columns and rows while the rest scroll under them. Column filters run on the server over every row. Copy Format sets the shape of a copy: tab separated, CSV, JSON or a Markdown table.",
+          "seconds": 73,
+          "youtube": "6KUaK5CGuvU",
+          "label": "17",
+          "keywords": [
+            "millions of rows",
+            "filter",
+            "sort",
+            "copy",
+            "CSV",
+            "Markdown",
+            "export",
+            "grid"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Two million rows: the result is stored whole, no row cap"
+            },
+            {
+              "at": 12,
+              "title": "Scroll it smoothly: the rows are read ahead of you"
+            },
+            {
+              "at": 17,
+              "title": "Or jump anywhere, a million rows down: the rows are there at once"
+            },
+            {
+              "at": 20,
+              "title": "Or jump: ⌘↓ to the last row, ⌘↑ back to the first"
+            },
+            {
+              "at": 24,
+              "title": "Freeze columns: they stay put while the rest scroll"
+            },
+            {
+              "at": 32,
+              "title": "Freeze rows at the top, then scroll the rest under them"
+            },
+            {
+              "at": 39,
+              "title": "Filter a column: the server filters all two million rows"
+            },
+            {
+              "at": 47,
+              "title": "A second filter narrows it further"
+            },
+            {
+              "at": 57,
+              "title": "Copy Format: tab separated, CSV, JSON, or a Markdown table"
+            },
+            {
+              "at": 64,
+              "title": "Paste it anywhere: a document, a ticket, a chat"
+            }
+          ]
         },
         {
           "n": 18,
@@ -193,7 +1749,66 @@
           "short": "Grids per statement, verbatim messages, copy formats, comparisons",
           "summary": "Run a whole script: every statement that returns rows gets its own grid, and an error lands in Messages verbatim. Show the grids and the messages side by side, open any result as a document tab of its own, and set the shape of every copy with Copy Format. Then compare two results side by side, the best sellers of two stores, scrolling together row against row, and let one leave the comparison again.",
           "seconds": 78,
-          "youtube": "OsoM1wRzJzQ"
+          "youtube": "OsoM1wRzJzQ",
+          "label": "18",
+          "keywords": [
+            "results",
+            "messages",
+            "compare",
+            "copy formats",
+            "multiple results",
+            "Problems"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "A script of four statements: select all and run"
+            },
+            {
+              "at": 9,
+              "title": "Every statement that returns rows gets its own grid"
+            },
+            {
+              "at": 12,
+              "title": "The failing statement stopped the run; the error is in Messages, verbatim"
+            },
+            {
+              "at": 19,
+              "title": "Side by side: the grids and the messages at once"
+            },
+            {
+              "at": 24,
+              "title": "Any result opens as a document tab of its own"
+            },
+            {
+              "at": 30,
+              "title": "Copy Format sets the shape of every copy: JSON objects here"
+            },
+            {
+              "at": 35,
+              "title": "Pasted into a new script: typed values, keyed by column"
+            },
+            {
+              "at": 42,
+              "title": "Two stores, the same question: store 1 first, kept as a document"
+            },
+            {
+              "at": 50,
+              "title": "Then store 2, compared with it from the dots menu"
+            },
+            {
+              "at": 59,
+              "title": "Side by side: the ranks of both stores, row against row"
+            },
+            {
+              "at": 62,
+              "title": "Scroll Together: one grid scrolls, the other follows"
+            },
+            {
+              "at": 70,
+              "title": "Remove from Comparison: store 1 leaves, store 2 stands alone again"
+            }
+          ]
         },
         {
           "n": 19,
@@ -201,8 +1816,51 @@
           "title": "A JavaScript console for your results",
           "short": "A JavaScript console over the rows and the grid on screen",
           "summary": "The Log ends in a console line: JavaScript against what is on screen. results is the data (a row by index, cells by column name, rows far past the loaded window fetched from the server), results.grid is the grid (server side filters over every row, hide and show columns), and reveal() scrolls to a row. Every global has a help topic, with completion.",
-          "seconds": 70,
-          "youtube": "vXFPrPOHahY"
+          "seconds": 71,
+          "youtube": "vXFPrPOHahY",
+          "label": "19",
+          "keywords": [
+            "JavaScript",
+            "console",
+            "Log",
+            "$_",
+            "results",
+            "script"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "A million rows on screen"
+            },
+            {
+              "at": 9,
+              "title": "The Log ends in a console line: JavaScript against what is on screen"
+            },
+            {
+              "at": 18,
+              "title": "results is the data: a row by its index, cells by column name"
+            },
+            {
+              "at": 25,
+              "title": "A row far past the loaded window is fetched from the server"
+            },
+            {
+              "at": 30,
+              "title": "reveal() scrolls the grid to it and selects it"
+            },
+            {
+              "at": 35,
+              "title": "results.grid is the grid: its filter runs on the server, over every row"
+            },
+            {
+              "at": 48,
+              "title": "Hide and show columns from the line, the header menu’s switches"
+            },
+            {
+              "at": 62,
+              "title": "Every global has a help topic, with completion"
+            }
+          ]
         }
       ]
     },
@@ -218,17 +1876,198 @@
           "title": "Annotations: comments that configure a script",
           "short": "Comments that set a script's connection, inputs and rules",
           "summary": "PlumeSQL reads special comments, annotations, in any SQL script. A line like -- @connection, -- @readonly, -- @extension or -- @inputs tells PlumeSQL how to treat the file or the statement below it: which database it runs on, whether writes are allowed, which view opens beside its result, what its parameters are. The editor completes annotations as you type, explains each on hover and lists them in the Outline. The next videos build on them: parameters, query extensions and command extensions.",
-          "seconds": 64,
-          "youtube": "YdzBM-p4kLs"
+          "seconds": 65,
+          "youtube": "YdzBM-p4kLs",
+          "label": "20",
+          "keywords": [
+            "annotations",
+            "@inputs",
+            "@extension",
+            "@connection",
+            "comments",
+            "configure"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "An annotation is a comment: two dashes, then @ and a word"
+            },
+            {
+              "at": 7,
+              "title": "At the top of the file it configures the whole file"
+            },
+            {
+              "at": 19,
+              "title": "@connection pins the file to a database: the tab takes it, no picker"
+            },
+            {
+              "at": 22,
+              "title": "@readonly makes the session itself read only"
+            },
+            {
+              "at": 26,
+              "title": "Hover any annotation to read what it does"
+            },
+            {
+              "at": 31,
+              "title": "Run the update: the server itself refuses the write"
+            },
+            {
+              "at": 39,
+              "title": "Right above a statement, an annotation is that statement's alone"
+            },
+            {
+              "at": 48,
+              "title": "@extension bar-chart open: Run shows the result as a chart"
+            },
+            {
+              "at": 55,
+              "title": "The Outline lists them: the file's header and each statement's"
+            },
+            {
+              "at": 59,
+              "title": "Next: parameters, query extensions and command extensions"
+            }
+          ]
         },
         {
           "n": 21,
           "slug": "parameters",
           "title": "Query parameters and the @inputs annotation",
           "short": "Parameters ask for values in a typed form, or @inputs answers",
-          "summary": "A statement with parameters ($1, $name, :name or {name}) asks for their values when you run it, in a form whose fields the server types. An @inputs line in the file answers them so Run asks nothing, @ask opens the form anyway, the same parameters become a query extension's form, and @inputs also answers a grid extension's questions, such as which column a chart draws.",
-          "seconds": 96,
-          "youtube": "p2z16Vmc_Io"
+          "summary": "A statement with parameters ($1, $name, :name or {name}) asks for their values when you run it, in a form whose fields the server types. An @inputs line in the file answers them so Run asks nothing, @ask opens the form anyway, @noask never does and refuses a run whose value is missing with the reason in the Log, the same parameters become a query extension's form, and @inputs also answers a grid extension's questions, such as which column a chart draws.",
+          "seconds": 114,
+          "youtube": "p2z16Vmc_Io",
+          "label": "21",
+          "keywords": [
+            "parameters",
+            "@inputs",
+            "@ask",
+            "@noask",
+            "$1",
+            ":name",
+            "form",
+            "prompt"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "A plain script with placeholders: $rating and psql's :minutes"
+            },
+            {
+              "at": 8,
+              "title": "Run asks for their values in a form"
+            },
+            {
+              "at": 12,
+              "title": "The server types each field: rating is an enum, minutes an integer"
+            },
+            {
+              "at": 18,
+              "title": "Save in the script writes the answers as an @inputs line"
+            },
+            {
+              "at": 23,
+              "title": "The values are bound, never pasted into the SQL"
+            },
+            {
+              "at": 27,
+              "title": "With @inputs answering, Run no longer asks"
+            },
+            {
+              "at": 33,
+              "title": "@ask opens the form anyway, prefilled from @inputs"
+            },
+            {
+              "at": 49,
+              "title": "@noask is the opposite: Run never asks, it runs on @inputs as written"
+            },
+            {
+              "at": 58,
+              "title": "A value missing from @inputs refuses the run, and the Log says which"
+            },
+            {
+              "at": 70,
+              "title": "The same statement as a query extension: @var lines declare its form"
+            },
+            {
+              "at": 75,
+              "title": "Run Extension opens the form, the defaults filled in"
+            },
+            {
+              "at": 86,
+              "title": "A grid extension has inputs too: Bars guessed the first number column"
+            },
+            {
+              "at": 95,
+              "title": "@inputs answers its inputs in the file: value, label and top"
+            },
+            {
+              "at": 101,
+              "title": "Run, and the chart draws exactly that, no dialog"
+            }
+          ]
+        },
+        {
+          "n": 47,
+          "slug": "parameters-form",
+          "title": "Parameterized queries: placeholders become a typed form",
+          "short": "Placeholders become a form typed by the server, saved back into the script",
+          "summary": "Placeholders where the values go, and Run asks for them in a form whose fields the server types: a customer picked straight from its table, an enum from its values, a timestamp from a calendar. Save in the script keeps the answers with the query, the values are bound as parameters and never pasted into the SQL, and the next Run asks nothing.",
+          "seconds": 67,
+          "youtube": "vMxz3TWkiAw",
+          "label": "21.1",
+          "keywords": [
+            "parameters",
+            "form",
+            "placeholders",
+            "@inputs",
+            "typed",
+            "enum",
+            "date"
+          ],
+          "chapters": [
+            {
+              "at": 6,
+              "title": "Write the query: the editor knows your tables, columns and joins"
+            },
+            {
+              "at": 14,
+              "title": "Placeholders where the values go: $customer, $rating, $since"
+            },
+            {
+              "at": 25,
+              "title": "@pick: the customer comes from its own table"
+            },
+            {
+              "at": 32,
+              "title": "Run: a form, each field typed by the server"
+            },
+            {
+              "at": 38,
+              "title": "Pick the customer straight from the customer table"
+            },
+            {
+              "at": 43,
+              "title": "rating is an enum: choose one of its values"
+            },
+            {
+              "at": 46,
+              "title": "since is a timestamp: a calendar, or type what PostgreSQL reads"
+            },
+            {
+              "at": 51,
+              "title": "Save in the script keeps the answers with the query"
+            },
+            {
+              "at": 55,
+              "title": "Bound as values, never pasted into the SQL"
+            },
+            {
+              "at": 59,
+              "title": "Run again: no form, the script answers itself"
+            }
+          ]
         },
         {
           "n": 22,
@@ -237,7 +2076,57 @@
           "short": "SQL files with forms, buttons and charts, from annotations",
           "summary": "A query extension is a SQL file whose comments are annotations. The editor completes them, explains them on hover and lists them in the Outline. @var turns parameters into a form with typed fields, @button and @on make a cell a button with @confirm asking first, @open drills into a row with a way back, and @extension attaches a chart as a tab of its own.",
           "seconds": 66,
-          "youtube": "f_ZE0SI1myU"
+          "youtube": "f_ZE0SI1myU",
+          "label": "22",
+          "keywords": [
+            "query extension",
+            ".plumesql.sql",
+            "@toolbar",
+            "button",
+            "saved query"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "A query extension is a SQL file; its comments are annotations"
+            },
+            {
+              "at": 13,
+              "title": "Completion offers the annotations that belong where you type"
+            },
+            {
+              "at": 23,
+              "title": "Hover any annotation for its documentation"
+            },
+            {
+              "at": 27,
+              "title": "The Outline lists every annotation and what it does"
+            },
+            {
+              "at": 33,
+              "title": "Save, then Run Extension"
+            },
+            {
+              "at": 37,
+              "title": "@var opens a form; the server types each field"
+            },
+            {
+              "at": 44,
+              "title": "@on makes the rate itself the button, and @confirm asks first"
+            },
+            {
+              "at": 47,
+              "title": "The act done, the answer simply runs again"
+            },
+            {
+              "at": 51,
+              "title": "@open drills into a row, with a way back"
+            },
+            {
+              "at": 57,
+              "title": "@extension added the chart as a tab of its own"
+            }
+          ]
         },
         {
           "n": 23,
@@ -245,8 +2134,43 @@
           "title": "Command extensions: run programs with your connection",
           "short": "Run programs with your connection; the password stays hidden",
           "summary": "A command extension is one program line under its annotations. Placeholders fill in the connection's parameters, the password goes only into the program's environment, and hovering the program shows exactly what will run. Run it: a terminal watches it, and @alert-on-success reports the outcome.",
-          "seconds": 38,
-          "youtube": "zUZJft00fg4"
+          "seconds": 39,
+          "youtube": "zUZJft00fg4",
+          "label": "23",
+          "keywords": [
+            "command extension",
+            ".plumesql.run",
+            "psql",
+            "program",
+            "terminal",
+            "@env"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "A command extension: one program line under its annotations"
+            },
+            {
+              "at": 13,
+              "title": "Typing { offers every placeholder"
+            },
+            {
+              "at": 20,
+              "title": "Hover the program: what will run, with the values filled in"
+            },
+            {
+              "at": 26,
+              "title": "Save, then Run Extension: a terminal watches it run"
+            },
+            {
+              "at": 29,
+              "title": "@alert-on-success reports the outcome"
+            },
+            {
+              "at": 33,
+              "title": "The output stays in its tab"
+            }
+          ]
         },
         {
           "n": 24,
@@ -254,8 +2178,50 @@
           "title": "The Extensions Marketplace",
           "short": "Browse, install and scope extensions from the Marketplace",
           "summary": "The Extensions side tab browses the Marketplace by kind and category. Every extension has a page with what it adds, a demo and its README; one click installs it, and you choose where it applies. A chart extension then shows as a tab beside the grid, asking what to draw with the likely column already picked. Copy to My Extensions makes any extension yours to edit.",
-          "seconds": 61,
-          "youtube": "opp9KpZGnyk"
+          "seconds": 62,
+          "youtube": "opp9KpZGnyk",
+          "label": "24",
+          "keywords": [
+            "Marketplace",
+            "extensions",
+            "install",
+            "charts",
+            "Attach Everywhere"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "The Extensions side tab browses the Marketplace"
+            },
+            {
+              "at": 7,
+              "title": "Filter by kind and category"
+            },
+            {
+              "at": 13,
+              "title": "Every extension has a page: what it adds, a demo, its README"
+            },
+            {
+              "at": 23,
+              "title": "One click installs it"
+            },
+            {
+              "at": 28,
+              "title": "Attach it everywhere, or to a script, a table or a query pattern"
+            },
+            {
+              "at": 32,
+              "title": "Run a query: the chart is a tab beside the grid"
+            },
+            {
+              "at": 41,
+              "title": "It asks what to draw, the likely column already picked"
+            },
+            {
+              "at": 48,
+              "title": "Copy to My Extensions makes it yours to edit"
+            }
+          ]
         },
         {
           "n": 25,
@@ -264,7 +2230,57 @@
           "short": "Write a grid extension, type checked, redrawn on every save",
           "summary": "New Extension starts from a template. The JavaScript editor is type checked against the extension API, with completion and hover, libraries import from a CDN, and every save redraws the view over your result.",
           "seconds": 66,
-          "youtube": "ddPjmNlejbY"
+          "youtube": "ddPjmNlejbY",
+          "label": "25",
+          "keywords": [
+            "write an extension",
+            "grid extension",
+            ".plumesql.js",
+            "JavaScript",
+            "My Extensions"
+          ],
+          "chapters": [
+            {
+              "at": 6,
+              "title": "New Extension, from the Extensions side tab"
+            },
+            {
+              "at": 9,
+              "title": "A grid extension: rules that format a grid, or a view that draws it"
+            },
+            {
+              "at": 11,
+              "title": "Templates to start from, or Blank"
+            },
+            {
+              "at": 13,
+              "title": "Blank, and a name: it lands in My Extensions"
+            },
+            {
+              "at": 18,
+              "title": "A few lines: Chart.js imported straight from a CDN"
+            },
+            {
+              "at": 22,
+              "title": "The editor knows the extension types: ctx.palette is the theme’s colors"
+            },
+            {
+              "at": 32,
+              "title": "and the library’s own types, read from the CDN"
+            },
+            {
+              "at": 38,
+              "title": "Attach it to a script: one -- @extension line"
+            },
+            {
+              "at": 45,
+              "title": "Run the query: the chart is a tab beside the grid"
+            },
+            {
+              "at": 53,
+              "title": "Change it and save: the chart redraws by itself, no query run"
+            }
+          ]
         },
         {
           "n": 26,
@@ -272,8 +2288,67 @@
           "title": "Extension reactions and comments from GitHub",
           "short": "Reactions and comments from GitHub on every extension's page",
           "summary": "Every extension's page carries its GitHub discussion: reactions like on GitHub, comments with avatars and replies, editing and deleting your own, and download counts. Sign in with GitHub once and react or comment right from PlumeSQL.",
-          "seconds": 81,
-          "youtube": "siY1DpEXbg8"
+          "seconds": 84,
+          "youtube": "siY1DpEXbg8",
+          "label": "26",
+          "keywords": [
+            "reactions",
+            "comments",
+            "GitHub",
+            "feedback",
+            "downloads",
+            "discussion"
+          ],
+          "chapters": [
+            {
+              "at": 6,
+              "title": "Every extension shows its downloads, likes and comments, straight from GitHub"
+            },
+            {
+              "at": 9,
+              "title": "Sort by the most downloaded, or the most liked"
+            },
+            {
+              "at": 17,
+              "title": "An extension's page: its downloads and GitHub's reaction bar up top"
+            },
+            {
+              "at": 23,
+              "title": "The comments count leads down to the conversation"
+            },
+            {
+              "at": 25,
+              "title": "Comments with their avatars, a maintainer marked, replies under their comment"
+            },
+            {
+              "at": 34,
+              "title": "To take part, sign in with GitHub"
+            },
+            {
+              "at": 37,
+              "title": "GitHub's device flow: enter the code on github.com, nothing typed here"
+            },
+            {
+              "at": 49,
+              "title": "Signed in: a thumbs up is one click"
+            },
+            {
+              "at": 52,
+              "title": "A comment goes to the extension's GitHub discussion"
+            },
+            {
+              "at": 61,
+              "title": "Each comment's menu: Copy Link, Quote Reply, Edit and Delete"
+            },
+            {
+              "at": 68,
+              "title": "Edit in place, saved with the keyboard"
+            },
+            {
+              "at": 72,
+              "title": "And a reply lands under the comment it answers"
+            }
+          ]
         },
         {
           "n": 27,
@@ -282,7 +2357,46 @@
           "short": "ECharts, SandDance and Vega-Lite charts beside your grid",
           "summary": "Chart extensions draw a query's result as a tab beside its grid: ECharts with zoom and tooltips, SandDance in 3D, Vega-Lite and more, each installed from the Marketplace with one click.",
           "seconds": 62,
-          "youtube": "EnEd-aN30nU"
+          "youtube": "EnEd-aN30nU",
+          "label": "27",
+          "keywords": [
+            "charts",
+            "bar chart",
+            "ECharts",
+            "SandDance",
+            "visualize",
+            "graph"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Extensions come from the Marketplace, in the Extensions side tab"
+            },
+            {
+              "at": 11,
+              "title": "Its page says what it adds, what it loads and how to use it"
+            },
+            {
+              "at": 14,
+              "title": "Install, and it is ready"
+            },
+            {
+              "at": 18,
+              "title": "A query names the view it opens on, with its inputs answered in the file"
+            },
+            {
+              "at": 30,
+              "title": "ECharts: zoom, a range slider and a tooltip that follows the pointer"
+            },
+            {
+              "at": 39,
+              "title": "SandDance: every film a cube, stacked by rating and rental rate, in 3D"
+            },
+            {
+              "at": 54,
+              "title": "Vega-Lite: rentals per category, one bar and one colour each"
+            }
+          ]
         },
         {
           "n": 28,
@@ -291,7 +2405,56 @@
           "short": "KPI cards, gauges, treemaps and funnels from one SQL query",
           "summary": "Dashboard extensions turn a query into KPI cards with their change and a sparkline, a gauge with bands and a target, a treemap, a funnel, a waterfall and a Pareto chart. Each is a tab beside the grid, from one SQL query.",
           "seconds": 78,
-          "youtube": "wbDtOfTpHWM"
+          "youtube": "wbDtOfTpHWM",
+          "label": "28",
+          "keywords": [
+            "dashboard",
+            "refresh",
+            "tiles",
+            "monitor"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Dashboards are extensions too: the Extensions side tab"
+            },
+            {
+              "at": 10,
+              "title": "KPI cards: its page shows what it adds and how to use it"
+            },
+            {
+              "at": 13,
+              "title": "One click installs it"
+            },
+            {
+              "at": 17,
+              "title": "A line above the query opens its result as KPI cards"
+            },
+            {
+              "at": 25,
+              "title": "Each card: the number, its change against the month before and a sparkline"
+            },
+            {
+              "at": 34,
+              "title": "A gauge: one number on a dial, with bands and a target"
+            },
+            {
+              "at": 42,
+              "title": "A treemap: revenue by category, then by rating inside it"
+            },
+            {
+              "at": 51,
+              "title": "A funnel: how many customers reach each stage"
+            },
+            {
+              "at": 59,
+              "title": "A waterfall: every month’s change to the running total"
+            },
+            {
+              "at": 71,
+              "title": "A Pareto chart: the categories that make up 80% of revenue"
+            }
+          ]
         },
         {
           "n": 29,
@@ -299,8 +2462,139 @@
           "title": "Data analysis extensions",
           "short": "Profile, outliers, correlations, forecasts and pivots",
           "summary": "Analysis extensions read a result for you: Profile, Data quality and Histogram of every column, Outliers and a Correlation matrix, a Forecast with its confidence band, and Pivot and Group by to reshape rows. Each opens as a tab beside the grid.",
-          "seconds": 90,
-          "youtube": "bI1RUIwaJYo"
+          "seconds": 91,
+          "youtube": "bI1RUIwaJYo",
+          "label": "29",
+          "keywords": [
+            "analysis",
+            "pivot",
+            "statistics",
+            "forecast",
+            "profile",
+            "reshape"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Analysis comes from the Marketplace too: the Extensions side tab"
+            },
+            {
+              "at": 11,
+              "title": "Profile: every column of a result summed up in one pass"
+            },
+            {
+              "at": 14,
+              "title": "One click installs it"
+            },
+            {
+              "at": 18,
+              "title": "A query can name several extensions: each adds a tab beside the grid"
+            },
+            {
+              "at": 26,
+              "title": "Profile: type, NULLs, distinct values, range and a distribution per column"
+            },
+            {
+              "at": 31,
+              "title": "Data quality: what looks wrong, column by column"
+            },
+            {
+              "at": 36,
+              "title": "Histogram: film length in ten bins, with shares and a bar"
+            },
+            {
+              "at": 44,
+              "title": "Outliers: the customers who spend far past the rest, furthest first"
+            },
+            {
+              "at": 50,
+              "title": "Correlation: how strongly each pair of numbers moves together"
+            },
+            {
+              "at": 58,
+              "title": "Forecast: the series, then ten days ahead with a 95% band"
+            },
+            {
+              "at": 66,
+              "title": "Piped into ECharts: the series, the forecast and its band as lines"
+            },
+            {
+              "at": 78,
+              "title": "Pivot: sixteen thousand rentals folded into category by month"
+            },
+            {
+              "at": 84,
+              "title": "Group by: sum, mean and count per category, with a total row"
+            }
+          ]
+        },
+        {
+          "n": 48,
+          "slug": "data-quality",
+          "title": "Can you trust this table? Data quality, duplicates and outliers",
+          "short": "Free extensions read your query's result: quality, duplicates, outliers",
+          "summary": "You just imported a table. Free extensions read the result of your own query and say what is wrong with it: Data quality (repeated ids, empty values, stray spaces, case variants, dates out of range, numbers that are not numbers, each with its examples), Duplicates (the rows loaded twice, with both row numbers) and Outliers (the amounts far from the rest). Type @extension above the query: one that is not installed is installed from the quick fix, after a question that says what it can do. They run sandboxed, with no database and no network, and read the result you already have.",
+          "seconds": 82,
+          "youtube": "wo_9kfJ7rSo",
+          "label": "29.1",
+          "keywords": [
+            "data quality",
+            "duplicates",
+            "outliers",
+            "import",
+            "profile",
+            "extensions"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "An import just landed. The first rows look fine"
+            },
+            {
+              "at": 11,
+              "title": "Can you trust it? Type @extension"
+            },
+            {
+              "at": 14,
+              "title": "The list has what the Marketplace has, installed or not"
+            },
+            {
+              "at": 17,
+              "title": "Not installed yet. The quick fix installs it"
+            },
+            {
+              "at": 22,
+              "title": "It asks first: sandboxed, no database, no network"
+            },
+            {
+              "at": 27,
+              "title": "No need to run again: it reads the result you have"
+            },
+            {
+              "at": 30,
+              "title": "One row per column, and what is wrong with it"
+            },
+            {
+              "at": 32,
+              "title": "Every count shows its examples"
+            },
+            {
+              "at": 41,
+              "title": "Which rows? The next extension, the same way"
+            },
+            {
+              "at": 54,
+              "title": "12 rows loaded twice, with the row numbers of both copies"
+            },
+            {
+              "at": 59,
+              "title": "Data quality says spent is ok. Are the amounts sensible?"
+            },
+            {
+              "at": 75,
+              "title": "Two amounts far from the rest: 18,500 and 9,800"
+            }
+          ]
         },
         {
           "n": 30,
@@ -308,8 +2602,160 @@
           "title": "Formatting and calculations in the grid",
           "short": "Conditional formats, sparklines and calculated columns",
           "summary": "Grid extensions change how cells read without changing the query: conditional formats, sparklines, currencies, relative times and trends, and calculated columns such as running totals, percent of total, moving averages and ranks.",
-          "seconds": 94,
-          "youtube": "oTkqQMvsl58"
+          "seconds": 88,
+          "youtube": "oTkqQMvsl58",
+          "label": "30",
+          "keywords": [
+            "formatting",
+            "highlight",
+            "currency",
+            "running total",
+            "calculations",
+            "@format",
+            "@computed"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Formatting comes from the Marketplace: the Extensions side tab"
+            },
+            {
+              "at": 10,
+              "title": "Currency: amount columns read as money, in the currency you pick"
+            },
+            {
+              "at": 16,
+              "title": "A plain result first: raw sums, arrays, timestamps and byte counts"
+            },
+            {
+              "at": 23,
+              "title": "One line above the query attaches five formatters"
+            },
+            {
+              "at": 28,
+              "title": "The cells change in place as the line lands; the values underneath stay the same"
+            },
+            {
+              "at": 40,
+              "title": "Highlight: a rule whose answers are written in the file"
+            },
+            {
+              "at": 51,
+              "title": "Calculations open as tabs beside the grid"
+            },
+            {
+              "at": 60,
+              "title": "Percent of total: each month as a share of the customer’s total"
+            },
+            {
+              "at": 64,
+              "title": "Moving average: each month averaged with the row before"
+            },
+            {
+              "at": 67,
+              "title": "Rank: customers ranked by amount within each month"
+            },
+            {
+              "at": 71,
+              "title": "And the grid itself gains a running total beside the amounts"
+            },
+            {
+              "at": 74,
+              "title": "A formatter dresses a computed column too: the running total reads as money"
+            }
+          ]
+        },
+        {
+          "n": 49,
+          "slug": "shape-result",
+          "title": "Shape a result, not your SQL: computed columns and formats",
+          "short": "Computed columns and formats from a comment line, the query untouched",
+          "summary": "A few comment lines above a query change how its result looks, and the query stays as it is. A new column is one line of JavaScript, there as you finish typing, with real help: the result's columns, string methods, signatures and \"did you mean\" on a typo. Format any column from its menu and the line is written for you, color the rows a condition picks, open a longer formula in a full editor, and freeze columns and rows to compare them. It is all text in your script.",
+          "seconds": 109,
+          "youtube": "tWYRX84dQdE",
+          "label": "30.1",
+          "keywords": [
+            "@computed",
+            "@format",
+            "computed columns",
+            "formats",
+            "formula",
+            "frozen columns"
+          ],
+          "chapters": [
+            {
+              "at": 6,
+              "title": "A plain query. Names apart, amounts bare"
+            },
+            {
+              "at": 10,
+              "title": "A new column is one line of JavaScript above the query"
+            },
+            {
+              "at": 14,
+              "title": "row. knows this result's columns"
+            },
+            {
+              "at": 20,
+              "title": "No run: the column is there"
+            },
+            {
+              "at": 26,
+              "title": "Real JavaScript: every string method"
+            },
+            {
+              "at": 30,
+              "title": "And its signature, as you type"
+            },
+            {
+              "at": 36,
+              "title": "A typo is caught, with what you meant"
+            },
+            {
+              "at": 47,
+              "title": "Any column: format it from its menu"
+            },
+            {
+              "at": 51,
+              "title": "The menu writes the line for you"
+            },
+            {
+              "at": 54,
+              "title": "Or by hand: fmt has the common ones"
+            },
+            {
+              "at": 64,
+              "title": "Or any condition you can write"
+            },
+            {
+              "at": 70,
+              "title": "Longer? The lightbulb opens it in a JavaScript editor"
+            },
+            {
+              "at": 81,
+              "title": "Accept puts it back in the line, and the grid follows"
+            },
+            {
+              "at": 84,
+              "title": "Freeze a column"
+            },
+            {
+              "at": 90,
+              "title": "It stays while the rest scrolls"
+            },
+            {
+              "at": 93,
+              "title": "Freeze a row, at the top or the bottom"
+            },
+            {
+              "at": 100,
+              "title": "Row 1 stays beside row 100, to compare them"
+            },
+            {
+              "at": 103,
+              "title": "Seven lines above your query. The SQL never changed"
+            }
+          ]
         },
         {
           "n": 31,
@@ -318,7 +2764,71 @@
           "short": "Activity, locks, bloat, unused indexes, one click each",
           "summary": "Query extensions for the DBA: current activity, blocking locks, long running queries, table sizes and bloat, unused indexes, the cache hit ratio, server settings and a security review, each one click away with buttons on its rows.",
           "seconds": 89,
-          "youtube": "erkLWykPNwQ"
+          "youtube": "erkLWykPNwQ",
+          "label": "31",
+          "keywords": [
+            "DBA",
+            "activity",
+            "locks",
+            "table sizes",
+            "indexes",
+            "security review",
+            "vacuum"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Session one opens a transaction and updates a row"
+            },
+            {
+              "at": 15,
+              "title": "Session two, another tab, wants the same row: it waits"
+            },
+            {
+              "at": 22,
+              "title": "Current activity: every backend, and what it is waiting on"
+            },
+            {
+              "at": 28,
+              "title": "Who blocks whom? The Marketplace has a query for that"
+            },
+            {
+              "at": 35,
+              "title": "It runs SQL on your connection, so Install is your consent to its code"
+            },
+            {
+              "at": 41,
+              "title": "Blocking locks: the waiter, the blocker and the query each runs"
+            },
+            {
+              "at": 48,
+              "title": "Terminate the blocker: its transaction rolls back and the lock goes with it"
+            },
+            {
+              "at": 55,
+              "title": "Session two gets its row at last"
+            },
+            {
+              "at": 60,
+              "title": "Table sizes: the biggest tables first"
+            },
+            {
+              "at": 65,
+              "title": "A click on a table: its indexes, one level deeper"
+            },
+            {
+              "at": 70,
+              "title": "Unused indexes: what nothing has read since the statistics reset"
+            },
+            {
+              "at": 75,
+              "title": "Cache hit ratio: per database, table and index, lowest first"
+            },
+            {
+              "at": 80,
+              "title": "Security review: a checklist of findings, each with what to do"
+            }
+          ]
         },
         {
           "n": 32,
@@ -326,8 +2836,51 @@
           "title": "Backup, restore and more with command extensions",
           "short": "Dump, back up and restore with PostgreSQL's own tools",
           "summary": "Command extensions run PostgreSQL's own tools with the connection's parameters: dump a table or a schema, back up a database, list a backup, restore it and run a SQL file, each in PlumeSQL's terminal.",
-          "seconds": 78,
-          "youtube": "cvYxls_lxfA"
+          "seconds": 83,
+          "youtube": "cvYxls_lxfA",
+          "label": "32",
+          "keywords": [
+            "backup",
+            "restore",
+            "pg_dump",
+            "pg_restore",
+            "dump table",
+            "run SQL file"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Command extensions run programs on your machine: Backup runs pg_dump"
+            },
+            {
+              "at": 16,
+              "title": "Run it on dvdrental: it asks first, then pg_dump runs in a terminal of its own"
+            },
+            {
+              "at": 23,
+              "title": "The archive is in the workspace"
+            },
+            {
+              "at": 28,
+              "title": "List backup reads its table of contents, the file picked from the workspace"
+            },
+            {
+              "at": 36,
+              "title": "Dump table works from the object tree: a table’s own menu"
+            },
+            {
+              "at": 51,
+              "title": "The dump opens when pg_dump is done: the table, then its thousand rows"
+            },
+            {
+              "at": 59,
+              "title": "Restore it into a scratch database: the check.sql tab is connected there"
+            },
+            {
+              "at": 69,
+              "title": "Run SQL file: psql runs check.sql on the restored database"
+            }
+          ]
         }
       ]
     },
@@ -342,9 +2895,76 @@
           "slug": "postgis",
           "title": "PostGIS extensions: geometries in the grid",
           "short": "Geometries sketched and explained, validity checked, via extensions",
-          "summary": "PostGIS support is a set of Marketplace extensions. When PlumeSQL learns a database has PostGIS, the Log suggests the PostGIS essentials pack once, as a corner notification and a Log entry with Show and Install on it. Until then geometry values arrive as EWKB hex; Install on the entry adds PostGIS (a grid extension) at once and Validate geometry and Invalid geometries (query extensions) with your consent. Then a hover card sketches a shape with its EWKT, the peek and the value tab show its kind, SRID, points and bounding box, Validate geometry asks PostGIS why a polygon is invalid, Invalid geometries checks a whole column, Sketch Geometry Column draws the column as one picture, and the row editor sketches the WKT you type.",
-          "seconds": 103,
-          "youtube": "s_mPcSEKlcE"
+          "summary": "PostGIS support is a set of Marketplace extensions. When PlumeSQL learns a database has PostGIS, the Log suggests the PostGIS essentials pack once, as a corner notification and a Log entry with Show and Install on it. Until then geometry values arrive as EWKB hex; Install on the entry asks once for the whole pack, marking the query extensions that run SQL (Validate geometry and Invalid geometries), and the grid then reads every geometry as EWKT. A hover card sketches a shape with its EWKT, the peek and the value tab show its kind, SRID, points and bounding box, Validate geometry asks PostGIS why a polygon is invalid, Invalid geometries checks a whole column, Sketch Geometry Column draws the column as one picture, and the row editor sketches the WKT you type.",
+          "seconds": 108,
+          "youtube": "s_mPcSEKlcE",
+          "label": "33",
+          "keywords": [
+            "PostGIS",
+            "geometry",
+            "geography",
+            "map",
+            "EWKT",
+            "spatial"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "PostGIS in this database: the Log suggests the extensions made for it"
+            },
+            {
+              "at": 10,
+              "title": "Said once, as a Log entry with Show and Install on it"
+            },
+            {
+              "at": 13,
+              "title": "Until then, PostGIS sends every geometry as EWKB hex: exact, and unreadable"
+            },
+            {
+              "at": 22,
+              "title": "Install asks once for the whole pack, marking what runs SQL"
+            },
+            {
+              "at": 35,
+              "title": "Installed: every geometry reads as EWKT, the stored value untouched"
+            },
+            {
+              "at": 41,
+              "title": "Rest the mouse on a geometry: its shape, sketched, with the EWKT"
+            },
+            {
+              "at": 45,
+              "title": "Space peeks the cell: the EWKT decoded from the stored EWKB, beside a sketch"
+            },
+            {
+              "at": 50,
+              "title": "The value tab: kind, SRID, point count and bounding box, the EWKT in the editor"
+            },
+            {
+              "at": 56,
+              "title": "Decode geometry flips the editor back to the hex as stored, and on again"
+            },
+            {
+              "at": 61,
+              "title": "Validate geometry asks PostGIS itself: a self-intersection, with the spot"
+            },
+            {
+              "at": 69,
+              "title": "Invalid geometries checks the whole column, from its header"
+            },
+            {
+              "at": 77,
+              "title": "Sketch Geometry Column draws the whole column as one picture"
+            },
+            {
+              "at": 86,
+              "title": "The row editor sketches a geometry as you type it"
+            },
+            {
+              "at": 100,
+              "title": "Insert, and the new route is in the table"
+            }
+          ]
         },
         {
           "n": 34,
@@ -352,8 +2972,54 @@
           "title": "pgvector extension: embeddings in the grid",
           "short": "Vectors with dimensions, norms and a sparkline, not number walls",
           "summary": "pgvector support is the pgvector extension from the Marketplace, recommended for any database with the vector extension. Installed, it reads vector, halfvec and sparsevec values as vectors, not walls of numbers: dimensions, range, L2 norm and a sparkline of the components on hover, in the peek and in the value tab, with a sparse vector's entries drawn at their positions, all from what the grid already holds.",
-          "seconds": 75,
-          "youtube": "MdMM6gYJQKE"
+          "seconds": 76,
+          "youtube": "MdMM6gYJQKE",
+          "label": "34",
+          "keywords": [
+            "pgvector",
+            "vector",
+            "embeddings",
+            "nearest neighbour",
+            "similarity"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Articles with a vector(16) embedding, the same as halfvec, and sparse keyword weights"
+            },
+            {
+              "at": 11,
+              "title": "As stored, an embedding is a wall of floats"
+            },
+            {
+              "at": 14,
+              "title": "The Extensions tab recommends pgvector, because this database has it"
+            },
+            {
+              "at": 23,
+              "title": "One click installs it: it reads the values in the grid, nothing runs on the server"
+            },
+            {
+              "at": 36,
+              "title": "Rest the mouse on an embedding: dimensions, range, L2 norm and a sparkline"
+            },
+            {
+              "at": 45,
+              "title": "A sparse vector shows its nonzero entries as spikes, at their true positions"
+            },
+            {
+              "at": 50,
+              "title": "Space peeks the cell: the same reading above the raw value"
+            },
+            {
+              "at": 55,
+              "title": "The value tab keeps it open beside the text as stored"
+            },
+            {
+              "at": 62,
+              "title": "Nearest neighbours: order by the <-> distance"
+            }
+          ]
         },
         {
           "n": 35,
@@ -361,8 +3027,50 @@
           "title": "TimescaleDB support",
           "short": "Hypertables, continuous aggregates and their jobs",
           "summary": "Hypertables, continuous aggregates and their jobs in the object tree and in extensions made for them: chunks with their time ranges, compression, the defining query of an aggregate and every job's run history.",
-          "seconds": 81,
-          "youtube": "OL5aT1EAW4U"
+          "seconds": 82,
+          "youtube": "OL5aT1EAW4U",
+          "label": "35",
+          "keywords": [
+            "TimescaleDB",
+            "hypertable",
+            "chunks",
+            "continuous aggregate",
+            "time series"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "The object tree knows TimescaleDB: a hypertable and a continuous aggregate"
+            },
+            {
+              "at": 10,
+              "title": "TimescaleDB's own functions show as the extension's members, marked EXT"
+            },
+            {
+              "at": 16,
+              "title": "Open DDL: the hypertable as TimescaleDB builds it"
+            },
+            {
+              "at": 25,
+              "title": "The continuous aggregate renders as one, with its refresh policy"
+            },
+            {
+              "at": 32,
+              "title": "The Marketplace sees TimescaleDB on this server and recommends its category"
+            },
+            {
+              "at": 45,
+              "title": "Hypertables: chunks, size and compression, one click to install and run"
+            },
+            {
+              "at": 58,
+              "title": "A click on the hypertable opens its chunks, with their time ranges"
+            },
+            {
+              "at": 64,
+              "title": "Background jobs: the compression, retention and refresh policies, with their runs"
+            }
+          ]
         },
         {
           "n": 36,
@@ -370,8 +3078,58 @@
           "title": "Citus support",
           "short": "Distributed and reference tables, shards and nodes",
           "summary": "Distributed and reference tables in the object tree with their DDL, and Citus extensions from the Marketplace for the cluster's shards and nodes.",
-          "seconds": 80,
-          "youtube": "_7ZuiA1u0NM"
+          "seconds": 79,
+          "youtube": "_7ZuiA1u0NM",
+          "label": "36",
+          "keywords": [
+            "Citus",
+            "distributed",
+            "shards",
+            "cluster",
+            "colocation"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "The object tree knows Citus: distributed tables and a reference table"
+            },
+            {
+              "at": 10,
+              "title": "The DDL says how: create_distributed_table, co-located with its group"
+            },
+            {
+              "at": 17,
+              "title": "A reference table renders as one"
+            },
+            {
+              "at": 24,
+              "title": "Queries join across the shards as if it were one table"
+            },
+            {
+              "at": 33,
+              "title": "The Marketplace sees Citus on this server and recommends its category"
+            },
+            {
+              "at": 45,
+              "title": "Install Distributed tables from the category, then Run it"
+            },
+            {
+              "at": 53,
+              "title": "Distributed tables: kind, distribution column, shards and co-location"
+            },
+            {
+              "at": 57,
+              "title": "A click on a table lists its shards and the node each lives on"
+            },
+            {
+              "at": 64,
+              "title": "Then Cluster nodes, installed and run the same way"
+            },
+            {
+              "at": 72,
+              "title": "Cluster nodes: here a single coordinator that holds the shards itself"
+            }
+          ]
         }
       ]
     },
@@ -387,8 +3145,47 @@
           "title": "The Explorer and search",
           "short": "Your scripts and project files side by side, with search",
           "summary": "The Explorer holds your scripts, the workspace's scripts and the project's files side by side, with the files you open most on top. Search in Files finds text across all of them, and Go to Tab or File opens anything by name.",
-          "seconds": 58,
-          "youtube": "0qtWnPHg6ys"
+          "seconds": 63,
+          "youtube": "0qtWnPHg6ys",
+          "label": "37",
+          "keywords": [
+            "Explorer",
+            "search",
+            "Go to File",
+            "Cmd+P",
+            "files",
+            "Search in Files"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "The Explorer holds three roots in one tree"
+            },
+            {
+              "at": 17,
+              "title": "Frequent: the files you open most, at the top"
+            },
+            {
+              "at": 22,
+              "title": "The kind filter: SQL scripts, commands, connection sources, other files"
+            },
+            {
+              "at": 31,
+              "title": "New Script, right from the empty editor"
+            },
+            {
+              "at": 38,
+              "title": "Search in Files looks through every root at once"
+            },
+            {
+              "at": 45,
+              "title": "A click opens the match"
+            },
+            {
+              "at": 49,
+              "title": "Go to Tab or File: open tabs, recent files and objects, by name"
+            }
+          ]
         },
         {
           "n": 38,
@@ -396,8 +3193,71 @@
           "title": "Keyboard first",
           "short": "The command palette, VS Code shortcuts and F6 between panes",
           "summary": "Every command is in the command palette on the VS Code shortcut, every combo is in one Keyboard Shortcuts sheet, and F6 cycles through the panes. Go to Tab or File, Go Back and Go Forward, and trees you work with the arrow keys: PlumeSQL is made to be driven from the keyboard.",
-          "seconds": 79,
-          "youtube": "_7vnb2v45bc"
+          "seconds": 83,
+          "youtube": "_7vnb2v45bc",
+          "label": "38",
+          "keywords": [
+            "keyboard",
+            "shortcuts",
+            "F6",
+            "arrows",
+            "focus",
+            "command palette"
+          ],
+          "chapters": [
+            {
+              "at": 6,
+              "title": "Every command is in the command palette, on the VS Code shortcut"
+            },
+            {
+              "at": 12,
+              "title": "Keyboard Shortcuts: every combo in one sheet"
+            },
+            {
+              "at": 19,
+              "title": "The palette remembers: what you ran last leads, as recently used"
+            },
+            {
+              "at": 24,
+              "title": "Run with the keyboard: the first press selects the statement, the second runs it"
+            },
+            {
+              "at": 27,
+              "title": "The Log, on the shortcut of VS Code's Output panel"
+            },
+            {
+              "at": 28,
+              "title": "F6 walks the focus through every pane; the focused one wears an edge"
+            },
+            {
+              "at": 45,
+              "title": "The bottom panel folds away on the VS Code toggle"
+            },
+            {
+              "at": 47,
+              "title": "Go to Tab or File: a few letters and Enter"
+            },
+            {
+              "at": 52,
+              "title": "Go Back and Go Forward walk the places you have been, across tabs"
+            },
+            {
+              "at": 57,
+              "title": "The trees are keyboard trees: F6 to the object tree, arrows to move"
+            },
+            {
+              "at": 61,
+              "title": "Left closes a folder, Right opens it"
+            },
+            {
+              "at": 68,
+              "title": "Moving over a table previews its rows: the preview follows the cursor"
+            },
+            {
+              "at": 77,
+              "title": "Space opens its rows in a tab of their own"
+            }
+          ]
         },
         {
           "n": 39,
@@ -406,7 +3266,82 @@
           "short": "Follow the system, preview themes live, get more in the Marketplace",
           "summary": "PlumeSQL follows the system appearance by default and switches with it, live. Select Color Theme previews every theme as the highlight moves over it. More themes come from the Marketplace: a theme extension's page previews each of its themes on the whole window, and Use installs the extension and switches to the theme in one click. Your queries and results are painted in the new colors.",
           "seconds": 83,
-          "youtube": "txVT0fM1ZCQ"
+          "youtube": "txVT0fM1ZCQ",
+          "label": "39",
+          "keywords": [
+            "themes",
+            "dark",
+            "light",
+            "colors",
+            "VS Code themes",
+            "appearance"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Run a query first, so there is something to paint"
+            },
+            {
+              "at": 10,
+              "title": "By default PlumeSQL follows the system appearance: dark here"
+            },
+            {
+              "at": 11,
+              "title": "Switch the system to light, and the window follows, live"
+            },
+            {
+              "at": 14,
+              "title": "And back to dark"
+            },
+            {
+              "at": 16,
+              "title": "Select Color Theme, the VS Code shortcut: System leads, marked current"
+            },
+            {
+              "at": 20,
+              "title": "Every theme previews as the highlight moves over it"
+            },
+            {
+              "at": 27,
+              "title": "Escape puts the theme back"
+            },
+            {
+              "at": 29,
+              "title": "More themes come from the Marketplace: Browse Color Themes"
+            },
+            {
+              "at": 35,
+              "title": "The Extensions side tab lists every theme extension"
+            },
+            {
+              "at": 44,
+              "title": "Its page shows every theme it carries, each with Preview and Use"
+            },
+            {
+              "at": 46,
+              "title": "Preview paints the whole window in a theme, nothing installed"
+            },
+            {
+              "at": 51,
+              "title": "Stop puts yours back"
+            },
+            {
+              "at": 54,
+              "title": "Use installs the theme and switches to it, in one click"
+            },
+            {
+              "at": 59,
+              "title": "Catppuccin Mocha it is, remembered from now on"
+            },
+            {
+              "at": 61,
+              "title": "Select Color Theme now lists them beside the built-in ones"
+            },
+            {
+              "at": 74,
+              "title": "Your queries and results, in the new colors"
+            }
+          ]
         },
         {
           "n": 40,
@@ -415,7 +3350,409 @@
           "short": "Settings, keys, themes and connections from VS Code, Cursor and more",
           "summary": "Coming from VS Code? PlumeSQL imports your settings, keybindings, color theme and file icon theme, and the PostgreSQL connections of the SQLTools and Microsoft PostgreSQL extensions. Cursor, Windsurf and VSCodium are read too.",
           "seconds": 65,
-          "youtube": "ZYIdmbvl5Cg"
+          "youtube": "ZYIdmbvl5Cg",
+          "label": "40",
+          "keywords": [
+            "VS Code",
+            "import",
+            "settings",
+            "keybindings",
+            "SQLTools",
+            "connections"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Before: one connection, discovered in the workspace, and the default look"
+            },
+            {
+              "at": 8,
+              "title": "One command: Import from VS Code"
+            },
+            {
+              "at": 13,
+              "title": "It lists what it found; each part asks again before changing anything"
+            },
+            {
+              "at": 18,
+              "title": "Editor settings: what you set there, beside what PlumeSQL has now"
+            },
+            {
+              "at": 23,
+              "title": "Keybindings: your own, for the commands PlumeSQL also has"
+            },
+            {
+              "at": 30,
+              "title": "The theme is read from its VS Code extension and becomes one of yours"
+            },
+            {
+              "at": 33,
+              "title": "Connections from SQLTools and Microsoft’s PostgreSQL extension"
+            },
+            {
+              "at": 40,
+              "title": "In the Vault now; a saved password goes from the file to the Vault, never through the page"
+            },
+            {
+              "at": 43,
+              "title": "The Log names everything it took"
+            },
+            {
+              "at": 51,
+              "title": "The imported connection works at once: pick it and run"
+            },
+            {
+              "at": 59,
+              "title": "Your font, keys, theme and connections: the editor you left, in PlumeSQL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G",
+      "title": "Diagrams and the Database Dictionary",
+      "short": "Diagrams",
+      "youtube": "PLJSKXWfnqeb8",
+      "videos": [
+        {
+          "n": 50,
+          "slug": "design-data",
+          "title": "From a sketch to tables",
+          "short": "Notes with their columns in plain words become tables and foreign keys",
+          "summary": "Designing a database starts the way it does on a whiteboard: a note for each thing, its columns in plain words (\"email text unique\", \"total numeric(12,2)\"), and a line between two notes says how they relate. Make Tables turns the notes into real tables with primary keys, columns and foreign keys, drawn on the diagram as tables not created yet. Every change waits in one Changes script, and nothing reaches the database until you review it and press Run.",
+          "seconds": 78,
+          "label": "41",
+          "keywords": [
+            "diagram",
+            "notes",
+            "sketch",
+            "Make Tables",
+            "design",
+            "foreign keys",
+            "Changes"
+          ],
+          "chapters": [
+            {
+              "at": 7,
+              "title": "Sketch the model: a note per thing"
+            },
+            {
+              "at": 20,
+              "title": "Columns are written the way CREATE TABLE says them"
+            },
+            {
+              "at": 26,
+              "title": "Draw how they relate"
+            },
+            {
+              "at": 35,
+              "title": "Then make them tables, all three at once"
+            },
+            {
+              "at": 42,
+              "title": "Primary keys, columns, foreign keys: all there"
+            },
+            {
+              "at": 46,
+              "title": "Every key is a real foreign key, drawn as one"
+            },
+            {
+              "at": 48,
+              "title": "Every change waits in one script"
+            },
+            {
+              "at": 55,
+              "title": "The keys after the tables, all in one transaction"
+            },
+            {
+              "at": 59,
+              "title": "Nothing reaches the database until you run it"
+            },
+            {
+              "at": 62,
+              "title": "And for fun, one switch: Sketch"
+            },
+            {
+              "at": 71,
+              "title": "The whole diagram, drawn by hand"
+            }
+          ],
+          "since": "0.33.0"
+        },
+        {
+          "n": 51,
+          "slug": "logical-model",
+          "title": "From a logical model to tables",
+          "short": "Entities and crow's feet, no SQL, made into tables, join tables included",
+          "summary": "Entities, attributes and relationships, no SQL: an entity is a note, types can stay logical or be left out, and crow's foot marks say how many. Make Tables turns the model into real tables: the foreign key goes on the many side, exactly one makes it NOT NULL, a many-to-many relationship gets its own join table, keys are named for their table and logical types become PostgreSQL types. Every change waits in one Changes script.",
+          "seconds": 96,
+          "label": "42",
+          "keywords": [
+            "logical model",
+            "entities",
+            "crow's foot",
+            "diagram",
+            "Make Tables",
+            "join table"
+          ],
+          "chapters": [
+            {
+              "at": 7,
+              "title": "Entities and their attributes, no SQL needed"
+            },
+            {
+              "at": 18,
+              "title": "Logical types like currency become real ones later"
+            },
+            {
+              "at": 23,
+              "title": "Draw the relationships"
+            },
+            {
+              "at": 27,
+              "title": "Every order belongs to exactly one customer"
+            },
+            {
+              "at": 37,
+              "title": "An order holds many products, a product sits in many orders"
+            },
+            {
+              "at": 46,
+              "title": "Make them tables, all at once"
+            },
+            {
+              "at": 56,
+              "title": "Many to many? A join table, made for you"
+            },
+            {
+              "at": 60,
+              "title": "Keys named customer_id, order_id: your choice in Settings"
+            },
+            {
+              "at": 64,
+              "title": "Exactly one customer: its key is NOT NULL"
+            },
+            {
+              "at": 67,
+              "title": "Every change waits in one script"
+            },
+            {
+              "at": 73,
+              "title": "The keys after the tables, all in one transaction"
+            },
+            {
+              "at": 77,
+              "title": "Nothing reaches the database until you run it"
+            },
+            {
+              "at": 80,
+              "title": "And for fun, one switch: Sketch"
+            },
+            {
+              "at": 89,
+              "title": "The whole diagram, drawn by hand"
+            }
+          ],
+          "since": "0.33.0"
+        },
+        {
+          "n": 52,
+          "slug": "diagram-console",
+          "title": "Diagrams from the console",
+          "short": "Ask a diagram questions and change it with a line of JavaScript",
+          "summary": "The console speaks JavaScript and knows the diagram on screen: what the mouse does one card at a time, one line does over the whole diagram. List its tables, ask the database what it leaves out and add it, fold and tint by a predicate, paste a model written in Mermaid's erDiagram and make tables of it, and write the diagram back out as Mermaid or a Markdown data dictionary.",
+          "seconds": 63,
+          "label": "43",
+          "keywords": [
+            "diagram",
+            "console",
+            "JavaScript",
+            "Mermaid",
+            "layout",
+            "dictionary"
+          ],
+          "chapters": [
+            {
+              "at": 8,
+              "title": "Your diagram, as a table"
+            },
+            {
+              "at": 14,
+              "title": "What does it leave out? Ask the database"
+            },
+            {
+              "at": 20,
+              "title": "Add them: $_ is the last answer"
+            },
+            {
+              "at": 23,
+              "title": "Change by a predicate: fold and tint every audit table"
+            },
+            {
+              "at": 29,
+              "title": "Lay it out"
+            },
+            {
+              "at": 33,
+              "title": "Design from text: a model in Mermaid"
+            },
+            {
+              "at": 41,
+              "title": "It joins the tables already there: make it a table"
+            },
+            {
+              "at": 49,
+              "title": "A data dictionary for your docs, in Markdown"
+            },
+            {
+              "at": 56,
+              "title": "help.diagram lists the rest"
+            }
+          ],
+          "since": "0.33.0"
+        },
+        {
+          "n": 53,
+          "slug": "database-dictionary",
+          "title": "A Database Dictionary: what your tables mean, beside your code",
+          "short": "A Markdown document of your database where the team writes what everything means",
+          "summary": "Your database knows its tables, columns and keys; it does not know what they mean. A Database Dictionary is a Markdown file in your repository, written from your database and kept up to date as it changes, where the team writes down what things mean. A comment written in it becomes COMMENT ON through your pending changes, a teammate's edit on GitHub comes back the same way, GitHub shows it as a page, and AI agents working in the repository read it like your code. Statistics when you ask, an overview of what every table is for, and its relationships as a diagram.",
+          "seconds": 95,
+          "label": "44",
+          "keywords": [
+            "Database Dictionary",
+            "documentation",
+            "COMMENT ON",
+            "Markdown",
+            "GitHub",
+            "AI",
+            "comments"
+          ],
+          "chapters": [
+            {
+              "at": 5,
+              "title": "Right-click a schema: Add to Dictionary"
+            },
+            {
+              "at": 12,
+              "title": "A Markdown file in your repository, beside your code"
+            },
+            {
+              "at": 18,
+              "title": "It reads like a page, as GitHub shows it"
+            },
+            {
+              "at": 24,
+              "title": "What each table means, in your team's own words"
+            },
+            {
+              "at": 30,
+              "title": "Write what a column means, right where you read it"
+            },
+            {
+              "at": 36,
+              "title": "It goes to the database as COMMENT ON, when you run it"
+            },
+            {
+              "at": 47,
+              "title": "Right-click: everything about that table and column"
+            },
+            {
+              "at": 51,
+              "title": "Statistics when you ask: rows, size, reads"
+            },
+            {
+              "at": 58,
+              "title": "Its relationships open as a PlumeSQL diagram"
+            },
+            {
+              "at": 71,
+              "title": "Shape it in Properties: an overview of the database"
+            },
+            {
+              "at": 81,
+              "title": "What every table is for, in one place"
+            },
+            {
+              "at": 88,
+              "title": "Shared meaning, for your team and your AI agents"
+            }
+          ],
+          "since": "0.33.0"
+        },
+        {
+          "n": 57,
+          "slug": "diagram-edit",
+          "title": "Edit tables on the diagram",
+          "short": "Columns, foreign keys and comments, edited right on the cards",
+          "summary": "Changing a table no longer sends you to another tab: double-click its card on a diagram and edit its columns right there, their names, types, NOT NULL and the primary key, each type picked from a list. Drag + Reference to another table and the new column and its foreign key are made for you. Every card shows its table's comment as Markdown, a long one says what it leaves out, a click writes one in place, and where the database has no key you draw a line of your own and label it. Every change to the database waits in one Changes script, and nothing runs until you run it.",
+          "seconds": 81,
+          "label": "45",
+          "keywords": [
+            "diagram",
+            "Edit Table",
+            "foreign key",
+            "comment",
+            "line",
+            "Reference",
+            "Changes"
+          ],
+          "chapters": [
+            {
+              "at": 8,
+              "title": "A shop's tables, each card with its comment as Markdown"
+            },
+            {
+              "at": 11,
+              "title": "A long comment says what it leaves out"
+            },
+            {
+              "at": 16,
+              "title": "Double-click a card to edit its table right there"
+            },
+            {
+              "at": 21,
+              "title": "Every price required: one click makes it NOT NULL"
+            },
+            {
+              "at": 24,
+              "title": "Add a column and pick its type from the list"
+            },
+            {
+              "at": 32,
+              "title": "Drag + Reference to a table: a new column and its key"
+            },
+            {
+              "at": 38,
+              "title": "Done: the card shows the table as it will be"
+            },
+            {
+              "at": 43,
+              "title": "No comment yet? Write one right on the card"
+            },
+            {
+              "at": 51,
+              "title": "Kept as Markdown, a pending change like the rest"
+            },
+            {
+              "at": 54,
+              "title": "No foreign key here? Draw a line of your own"
+            },
+            {
+              "at": 60,
+              "title": "Label it in your own words"
+            },
+            {
+              "at": 68,
+              "title": "Every change to the database waits in one script"
+            },
+            {
+              "at": 75,
+              "title": "Nothing reaches the database until you run it"
+            }
+          ],
+          "since": "0.33.0"
         }
       ]
     }
