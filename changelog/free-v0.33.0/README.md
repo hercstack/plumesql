@@ -809,7 +809,11 @@ beside your code, of one connection, that PlumeSQL keeps up to date and GitHub s
 - **Shaped your way.** Properties says how every part reads: the contents as an overview table
   with what each table is for, undocumented objects left out, sections by kind or by name,
   shorter headings, long column tables folded, a view's SQL under it, the diagram left to right
-  or one per schema, and which diagrams' notes it carries, each a checkbox.
+  or one per schema, and which diagrams' notes it carries, each a checkbox. A function's code can
+  fold under it too.
+- **Everything links.** A column's type goes to its enum or domain, a trigger to its function,
+  an index to its columns, a foreign key to the column it points to: whatever has its place in
+  the document is a link to it, and nothing links to what is not there.
 - **A right click that knows where you are.** On a column: edit its comment, copy its name or a
   link to it. On a table: Browse Data, Open DDL, Edit Table and the rest of its menu in Objects,
   in the same words. Then the dictionary's own: Collect Statistics, Review Changes, Markdown.
