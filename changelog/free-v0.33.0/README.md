@@ -1009,6 +1009,11 @@ long to show in full.
 
 ## Fixed
 
+- **The System page shows its whole text.** Storage's descriptions were cut to one line; they
+  wrap now, and long paths and commands wrap instead of running past the page. Storage also
+  counts what it missed: SSH host keys, window positions, file icon themes and your extension
+  choices. Your data stands in groups (Connections, Workspaces, Extensions, The app), the caches
+  largest first, and the object snapshots fold out per connection, each with its own Clean.
 - **A double click past the last line no longer selects everything.** On a page of text, a
   double click past the end of its last line selected the whole document. It selects nothing
   there now.
