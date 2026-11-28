@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "save-as-xlsx",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "name": "Save as XLSX",
+  "description": "Save a result as an Excel workbook from Save As: the rows under a bold header on one sheet, the columns and their types on another",
+  "categories": [
+    "Backup and Tools"
+  ],
+  "tags": [
+    "export",
+    "xlsx",
+    "excel",
+    "spreadsheet",
+    "save",
+    "copy"
+  ],
+  "requires": {
+    "pgExtensions": [],
+    "pgVersion": ">=13"
+  },
+  "files": [
+    "save-as-xlsx.plumesql.js"
+  ],
+  "dependencies": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 250,
+  "externals": [],
+  "author": {
+    "name": "ibelic"
+  },
+  "license": "MIT"
+}
