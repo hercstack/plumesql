@@ -208,8 +208,9 @@ of logical types is yours to change in Settings.
 A model often starts as text: in a document, a wiki page, or an answer from an AI assistant,
 written in Mermaid's `erDiagram`. Choose **Insert ▸ Import from Mermaid…** on a diagram's toolbar
 (or on its right click): the model you copied is already in (chosen, so pasting something else
-replaces it), and before anything happens the dialog says what it will make. Copied a whole README? Fine: the model is read out of its
-```` ```mermaid ```` block. Or skip the dialog and just **Paste** on the diagram (⌘V).
+replaces it), and before anything happens the dialog says what it will make. Copied a whole
+README? Fine: the model is read out of its ```` ```mermaid ```` block. Or skip the dialog and
+just **Paste** on the diagram (⌘V).
 
 ![Import from Mermaid: the model's text, and what it will make before anything is done](media/mermaid-import.webp)
 
