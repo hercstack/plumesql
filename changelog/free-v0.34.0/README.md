@@ -4,14 +4,21 @@
 
 ## What changed
 
-### One Model menu for diagrams and dictionaries
+### A menu bar that fits beside the camera
 
-The menu bar had grown to ten titles, and on a MacBook with a camera notch the last ones moved
-to the right of the camera. Diagram and Dictionary are one menu now, **Model**, after
-Connection: **Add to Diagram…** with a **Diagram** submenu for the diagram in front, then
-**Add to Dictionary…** with a **Dictionary** submenu for the dictionary in front. The same items
-as before, and every one is in the Command Palette too. The whole menu bar fits beside the
-camera again, and on Windows it no longer folds into one button in a window of ordinary width.
+The menu bar had grown to ten titles, and on a MacBook Air with a camera notch the last ones
+moved to the right of the camera. It has eight now: **File, Edit, View, Go, Run, Database,
+Window, Help**.
+
+- **Database** holds what Connection, Diagram and Dictionary held: your connections first (New
+  Connection…, Switch Connection for This Tab, Disconnect, Check Connections), then **Add to
+  Diagram…** with a **Diagram** submenu for the diagram in front, and **Add to Dictionary…**
+  with a **Dictionary** submenu for the dictionary in front.
+- **Selection** is a submenu at the end of **Edit**, with the same items and shortcuts, and
+  **Select All** stands in Edit itself, after Paste.
+
+Every item is in the Command Palette too, and on Windows the menu bar no longer folds into one
+button in a window of ordinary width.
 
 ## Fixed
 
