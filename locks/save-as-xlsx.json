@@ -1,0 +1,26 @@
+{
+  "format": 1,
+  "id": "save-as-xlsx",
+  "kind": "grid",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "713add348d8e90fd1c1826e60ef54a0f30aa1caa",
+  "path": "Backup and Tools/save-as-xlsx",
+  "files": [
+    {
+      "path": "save-as-xlsx.plumesql.js",
+      "sha256": "c2fd0d41c294285812119e28fe81a58d0b5adae42ada627dcc0c69b30827096e",
+      "bytes": 11843
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 250,
+  "author": {
+    "name": "ibelic"
+  },
+  "license": "MIT"
+}

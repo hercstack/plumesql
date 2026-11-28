@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "id": "explain-plan",
+  "kind": "grid",
+  "version": "1.3.0",
+  "plumesql": ">=0.22.0",
+  "commit": "713add348d8e90fd1c1826e60ef54a0f30aa1caa",
+  "path": "Performance/explain-plan",
+  "files": [
+    {
+      "path": "explain-plan.plumesql.js",
+      "sha256": "fd13f5d73a9dd91df02838e75ca00e8e6a33eb2f7b88ddf97bed89556dd1301a",
+      "bytes": 117506
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "47636301f07e68088678aa0d65fd77fc882440923b10aa7dc3d5aaadc48b4cd2",
+      "bytes": 617
+    }
+  ],
+  "dependencies": [
+    "stats-core"
+  ],
+  "externals": [],
+  "demo": "media/explain-plan.webp",
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 158,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

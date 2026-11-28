@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "migration-safety",
+  "kind": "refactor",
+  "version": "1.0.1",
+  "plumesql": ">=0.29.0",
+  "commit": "713add348d8e90fd1c1826e60ef54a0f30aa1caa",
+  "path": "Objects/migration-safety",
+  "files": [
+    {
+      "path": "migration-safety.plumesql.js",
+      "sha256": "4c0845947659c7c8c87971c74e429458a5e3a3c9967576fe3007048375e5f0e6",
+      "bytes": 4353
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "scope": {
+    "for": [
+      "global"
+    ],
+    "query": []
+  },
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 239,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}

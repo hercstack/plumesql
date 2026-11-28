@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "checkpoints",
+  "kind": "query",
+  "version": "1.0.0",
+  "plumesql": ">=0.22.0",
+  "commit": "713add348d8e90fd1c1826e60ef54a0f30aa1caa",
+  "path": "Performance/checkpoints",
+  "files": [
+    {
+      "path": "checkpoints.plumesql.sql",
+      "sha256": "a72f78d484f43a70e931f0ff7181ab797060b9937f8d45a65d408190b1839ce3",
+      "bytes": 5063
+    }
+  ],
+  "dependencies": [],
+  "externals": [],
+  "demo": "media/checkpoints.webp",
+  "permissions": {
+    "fork": true
+  },
+  "discussion": 147,
+  "author": {
+    "name": "PlumeSQL",
+    "url": "https://plumesql.com"
+  },
+  "license": "MIT"
+}
